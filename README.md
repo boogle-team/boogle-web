@@ -2,37 +2,60 @@
 
 ## 📌 프로젝트 소개
 
-부글은
+추후 추가 예정
 
-## 👥 팀원 및 프론트엔드 역할 분담
+<br/>
 
-| 이름        | GitHub                                     | 역할                                         |
-| ----------- | ------------------------------------------ | -------------------------------------------- |
-| 시연 (팀장) | [@username1](https://github.com/username1) | 팀 리딩, 공통 레이아웃 / 상태관리 / API 연동 |
-| 팀원 2      | [@username2](https://github.com/username2) | 화면 A, 화면 B 퍼블리싱 및 기능 구현         |
-| 팀원 3      | [@username3](https://github.com/username3) | 화면 C, 화면 D 퍼블리싱 및 기능 구현         |
-| 팀원 4      | [@username4](https://github.com/username4) | WebSocket 연동, 공용 컴포넌트 설계           |
+## 👥 팀원
 
-| 리치/김시연 (팀장)                           | 지오/김지오                            | 곤/유민형                            | 호수/이수호                              |
-| -------------------------------------------- | -------------------------------------- | ------------------------------------ | ---------------------------------------- |
-| [@lycheelove](https://github.com/lycheelove) | [@zio0225](https://github.com/zio0225) | [@yuuumh](https://github.com/yuuumh) | [@Sohoo122](https://github.com/Sohoo122) |
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/lycheelove">@lycheelove</a></td>
+      <td align="center"><a href="https://github.com/zio0225">@zio0225</a></td>
+      <td align="center"><a href="https://github.com/yuuumh">@yuuumh</a></td>
+      <td align="center"><a href="https://github.com/Sohoo122">@Sohoo122</a></td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://github.com/lycheelove"><img src="https://github.com/lycheelove.png" width="150px;" alt=""/></a></td>
+      <td align="center"><a href="https://github.com/zio0225"><img src="https://github.com/zio0225.png" width="150px;" alt=""/></a></td>
+      <td align="center"><a href="https://github.com/yuuumh"><img src="https://github.com/yuuumh.png" width="150px;" alt=""/></a></td>
+      <td align="center"><a href="https://github.com/Sohoo122"><img src="https://github.com/Sohoo122.png" width="150px;" alt=""/></a></td>
+    </tr>
+    <tr>
+      <th align="center">리치/김시연 (FE 팀장)</th>
+      <th align="center">지오/김지오 (FE 팀원)</th>
+      <th align="center">곤/유민형 (FE 팀원)</th>
+      <th align="center">호수/이수호 (FE 팀원)</th>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<br/>
 
 ## 🛠 기술 스택
 
-| 분류            | 기술           |
-| --------------- | -------------- |
-| Framework       | React          |
-| Build Tool      | Vite           |
-| Package Manager | pnpm           |
-| HTTP Client     | Axios          |
-| Styling         | Tailwind CSS   |
-| 전역 상태관리   | Zustand        |
-| 서버 상태관리   | TanStack Query |
-| 배포            | Vercel         |
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-433E38?style=for-the-badge&logo=react&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
+
+
+<br/>
 
 ## 📁 폴더 구조
 
 추후 업데이트 예정입니다.
+
+<br/>
 
 ## 🌿 Git 컨벤션
 
@@ -42,7 +65,8 @@
 2️⃣ **`develop`** : 팀원끼리 작업한 내용(feature)를 합치는 곳
 3️⃣ **`feat`** : 각 작업에 따라 새로 파고 사용할 브랜치
 
-> 하나의 `feat` 브랜치는 하나의 Issue와 연결됩니다.
+
+<br/>
 
 ### 브랜치 네이밍 컨벤션
 
@@ -50,21 +74,15 @@
 커밋컨벤션/페이지 or 기능 이름
 ```
 
-- 페이지 or 기능 이름은 기능 중심 명사로 작성하며, 너무 길어지지 않도록 합니다.
-- 여러 단어가 연결될 경우 `-`로 연결합니다.
+- 페이지 or 기능 이름은 기능 중심 명사로 작성하며, 너무 길어지지 않도록 한다.
+- 여러 단어가 연결될 경우 `-`로 연결한다.
 
 **예시**
 
 - `setting/router-setting`
 - `feat/login`
-- `fix/register-form-bug-fix`
 
-**브랜치 생성 방법**
-
-```bash
-# 브랜치 생성 + 이동 🚨 develop에서 만들었는지 무조건 확인하기 👀
-$ git checkout -b feat/{기능명}
-```
+<br/>
 
 ### 커밋 컨벤션
 
@@ -74,13 +92,12 @@ $ git checkout -b feat/{기능명}
 커밋컨벤션: 커밋 메시지 (#이슈번호)
 ```
 
-> 이슈 번호를 매번 작성하는 게 번거롭다는 의견이 있어 선택 사항으로 합니다.
+> 이슈 번호를 매번 작성하는 게 번거롭다는 의견이 있어 선택 사항으로 함
 
 **예시**
 
 - `setting: eslint 설치 (#10)`
 - `feat: login form 구현 (#4)`
-- `api: 소리 필터링 api 연결 (#1)`
 - `refactor: image upload 로직 커스텀훅으로 분리 (#12)`
 
 | 머릿말             | 설명                                                            |
@@ -101,29 +118,17 @@ $ git checkout -b feat/{기능명}
 | `!HOTFIX`          | 코드 포맷 변경, 세미콜론 누락 등 코드 수정이 없는 경우          |
 | `!BREAKING CHANGE` | 커다란 API 변경의 경우                                          |
 
+<br/>
+
 ### 브랜치 병합(Merge) & 기본 규칙
 
-1. 메인 브랜치(`main`, `develop`)에는 직접 커밋하지 않습니다.
-2. 모든 커밋은 작업 브랜치(`feat`)에서만 진행하며, 브랜치 병합(merge)은 PR(Pull Request)을 통해서만 가능합니다.
-3. 작업 전에는 항상 `git pull origin develop`을 통해 각 feature 브랜치를 최신화해서 관리합니다.
-4. 팀원들의 리뷰 이후 최소 1명 이상의 approve를 받아야 merge할 수 있습니다.
+1. 메인 브랜치(`main`, `develop`)에는 직접 커밋하지 않는다.
+2. 모든 커밋은 작업 브랜치(`feat`)에서만 진행하며, 브랜치 병합(merge)은 PR(Pull Request)을 통해서만 가능하다.
+3. 작업 전에는 항상 `git pull origin develop`을 통해 각 feature 브랜치를 최신화해서 관리한다.
+4. 최소 1명 이상의 코드 리뷰 및 approve를 받아야 merge할 수 있다.
 
-## 🚀 실행 방법
+<br/>
 
-```bash
-# 저장소 클론
-$ git clone https://github.com/{organization}/HEARING-FE.git
-$ cd HEARING-FE
-
-# 패키지 설치
-$ pnpm install
-
-# 개발 서버 실행
-$ pnpm dev
-
-# 빌드
-$ pnpm build
-```
 
 ## 🖥 화면 목록 및 플로우
 
