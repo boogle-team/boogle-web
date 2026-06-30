@@ -1,6 +1,6 @@
 name: 🛠 Setting / Chore
 description: 개발 환경 설정, 패키지 설치 등 프로덕션 코드 외 작업
-title: "[SETTING] "
+title: "[Setting] 00 작업"
 labels: ["setting"]
 body:
   - type: textarea
