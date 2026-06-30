@@ -1,0 +1,28 @@
+name: 🛠 Setting / Chore
+description: 개발 환경 설정, 패키지 설치 등 프로덕션 코드 외 작업
+title: "[SETTING] "
+labels: ["setting"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 작업 내용
+      description: 어떤 설정/작업을 진행할 것인지 설명해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: 할 일 (Todo)
+      value: |
+        - [ ]
+    validations:
+      required: false
+
+  - type: textarea
+    id: etc
+    attributes:
+      label: 기타
+    validations:
+      required: false

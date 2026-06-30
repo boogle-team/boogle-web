@@ -1,0 +1,45 @@
+name: ✨ Feature
+description: 새로운 기능 개발 / 퍼블리싱 이슈
+title: "[Feature] 구현 기능"
+labels: ["feat"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 작업 내용
+      description: 구현할 기능에 대해 설명해주세요
+      placeholder: 어떤 기능을 만들어야 하는지 작성해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: 할 일 (Todo)
+      description: 세부 작업 단위를 체크리스트로 작성해주세요
+      placeholder: |
+        - [ ] 컴포넌트 구조 설계
+        - [ ] 퍼블리싱
+        - [ ] 기능 구현
+        - [ ] API 연동
+      value: |
+        - [ ]
+    validations:
+      required: false
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: 참고 자료
+      description: 디자인 시안, 기획서, 관련 링크 등
+      placeholder: Figma 링크, 관련 문서 등
+    validations:
+      required: false
+
+  - type: textarea
+    id: etc
+    attributes:
+      label: 기타
+      description: 그 외 공유하고 싶은 내용
+    validations:
+      required: false
