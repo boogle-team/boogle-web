@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./theme.css";
+@import "pretendard/dist/web/variable/pretendardvariable.css";
 
 /* 앱 컨테이너 */
 .app {
