@@ -1,12 +1,13 @@
-.small-pill-button {
+.small-chip {
   appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 71px;
+  width: auto;
+  min-width: 71px;
   min-height: 35px;
-  padding: 0 10px;
-  border-radius: 18px;
+  padding: 0 14px;
+  border-radius: 9999px;
   border: 1px solid #e8e6e0;
   background: #ffffff;
   color: #555555;
@@ -16,19 +17,22 @@
   letter-spacing: -0.02em;
   line-height: 1;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
-.small-pill-button:active {
+.small-chip:active {
   transform: translateY(1px);
 }
 
-.small-pill-button:disabled {
+.small-chip:disabled {
   cursor: not-allowed;
   opacity: 0.56;
 }
 
-.small-pill-button:hover:not(:disabled) {
+.small-chip:hover:not(:disabled) {
   background: #f7f7f7;
   border-color: #d6d6d6;
 }

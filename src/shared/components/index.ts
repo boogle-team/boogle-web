@@ -4,5 +4,5 @@ export { default as CancelButton } from './CancelButton';
 export type { CancelButtonPropTypes } from './CancelButton';
 export { default as GenderChip } from './GenderChip';
 export type { GenderChipPropTypes } from './GenderChip';
-export { default as SmallPillButton } from './SmallPillButton';
-export type { SmallPillButtonPropTypes } from './SmallPillButton';
+export { default as SmallChip } from './SmallChip';
+export type { SmallChipPropTypes } from './SmallChip';

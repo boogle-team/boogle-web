@@ -1,4 +1,4 @@
-import { CancelButton, GenderChip, NextButton, SmallPillButton } from '../../shared/components';
+import { CancelButton, GenderChip, NextButton, SmallChip } from '../../shared/components';
 import './Home.css';
 
 const Home = () => {
@@ -25,10 +25,10 @@ const Home = () => {
       </section>
 
       <section className="home-preview__panel">
-        <p className="home-preview__label">Small Pill Button</p>
+        <p className="home-preview__label">Small Chip</p>
 
         <div className="home-preview__group home-preview__group--small">
-          <SmallPillButton>부족</SmallPillButton>
+          <SmallChip>부족</SmallChip>
         </div>
       </section>
     </main>
