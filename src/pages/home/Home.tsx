@@ -1,5 +1,38 @@
+import { CancelButton, GenderChip, NextButton, SmallPillButton } from '../../shared/components';
+import './Home.css';
+
 const Home = () => {
-  return <div></div>;
+  return (
+    <main className="home-preview">
+      <section className="home-preview__panel">
+        <p className="home-preview__label">Buttons</p>
+
+        <div className="home-preview__group">
+          <NextButton>다음</NextButton>
+        </div>
+
+        <div className="home-preview__group">
+          <CancelButton>취소</CancelButton>
+        </div>
+      </section>
+
+      <section className="home-preview__panel">
+        <p className="home-preview__label">Gender Chip</p>
+
+        <div className="home-preview__chips">
+          <GenderChip variant="white">여성</GenderChip>
+        </div>
+      </section>
+
+      <section className="home-preview__panel">
+        <p className="home-preview__label">Small Pill Button</p>
+
+        <div className="home-preview__group home-preview__group--small">
+          <SmallPillButton>부족</SmallPillButton>
+        </div>
+      </section>
+    </main>
+  );
 };
 
 export default Home;

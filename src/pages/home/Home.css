@@ -1,0 +1,44 @@
+.home-preview {
+  min-height: 100vh;
+  padding: 32px 24px 48px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 140, 97, 0.1), transparent 28%),
+    linear-gradient(180deg, #f7fbff 0%, #eef6ff 100%);
+  color: #2f2d2b;
+}
+
+.home-preview__panel {
+  max-width: 640px;
+  margin: 0 auto 28px;
+  padding: 20px 20px 28px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 16px 40px rgba(41, 56, 86, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.home-preview__label {
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.home-preview__group {
+  max-width: 420px;
+  margin-bottom: 16px;
+}
+
+.home-preview__group--small {
+  max-width: 180px;
+}
+
+.home-preview__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.home-preview__chips > * {
+  min-width: 160px;
+}
