@@ -4,7 +4,7 @@ import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
 import Guide from '../pages/guide/Guide';
 import Report from '../pages/report/Report';
-import Calender from '../pages/calender/Calender';
+import Calendar from '../pages/calendar/Calendar';
 
 export const Router = createBrowserRouter([
   {
@@ -16,8 +16,8 @@ export const Router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: 'calender',
-        element: <Calender />,
+        path: 'calendar',
+        element: <Calendar />,
       },
       {
         path: 'report',
