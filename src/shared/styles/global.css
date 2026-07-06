@@ -1,26 +1,198 @@
 @import "tailwindcss";
-@import "./theme.css";
 @import "pretendard/dist/web/variable/pretendardvariable.css";
 
-/* 앱 컨테이너 */
-.app {
-  /* 웹앱 너비 고정 */
-  width: 100%;
-  max-width: 430px;
-  min-width: 320px;
-  min-height: 100dvh;
-  margin: 0 auto;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
-  /* 가로 넘침/자식 margin이 박스 밖으로 새는 것만 차단하고, 세로는 콘텐츠가 길어지면 스크롤되도록 허용한다. */
-  overflow-x: hidden;
+@theme {
+  /* 폰트 */
+  --font-base:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Malgun Gothic", sans-serif;
+  --font-size-base: 1rem;
+
+  /* 색상 */
+  /*Orange*/
+  --color-orange-1: #fff4ef;
+  --color-orange-2: #ffe3d9;
+  --color-orange-3: #ffcebb;
+  --color-orange-4: #ffb79b;
+  --color-orange-5: #ffa17d;
+  --color-orange-6: #ff8c61;
+  --color-orange-7: #f87442;
+  --color-orange-8: #b56345;
+  --color-orange-9: #915037;
+  --color-orange-10: #733f2c;
+  /*Yellow*/
+  --color-yellow-1: #fef9ef;
+  --color-yellow-2: #fdf0d9;
+  --color-yellow-3: #fbe4bb;
+  --color-yellow-4: #f9d89c;
+  --color-yellow-5: #f7cc7e;
+  --color-yellow-6: #f5c162;
+  --color-yellow-7: #d0a453;
+  --color-yellow-8: #ae8946;
+  --color-yellow-9: #8c6e38;
+  --color-yellow-10: #6e572c;
+
+  /*Beige*/
+  --color-beige-1: #ffffff;
+  --color-beige-2: #fffefe;
+  --color-beige-3: #fdfdfc;
+  --color-beige-4: #fdfcfb;
+  --color-beige-5: #f9f7f5;
+  --color-beige-6: #f9f3ed;
+  --color-beige-7: #eee7e1;
+  --color-beige-8: #e6ddd3;
+  --color-beige-9: #e3d8ce;
+  --color-beige-10: #dfd2c6;
+  --color-beige-11: #ded0c4;
+  --color-beige-12: #dccec1;
+  --color-beige-13: #d9cabc;
+
+  /*Gray*/
+  --color-gray-1: #ffffff;
+  --color-gray-2: #fdfdfd;
+  --color-gray-3: #f5f5f5;
+  --color-gray-4: #f0f0f0;
+  --color-gray-5: #dbdada;
+  --color-gray-6: #c2c2c2;
+  --color-gray-7: #929090;
+  --color-gray-8: #615f5f;
+  --color-gray-9: #4e4b4b;
+  --color-gray-10: #302e2e;
+
+  /*Semantic*/
+  --color-semantic-danger: #ff7675;
+  --color-semantic-saturday: #0e8fff;
+  --color-semantic-sunday: #ff303f;
+
+  /* Layout */
+  --spacing-layout: 1rem; /* 페이지 좌우 마진 */
+
+  /* radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 99px;
+
+  /* Effect */
+  --shadow-sm: 0px 0px 12px 0px rgba(252, 244, 235, 0.5);
+  --shadow-md: 0px 0px 12px 0px rgba(243, 226, 209, 0.5);
+}
+
+/* Text Styles */
+/* Display */
+@utility display-lg {
+  font-size: 1.75rem; /* 28px */
+  line-height: 130%;
+  font-weight: 600;
+}
+
+@utility display {
+  font-size: 1.375rem; /* 22px */
+  line-height: 130%;
+  font-weight: 600;
+}
+
+@utility title {
+  font-size: 1.25rem; /* 20px */
+  line-height: 130%;
+  font-weight: 600;
+}
+
+@utility header {
+  font-size: 1.25rem; /* 20px */
+  line-height: 130%;
+  font-weight: 700;
+}
+
+/* Body */
+@utility body-lg {
+  font-size: 1.125rem; /* 18px */
+  line-height: 140%;
+  font-weight: 500;
+}
+
+@utility body-m-bold {
+  font-size: 1rem; /* 16px */
+  line-height: 140%;
+  font-weight: 700;
+}
+
+@utility body-m {
+  font-size: 1rem; /* 16px */
+  line-height: 140%;
+  font-weight: 500;
+}
+
+/* Label */
+@utility label-bold {
+  font-size: 0.875rem; /* 14px */
+  line-height: 140%;
+  font-weight: 700;
+}
+
+@utility label {
+  font-size: 0.875rem; /* 14px */
+  line-height: 140%;
+  font-weight: 500;
+}
+
+@utility label-semi {
+  font-size: 0.875rem; /* 14px */
+  line-height: 140%;
+  font-weight: 600;
+}
+
+/* Caption */
+@utility caption-bold {
+  font-size: 0.75rem; /* 12px */
+  line-height: 140%;
+  font-weight: 600;
+}
+
+@utility caption {
+  font-size: 0.75rem; /* 12px */
+  line-height: 140%;
+  font-weight: 500;
+}
+
+@utility caption-reg {
+  font-size: 0.75rem; /* 12px */
+  line-height: 140%;
+  font-weight: 400;
+}
+
+@utility micro {
+  font-size: 0.625rem; /* 10px */
+  line-height: 140%;
+  font-weight: 400;
+}
+
+@utility micro-bold {
+  font-size: 0.625rem; /* 10px */
+  line-height: 140%;
+  font-weight: 700;
+}
+
+:root {
+  font-family: var(--font-base);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-10);
+  background: var(--color-beige-1);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
 }
 
 body {
-  font-family: var(--font-base);
-  font-size: var(--font-size-base);
-  background-color: var(--color-background);
-  -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 */
-  word-break: keep-all; /* 한국어 단어 중간 안 잘림 */
+  word-break: keep-all;
 }
 
 button {
@@ -28,17 +200,15 @@ button {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 
-/* 포커스 스타일 - 웹 접근성 */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-orange-6);
   outline-offset: 2px;
 }
 
-/* 애니메이션 줄이기 선호 시 - 접근성 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
