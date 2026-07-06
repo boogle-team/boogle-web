@@ -58,7 +58,7 @@ const BottomNavigation = () => {
     <>
       <nav
         ref={navRef}
-        className="fixed bottom-0 left-1/2 z-50 h-[8.31rem] w-full max-w-[430px] -translate-x-1/2 overflow-visible bg-gray-9"
+        className="fixed bottom-0 left-1/2 z-50 h-[8.31rem] w-full max-w-[430px] -translate-x-1/2 overflow-visible"
       >
         {/* 실제 렌더 폭에 맞춰 생성한 하단 네비게이션 실루엣 (노치 곡률은 폭과 무관하게 고정) */}
         {navWidth > 0 && (
@@ -121,7 +121,7 @@ const BottomNavigation = () => {
           type="button"
           onClick={handlePlusClick}
           aria-label="배변 기록 추가"
-          className="absolute left-1/2 top-[1.13rem] z-30 flex h-[3.75rem] w-[3.75rem] shrink-0 origin-center -translate-x-1/2 items-center justify-center rounded-full bg-orange-6 text-beige-1 transition-all duration-200 ease-out active:-translate-x-1/2 active:scale-[1.067] active:bg-orange-7"
+          className="absolute inset-x-0 top-[1.13rem] z-30 mx-auto flex h-[3.75rem] w-[3.75rem] shrink-0 origin-center items-center justify-center rounded-full bg-orange-6 text-beige-1 transition-all duration-200 ease-out active:scale-[1.067] active:bg-orange-7"
         >
           <Plus className="h-[2rem] w-[2rem]" strokeWidth={3} />
         </button>
