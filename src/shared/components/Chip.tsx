@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type ChipSizeTypes = 'md' | 'sm';
+type ChipSizeTypes = 'default' | 'compact';
 
 export interface ChipPropTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: ReactNode;
@@ -11,21 +11,22 @@ export interface ChipPropTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Chip = ({
   text,
   isSelected = false,
-  size = 'md',
+  size = 'default',
   className = '',
   type = 'button',
   ...props
 }: ChipPropTypes) => {
   const sizeClassName = {
-    md: 'min-h-16 px-7 text-base',
-    sm: 'min-h-9 min-w-[71px] px-[14px] text-sm',
+    default: 'h-12 w-full px-4 text-base',
+    compact: 'h-9 min-w-21 px-4 text-sm',
   }[size];
 
   const chipClassName = [
-    'inline-flex w-auto min-w-0 items-center justify-center rounded-full border border-[var(--color-gray-5)] bg-[var(--color-beige-1)] font-inherit text-[var(--color-gray-10)] font-semibold leading-none tracking-[-0.02em] transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
+    'inline-flex min-w-0 items-center justify-center border border-gray-5 bg-beige-1 font-inherit font-semibold leading-none tracking-[-0.02em] text-gray-7 transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
     sizeClassName,
+    size === 'default' ? 'rounded-xl' : 'rounded-full',
     isSelected &&
-      'border-[var(--color-orange-6)] bg-[var(--color-orange-6)] text-[var(--color-beige-1)] hover:border-[var(--color-orange-7)] hover:bg-[var(--color-orange-7)]',
+      'border-orange-6 bg-orange-1 text-orange-6 hover:bg-orange-2',
     className,
   ]
     .filter(Boolean)
