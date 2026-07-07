@@ -8,5 +8,6 @@ export interface TopNavigationPropTypes {
   onTitleClick?: () => void;
   onNotificationButtonClick?: () => void;
   onSettingButtonClick?: () => void;
+  hasUnreadNotification?: boolean;
   className?: string;
-}
+} 

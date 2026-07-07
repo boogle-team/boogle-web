@@ -1,4 +1,7 @@
-import { Bell, ChevronDown, Settings } from 'lucide-react';
+import AlarmBellIcon from '@/shared/assets/icons/alarmBellIcon.svg?react';
+import ChevronDownIcon from '@/shared/assets/icons/chevronDownIcon.svg?react';
+import NotificationDotIcon from '@/shared/assets/icons/notificationDotIcon.svg?react';
+import SettingIcon from '@/shared/assets/icons/settingIcon.svg?react';
 import type { TopNavigationPropTypes } from './types/topNavigationPropsTypes';
 
 const HomeTopNavigation = ({
@@ -7,6 +10,7 @@ const HomeTopNavigation = ({
   onTitleClick,
   onNotificationButtonClick,
   onSettingButtonClick,
+  hasUnreadNotification = false,
   className = '',
 }: TopNavigationPropTypes) => {
   const handleTitleClick = () => {
@@ -29,12 +33,13 @@ const HomeTopNavigation = ({
 
   return (
     <header
-      className={`flex h-[3.5625rem] w-full items-center justify-between border-b border-gray-3 bg-beige-1 px-layout ${className}`}
+      className={`flex h-[3.5625rem] w-full items-center justify-between border-b border-gray-3 bg-beige-1 px-[1rem] ${className}`}
     >
+      {/* 날짜 / 요일 / 드롭다운 영역 */}
       <button
         type="button"
         onClick={handleTitleClick}
-        className="flex items-center gap-[0.375rem]"
+        className="flex items-center gap-[0.5rem]"
       >
         <div className="flex items-center gap-[0.375rem]">
           <span className="title whitespace-nowrap leading-[1.3] tracking-[-0.03125rem] text-gray-10">
@@ -48,38 +53,44 @@ const HomeTopNavigation = ({
           ) : null}
         </div>
 
-        <ChevronDown
-          aria-hidden="true"
-          className="h-[1.5rem] w-[1.5rem] text-gray-8"
-          strokeWidth={1.5}
+        <ChevronDownIcon
+            aria-hidden="true"
+            className="h-[0.5625rem] w-[1rem] shrink-0 text-gray-8"
         />
       </button>
 
-      <div className="flex items-center gap-[0.75rem]">
+      {/* 오른쪽 아이콘 영역 */}
+      <div className="flex items-center gap-3">
+        {/* 알림 버튼 */}
         <button
           type="button"
-          aria-label="알림"
+          aria-label={hasUnreadNotification ? '새 알림 있음' : '알림'}
           onClick={handleNotificationButtonClick}
-          className="relative flex h-[1.75rem] w-[1.75rem] items-center justify-center"
+          className="relative flex h-7 w-7 items-center justify-center"
         >
-          <Bell
+          <AlarmBellIcon
             aria-hidden="true"
-            className="h-[1.25rem] w-[1.25rem] text-gray-7"
-            strokeWidth={2}
+            className="h-[1.27875rem] w-[1.20313rem] shrink-0 text-gray-7"
           />
-          <span className="absolute right-[0.125rem] top-[0.125rem] h-[0.375rem] w-[0.375rem] rounded-full bg-semantic-danger" />
+
+          {hasUnreadNotification ? (
+            <NotificationDotIcon
+              aria-hidden="true"
+              className="absolute right-[0.125rem] top-[0.125rem] h-[0.25rem] w-[0.25rem] shrink-0 text-semantic-danger"
+            />
+          ) : null}
         </button>
 
+        {/* 설정 버튼 */}
         <button
           type="button"
           aria-label="설정"
           onClick={handleSettingButtonClick}
-          className="flex h-[1.75rem] w-[1.75rem] items-center justify-center"
+          className="flex h-7 w-7 items-center justify-center p-0.75"
         >
-          <Settings
+          <SettingIcon
             aria-hidden="true"
-            className="h-[1.25rem] w-[1.25rem] text-gray-7"
-            strokeWidth={2}
+            className="h-5.5 w-5.5 shrink-0 text-gray-7"
           />
         </button>
       </div>
