@@ -4,7 +4,7 @@ import BottomNavigation from '@/layout/BottomNavigation';
 const MainLayout = () => {
   return (
     <div className="min-h-screen">
-      <main className="pb-24">
+      <main className="pb-[10rem]">
         <Outlet />
       </main>
       <BottomNavigation />
