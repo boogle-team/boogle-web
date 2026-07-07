@@ -19,7 +19,7 @@ const ConfirmModal = ({
   cancelText = "취소",
   confirmText,
   // Modal 사용 시 className 변경 가능
-  cancelButtonClassName = "bg-white text-gray-8 border border-gray-5",
+  cancelButtonClassName = "bg-gray-4 text-gray-7",
   confirmButtonClassName = "bg-orange-6 text-white",
   onCancel,
   onConfirm,
@@ -32,24 +32,26 @@ const ConfirmModal = ({
       onClick={onCancel}  
     >
       <div
-        className="w-full max-w-xs rounded-lg bg-white px-5 py-9 text-center"
+        className="flex w-80 flex-col items-center justify-center gap-6 rounded-xl bg-beige-1 pt-6 pb-4 px-4 text-center shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 className="body-m-bold text-gray-10">{title}</h2>
-        {description && <p className="caption mt-2 text-gray-7">{description}</p>}
+        <div className="py-2">
+          <h2 className="title text-gray-10">{title}</h2>
+          {description && <p className="label mt-2 whitespace-pre-line text-gray-7">{description}</p>}
+        </div>
 
-        <div className="mt-6 flex gap-4">
+        <div className="flex w-full gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className={`caption-bold h-12 flex-1 rounded-2xl ${cancelButtonClassName}`}
+            className={`label h-12 flex-1 rounded-sm ${cancelButtonClassName}`}
           >
             {cancelText}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className={`caption-bold h-12 flex-1 rounded-2xl ${confirmButtonClassName}`}
+            className={`label h-12 flex-1 rounded-sm ${confirmButtonClassName}`}
           >
             {confirmText}
           </button>
