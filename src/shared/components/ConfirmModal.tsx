@@ -1,19 +1,22 @@
 import { createPortal } from "react-dom";
+import type { ReactNode } from "react";
 
 interface ConfirmModalPropTypes {
   isOpen: boolean;
+  icon?: ReactNode;
   title: string;
   description?: string;
   cancelText?: string;
   confirmText: string;
   cancelButtonClassName?: string;
   confirmButtonClassName?: string;
-  onCancel: () => void;
+  onCancel?: () => void;
   onConfirm: () => void;
 };
 
 const ConfirmModal = ({
   isOpen,
+  icon,
   title,
   description,
   cancelText = "취소",
@@ -29,25 +32,28 @@ const ConfirmModal = ({
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-      onClick={onCancel}  
+      onClick={onCancel}
     >
       <div
-        className="flex w-80 flex-col items-center justify-center gap-6 rounded-xl bg-beige-1 pt-6 pb-4 px-4 text-center shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]"
+        className="flex w-80 flex-col items-center justify-center gap-6 rounded-md bg-beige-1 pt-6 pb-4 px-4 text-center shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="py-2">
+        <div className="flex flex-col items-center justify-end gap-4 self-stretch py-2">
+          {icon}
           <h2 className="title text-gray-10">{title}</h2>
-          {description && <p className="label mt-2 whitespace-pre-line text-gray-7">{description}</p>}
+          {description && <p className="label whitespace-pre-line text-gray-7">{description}</p>}
         </div>
 
         <div className="flex w-full gap-2">
-          <button
-            type="button"
-            onClick={onCancel}
-            className={`label h-12 flex-1 rounded-sm ${cancelButtonClassName}`}
-          >
-            {cancelText}
-          </button>
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className={`label h-12 flex-1 rounded-sm ${cancelButtonClassName}`}
+            >
+              {cancelText}
+            </button>
+          )}
           <button
             type="button"
             onClick={onConfirm}
