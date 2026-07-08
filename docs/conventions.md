@@ -48,3 +48,8 @@
    docs 문서 수정
    !HOTFIX 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우
    !BREAKING CHANGE 커다란 API 변경의 경우
+
+## 스타일링 관련
+
+- theme.css에 figma 디자인 토큰 값들을 옮겨놓음. 색상, 텍스트 스타일, shadow 효과 여기 값으로 활용.
+- border-raduis, 수평선 같은 것만 px 사용 / 그 외에는 모두 rem 단위 사용 (spacing, text 크기 등)

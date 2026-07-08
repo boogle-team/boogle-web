@@ -5,8 +5,11 @@ import Home from '@/shared/assets/icons/home.svg?react';
 import Calendar from '@/shared/assets/icons/calendar.svg?react';
 import Report from '@/shared/assets/icons/report.svg?react';
 import Guide from '@/shared/assets/icons/guide.svg?react';
-import useBottomNavigation from './useBottomNavigation';
-import { createNavBarPath, NAV_BAR_HEIGHT } from './navBarPath';
+import useBottomNavigation from '@/shared/hooks/useBottomNavigation';
+import {
+  createNavBarPath,
+  NAV_BAR_HEIGHT,
+} from '@/shared/components/navBarPath';
 
 interface NavItemTypes {
   label: string;
