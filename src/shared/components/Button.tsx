@@ -49,7 +49,7 @@ const Button = ({
   const styleClassName = disabled ? disabledClassName : variantClassName;
 
   const buttonClassName = [
-    'inline-flex w-full min-w-0 items-center justify-center rounded-2xl border font-inherit transition-[transform,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed',
+    'inline-flex w-full min-w-0 items-center justify-center rounded-lg border font-inherit transition-[transform,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed',
     sizeClassName,
     styleClassName,
     className,

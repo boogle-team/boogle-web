@@ -17,14 +17,14 @@ const Chip = ({
   ...props
 }: ChipPropTypes) => {
   const sizeClassName = {
-    default: 'h-12 w-full px-4 text-base',
-    compact: 'h-9 min-w-21 px-4 text-sm',
+    default: 'h-12 w-full px-4 body-m',
+    compact: 'h-9 min-w-21 px-4 label-semi',
   }[size];
 
   const chipClassName = [
-    'inline-flex min-w-0 items-center justify-center border border-gray-5 bg-beige-1 font-inherit font-semibold leading-none tracking-[-0.02em] text-gray-7 transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
+    'inline-flex min-w-0 items-center justify-center border border-gray-5 bg-beige-1 font-inherit text-gray-7 transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
     sizeClassName,
-    size === 'default' ? 'rounded-xl' : 'rounded-full',
+    size === 'default' ? 'rounded-md' : 'rounded-full',
     isSelected &&
       'border-orange-6 bg-orange-1 text-orange-6 hover:bg-orange-2',
     className,
@@ -33,7 +33,12 @@ const Chip = ({
     .join(' ');
 
   return (
-    <button className={chipClassName} type={type} aria-pressed={isSelected} {...props}>
+    <button
+      className={chipClassName}
+      type={type}
+      aria-pressed={isSelected}
+      {...props}
+    >
       {text}
     </button>
   );
