@@ -1,15 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
 import Guide from '../pages/guide/Guide';
 import Report from '../pages/report/Report';
 import Calender from '../pages/calender/Calender';
 
 export const Router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />,
-  },
+  // TODO: Home 페이지 작성 후 '/' 라우트 복구
   {
     path: '/login',
     element: <Login />,
