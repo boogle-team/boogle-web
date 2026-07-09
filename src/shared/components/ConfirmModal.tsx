@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { useId } from "react";
 import type { ReactNode } from "react";
 import Button, { type ButtonPropTypes } from "./Button";
 
@@ -28,6 +29,9 @@ const ConfirmModal = ({
   onCancel,
   onConfirm,
 }: ConfirmModalPropTypes) => {
+  const titleId = useId();
+  const descriptionId = useId();
+
   if (!isOpen) return null;
 
   return createPortal(
@@ -36,13 +40,23 @@ const ConfirmModal = ({
       onClick={onCancel}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={description ? descriptionId : undefined}
         className="flex w-80 flex-col items-center justify-center gap-6 rounded-[12px] bg-beige-1 pt-6 pb-4 px-4 text-center shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex flex-col items-center justify-end gap-4 self-stretch py-2">
           {icon}
-          <h2 className="title text-gray-10">{title}</h2>
-          {description && <p className="label whitespace-pre-line text-gray-7">{description}</p>}
+          <h2 id={titleId} className="title text-gray-10">
+            {title}
+          </h2>
+          {description && (
+            <p id={descriptionId} className="label whitespace-pre-line text-gray-7">
+              {description}
+            </p>
+          )}
         </div>
 
         <div className="flex w-full gap-2">
