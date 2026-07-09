@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import type { ReactNode } from "react";
 import Button, { type ButtonPropTypes } from "./Button";
 
@@ -31,6 +31,17 @@ const ConfirmModal = ({
 }: ConfirmModalPropTypes) => {
   const titleId = useId();
   const descriptionId = useId();
+
+  useEffect(() => {
+    if (!isOpen || !onCancel) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onCancel();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onCancel]);
 
   if (!isOpen) return null;
 
