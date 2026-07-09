@@ -7,7 +7,6 @@ import Report from '../pages/report/Report';
 import Calendar from '../pages/calendar/Calendar';
 
 export const Router = createBrowserRouter([
-  // TODO: Home 페이지 작성 후 '/' 라우트 복구
   {
     path: '/',
     element: <MainLayout />,
