@@ -41,26 +41,6 @@ project-root
 ## Tech Stack (기술 스택)
 
 - Frontend: React + Vite + TypeScript + pnpm + Tailwind CSS + TanStack Query + zustand
-  아이콘은 lucide-react 사용. 만약 해당 서비스에 없는 아이콘일 경우 figma에서 추출해서 가져와서 svgr로 사용.
-  예시:
-
-```typescript
-import "./App.css";
-import Guide from "./shared/assets/icons/Guide.svg?react";
-
-function App() {
-  return (
-    <>
-      <div className="app">
-        {/* 앱 내용 */}
-        <Guide className="w-[2rem] h-[2rem] text-orange-6" />
-      </div>
-    </>
-  );
-}
-
-export default App;
-```
 
 ## Build & Test Commands (빌드 / 테스트)
 
