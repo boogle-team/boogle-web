@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import type { ReactNode } from "react";
+import Button, { type ButtonPropTypes } from "./Button";
 
 interface ConfirmModalPropTypes {
   isOpen: boolean;
@@ -8,8 +9,8 @@ interface ConfirmModalPropTypes {
   description?: string;
   cancelText?: string;
   confirmText: string;
-  cancelButtonClassName?: string;
-  confirmButtonClassName?: string;
+  cancelVariant?: ButtonPropTypes["variant"];
+  confirmVariant?: ButtonPropTypes["variant"];
   onCancel?: () => void;
   onConfirm: () => void;
 };
@@ -21,9 +22,9 @@ const ConfirmModal = ({
   description,
   cancelText = "취소",
   confirmText,
-  // Modal 사용 시 className 변경 가능
-  cancelButtonClassName = "bg-gray-4 text-gray-7",
-  confirmButtonClassName = "bg-orange-6 text-white",
+  // Modal 사용 시 variant 변경 가능
+  cancelVariant = "neutral",
+  confirmVariant = "primary",
   onCancel,
   onConfirm,
 }: ConfirmModalPropTypes) => {
@@ -35,7 +36,7 @@ const ConfirmModal = ({
       onClick={onCancel}
     >
       <div
-        className="flex w-80 flex-col items-center justify-center gap-6 rounded-md bg-beige-1 pt-6 pb-4 px-4 text-center shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]"
+        className="flex w-80 flex-col items-center justify-center gap-6 rounded-[12px] bg-beige-1 pt-6 pb-4 px-4 text-center shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex flex-col items-center justify-end gap-4 self-stretch py-2">
@@ -46,21 +47,21 @@ const ConfirmModal = ({
 
         <div className="flex w-full gap-2">
           {onCancel && (
-            <button
-              type="button"
+            <Button
+              text={cancelText}
               onClick={onCancel}
-              className={`label h-12 flex-1 rounded-sm ${cancelButtonClassName}`}
-            >
-              {cancelText}
-            </button>
+              variant={cancelVariant}
+              size="sm"
+              className="flex-1"
+            />
           )}
-          <button
-            type="button"
+          <Button
+            text={confirmText}
             onClick={onConfirm}
-            className={`label h-12 flex-1 rounded-sm ${confirmButtonClassName}`}
-          >
-            {confirmText}
-          </button>
+            variant={confirmVariant}
+            size="sm"
+            className="flex-1"
+          />
         </div>
       </div>
     </div>,
