@@ -2,11 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type ButtonSizeTypes = 'lg' | 'md' | 'sm';
 type ButtonVariantTypes =
-  | 'primary'
-  | 'neutral'
-  | 'tertiary'
-  | 'ghost'
-  | 'destructive';
+  'primary' | 'neutral' | 'tertiary' | 'ghost' | 'destructive';
 type ButtonDisabledVariantTypes = 'default' | 'bright';
 
 export interface ButtonPropTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -27,9 +23,9 @@ const Button = ({
   ...props
 }: ButtonPropTypes) => {
   const sizeClassName = {
-    lg: 'min-h-14 px-6 body-m-bold',
-    md: 'min-h-[3.5rem] px-6 body-m-bold',
-    sm: 'min-h-[3rem] px-[1.125rem] label-bold',
+    lg: 'min-h-14 rounded-2xl body-m',
+    md: 'min-h-[3.5rem] rounded-xl body-m',
+    sm: 'min-h-[3rem] rounded-lg label',
   }[size];
 
   const disabledClassName = {
@@ -49,7 +45,7 @@ const Button = ({
   const styleClassName = disabled ? disabledClassName : variantClassName;
 
   const buttonClassName = [
-    'inline-flex w-full min-w-0 items-center justify-center rounded-lg border font-inherit transition-[transform,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed',
+    'inline-flex w-full min-w-0 items-center justify-center border font-inherit transition-[transform,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed',
     sizeClassName,
     styleClassName,
     className,

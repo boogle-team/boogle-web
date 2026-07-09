@@ -24,9 +24,8 @@ const Chip = ({
   const chipClassName = [
     'inline-flex min-w-0 items-center justify-center border border-gray-5 bg-beige-1 font-inherit text-gray-7 transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
     sizeClassName,
-    size === 'default' ? 'rounded-md' : 'rounded-full',
-    isSelected &&
-      'border-orange-6 bg-orange-1 text-orange-6 hover:bg-orange-2',
+    size === 'default' ? 'rounded-xl' : 'rounded-full',
+    isSelected && 'border-orange-6 bg-orange-1 text-orange-6 hover:bg-orange-2',
     className,
   ]
     .filter(Boolean)
