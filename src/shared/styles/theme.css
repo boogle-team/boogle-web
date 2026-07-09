@@ -64,12 +64,6 @@
   /* Layout */
   --spacing-layout: 1rem; /* 페이지 좌우 마진 */
 
-  /* radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 24px;
-  --radius-full: 99px;
-
   /* Effect */
   --shadow-sm: 0px 0px 12px 0px rgba(252, 244, 235, 0.5);
   --shadow-md: 0px 0px 12px 0px rgba(243, 226, 209, 0.5);
