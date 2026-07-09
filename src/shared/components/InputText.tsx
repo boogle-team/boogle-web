@@ -39,7 +39,7 @@ const InputText = ({
   return (
     <div className="w-full">
       <div
-        className={`flex h-12 w-full items-center justify-between gap-2 rounded-md border bg-gray-2 px-4 py-2.5 ${
+        className={`flex h-12 w-full items-center justify-between gap-2 rounded-xl border bg-gray-2 px-4 py-2.5 ${
           isError
             ? 'border-semantic-danger'
             : 'border-gray-4 focus-within:border-orange-5'
