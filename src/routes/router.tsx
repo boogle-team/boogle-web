@@ -5,6 +5,8 @@ import Login from '../pages/login/Login';
 import Guide from '../pages/guide/Guide';
 import Report from '../pages/report/Report';
 import Calendar from '../pages/calendar/Calendar';
+import Notification from '@/pages/notification/Notification';
+import Settings from '@/pages/settings/Settings';
 
 export const Router = createBrowserRouter([
   {
@@ -32,5 +34,13 @@ export const Router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+  path: '/settings',
+  element: <Settings />,
+  },
+  {
+    path: '/notifications',
+    element: <Notification />,
   },
 ]);
