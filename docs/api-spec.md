@@ -5,7 +5,7 @@
 
 - 엔드포인트: /api/v1/home
 - http 메소드: GET
-- Success Status: 302 Found
+- Success Status: 200 okay
 
 ## 회원가입, 로그인
 
