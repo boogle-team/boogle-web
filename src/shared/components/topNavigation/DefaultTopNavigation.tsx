@@ -17,7 +17,7 @@ const DefaultTopNavigation = ({
 
   return (
     <header
-      className={`relative h-[3.5625rem] w-full border-b border-gray-3 bg-beige-1 ${className}`}
+      className={`relative h-14.25 w-full border-b border-gray-3 bg-beige-1 ${className}`}
     >
       <button
         type="button"
@@ -31,9 +31,9 @@ const DefaultTopNavigation = ({
         />
       </button>
 
-      <h1 className="title absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center leading-[1.3] tracking-[-0.03125rem] text-gray-10">
+      <h1 className="title absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center text-[1.125rem] font-medium leading-[1.4] tracking-[-0.0225rem] text-gray-10">
         {title}
-      </h1>
+        </h1>
     </header>
   );
 };

@@ -7,6 +7,7 @@ import Report from '../pages/report/Report';
 import Calendar from '../pages/calendar/Calendar';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
+import ProfileEdit from '../pages/settings/ProfileEdit';
 
 export const Router = createBrowserRouter([
   {
@@ -43,4 +44,8 @@ export const Router = createBrowserRouter([
     path: '/notifications',
     element: <Notification />,
   },
+  {
+    path: '/settings/profile',
+    element: <ProfileEdit />,
+  }
 ]);
