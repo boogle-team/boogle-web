@@ -1,4 +1,5 @@
 import ChevronLeftIcon from '@/shared/assets/icons/chevronLeftIcon.svg?react';
+import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 
 interface ProfileInfoRowProps {
   title: string;
@@ -8,7 +9,7 @@ interface ProfileInfoRowProps {
 
 const ProfileInfoRow = ({ title, value, onClick }: ProfileInfoRowProps) => {
   return (
-    <div className="flex w-full items-center justify-between rounded-2xl border border-gray-4 bg-white px-4 py-[0.62rem]">
+    <div className="flex w-full items-center justify-between rounded-2xl border border-gray-4 bg-white px-4 py-[0.62rem] ">
       <span>{title}</span>
 
       <div className="flex items-center gap-1">

@@ -92,7 +92,7 @@ const Settings = () => {
         title="설정"
         onBackButtonClick={handleBackClick}
         className="bg-beige-5"
-        />
+      />
 
       <main className="min-h-screen bg-beige-5 px-5 pb-10">
         <ProfileCard
@@ -120,7 +120,11 @@ const Settings = () => {
         </SettingsSection>
 
         <SettingsSection title="알림">
-          <SettingsRow title="기록 알림" iconLabel={<BellIcon className="h-6 w-6 text-white" />} hasDivider>
+          <SettingsRow
+            title="기록 알림"
+            iconLabel={<BellIcon className="h-6 w-6 text-white" />}
+            hasDivider
+          >
             <ToggleSwitch
               ariaLabel="기록 알림 설정"
               isEnabled={notificationSettings.isRecordNotificationEnabled}
@@ -132,7 +136,11 @@ const Settings = () => {
             />
           </SettingsRow>
 
-          <SettingsRow title="주간 리포트 알림" iconLabel={<ReportIcon className="h-6 w-6 text-white" />} hasDivider>
+          <SettingsRow
+            title="주간 리포트 알림"
+            iconLabel={<ReportIcon className="h-6 w-6 text-white" />}
+            hasDivider
+          >
             <ToggleSwitch
               ariaLabel="주간 리포트 알림 설정"
               isEnabled={notificationSettings.isWeeklyReportNotificationEnabled}
@@ -144,7 +152,10 @@ const Settings = () => {
             />
           </SettingsRow>
 
-          <SettingsRow title="주의 신호 알림" iconLabel={<ErrorIcon className="h-6 w-6 text-white" />}>
+          <SettingsRow
+            title="주의 신호 알림"
+            iconLabel={<ErrorIcon className="h-6 w-6 text-white" />}
+          >
             <ToggleSwitch
               ariaLabel="주의 신호 알림 설정"
               isEnabled={notificationSettings.isRiskSignalNotificationEnabled}

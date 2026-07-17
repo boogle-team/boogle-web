@@ -2,7 +2,7 @@
 import type { SettingsUserTypes } from '../types/settingsTypes';
 
 import ChevronLeftIcon from '@/shared/assets/icons/chevronLeftIcon.svg?react';
-
+import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 
 interface ProfileCardPropTypes {
   user: SettingsUserTypes;
@@ -23,7 +23,7 @@ const ProfileCard = ({ user, onProfileEditClick }: ProfileCardPropTypes) => {
               className="h-9 w-9 object-contain"
             />
           ) : (
-            <div className="bg-red-500">테스트</div>
+            <ProfileFace className="h-[2.25rem] w-[2.25rem]"/>
           )}
         </div>
 
