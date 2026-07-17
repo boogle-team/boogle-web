@@ -16,9 +16,13 @@ import type {
 // 프로필 입력 3스텝 플로우. 완료 시 onComplete(수집 데이터) 호출.
 interface ProfileInputPagePropTypes {
   onComplete: (value: ProfileInputValueTypes) => void;
+  onBackToSocial: () => void;
 }
 
-const ProfileInputPage = ({ onComplete }: ProfileInputPagePropTypes) => {
+const ProfileInputPage = ({
+  onComplete,
+  onBackToSocial,
+}: ProfileInputPagePropTypes) => {
   const [step, setStep] = useState<ProfileStepTypes>(1);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -33,7 +37,7 @@ const ProfileInputPage = ({ onComplete }: ProfileInputPagePropTypes) => {
 
   const handleBackButtonClick = () => {
     if (step === 1) {
-      window.history.back();
+      onBackToSocial();
       return;
     }
     setStep((prev) => (prev - 1) as ProfileStepTypes);

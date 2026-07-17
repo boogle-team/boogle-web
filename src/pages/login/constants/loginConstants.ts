@@ -2,6 +2,7 @@ import type { BowelRhythmValueTypes } from '../types/loginTypes';
 
 // 스플래시 노출 시간 (ms)
 export const SPLASH_DURATION = 2000;
+export const SPLASH_FADE_OUT_DURATION = 500;
 
 // 프로필 입력 전체 스텝 수
 export const PROFILE_TOTAL_STEPS = 3;

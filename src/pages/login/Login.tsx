@@ -18,18 +18,25 @@ const Login = () => {
     setPhase('profile');
   };
 
+  const handleProfileBackToSocial = () => {
+    setPhase('social');
+  };
+
   const handleProfileComplete = (value: ProfileInputValueTypes) => {
     // TODO: 수집된 프로필 데이터 서버 저장
     void value;
     navigate('/');
   };
 
-  if (phase === 'splash') {
-    return <Splash onFinish={() => setPhase('onboarding')} />;
-  }
-
-  if (phase === 'onboarding') {
-    return <Onboarding onStart={() => setPhase('social')} />;
+  if (phase === 'splash' || phase === 'onboarding') {
+    return (
+      <div className="relative min-h-dvh overflow-hidden">
+        <Onboarding onStart={() => setPhase('social')} />
+        {phase === 'splash' && (
+          <Splash onFinish={() => setPhase('onboarding')} />
+        )}
+      </div>
+    );
   }
 
   if (phase === 'social') {
@@ -41,7 +48,12 @@ const Login = () => {
     );
   }
 
-  return <ProfileInputPage onComplete={handleProfileComplete} />;
+  return (
+    <ProfileInputPage
+      onComplete={handleProfileComplete}
+      onBackToSocial={handleProfileBackToSocial}
+    />
+  );
 };
 
 export default Login;

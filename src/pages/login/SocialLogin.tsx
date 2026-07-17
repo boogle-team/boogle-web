@@ -1,6 +1,5 @@
 import { MessageCircle } from 'lucide-react';
-
-import BoogleLogo from './components/BoogleLogo';
+import BoogleLogo from '@/shared/assets/illustrations/boogleLogo.svg?react';
 
 // 소셜 로그인 페이지: 로고 + 카카오/구글 로그인 버튼
 // 카카오/구글은 브랜드 고정색이라 공통 Button 대신 전용 마크업 사용.
@@ -13,7 +12,7 @@ const SocialLogin = ({ onKakaoLogin, onGoogleLogin }: SocialLoginPropTypes) => {
   return (
     <div className="flex min-h-dvh flex-col bg-beige-5 px-layout pb-18">
       <div className="flex flex-1 flex-col items-center justify-center">
-        <BoogleLogo className="text-[3rem] text-orange-5" />
+        <BoogleLogo className="w-[13.75rem] h-[6.25rem] text-orange-5" />
         <p className="body-lg mt-4 text-gray-8">내 장 건강을 위한 작은 습관</p>
       </div>
 
