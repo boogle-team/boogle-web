@@ -54,8 +54,8 @@ const HomeTopNavigation = ({
         </div>
 
         <ChevronDownIcon
-            aria-hidden="true"
-            className="h-[0.5625rem] w-[1rem] shrink-0 text-gray-8"
+          aria-hidden="true"
+          className="h-[0.5625rem] w-[1rem] shrink-0 text-gray-8"
         />
       </button>
 
