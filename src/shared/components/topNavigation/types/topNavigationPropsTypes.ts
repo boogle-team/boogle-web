@@ -10,4 +10,4 @@ export interface TopNavigationPropTypes {
   onSettingButtonClick?: () => void;
   hasUnreadNotification?: boolean;
   className?: string;
-} 
+}

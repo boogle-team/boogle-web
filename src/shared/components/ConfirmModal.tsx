@@ -1,8 +1,8 @@
-import { createPortal } from "react-dom";
-import { useEffect, useId } from "react";
-import type { ReactNode } from "react";
-import { FocusTrap } from "focus-trap-react";
-import Button, { type ButtonPropTypes } from "./Button";
+import { createPortal } from 'react-dom';
+import { useEffect, useId } from 'react';
+import type { ReactNode } from 'react';
+import { FocusTrap } from 'focus-trap-react';
+import Button, { type ButtonPropTypes } from './Button';
 
 interface ConfirmModalPropTypes {
   isOpen: boolean;
@@ -11,22 +11,22 @@ interface ConfirmModalPropTypes {
   description?: string;
   cancelText?: string;
   confirmText: string;
-  cancelVariant?: ButtonPropTypes["variant"];
-  confirmVariant?: ButtonPropTypes["variant"];
+  cancelVariant?: ButtonPropTypes['variant'];
+  confirmVariant?: ButtonPropTypes['variant'];
   onCancel?: () => void;
   onConfirm: () => void;
-};
+}
 
 const ConfirmModal = ({
   isOpen,
   icon,
   title,
   description,
-  cancelText = "취소",
+  cancelText = '취소',
   confirmText,
   // Modal 사용 시 variant 변경 가능
-  cancelVariant = "neutral",
-  confirmVariant = "primary",
+  cancelVariant = 'neutral',
+  confirmVariant = 'primary',
   onCancel,
   onConfirm,
 }: ConfirmModalPropTypes) => {
@@ -37,11 +37,11 @@ const ConfirmModal = ({
     if (!isOpen || !onCancel) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onCancel();
+      if (event.key === 'Escape') onCancel();
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onCancel]);
 
   if (!isOpen) return null;
@@ -51,7 +51,12 @@ const ConfirmModal = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
       onClick={onCancel}
     >
-      <FocusTrap focusTrapOptions={{ escapeDeactivates: false, clickOutsideDeactivates: false }}>
+      <FocusTrap
+        focusTrapOptions={{
+          escapeDeactivates: false,
+          clickOutsideDeactivates: false,
+        }}
+      >
         <div
           role="dialog"
           aria-modal="true"
@@ -66,7 +71,10 @@ const ConfirmModal = ({
               {title}
             </h2>
             {description && (
-              <p id={descriptionId} className="label whitespace-pre-line text-gray-7">
+              <p
+                id={descriptionId}
+                className="label whitespace-pre-line text-gray-7"
+              >
                 {description}
               </p>
             )}
