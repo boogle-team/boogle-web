@@ -26,14 +26,14 @@ const ProfileEdit = () => {
       <div className="mt-8 flex justify-center">
         <div className="relative">
           <div className="flex h-30 w-30 items-center justify-center rounded-full bg-orange-3">
-            <ProfileFace className="h-20 w-20"/>
+            <ProfileFace className="h-20 w-20" />
           </div>
 
           <button
             type="button"
             className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow"
           >
-            <Camera className="text-gray-7"/>
+            <Camera className="text-gray-7" />
           </button>
         </div>
       </div>

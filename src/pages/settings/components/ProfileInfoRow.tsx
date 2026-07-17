@@ -1,5 +1,4 @@
 import ChevronLeftIcon from '@/shared/assets/icons/chevronLeftIcon.svg?react';
-import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 
 interface ProfileInfoRowProps {
   title: string;

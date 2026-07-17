@@ -23,7 +23,7 @@ const ProfileCard = ({ user, onProfileEditClick }: ProfileCardPropTypes) => {
               className="h-9 w-9 object-contain"
             />
           ) : (
-            <ProfileFace className="h-[2.25rem] w-[2.25rem]"/>
+            <ProfileFace className="h-[2.25rem] w-[2.25rem]" />
           )}
         </div>
 
@@ -47,7 +47,7 @@ const ProfileCard = ({ user, onProfileEditClick }: ProfileCardPropTypes) => {
       >
         <span>프로필 수정</span>
 
-        <ChevronLeftIcon className="h-3.5 w-3.5 rotate-180"/>
+        <ChevronLeftIcon className="h-3.5 w-3.5 rotate-180" />
       </button>
     </section>
   );
