@@ -2,7 +2,6 @@ import Button from '@/shared/components/Button';
 import { useEffect, useRef } from 'react';
 import Lottie, { type LottieRefCurrentProps } from 'lottie-react';
 import useLottieAnimationData from './hooks/useLottieAnimationData';
-import useLottieAnimationData from './hooks/useLottieAnimationData';
 
 const ONBOARDING_ANIMATION_SPEED = 0.6;
 const ONBOARDING_ANIMATION_PATH = '/lottie/onboardingAnimation.json';
@@ -19,11 +18,10 @@ const Onboarding = ({ onStart }: OnboardingPropTypes) => {
   const handleOnboardingAnimationDomLoaded = () => {
     onboardingLottieRef.current?.setSpeed(ONBOARDING_ANIMATION_SPEED);
   };
-  const { animationData } = useLottieAnimationData(ONBOARDING_ANIMATION_PATH);
 
   useEffect(() => {
     onboardingLottieRef.current?.setSpeed(ONBOARDING_ANIMATION_SPEED);
-  }, [animationDataanimationData]);
+  }, [animationData]);
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-6 px-layout pb-[3.69rem] pt-[7.5rem]">
