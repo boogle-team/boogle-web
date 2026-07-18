@@ -9,7 +9,6 @@ import StepBar from './StepBar';
 interface StepLayoutPropTypes {
   title: string;
   currentStep: number;
-  totalSteps?: number;
   footer: ReactNode;
   onBackButtonClick?: () => void;
   children: ReactNode;
@@ -18,7 +17,6 @@ interface StepLayoutPropTypes {
 const StepLayout = ({
   title,
   currentStep,
-  totalSteps,
   footer,
   onBackButtonClick,
   children,
@@ -31,7 +29,7 @@ const StepLayout = ({
         onBackButtonClick={onBackButtonClick}
       />
 
-      <StepBar currentStep={currentStep} totalSteps={totalSteps} />
+      <StepBar currentStep={currentStep} />
 
       <main className="flex flex-1 flex-col px-layout pt-6">{children}</main>
 
