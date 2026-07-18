@@ -1,7 +1,7 @@
 import Button from '@/shared/components/Button';
 import { useEffect, useRef } from 'react';
 import Lottie, { type LottieRefCurrentProps } from 'lottie-react';
-import useLottieAnimationData from './hooks/useLottieAnimationData';
+import useLottieAnimationData from '@/pages/login/hooks/useLottieAnimationData';
 
 const ONBOARDING_ANIMATION_SPEED = 0.6;
 const ONBOARDING_ANIMATION_PATH = '/lottie/onboardingAnimation.json';

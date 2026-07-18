@@ -1,6 +1,6 @@
 import BoogleLogo from '@/shared/assets/illustrations/boogleLogo.svg?react';
 
-import SocialLoginButton from './components/SocialLoginButton';
+import SocialLoginButton from '@/pages/login/components/SocialLoginButton';
 
 // 소셜 로그인 페이지: 로고 + 카카오/구글 로그인 버튼
 interface SocialLoginPropTypes {

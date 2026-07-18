@@ -45,11 +45,28 @@ export const Router = createBrowserRouter([
     ],
   },
   {
+    path: '/onboarding',
+    lazy: async () => {
+      const { default: Onboarding } =
+        await import('../pages/onboarding/Onboarding');
+
+      return { Component: Onboarding };
+    },
+  },
+  {
     path: '/login',
     lazy: async () => {
       const { default: Login } = await import('../pages/login/Login');
 
       return { Component: Login };
+    },
+  },
+  {
+    path: '/onboarding/profile',
+    lazy: async () => {
+      const { default: Profile } = await import('../pages/onboarding/Profile');
+
+      return { Component: Profile };
     },
   },
 ]);

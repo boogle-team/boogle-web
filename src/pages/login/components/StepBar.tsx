@@ -1,4 +1,4 @@
-import { PROFILE_TOTAL_STEPS } from '../constants/loginConstants';
+import { PROFILE_TOTAL_STEPS } from '@/pages/login/constants/loginConstants';
 
 interface StepBarPropTypes {
   currentStep: number;
