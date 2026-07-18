@@ -22,7 +22,7 @@ const MenstrualCycleStep = () => {
             <li key={item} className="flex items-center gap-2">
               <Check
                 className="h-5 w-5 shrink-0  text-orange-5"
-                stroke-width={4}
+                strokeWidth={4}
               />
               <span className="label text-gray-7">{item}</span>
             </li>

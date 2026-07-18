@@ -13,7 +13,7 @@ export type GenderValueTypes = 'female' | 'male' | 'none';
 // 프로필 입력 최종 수집 데이터
 export interface ProfileInputValueTypes {
   nickname: string;
-  profileImageUrl: string | null;
+  profileImageFile: File | null;
   bowelRhythm: BowelRhythmValueTypes | null;
   ageGroup: AgeGroupValueTypes | null;
   gender: GenderValueTypes | null;

@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Button from '@/shared/components/Button';
 import ProfileComplete from './components/ProfileComplete';
 import StepLayout from './components/StepLayout';
@@ -7,17 +5,8 @@ import AgeGenderStep from './components/steps/AgeGenderStep';
 import BowelRhythmStep from './components/steps/BowelRhythmStep';
 import MenstrualCycleStep from './components/steps/MenstrualCycleStep';
 import NicknameStep from './components/steps/NicknameStep';
-import {
-  NICKNAME_MAX_LENGTH,
-  PROFILE_TOTAL_STEPS,
-} from './constants/loginConstants';
-import type {
-  AgeGroupValueTypes,
-  BowelRhythmValueTypes,
-  GenderValueTypes,
-  ProfileInputValueTypes,
-  ProfileStepTypes,
-} from './types/loginTypes';
+import useProfileInput from './hooks/useProfileInput';
+import type { ProfileInputValueTypes } from './types/loginTypes';
 
 // 프로필 입력 3스텝 플로우. 완료 시 onComplete(수집 데이터) 호출.
 interface ProfileInputPagePropTypes {
@@ -29,76 +18,32 @@ const ProfileInputPage = ({
   onComplete,
   onBackToSocial,
 }: ProfileInputPagePropTypes) => {
-  const [step, setStep] = useState<ProfileStepTypes>(1);
-  const [isCompleted, setIsCompleted] = useState(false);
-
-  const [nickname, setNickname] = useState('');
-  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
-  const [bowelRhythm, setBowelRhythm] = useState<BowelRhythmValueTypes | null>(
-    null,
-  );
-  const [ageGroup, setAgeGroup] = useState<AgeGroupValueTypes | null>(null);
-  const [gender, setGender] = useState<GenderValueTypes | null>(null);
-  const [isMenstrualCycleStepVisible, setIsMenstrualCycleStepVisible] =
-    useState(false);
-  const [shouldTrackMenstrualCycle, setShouldTrackMenstrualCycle] =
-    useState(false);
-
-  const isNicknameValid =
-    nickname.trim().length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
-  const isAgeGenderValid = Boolean(ageGroup && gender);
-
-  const goToNextStep = () => {
-    setStep((prev) =>
-      prev < PROFILE_TOTAL_STEPS ? ((prev + 1) as ProfileStepTypes) : prev,
-    );
-  };
-
-  const handleBackButtonClick = () => {
-    if (isMenstrualCycleStepVisible) {
-      setIsMenstrualCycleStepVisible(false);
-      return;
-    }
-
-    if (step === 1) {
-      onBackToSocial();
-      return;
-    }
-
-    setStep((prev) => (prev - 1) as ProfileStepTypes);
-  };
-
-  const handleProfileImageChange = (file: File) => {
-    setProfileImageUrl(URL.createObjectURL(file));
-  };
-
-  const completeInput = (shouldTrack: boolean) => {
-    setShouldTrackMenstrualCycle(shouldTrack);
-    setIsCompleted(true);
-  };
-
-  const handleAgeGenderNextButtonClick = () => {
-    if (gender === 'male') {
-      completeInput(false);
-      return;
-    }
-
-    setIsMenstrualCycleStepVisible(true);
-  };
-
-  const handleGoHome = () => {
-    onComplete({
-      nickname,
-      profileImageUrl,
-      bowelRhythm,
-      ageGroup,
-      gender,
-      shouldTrackMenstrualCycle,
-    });
-  };
+  const {
+    step,
+    isCompleted,
+    nickname,
+    profileImagePreviewUrl,
+    bowelRhythm,
+    ageGroup,
+    gender,
+    isMenstrualCycleStepVisible,
+    isNicknameValid,
+    isAgeGenderValid,
+    setNickname,
+    setBowelRhythm,
+    setAgeGroup,
+    setGender,
+    handleNextButtonClick,
+    handleBackButtonClick,
+    handleProfileImageChange,
+    handleAgeGenderNextButtonClick,
+    handleMenstrualCycleAgreeButtonClick,
+    handleMenstrualCycleSkipButtonClick,
+    handleGoHomeButtonClick,
+  } = useProfileInput({ onComplete, onBackToSocial });
 
   if (isCompleted) {
-    return <ProfileComplete onGoHome={handleGoHome} />;
+    return <ProfileComplete onGoHome={handleGoHomeButtonClick} />;
   }
 
   if (isMenstrualCycleStepVisible) {
@@ -114,12 +59,12 @@ const ProfileInputPage = ({
             </p>
             <Button
               text="동의하고 기록할게요"
-              onClick={() => completeInput(true)}
+              onClick={handleMenstrualCycleAgreeButtonClick}
             />
             <Button
               text="괜찮아요, 건너뛸게요"
               variant="neutral"
-              onClick={() => completeInput(false)}
+              onClick={handleMenstrualCycleSkipButtonClick}
             />
           </div>
         }
@@ -138,7 +83,7 @@ const ProfileInputPage = ({
         footer={
           <Button
             text="다음"
-            onClick={goToNextStep}
+            onClick={handleNextButtonClick}
             disabled={!isNicknameValid}
           />
         }
@@ -146,7 +91,7 @@ const ProfileInputPage = ({
         <NicknameStep
           nickname={nickname}
           onNicknameChange={setNickname}
-          profileImageUrl={profileImageUrl}
+          profileImageUrl={profileImagePreviewUrl}
           onProfileImageChange={handleProfileImageChange}
         />
       </StepLayout>
@@ -160,7 +105,11 @@ const ProfileInputPage = ({
         currentStep={2}
         onBackButtonClick={handleBackButtonClick}
         footer={
-          <Button text="다음" onClick={goToNextStep} disabled={!bowelRhythm} />
+          <Button
+            text="다음"
+            onClick={handleNextButtonClick}
+            disabled={!bowelRhythm}
+          />
         }
       >
         <BowelRhythmStep value={bowelRhythm} onChange={setBowelRhythm} />
