@@ -44,7 +44,7 @@ const StepBar = ({
   const steps = Array.from({ length: totalSteps }, (_, order) => order + 1);
 
   return (
-    <div className="flex items-center justify-center gap-2 py-4">
+    <div className="flex items-center justify-center gap-2 pt-2">
       {steps.map((step, order) => {
         const isLast = order === steps.length - 1;
 

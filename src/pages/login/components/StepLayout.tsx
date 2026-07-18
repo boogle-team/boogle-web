@@ -24,7 +24,7 @@ const StepLayout = ({
   children,
 }: StepLayoutPropTypes) => {
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-1">
+    <div className="flex min-h-dvh flex-col bg-beige-1 pt-[3.06rem]">
       <TopNavigation
         variant="default"
         title={title}
@@ -33,9 +33,9 @@ const StepLayout = ({
 
       <StepBar currentStep={currentStep} totalSteps={totalSteps} />
 
-      <main className="flex flex-1 flex-col px-layout pt-2">{children}</main>
+      <main className="flex flex-1 flex-col px-layout pt-6">{children}</main>
 
-      <footer className="px-layout pb-8 pt-4">{footer}</footer>
+      <footer className="px-layout pb-[3.69rem] pt-4">{footer}</footer>
     </div>
   );
 };
