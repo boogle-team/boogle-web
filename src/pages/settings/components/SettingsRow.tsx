@@ -46,9 +46,9 @@ const SettingsRow = ({
         <span className={titleClassName}>{title}</span>
       </div>
 
-      <div className="flex items-center gap-[8px]">
+      <div className="flex items-center gap-2">
         {rightText && (
-          <span className="rounded-xl bg-gray-3 px-[12px] py-[2px] text-[12px] font-semibold text-gray-8">
+          <span className="rounded-xl bg-gray-3 px-3 py-0.5 text-[12px] font-semibold text-gray-8">
             {rightText}
           </span>
         )}

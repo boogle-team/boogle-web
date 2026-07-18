@@ -8,6 +8,13 @@ import Calendar from '../pages/calendar/Calendar';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
 import ProfileEdit from '../pages/settings/ProfileEdit';
+import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
+import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
+import LoginAccount from '@/pages/settings/LoginAccount';
+import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
+import SensitiveConsent from '@/pages/settings/SensitiveConsent';
+import Terms from '@/pages/settings/Terms';
+import DeleteAccount from '@/pages/settings/DeleteAccount';
 
 export const Router = createBrowserRouter([
   {
@@ -37,8 +44,8 @@ export const Router = createBrowserRouter([
     element: <Login />,
   },
   {
-  path: '/settings',
-  element: <Settings />,
+    path: '/settings',
+    element: <Settings />,
   },
   {
     path: '/notifications',
@@ -47,5 +54,33 @@ export const Router = createBrowserRouter([
   {
     path: '/settings/profile',
     element: <ProfileEdit />,
-  }
+  },
+  {
+    path: '/settings/bowel-rhythm',
+    element: <BowelRhythmSetting />,
+  },
+  {
+    path: '/settings/baseline-info',
+    element: <BaselineInfoSetting />,
+  },
+  {
+    path: '/settings/login-account',
+    element: <LoginAccount />,
+  },
+  {
+    path: '/settings/sensitive-consent',
+    element: <SensitiveConsent />,
+  },
+  {
+    path: '/settings/privacy-policy',
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: '/settings/terms',
+    element: <Terms />,
+  },
+  {
+    path: '/settings/delete-account',
+    element: <DeleteAccount />,
+  },
 ]);

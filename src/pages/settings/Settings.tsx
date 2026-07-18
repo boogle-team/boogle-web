@@ -8,6 +8,7 @@ import ToggleSwitch from './components/ToggleSwitch';
 import { APP_VERSION, PROVIDER_LABEL_MAP } from './constants/settingsConstants';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import ConfirmModal from '@/shared/components/ConfirmModal';
 
 import BellIcon from '@/shared/assets/icons/settingBellIcon.svg?react';
 import ErrorIcon from '@/shared/assets/icons/settingErrorIcon.svg?react';
@@ -16,34 +17,40 @@ import NoteIcon from '@/shared/assets/icons/settingNoteIcon.svg?react';
 import PersonIcon from '@/shared/assets/icons/settingPersonIcon.svg?react';
 import ReportIcon from '@/shared/assets/icons/settingReportIcon.svg?react';
 import ShieldIcon from '@/shared/assets/icons/settingShieldIcon.svg?react';
-import WarningIcon from '@/shared/assets/icons/WarningIcon.svg?react';
+import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 
 import type {
-  NotificationSettingTypes,
-  SettingsUserTypes,
+  MemberAlarmTypes,
+  MemberTypes,
+  SocialAccountTypes,
 } from './types/settingsTypes';
 
-const MOCK_USER: SettingsUserTypes = {
+const MOCK_MEMBER: MemberTypes = {
   nickname: '이연수',
-  profileImage: null,
-  provider: 'K',
+  profileImg: null,
   gender: 'F',
   baselineType: 'R',
-  joinedDays: 12,
+  regDate: '2026-07-08T00:00:00+09:00',
+};
+
+const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
+  provider: 'K',
+  email: 'boogle****@kakao.com',
+  regDate: '2026-06-13T00:00:00+09:00',
 };
 
 const Settings = () => {
   const navigate = useNavigate();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const [notificationSettings, setNotificationSettings] =
-    useState<NotificationSettingTypes>({
-      isRecordNotificationEnabled: true,
-      isWeeklyReportNotificationEnabled: true,
-      isRiskSignalNotificationEnabled: false,
-    });
+  const [memberAlarm, setMemberAlarm] = useState<MemberAlarmTypes>({
+    recordAlarm: 'Y',
+    reportAlarm: 'Y',
+    warnAlarm: 'N',
+  });
 
   const handleBackClick = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   const handleProfileEditClick = () => {
@@ -67,24 +74,32 @@ const Settings = () => {
   };
 
   const handleLogoutClick = () => {
-    // TODO: 로그아웃 모달 구현 시 연결
+    setIsLogoutModalOpen(true);
+  };
+
+  const handleLogoutModalClose = () => {
+    setIsLogoutModalOpen(false);
+  };
+
+  const handleLogoutConfirm = () => {
+    // TODO: 로그아웃 API 연결 후 인증 정보 제거
+    setIsLogoutModalOpen(false);
+    navigate('/login', { replace: true });
   };
 
   const handleDeleteAccountClick = () => {
     navigate('/settings/delete-account');
   };
 
-  const handleNotificationSettingToggleClick = (
-    settingKey: keyof NotificationSettingTypes,
-  ) => {
-    setNotificationSettings((prevNotificationSettings) => ({
-      ...prevNotificationSettings,
-      [settingKey]: !prevNotificationSettings[settingKey],
+  const handleMemberAlarmToggleClick = (alarmKey: keyof MemberAlarmTypes) => {
+    setMemberAlarm((prevMemberAlarm) => ({
+      ...prevMemberAlarm,
+      [alarmKey]: prevMemberAlarm[alarmKey] === 'Y' ? 'N' : 'Y',
     }));
   };
 
-  const isSensitiveConsentMenuVisible = MOCK_USER.gender !== 'M';
-  const providerLabel = PROVIDER_LABEL_MAP[MOCK_USER.provider];
+  const isSensitiveConsentMenuVisible = MOCK_MEMBER.gender !== 'M';
+  const providerLabel = PROVIDER_LABEL_MAP[MOCK_SOCIAL_ACCOUNT.provider];
 
   return (
     <>
@@ -96,7 +111,7 @@ const Settings = () => {
 
       <main className="min-h-screen bg-beige-5 px-5 pb-10">
         <ProfileCard
-          user={MOCK_USER}
+          member={MOCK_MEMBER}
           onProfileEditClick={handleProfileEditClick}
         />
 
@@ -127,12 +142,8 @@ const Settings = () => {
           >
             <ToggleSwitch
               ariaLabel="기록 알림 설정"
-              isEnabled={notificationSettings.isRecordNotificationEnabled}
-              onClick={() =>
-                handleNotificationSettingToggleClick(
-                  'isRecordNotificationEnabled',
-                )
-              }
+              isEnabled={memberAlarm.recordAlarm === 'Y'}
+              onClick={() => handleMemberAlarmToggleClick('recordAlarm')}
             />
           </SettingsRow>
 
@@ -143,12 +154,8 @@ const Settings = () => {
           >
             <ToggleSwitch
               ariaLabel="주간 리포트 알림 설정"
-              isEnabled={notificationSettings.isWeeklyReportNotificationEnabled}
-              onClick={() =>
-                handleNotificationSettingToggleClick(
-                  'isWeeklyReportNotificationEnabled',
-                )
-              }
+              isEnabled={memberAlarm.reportAlarm === 'Y'}
+              onClick={() => handleMemberAlarmToggleClick('reportAlarm')}
             />
           </SettingsRow>
 
@@ -158,12 +165,8 @@ const Settings = () => {
           >
             <ToggleSwitch
               ariaLabel="주의 신호 알림 설정"
-              isEnabled={notificationSettings.isRiskSignalNotificationEnabled}
-              onClick={() =>
-                handleNotificationSettingToggleClick(
-                  'isRiskSignalNotificationEnabled',
-                )
-              }
+              isEnabled={memberAlarm.warnAlarm === 'Y'}
+              onClick={() => handleMemberAlarmToggleClick('warnAlarm')}
             />
           </SettingsRow>
         </SettingsSection>
@@ -204,6 +207,16 @@ const Settings = () => {
           {APP_VERSION}
         </p>
       </main>
+
+      <ConfirmModal
+        isOpen={isLogoutModalOpen}
+        title="로그아웃 할까요?"
+        description="다시 로그인하면 기록은 그대로 남아있어요"
+        cancelText="다음에 할게요"
+        confirmText="로그아웃 하기"
+        onCancel={handleLogoutModalClose}
+        onConfirm={handleLogoutConfirm}
+      />
     </>
   );
 };
