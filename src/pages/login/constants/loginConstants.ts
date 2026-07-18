@@ -1,4 +1,8 @@
-import type { BowelRhythmValueTypes } from '../types/loginTypes';
+import type {
+  AgeGroupValueTypes,
+  BowelRhythmValueTypes,
+  GenderValueTypes,
+} from '../types/loginTypes';
 
 // 스플래시 노출 시간 (ms)
 export const SPLASH_DURATION = 2000;
@@ -19,6 +23,25 @@ export const BOWEL_RHYTHM_OPTIONS: {
   { value: 'constipation', label: '변비 경향이 있어요' },
   { value: 'loose', label: '묽은 변 경향이 있어요' },
   { value: 'unknown', label: '잘 모르겠어요' },
+];
+
+export const AGE_GROUP_OPTIONS: {
+  value: AgeGroupValueTypes;
+  label: string;
+}[] = [
+  { value: 'teens', label: '10대' },
+  { value: 'twenties', label: '20대' },
+  { value: 'thirties', label: '30대' },
+  { value: 'fortiesAndOlder', label: '40대 이상' },
+];
+
+export const GENDER_OPTIONS: {
+  value: GenderValueTypes;
+  label: string;
+}[] = [
+  { value: 'female', label: '여성' },
+  { value: 'male', label: '남성' },
+  { value: 'none', label: '선택 안함' },
 ];
 
 // 생리주기 기록 시 수집되는 데이터 항목

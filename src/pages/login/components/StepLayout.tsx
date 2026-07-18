@@ -27,6 +27,7 @@ const StepLayout = ({
         variant="default"
         title={title}
         onBackButtonClick={onBackButtonClick}
+        isBorderVisible={false}
       />
 
       <StepBar currentStep={currentStep} />

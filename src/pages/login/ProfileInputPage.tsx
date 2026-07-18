@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Button from '@/shared/components/Button';
 import ProfileComplete from './components/ProfileComplete';
 import StepLayout from './components/StepLayout';
+import AgeGenderStep from './components/steps/AgeGenderStep';
 import BowelRhythmStep from './components/steps/BowelRhythmStep';
 import MenstrualCycleStep from './components/steps/MenstrualCycleStep';
 import NicknameStep from './components/steps/NicknameStep';
@@ -11,7 +12,9 @@ import {
   PROFILE_TOTAL_STEPS,
 } from './constants/loginConstants';
 import type {
+  AgeGroupValueTypes,
   BowelRhythmValueTypes,
+  GenderValueTypes,
   ProfileInputValueTypes,
   ProfileStepTypes,
 } from './types/loginTypes';
@@ -34,8 +37,16 @@ const ProfileInputPage = ({
   const [bowelRhythm, setBowelRhythm] = useState<BowelRhythmValueTypes | null>(
     null,
   );
+  const [ageGroup, setAgeGroup] = useState<AgeGroupValueTypes | null>(null);
+  const [gender, setGender] = useState<GenderValueTypes | null>(null);
+  const [isMenstrualCycleStepVisible, setIsMenstrualCycleStepVisible] =
+    useState(false);
+  const [shouldTrackMenstrualCycle, setShouldTrackMenstrualCycle] =
+    useState(false);
+
   const isNicknameValid =
     nickname.trim().length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
+  const isAgeGenderValid = Boolean(ageGroup && gender);
 
   const goToNextStep = () => {
     setStep((prev) =>
@@ -44,10 +55,16 @@ const ProfileInputPage = ({
   };
 
   const handleBackButtonClick = () => {
+    if (isMenstrualCycleStepVisible) {
+      setIsMenstrualCycleStepVisible(false);
+      return;
+    }
+
     if (step === 1) {
       onBackToSocial();
       return;
     }
+
     setStep((prev) => (prev - 1) as ProfileStepTypes);
   };
 
@@ -55,13 +72,18 @@ const ProfileInputPage = ({
     setProfileImageUrl(URL.createObjectURL(file));
   };
 
-  // 마지막 스텝에서 동의/스킵 → 완료 화면으로 전환 (수집값은 보관)
-  const [shouldTrackMenstrualCycle, setShouldTrackMenstrualCycle] =
-    useState(false);
-
   const completeInput = (shouldTrack: boolean) => {
     setShouldTrackMenstrualCycle(shouldTrack);
     setIsCompleted(true);
+  };
+
+  const handleAgeGenderNextButtonClick = () => {
+    if (gender === 'male') {
+      completeInput(false);
+      return;
+    }
+
+    setIsMenstrualCycleStepVisible(true);
   };
 
   const handleGoHome = () => {
@@ -69,12 +91,42 @@ const ProfileInputPage = ({
       nickname,
       profileImageUrl,
       bowelRhythm,
+      ageGroup,
+      gender,
       shouldTrackMenstrualCycle,
     });
   };
 
   if (isCompleted) {
     return <ProfileComplete onGoHome={handleGoHome} />;
+  }
+
+  if (isMenstrualCycleStepVisible) {
+    return (
+      <StepLayout
+        title="기준선 설정"
+        currentStep={3}
+        onBackButtonClick={handleBackButtonClick}
+        footer={
+          <div className="flex flex-col gap-3">
+            <p className="caption text-center text-gray-6">
+              언제든 설정에서 변경할 수 있어요
+            </p>
+            <Button
+              text="동의하고 기록할게요"
+              onClick={() => completeInput(true)}
+            />
+            <Button
+              text="괜찮아요, 건너뛸게요"
+              variant="neutral"
+              onClick={() => completeInput(false)}
+            />
+          </div>
+        }
+      >
+        <MenstrualCycleStep />
+      </StepLayout>
+    );
   }
 
   if (step === 1) {
@@ -122,23 +174,19 @@ const ProfileInputPage = ({
       currentStep={3}
       onBackButtonClick={handleBackButtonClick}
       footer={
-        <div className="flex flex-col gap-3">
-          <p className="caption text-center text-gray-6">
-            언제든 설정에서 변경할 수 있어요
-          </p>
-          <Button
-            text="동의하고 기록할게요"
-            onClick={() => completeInput(true)}
-          />
-          <Button
-            text="괜찮아요, 건너뛸게요"
-            variant="neutral"
-            onClick={() => completeInput(false)}
-          />
-        </div>
+        <Button
+          text="다음"
+          onClick={handleAgeGenderNextButtonClick}
+          disabled={!isAgeGenderValid}
+        />
       }
     >
-      <MenstrualCycleStep />
+      <AgeGenderStep
+        ageGroup={ageGroup}
+        gender={gender}
+        onAgeGroupChange={setAgeGroup}
+        onGenderChange={setGender}
+      />
     </StepLayout>
   );
 };

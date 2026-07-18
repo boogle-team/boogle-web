@@ -1,4 +1,4 @@
-import { Check, Lock } from 'lucide-react';
+import { Check, LockKeyhole } from 'lucide-react';
 
 import { MENSTRUAL_DATA_ITEMS } from '../../constants/loginConstants';
 
@@ -20,14 +20,17 @@ const MenstrualCycleStep = () => {
         <ul className="mt-4 flex flex-col gap-3">
           {MENSTRUAL_DATA_ITEMS.map((item) => (
             <li key={item} className="flex items-center gap-2">
-              <Check className="h-5 w-5 shrink-0 text-orange-6" />
-              <span className="label text-gray-9">{item}</span>
+              <Check
+                className="h-5 w-5 shrink-0  text-orange-5"
+                stroke-width={4}
+              />
+              <span className="label text-gray-7">{item}</span>
             </li>
           ))}
         </ul>
 
-        <div className="mt-4 flex items-center gap-2 border-t border-gray-3 pt-4">
-          <Lock className="h-4 w-4 shrink-0 text-gray-7" />
+        <div className="mt-4 flex items-center gap-1 border-t border-gray-3 pt-4">
+          <LockKeyhole className="h-4 w-4 shrink-0 text-gray-7" />
           <span className="caption text-gray-7">
             배변 패턴 분석 목적으로만 사용돼요
           </span>
