@@ -17,26 +17,25 @@ const NicknameStep = ({
   onProfileImageChange,
 }: NicknameStepPropTypes) => {
   const handleNicknameChange = (value: string) => {
-    onNicknameChange(value.slice(0, NICKNAME_MAX_LENGTH));
+    onNicknameChange(value);
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-12">
       <h2 className="display text-center text-gray-10">
         만나서 반가워요,
         <br />
         <span className="text-orange-6">프로필</span>을 입력해 주세요!
       </h2>
 
-      <div className="mt-10 flex justify-center">
+      <div className="flex justify-center">
         <ProfileImageSetting
           imageUrl={profileImageUrl ?? undefined}
           onImageChange={onProfileImageChange}
         />
       </div>
-
-      <div className="mt-12">
-        <p className="body-m mb-2 text-gray-9">닉네임</p>
+      <div>
+        <p className="body-m mb-2 text-gray-8">닉네임</p>
         <InputText
           value={nickname}
           onChange={handleNicknameChange}

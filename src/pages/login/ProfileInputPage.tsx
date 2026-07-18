@@ -6,7 +6,10 @@ import StepLayout from './components/StepLayout';
 import BowelRhythmStep from './components/steps/BowelRhythmStep';
 import MenstrualCycleStep from './components/steps/MenstrualCycleStep';
 import NicknameStep from './components/steps/NicknameStep';
-import { PROFILE_TOTAL_STEPS } from './constants/loginConstants';
+import {
+  NICKNAME_MAX_LENGTH,
+  PROFILE_TOTAL_STEPS,
+} from './constants/loginConstants';
 import type {
   BowelRhythmValueTypes,
   ProfileInputValueTypes,
@@ -28,11 +31,16 @@ const ProfileInputPage = ({
 
   const [nickname, setNickname] = useState('');
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
-  const [bowelRhythm, setBowelRhythm] =
-    useState<BowelRhythmValueTypes | null>(null);
+  const [bowelRhythm, setBowelRhythm] = useState<BowelRhythmValueTypes | null>(
+    null,
+  );
+  const isNicknameValid =
+    nickname.trim().length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
 
   const goToNextStep = () => {
-    setStep((prev) => (prev < PROFILE_TOTAL_STEPS ? ((prev + 1) as ProfileStepTypes) : prev));
+    setStep((prev) =>
+      prev < PROFILE_TOTAL_STEPS ? ((prev + 1) as ProfileStepTypes) : prev,
+    );
   };
 
   const handleBackButtonClick = () => {
@@ -76,7 +84,11 @@ const ProfileInputPage = ({
         currentStep={1}
         onBackButtonClick={handleBackButtonClick}
         footer={
-          <Button text="다음" onClick={goToNextStep} disabled={!nickname.trim()} />
+          <Button
+            text="다음"
+            onClick={goToNextStep}
+            disabled={!isNicknameValid}
+          />
         }
       >
         <NicknameStep
@@ -114,7 +126,10 @@ const ProfileInputPage = ({
           <p className="caption text-center text-gray-6">
             언제든 설정에서 변경할 수 있어요
           </p>
-          <Button text="동의하고 기록할게요" onClick={() => completeInput(true)} />
+          <Button
+            text="동의하고 기록할게요"
+            onClick={() => completeInput(true)}
+          />
           <Button
             text="괜찮아요, 건너뛸게요"
             variant="neutral"

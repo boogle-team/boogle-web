@@ -34,13 +34,20 @@ const InputText = ({
 
   const hasCounter = maxCount !== undefined;
   const hasAction = Boolean(actionLabel && onAction);
-  const bottomMessage = isError ? errorMessage : helperText;
+  const isMaxCountExceeded = hasCounter && value.length > maxCount;
+  const hasError = Boolean(isError || isMaxCountExceeded);
+  const maxCountErrorMessage = `${maxCount}자 이내로 입력해주세요`;
+  const bottomMessage = hasError
+    ? isMaxCountExceeded
+      ? maxCountErrorMessage
+      : errorMessage
+    : helperText;
 
   return (
     <div className="w-full">
       <div
         className={`flex h-12 w-full items-center justify-between gap-2 rounded-xl border bg-gray-2 px-4 py-2.5 ${
-          isError
+          hasError
             ? 'border-semantic-danger'
             : 'border-gray-4 focus-within:border-orange-5'
         }`}
@@ -51,12 +58,16 @@ const InputText = ({
           placeholder={placeholder}
           disabled={disabled}
           className={`label min-w-0 flex-1 bg-transparent outline-none placeholder:text-gray-6 ${
-            isError ? 'text-semantic-danger' : 'text-gray-10'
+            hasError ? 'text-semantic-danger' : 'text-gray-10'
           }`}
         />
 
         {hasCounter && (
-          <span className="caption shrink-0 text-gray-6">{`${value.length}/${maxCount}`}</span>
+          <span
+            className={`caption shrink-0 ${
+              hasError ? 'text-semantic-danger' : 'text-gray-6'
+            }`}
+          >{`${value.length}/${maxCount}`}</span>
         )}
 
         {hasAction && (
@@ -71,7 +82,7 @@ const InputText = ({
       {bottomMessage && (
         <div
           className={`caption mt-2 flex items-center gap-1 ${
-            isError ? 'text-semantic-danger' : 'text-gray-7'
+            hasError ? 'text-semantic-danger' : 'text-gray-7'
           }`}
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
