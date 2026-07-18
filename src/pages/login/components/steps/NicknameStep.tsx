@@ -1,5 +1,5 @@
 import InputText from '@/shared/components/InputText';
-import ProfileImage from '@/shared/components/ProfileImage';
+import ProfileImageSetting from '@/shared/components/ProfileImageSetting';
 import { NICKNAME_MAX_LENGTH } from '../../constants/loginConstants';
 
 // 프로필 입력 step1: 프로필 이미지 + 닉네임
@@ -29,8 +29,8 @@ const NicknameStep = ({
       </h2>
 
       <div className="mt-10 flex justify-center">
-        <ProfileImage
-          imageUrl={profileImageUrl}
+        <ProfileImageSetting
+          imageUrl={profileImageUrl ?? undefined}
           onImageChange={onProfileImageChange}
         />
       </div>
