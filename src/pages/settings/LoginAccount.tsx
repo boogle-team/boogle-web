@@ -64,7 +64,7 @@ const LoginAccount = () => {
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="bg-beige-2"
+        className="mt-[3.06rem] bg-beige-2"
         title="로그인 계정"
         onBackButtonClick={handleBackClick}
       />

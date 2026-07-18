@@ -102,11 +102,11 @@ const Settings = () => {
   const providerLabel = PROVIDER_LABEL_MAP[MOCK_SOCIAL_ACCOUNT.provider];
 
   return (
-    <>
+    <div className="flex min-h-dvh flex-col bg-beige-5">
       <TopNavigation
         title="설정"
         onBackButtonClick={handleBackClick}
-        className="bg-beige-5"
+        className="mt-[3.06rem] bg-beige-5!"
       />
 
       <main className="min-h-screen bg-beige-5 px-5 pb-10">
@@ -217,7 +217,7 @@ const Settings = () => {
         onCancel={handleLogoutModalClose}
         onConfirm={handleLogoutConfirm}
       />
-    </>
+    </div>
   );
 };
 
