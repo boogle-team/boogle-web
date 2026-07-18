@@ -5,6 +5,8 @@ const DetailTopNavigation = ({
   title,
   subTitle,
   onBackButtonClick,
+  onDeleteButtonClick,
+  isDeleteButtonVisible = false,
   className = '',
 }: TopNavigationPropTypes) => {
   const handleBackButtonClick = () => {
@@ -16,7 +18,14 @@ const DetailTopNavigation = ({
     window.history.back();
   };
 
+  const handleDeleteButtonClick = () => {
+    if (onDeleteButtonClick) {
+      onDeleteButtonClick();
+    }
+  };
+
   return (
+<<<<<<< HEAD
     <header className={`w-full bg-beige-1 ${className}`}>
       <div aria-hidden="true" className="h-[3.06rem]" />
 
@@ -32,6 +41,27 @@ const DetailTopNavigation = ({
             className="h-[1rem] w-[0.49619rem] shrink-0 text-gray-8"
           />
         </button>
+=======
+    <header
+      className={`grid h-[3.5625rem] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center border-b border-gray-3 bg-beige-1 px-[1rem] py-[0.5rem] ${className}`}
+    >
+      <button
+        type="button"
+        aria-label="뒤로가기"
+        onClick={handleBackButtonClick}
+        className="flex h-8 w-8 items-center justify-center gap-[0.625rem] justify-self-start p-3"
+      >
+        <ChevronLeftIcon
+          aria-hidden="true"
+          className="h-[1rem] w-[0.49619rem] shrink-0 text-gray-8"
+        />
+      </button>
+
+      <div className="flex min-w-0 flex-col items-center justify-self-center">
+        <h1 className="font-base whitespace-nowrap text-center text-[1rem] font-medium leading-[1.4] tracking-[-0.02rem] text-gray-10">
+          {title}
+        </h1>
+>>>>>>> origin/develop
 
         <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
           <h1 className="font-base whitespace-nowrap text-center text-[1rem] font-medium leading-[1.4] tracking-[-0.02rem] text-gray-10">
@@ -45,6 +75,16 @@ const DetailTopNavigation = ({
           ) : null}
         </div>
       </div>
+
+      {isDeleteButtonVisible ? (
+        <button
+          type="button"
+          onClick={handleDeleteButtonClick}
+          className="body-m justify-self-end whitespace-nowrap text-semantic-danger pr-4"
+        >
+          삭제
+        </button>
+      ) : null}
     </header>
   );
 };
