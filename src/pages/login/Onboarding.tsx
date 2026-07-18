@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import Lottie, { type LottieRefCurrentProps } from 'lottie-react';
 import onboardingAnimation from '@/shared/assets/lottie/onboardingAnimation.json';
 
-const ONBOARDING_ANIMATION_SPEED = 0.1;
+const ONBOARDING_ANIMATION_SPEED = 0.7;
 
 // 스플래시 다음에 뜨는 온보딩 화면: 카피 + 일러스트 + 시작하기 버튼
 interface OnboardingPropTypes {
