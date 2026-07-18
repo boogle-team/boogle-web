@@ -178,3 +178,45 @@
   font-weight: 700;
   letter-spacing: -0.02em;
 }
+
+@keyframes complete-character-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.7);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translateY(-0.4rem) scale(1.08);
+  }
+
+  75% {
+    transform: translateY(0.15rem) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility animate-complete-character {
+  animation: complete-character-pop 700ms
+    cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes complete-content-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-complete-content {
+  animation: complete-content-fade-up 500ms ease-out both;
+}
