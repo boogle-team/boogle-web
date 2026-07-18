@@ -5,6 +5,7 @@ const DefaultTopNavigation = ({
   title,
   onBackButtonClick,
   isBackButtonVisible = true,
+  isBorderVisible = true,
   className = '',
 }: TopNavigationPropTypes) => {
   const handleBackButtonClick = () => {
@@ -18,7 +19,7 @@ const DefaultTopNavigation = ({
 
   return (
     <header
-      className={`grid h-[3.5625rem] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center border-b border-gray-3 bg-beige-1 px-[1rem] ${className}`}
+      className={`grid h-[3.5625rem] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center bg-beige-1 px-[1rem] ${isBorderVisible ? 'border-b border-gray-3' : ''} ${className}`}
     >
       {isBackButtonVisible ? (
         <button

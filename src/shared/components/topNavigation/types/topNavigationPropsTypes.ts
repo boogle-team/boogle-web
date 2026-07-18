@@ -11,6 +11,7 @@ export interface TopNavigationPropTypes {
   onSettingButtonClick?: () => void;
   hasUnreadNotification?: boolean;
   isBackButtonVisible?: boolean;
+  isBorderVisible?: boolean;
   isDeleteButtonVisible?: boolean;
   className?: string;
 }
