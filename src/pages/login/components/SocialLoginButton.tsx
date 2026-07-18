@@ -12,7 +12,7 @@ const SOCIAL_LOGIN_BUTTON_CONFIGS = {
   google: {
     logo: GoogleLogo,
     label: 'Google로 로그인',
-    className: 'h-14 bg-gray-1',
+    className: 'bg-gray-1',
   },
 } as const;
 
@@ -31,7 +31,7 @@ const SocialLoginButton = ({
   const socialLoginButtonConfig = SOCIAL_LOGIN_BUTTON_CONFIGS[provider];
 
   const buttonClassName = [
-    'body-m flex w-full items-center justify-between gap-4 rounded-xl px-16 py-4 min-[390px]:pr-[7.4375rem] min-[390px]:pl-[7.5rem] text-gray-10 transition-transform active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
+    'body-m flex w-full items-center justify-center gap-4 rounded-xl px-16 py-4 text-gray-10 transition-transform active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
     socialLoginButtonConfig.className,
     className,
   ].join(' ');
