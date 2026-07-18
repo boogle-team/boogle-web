@@ -18,8 +18,7 @@ const SOCIAL_LOGIN_BUTTON_CONFIGS = {
 
 type SocialLoginProviderTypes = keyof typeof SOCIAL_LOGIN_BUTTON_CONFIGS;
 
-interface SocialLoginButtonPropTypes
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface SocialLoginButtonPropTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
   provider: SocialLoginProviderTypes;
 }
 

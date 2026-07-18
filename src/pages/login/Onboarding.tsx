@@ -1,9 +1,10 @@
 import Button from '@/shared/components/Button';
 import { useEffect, useRef } from 'react';
 import Lottie, { type LottieRefCurrentProps } from 'lottie-react';
-import onboardingAnimation from '@/shared/assets/lottie/onboardingAnimation.json';
+import useLottieAnimationData from './hooks/useLottieAnimationData';
 
-const ONBOARDING_ANIMATION_SPEED = 0.7;
+const ONBOARDING_ANIMATION_SPEED = 0.6;
+const ONBOARDING_ANIMATION_PATH = '/lottie/onboardingAnimation.json';
 
 // 스플래시 다음에 뜨는 온보딩 화면: 카피 + 일러스트 + 시작하기 버튼
 interface OnboardingPropTypes {
@@ -12,10 +13,15 @@ interface OnboardingPropTypes {
 
 const Onboarding = ({ onStart }: OnboardingPropTypes) => {
   const onboardingLottieRef = useRef<LottieRefCurrentProps>(null);
+  const { animationData } = useLottieAnimationData(ONBOARDING_ANIMATION_PATH);
+
+  const handleOnboardingAnimationDomLoaded = () => {
+    onboardingLottieRef.current?.setSpeed(ONBOARDING_ANIMATION_SPEED);
+  };
 
   useEffect(() => {
     onboardingLottieRef.current?.setSpeed(ONBOARDING_ANIMATION_SPEED);
-  }, []);
+  }, [animationData]);
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-6 px-layout pb-[3.69rem] pt-[7.5rem]">
@@ -29,13 +35,16 @@ const Onboarding = ({ onStart }: OnboardingPropTypes) => {
       </p>
 
       <div className="flex flex-1 items-center justify-center">
-        <Lottie
-          lottieRef={onboardingLottieRef}
-          animationData={onboardingAnimation}
-          className="w-[24rem]"
-          loop={true}
-          autoplay
-        />
+        {animationData !== null && (
+          <Lottie
+            lottieRef={onboardingLottieRef}
+            animationData={animationData}
+            className="w-[24rem]"
+            loop={true}
+            autoplay
+            onDOMLoaded={handleOnboardingAnimationDomLoaded}
+          />
+        )}
       </div>
 
       <Button text="시작하기" onClick={onStart} />
