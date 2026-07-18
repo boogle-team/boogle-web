@@ -36,7 +36,7 @@ const SettingsRow = ({
         {iconLabel && (
           <div className="flex h-5.5 w-5.5 items-center justify-center rounded-[1.25rem] bg-orange-4">
             {typeof iconLabel === 'string' ? (
-              <span className="text-[px]">{iconLabel}</span>
+              <span>{iconLabel}</span>
             ) : (
               iconLabel
             )}

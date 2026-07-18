@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import InfoFlagIcon from '@/shared/assets/icons/infoFlagIcon.svg?react';
-import SettingErrorIcon from '@/shared/assets/icons/settingErrorIcon.svg?react';
+import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 import Button from '@/shared/components/Button';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
@@ -97,10 +97,7 @@ const SensitiveConsent = () => {
           </div>
 
           <p className="caption mt-2 flex items-start gap-1.5 text-gray-7">
-            <SettingErrorIcon
-              aria-hidden="true"
-              className="h-5 w-5 shrink-0 text-gray-7"
-            />
+            <WarningIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
             <span className="caption">
               철회 시 관련 항목과 기존 기록 데이터가 삭제돼요
             </span>
@@ -116,10 +113,7 @@ const SensitiveConsent = () => {
           </div>
 
           <p className="caption mt-2 flex items-start gap-1.5 text-gray-7">
-            <SettingErrorIcon
-              aria-hidden="true"
-              className="h-5 w-5 shrink-0 text-gray-7"
-            />
+            <WarningIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
             <span className="caption">
               패턴 분석 보조 목적으로만 사용되며 제3자에게 제공되지 않아요
             </span>
