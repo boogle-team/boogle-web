@@ -102,9 +102,9 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     notice: '수분 부족일에 딱딱한 변이 100% 겹쳤어요',
     relatedGuides: PERSONAL_RELATED_GUIDES,
     source: '질병관리청 국가건강정보포털 / NIDDK',
-    sourceUrl: 'https://www.niddk.nih.gov/health-information/digestive-diseases/constipation',
-    summaryDescription:
-      '수분 부족과 딱딱한 변이 겹친 날을 분석했어요.',
+    sourceUrl:
+      'https://www.niddk.nih.gov/health-information/digestive-diseases/constipation',
+    summaryDescription: '수분 부족과 딱딱한 변이 겹친 날을 분석했어요.',
     summaryTitle: '최근 7일 데이터',
     title: '수분과 딱딱한 변의 관계',
     type: 'personal',
@@ -176,7 +176,9 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     description:
       '갑자기 참기 어려울 만큼 강하게 배변 욕구가 느껴지는 증상이에요. 과민성 장 증후군(IBS)의 주요 신호 중 하나예요.',
     id: 'urgency',
-    metrics: [{ colorClassName: 'bg-semantic-danger', label: '급박감', value: 2 }],
+    metrics: [
+      { colorClassName: 'bg-semantic-danger', label: '급박감', value: 2 },
+    ],
     notice: '이번 주 급박감이 2번 있었어요',
     noticeHighlight: '2번',
     relatedGuides: PERSONAL_RELATED_GUIDES,
@@ -187,7 +189,8 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     title: '급박감이 있다면?',
     type: 'personal',
     actionTitle: '저포드맵 식단으로 바꿔보기',
-    actionDescription: '장을 자극하는 특정 탄수화물을 줄이면 급박감 완화에 도움이 될 수 있어요.',
+    actionDescription:
+      '장을 자극하는 특정 탄수화물을 줄이면 급박감 완화에 도움이 될 수 있어요.',
     actionSource: '근거: Cleveland Clinic',
   },
   {
@@ -196,7 +199,11 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
       '배변에 시간이 오래걸리고 힘든 느낌이 반복되면 장 상태 변화의 신호일 수 있어요.',
     id: 'long-bowel-time',
     metrics: [
-      { colorClassName: 'bg-semantic-danger', label: '배변 힘들었음', value: 2 },
+      {
+        colorClassName: 'bg-semantic-danger',
+        label: '배변 힘들었음',
+        value: 2,
+      },
       { colorClassName: 'bg-yellow-4', label: '15분 이상 소요', value: 2 },
     ],
     notice: '배변 느낌이 힘들었던 날 배변 시간도 함께 길었어요',
@@ -217,7 +224,9 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     description:
       '한 번에 배출된 대략적인 양을 말해요. 평소보다 적거나 많으면 식이·수분 섭취 변화의 신호일 수 있어요.',
     id: 'stool-amount',
-    metrics: [{ colorClassName: 'bg-semantic-danger', label: '배변 양 적음', value: 3 }],
+    metrics: [
+      { colorClassName: 'bg-semantic-danger', label: '배변 양 적음', value: 3 },
+    ],
     notice: '이번 주 배변양이 적은 날이 3일 있었어요',
     noticeHighlight: '3일',
     relatedGuides: PERSONAL_RELATED_GUIDES,
@@ -237,7 +246,13 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     description:
       '배변 간격이 평소보다 늘어나는 건 장 상태 변화의 신호일 수 있어요.',
     id: 'no-bowel-days',
-    metrics: [{ colorClassName: 'bg-semantic-danger', label: '무배변 연속일수', value: 3 }],
+    metrics: [
+      {
+        colorClassName: 'bg-semantic-danger',
+        label: '무배변 연속일수',
+        value: 3,
+      },
+    ],
     notice: '최근 3일 연속 배변이 없었어요',
     noticeHighlight: '3일 연속',
     relatedGuides: PERSONAL_RELATED_GUIDES,
@@ -254,15 +269,17 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
   },
   {
     category: '나 기록 기반',
-    description:
-      '변이 물에 가까운 것과 설사 변화의 신호일 수 있어요.',
+    description: '변이 물에 가까운 것과 설사 변화의 신호일 수 있어요.',
     id: 'loose-stool',
-    metrics: [{ colorClassName: 'bg-semantic-danger', label: '묽은 변', value: 3 }],
+    metrics: [
+      { colorClassName: 'bg-semantic-danger', label: '묽은 변', value: 3 },
+    ],
     notice: '이번 주 묽은 변이 3번 있었어요',
     noticeHighlight: '3번',
     relatedGuides: PERSONAL_RELATED_GUIDES,
     source: 'NIDDK',
-    sourceUrl: 'https://www.niddk.nih.gov/health-information/digestive-diseases/diarrhea',
+    sourceUrl:
+      'https://www.niddk.nih.gov/health-information/digestive-diseases/diarrhea',
     summaryDescription: '묽은 변 기록이 반복됐어요.',
     summaryTitle: '최근 7일 데이터',
     title: '묽은 변이 잦다면?',
@@ -305,12 +322,14 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     notice: '호르몬 변화 시기에 변 상태 변화가 함께 나타났어요',
     relatedGuides: PERSONAL_RELATED_GUIDES,
     source: 'Cleveland Clinic',
-    sourceUrl: 'https://health.clevelandclinic.org/why-do-you-poop-more-on-your-period',
+    sourceUrl:
+      'https://health.clevelandclinic.org/why-do-you-poop-more-on-your-period',
     summaryDescription: '호르몬 변화 시기와 변 상태 변화가 함께 기록됐어요.',
     summaryTitle: '최근 7일 데이터',
     title: '호르몬과 장 건강의 관계',
     type: 'personal',
-    actionTitle: '생리 기간에는 평소보다 장 상태 변화가 자연스러울 수 있음을 인식하고 너무 걱정하지 않아도 돼요',
+    actionTitle:
+      '생리 기간에는 평소보다 장 상태 변화가 자연스러울 수 있음을 인식하고 너무 걱정하지 않아도 돼요',
     actionDescription: '',
     actionSource: '근거: Cleveland Clinic',
   },
@@ -319,7 +338,9 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     description:
       '식사 시간이 불규칙하면 장의 리듬을 예측하기 어려워져요. 규칙적인 식사가 배변 습관을 안정시키는 데 도움이 될 수 있어요.',
     id: 'irregular-meals',
-    metrics: [{ colorClassName: 'bg-semantic-danger', label: '식사 불규칙', value: 4 }],
+    metrics: [
+      { colorClassName: 'bg-semantic-danger', label: '식사 불규칙', value: 4 },
+    ],
     notice: '이번 주 식사가 불규칙했던 날이 4일 있었어요',
     noticeHighlight: '4일',
     relatedGuides: PERSONAL_RELATED_GUIDES,
@@ -340,7 +361,11 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
       '카페인은 장운동을 자극해서 배변을 촉진하거나, 과다 섭취 시 변을 묽게 만들 수 있어요.',
     id: 'caffeine-and-gut',
     metrics: [
-      { colorClassName: 'bg-semantic-danger', label: '카페인 2잔 이상', value: 3 },
+      {
+        colorClassName: 'bg-semantic-danger',
+        label: '카페인 2잔 이상',
+        value: 3,
+      },
       { colorClassName: 'bg-yellow-4', label: '변 상태 변화', value: 2 },
     ],
     notice: '카페인을 많이 마신 날 변 상태 변화가 자주 나타났어요',
@@ -360,7 +385,9 @@ export const GUIDE_DETAILS: GuideDetailTypes[] = [
     description:
       '움직임이 적으면 장운동도 함께 느려져서 배변 리듬이 길어질 수 있어요. 가벼운 운동만으로도 도움이 될 수 있어요.',
     id: 'exercise-and-gut',
-    metrics: [{ colorClassName: 'bg-semantic-danger', label: '운동 안 함', value: 5 }],
+    metrics: [
+      { colorClassName: 'bg-semantic-danger', label: '운동 안 함', value: 5 },
+    ],
     notice: '운동이 적었던 주에 배변 간격이 늘어났어요',
     relatedGuides: PERSONAL_RELATED_GUIDES,
     source: '질병관리청 국가건강정보포털',

@@ -1,18 +1,13 @@
-import { ChevronRight, HelpCircle } from 'lucide-react';
-import type { ComponentType, SVGProps } from 'react';
-import { Link } from 'react-router-dom';
+import { HelpCircle } from 'lucide-react';
+import type { SVGProps } from 'react';
+
+import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import type { GuideMainItemTypes } from '../types/guideMainTypes';
+import GuideCard from './GuideCard';
+import GuideCardSection from './GuideCardSection';
 
 interface GuideMainViewPropTypes {
   isInsufficient?: boolean;
-}
-
-interface GuideMainItemTypes {
-  description: string;
-  iconBackgroundColor: string;
-  iconColor: string;
-  id?: string;
-  Icon: ComponentType<SVGProps<SVGSVGElement>>;
-  title: string;
 }
 
 const personalGuides: GuideMainItemTypes[] = [
@@ -38,8 +33,7 @@ const personalGuides: GuideMainItemTypes[] = [
 
 const healthGuides: GuideMainItemTypes[] = [
   {
-    description:
-      '주 3회에서 하루 3회까지 다양해요. 개인마다 리듬이 달라요.',
+    description: '주 3회에서 하루 3회까지 다양해요. 개인마다 리듬이 달라요.',
     iconBackgroundColor: 'bg-yellow-4',
     iconColor: 'text-beige-1',
     id: 'normal-bowel-count',
@@ -76,46 +70,30 @@ const warningGuide: GuideMainItemTypes = {
 
 const GuideMainView = ({ isInsufficient = false }: GuideMainViewPropTypes) => (
   <section className="min-h-screen bg-beige-5 px-layout pb-3 text-gray-10">
-    <header className="-mx-layout bg-beige-5">
+    <div className="-mx-layout bg-beige-5">
       <div className="h-10" />
-      <div className="flex h-12 items-center justify-center">
-        <h1 className="label">가이드</h1>
-      </div>
-    </header>
+      <DefaultTopNavigation
+        title="가이드"
+        isBackButtonVisible={false}
+        isBorderVisible={false}
+        className="bg-beige-5"
+      />
+    </div>
 
     <div className="pt-4">
-      <section>
-        <h2 className="caption text-gray-8">내 패턴 기반</h2>
-        <div className="mt-3 flex flex-col gap-2">
-          {isInsufficient ? (
-            <InsufficientGuideCard />
-          ) : (
-            personalGuides.map((guideItem) => (
-              <GuideMainCard key={guideItem.title} guideItem={guideItem} />
-            ))
-          )}
-        </div>
-      </section>
+      <GuideCardSection title="내 패턴 기반" guideItems={personalGuides}>
+        {isInsufficient ? <InsufficientGuideCard /> : undefined}
+      </GuideCardSection>
 
       <GuideDivider />
 
-      <section>
-        <h2 className="caption text-gray-8">장 건강 기본 정보</h2>
-        <div className="mt-3 flex flex-col gap-2">
-          {healthGuides.map((guideItem) => (
-            <GuideMainCard key={guideItem.title} guideItem={guideItem} />
-          ))}
-        </div>
-      </section>
+      <GuideCardSection title="장 건강 기본 정보" guideItems={healthGuides} />
 
       <GuideDivider />
 
-      <section>
-        <h2 className="caption text-gray-8">주의 신호</h2>
-        <div className="mt-3">
-          <GuideMainCard guideItem={warningGuide} isWarning />
-        </div>
-      </section>
+      <GuideCardSection title="주의 신호" isWarning>
+        <GuideCard guideItem={warningGuide} isWarning />
+      </GuideCardSection>
     </div>
   </section>
 );
@@ -220,7 +198,12 @@ function StressGutIcon({ className }: SVGProps<SVGSVGElement>) {
       </g>
       <defs>
         <clipPath id="stressGutIconClip">
-          <rect width="24" height="24" fill="white" transform="translate(8 8)" />
+          <rect
+            width="24"
+            height="24"
+            fill="white"
+            transform="translate(8 8)"
+          />
         </clipPath>
       </defs>
     </svg>
@@ -261,49 +244,5 @@ const InsufficientGuideCard = () => (
     </div>
   </article>
 );
-
-const GuideMainCard = ({
-  guideItem,
-  isWarning = false,
-}: {
-  guideItem: GuideMainItemTypes;
-  isWarning?: boolean;
-}) => {
-  const { description, iconBackgroundColor, iconColor, id, Icon, title } =
-    guideItem;
-  const hasFullIcon =
-    id === 'water-and-hard-stool' ||
-    id === 'normal-bowel-count' ||
-    id === 'sleep-and-gut' ||
-    id === 'bristol-stool-chart' ||
-    id === 'stress-and-gut' ||
-    id === 'warning-signs';
-
-  return (
-    <Link
-      to={id ? `/guide?id=${id}` : '/guide'}
-      className="flex min-h-[4.5rem] items-center gap-3 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
-    >
-      <span
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconBackgroundColor} ${iconColor}`}
-      >
-        <Icon className={hasFullIcon ? 'h-10 w-10' : 'h-5 w-5'} />
-      </span>
-      <span className="min-w-0 flex-1">
-        <strong
-          className={`caption-bold block ${
-            isWarning ? 'text-semantic-danger' : 'text-gray-10'
-          }`}
-        >
-          {title}
-        </strong>
-        <span className="micro mt-1 line-clamp-2 block text-gray-7">
-          {description}
-        </span>
-      </span>
-      <ChevronRight className="h-4 w-4 shrink-0 text-gray-6" />
-    </Link>
-  );
-};
 
 export default GuideMainView;

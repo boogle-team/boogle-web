@@ -1,37 +1,42 @@
-export interface MonthlyTypeTypes {
+interface MonthlyTypeTypes {
   description: string;
   symbol: 'R' | 'C' | 'L' | 'I' | '?';
   title: string;
 }
 
-export const MONTHLY_TYPES: MonthlyTypeTypes[] = [
+const MONTHLY_TYPES: MonthlyTypeTypes[] = [
   {
     description: '주 3회 이상 + 보통 변 55%\n지난달에 이어 유지 중이에요',
     symbol: 'R',
     title: '규칙형',
   },
   {
-    description: '평균 간격 3.2일 + 딱딱한 변 42%\n수분 섭취를 늘려보면 도움이 될 수 있어요',
+    description:
+      '평균 간격 3.2일 + 딱딱한 변 42%\n수분 섭취를 늘려보면 도움이 될 수 있어요',
     symbol: 'C',
     title: '변비경향형',
   },
   {
-    description: '묽은 변 45% + 배변 횟수 주 6회 이상\n자극적인 음식 섭취와 자주 겹쳤어요',
+    description:
+      '묽은 변 45% + 배변 횟수 주 6회 이상\n자극적인 음식 섭취와 자주 겹쳤어요',
     symbol: 'L',
     title: '묽은변경향형',
   },
   {
-    description: '수면 부족, 스트레스 높음과 변 상태 변화가 자주 함께 나타났어요',
+    description:
+      '수면 부족, 스트레스 높음과 변 상태 변화가 자주 함께 나타났어요',
     symbol: 'L',
     title: '생활영향형',
   },
   {
-    description: '배변 간격이 1일부터 5일까지 들쭉날쭉해요\n뚜렷한 패턴이 아직 보이지 않아요',
+    description:
+      '배변 간격이 1일부터 5일까지 들쭉날쭉해요\n뚜렷한 패턴이 아직 보이지 않아요',
     symbol: 'I',
     title: '불규칙형',
   },
   {
-    description: '이번 달 기록이 8일뿐이라 아직 유형을 정확히 알기 어려워요 (15일 이상 필요)',
+    description:
+      '이번 달 기록이 8일뿐이라 아직 유형을 정확히 알기 어려워요 (15일 이상 필요)',
     symbol: '?',
     title: '유형 진단 중',
   },
@@ -70,13 +75,20 @@ export const MonthlyTypePreview = () => (
     <h1 className="title">월간 유형 6종</h1>
     <div className="mt-5 flex flex-col gap-4">
       {MONTHLY_TYPES.map((monthlyType) => (
-        <MonthlyTypeCardItem key={monthlyType.title} monthlyType={monthlyType} />
+        <MonthlyTypeCardItem
+          key={monthlyType.title}
+          monthlyType={monthlyType}
+        />
       ))}
     </div>
   </section>
 );
 
-const MonthlyTypeIcon = ({ symbol }: { symbol: MonthlyTypeTypes['symbol'] }) => {
+const MonthlyTypeIcon = ({
+  symbol,
+}: {
+  symbol: MonthlyTypeTypes['symbol'];
+}) => {
   if (symbol === 'R') {
     return <MonthlyRegularTypeIcon />;
   }

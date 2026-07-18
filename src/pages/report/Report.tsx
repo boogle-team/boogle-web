@@ -1,317 +1,31 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
+import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 import MonthlyTypeCard, {
   MonthlyTypePreview,
 } from './components/MonthlyTypeCard';
-
-type ReportModeTypes = 'weekly' | 'monthly';
-
-interface ReportSummaryTypes {
-  description: string;
-  label: string;
-  value: string;
-}
-
-interface ConditionProgressTypes {
-  colorClassName: string;
-  label: string;
-  value: number;
-}
-
-interface BowelRhythmTypes {
-  day: string;
-  status: 'normal' | 'warning' | 'danger' | 'empty';
-}
-
-interface PatternTypes {
-  description: string;
-  icon: 'check' | 'warning' | 'danger';
-  title: string;
-}
-
-interface MonthlyScoreTypes {
-  label: string;
-  value: number;
-}
-
-interface WeeklyTrendTypes {
-  count: number;
-  week: string;
-}
-
-interface InsufficientReportTypes {
-  currentCount: number;
-  description: string;
-  minimumRequiredCount: number;
-  requiredCount: number;
-  trackerLabel: string;
-}
-
-interface ReportPeriodTextTypes {
-  description: string;
-  title: string;
-}
-
-const BASE_REPORT_DATE = new Date(2026, 5, 14);
-const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
-
-const MODE_OPTIONS: { label: string; value: ReportModeTypes }[] = [
-  {
-    label: '주간',
-    value: 'weekly',
-  },
-  {
-    label: '월간',
-    value: 'monthly',
-  },
-];
-
-const WEEKLY_SUMMARIES: ReportSummaryTypes[] = [
-  {
-    description: '지난주 +1',
-    label: '배변 횟수',
-    value: '5회',
-  },
-  {
-    description: '동일',
-    label: '평균 간격',
-    value: '1.4회',
-  },
-  {
-    description: '6/7일',
-    label: '기록 완성도',
-    value: '86%',
-  },
-];
-
-const MONTHLY_SUMMARIES: ReportSummaryTypes[] = [
-  {
-    description: '이번 달',
-    label: '배변 횟수',
-    value: '5회',
-  },
-  {
-    description: '평균 간격',
-    label: '평균 간격',
-    value: '1.4회',
-  },
-  {
-    description: '기록 완성도',
-    label: '기록 완성도',
-    value: '86%',
-  },
-];
-
-const CONDITION_PROGRESS: ConditionProgressTypes[] = [
-  {
-    colorClassName: 'bg-orange-6',
-    label: '보통',
-    value: 50,
-  },
-  {
-    colorClassName: 'bg-yellow-6',
-    label: '딱딱',
-    value: 30,
-  },
-  {
-    colorClassName: 'bg-semantic-danger',
-    label: '묽음',
-    value: 20,
-  },
-];
-
-const BOWEL_RHYTHMS: BowelRhythmTypes[] = [
-  {
-    day: '월',
-    status: 'normal',
-  },
-  {
-    day: '화',
-    status: 'warning',
-  },
-  {
-    day: '수',
-    status: 'danger',
-  },
-  {
-    day: '목',
-    status: 'normal',
-  },
-  {
-    day: '금',
-    status: 'empty',
-  },
-  {
-    day: '토',
-    status: 'normal',
-  },
-  {
-    day: '일',
-    status: 'empty',
-  },
-];
-
-const WEEKLY_PATTERNS: PatternTypes[] = [
-  {
-    description: '이번 주 5회, 평소 리듬을 유지했어요',
-    icon: 'check',
-    title: '배변 리듬 안정',
-  },
-  {
-    description: '수분 부족 날과 함께 나타났어요',
-    icon: 'warning',
-    title: '딱딱한 변 경향',
-  },
-];
-
-const MONTHLY_PATTERNS: PatternTypes[] = [
-  {
-    description: '수분 부족 날과 함께 많이 나타났어요',
-    icon: 'danger',
-    title: '딱딱한 변 반복',
-  },
-  {
-    description: '딱딱한 변 비율이 지난달 40%→27%로 줄었어요',
-    icon: 'check',
-    title: '전월 대비 개선',
-  },
-];
-
-const MONTHLY_SCORES: MonthlyScoreTypes[] = [
-  {
-    label: '기록 완성도',
-    value: 90,
-  },
-  {
-    label: '리듬 완성도',
-    value: 60,
-  },
-  {
-    label: '상태 안정도',
-    value: 80,
-  },
-];
-
-const WEEKLY_TRENDS: WeeklyTrendTypes[] = [
-  {
-    count: 0,
-    week: '1주',
-  },
-  {
-    count: 0,
-    week: '2주',
-  },
-  {
-    count: 0,
-    week: '3주',
-  },
-  {
-    count: 0,
-    week: '4주',
-  },
-];
-
-const INSUFFICIENT_REPORT_BY_MODE: Record<
+import InsufficientReportBody from './components/InsufficientReportBody';
+import {
+  BASE_REPORT_DATE,
+  BOWEL_RHYTHMS,
+  CONDITION_PROGRESS,
+  MODE_OPTIONS,
+  MONTHLY_PATTERNS,
+  MONTHLY_SCORES,
+  MONTHLY_SUMMARIES,
+  WEEKLY_PATTERNS,
+  WEEKLY_SUMMARIES,
+  WEEKLY_TRENDS,
+} from './constants/reportConstants';
+import type {
+  BowelRhythmTypes,
+  PatternTypes,
   ReportModeTypes,
-  InsufficientReportTypes
-> = {
-  weekly: {
-    currentCount: 2,
-    description: '3일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요',
-    minimumRequiredCount: 3,
-    requiredCount: 7,
-    trackerLabel: '이번 주 기록 2일째',
-  },
-  monthly: {
-    currentCount: 6,
-    description: '7일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요',
-    minimumRequiredCount: 7,
-    requiredCount: 30,
-    trackerLabel: '이번 달 기록 6일째',
-  },
-};
-
-const addDays = (date: Date, days: number) => {
-  const nextDate = new Date(date);
-  nextDate.setDate(nextDate.getDate() + days);
-
-  return nextDate;
-};
-
-const addMonths = (date: Date, months: number) => {
-  const nextDate = new Date(date);
-  nextDate.setMonth(nextDate.getMonth() + months);
-
-  return nextDate;
-};
-
-const getWeekStartDate = (date: Date) => {
-  const weekStartDate = new Date(date);
-  const day = weekStartDate.getDay();
-  const daysFromMonday = day === 0 ? 6 : day - 1;
-  weekStartDate.setDate(weekStartDate.getDate() - daysFromMonday);
-
-  return weekStartDate;
-};
-
-const getMonthDistance = (date: Date) =>
-  (date.getFullYear() - BASE_REPORT_DATE.getFullYear()) * 12 +
-  date.getMonth() -
-  BASE_REPORT_DATE.getMonth();
-
-const getWeekDistance = (date: Date) => {
-  const baseWeekStartDate = getWeekStartDate(BASE_REPORT_DATE);
-  const currentWeekStartDate = getWeekStartDate(date);
-
-  return Math.round(
-    (currentWeekStartDate.getTime() - baseWeekStartDate.getTime()) /
-      (MILLISECONDS_PER_DAY * 7),
-  );
-};
-
-const getRelativeTitle = (distance: number, unit: '주' | '달') => {
-  if (distance === -1) {
-    return `지난 ${unit}`;
-  }
-
-  if (distance === 0) {
-    return `이번 ${unit}`;
-  }
-
-  if (distance === 1) {
-    return `다음 ${unit}`;
-  }
-
-  return '';
-};
-
-const getMonthDayText = (date: Date) =>
-  `${date.getMonth() + 1}월 ${date.getDate()}일`;
-
-const getPeriodText = (
-  selectedMode: ReportModeTypes,
-  currentPeriodDate: Date,
-): ReportPeriodTextTypes => {
-  if (selectedMode === 'weekly') {
-    const weekStartDate = getWeekStartDate(currentPeriodDate);
-    const weekEndDate = addDays(weekStartDate, 6);
-
-    return {
-      description: `${getMonthDayText(weekStartDate)} - ${getMonthDayText(
-        weekEndDate,
-      )}`,
-      title: getRelativeTitle(getWeekDistance(currentPeriodDate), '주'),
-    };
-  }
-
-  return {
-    description: `${currentPeriodDate.getFullYear()}년 ${
-      currentPeriodDate.getMonth() + 1
-    }월`,
-    title: getRelativeTitle(getMonthDistance(currentPeriodDate), '달'),
-  };
-};
+  ReportPeriodTextTypes,
+  ReportSummaryTypes,
+} from './types/reportTypes';
+import { addDays, addMonths, getPeriodText } from './utils/reportPeriodUtils';
 
 const Report = () => {
   const [currentPeriodDate, setCurrentPeriodDate] =
@@ -352,12 +66,15 @@ const Report = () => {
 
   return (
     <section className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem] text-gray-10">
-      <header className="bg-beige-5">
+      <div className="bg-beige-5">
         <div className="h-10" />
-        <div className="flex h-12 items-center justify-center bg-beige-5">
-          <h1 className="label-bold">리포트</h1>
-        </div>
-      </header>
+        <DefaultTopNavigation
+          title="리포트"
+          isBackButtonVisible={false}
+          isBorderVisible={false}
+          className="bg-beige-5"
+        />
+      </div>
 
       <div className="border-t border-beige-7 bg-beige-5 px-layout pb-6 pt-3">
         <ReportModeTabs
@@ -473,7 +190,9 @@ interface MonthlyReportBodyPropTypes {
   onPdfButtonClick: () => void;
 }
 
-const MonthlyReportBody = ({ onPdfButtonClick }: MonthlyReportBodyPropTypes) => (
+const MonthlyReportBody = ({
+  onPdfButtonClick,
+}: MonthlyReportBodyPropTypes) => (
   <div className="mt-4 flex flex-col gap-4">
     <MonthlyConditionScoreCard />
     <SummaryCards summaries={MONTHLY_SUMMARIES} showDescription={false} />
@@ -491,73 +210,15 @@ const MonthlyReportBody = ({ onPdfButtonClick }: MonthlyReportBodyPropTypes) => 
   </div>
 );
 
-const InsufficientReportBody = ({
-  selectedMode,
-}: {
-  selectedMode: ReportModeTypes;
-}) => {
-  const insufficientReport = INSUFFICIENT_REPORT_BY_MODE[selectedMode];
-  const progressWidth = `${
-    (insufficientReport.currentCount / insufficientReport.requiredCount) * 100
-  }%`;
-  const remainingCount = Math.max(
-    insufficientReport.minimumRequiredCount - insufficientReport.currentCount,
-    0,
-  );
-
-  return (
-    <div className="mt-4 flex min-h-[31rem] flex-col gap-8">
-      <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-        <div className="flex items-center justify-between">
-          <p className="caption text-gray-8">
-            {insufficientReport.trackerLabel.replace(
-              `${insufficientReport.currentCount}`,
-              '',
-            )}
-            <span className="caption-bold text-orange-6">
-              {insufficientReport.currentCount}
-            </span>
-            일째
-          </p>
-        </div>
-        <div className="mt-4 grid grid-cols-[1fr_2.5rem] items-center gap-3">
-          <div className="h-2 overflow-hidden rounded-full bg-gray-4">
-            <div
-              className="h-full rounded-full bg-orange-6"
-              style={{ width: progressWidth }}
-            />
-          </div>
-          <p className="micro text-right text-orange-6">
-            {insufficientReport.currentCount}/{insufficientReport.requiredCount}일
-          </p>
-        </div>
-      </section>
-
-      <section className="flex flex-1 flex-col items-center justify-center text-center">
-        <InsufficientReportIcon />
-        <h2 className="label-bold mt-6 whitespace-pre-line text-gray-10">
-          아직 패턴을 보여드리기엔{'\n'}기록이 조금 부족해요
-        </h2>
-        <p className="micro mt-3 max-w-[14.5rem] whitespace-pre-line text-gray-7">
-          {insufficientReport.description}
-        </p>
-        <button
-          type="button"
-          className="caption-bold mt-5 rounded-full border border-orange-6 bg-orange-1 px-5 py-2 text-orange-6"
-        >
-          앞으로 {remainingCount}일만 더!
-        </button>
-      </section>
-    </div>
-  );
-};
-
 interface SummaryCardsPropTypes {
   showDescription: boolean;
   summaries: ReportSummaryTypes[];
 }
 
-const SummaryCards = ({ showDescription, summaries }: SummaryCardsPropTypes) => (
+const SummaryCards = ({
+  showDescription,
+  summaries,
+}: SummaryCardsPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
     <div className="grid grid-cols-3 divide-x divide-beige-7">
       {summaries.map(({ description, label, value }) => (
@@ -761,7 +422,9 @@ const LifeGuideCard = () => (
   <section className="rounded-xl border border-orange-4 bg-orange-1 px-4 py-4">
     <h2 className="caption-bold text-gray-9">생활 가이드</h2>
     <article className="mt-3">
-      <h3 className="caption-bold text-semantic-danger">수분 섭취와 딱딱한 변</h3>
+      <h3 className="caption-bold text-semantic-danger">
+        수분 섭취와 딱딱한 변
+      </h3>
       <p className="micro mt-1 text-gray-8">
         하루 물 6~8잔을 목표로 해보세요. 딱딱한 변이 개선될 수 있어요.
       </p>
@@ -781,52 +444,6 @@ const LifeGuideCard = () => (
       </div>
     </article>
   </section>
-);
-
-const InsufficientReportIcon = () => (
-  <svg
-    width="96"
-    height="92"
-    viewBox="128.5 0 96 92"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <ellipse cx="174.729" cy="79.5" rx="30" ry="11.5" fill="#FFE3D9" />
-    <circle
-      cx="3.51467"
-      cy="3.51467"
-      r="3.51467"
-      transform="matrix(-1 0 0 1 216.529 28)"
-      fill="#FFCEBB"
-    />
-    <circle
-      cx="5.6"
-      cy="5.6"
-      r="5.6"
-      transform="matrix(-1 0 0 1 141.699 12)"
-      fill="#FFCEBB"
-    />
-    <circle
-      cx="7.5"
-      cy="7.5"
-      r="7.5"
-      transform="matrix(-1 0 0 1 224.5 3)"
-      fill="#FFCEBB"
-    />
-    <path
-      d="M177.147 15.0742C185.12 15.0742 191.923 20.3032 194.594 27.6592C202.615 29.8336 208.524 37.2748 208.524 46.1211C208.524 52.0429 205.876 57.3346 201.719 60.8389C201.856 61.7191 201.929 62.6215 201.929 63.541C201.929 73.0018 194.39 80.6719 185.092 80.6719C181.083 80.6718 177.402 79.2446 174.511 76.8643C171.724 79.3987 168.133 80.9258 164.211 80.9258C155.823 80.9257 148.94 73.9442 148.235 65.0488C142.775 62.4804 138.986 56.8587 138.986 50.3359C138.986 43.6576 142.958 37.9236 148.629 35.4443C148.336 34.424 148.176 33.3453 148.176 32.2285C148.176 25.9127 153.208 20.7931 159.415 20.793C160.784 20.793 162.095 21.0422 163.309 21.498C166.722 17.5529 171.658 15.0742 177.147 15.0742ZM176.397 55.8906C174.977 55.8906 173.825 56.5822 173.825 57.4346C173.825 58.2869 174.977 58.9775 176.397 58.9775C177.818 58.9775 178.97 58.2869 178.97 57.4346C178.97 56.5822 177.818 55.8906 176.397 55.8906ZM167.99 47.5762C166.568 47.5762 165.415 48.7493 165.415 50.1963C165.415 51.6432 166.568 52.8164 167.99 52.8164C169.412 52.8163 170.565 51.6431 170.565 50.1963C170.565 48.7493 169.412 47.5763 167.99 47.5762ZM182.939 47.5762C181.517 47.5764 180.365 48.7494 180.365 50.1963C180.365 51.6431 181.518 52.8162 182.939 52.8164C184.362 52.8164 185.515 51.6432 185.515 50.1963C185.515 48.7493 184.362 47.5762 182.939 47.5762Z"
-      fill="#FFA17D"
-    />
-    <path
-      d="M166.75 55.4823C166.75 56.49 165.388 57.3069 163.709 57.3069C162.029 57.3069 160.668 56.49 160.668 55.4823C160.668 54.4746 162.029 53.6577 163.709 53.6577C165.388 53.6577 166.75 54.4746 166.75 55.4823Z"
-      fill="#FF8C61"
-    />
-    <path
-      d="M191.762 55.5841C191.849 56.5879 190.293 57.5442 188.285 57.7199C186.278 57.8956 184.579 57.2243 184.491 56.2205C184.403 55.2166 185.96 54.2604 187.967 54.0846C189.975 53.9089 191.674 54.5802 191.762 55.5841Z"
-      fill="#FF8C61"
-    />
-  </svg>
 );
 
 const ClockIcon = () => (
@@ -858,7 +475,11 @@ const ClockIcon = () => (
   </svg>
 );
 
-const RhythmStatusIcon = ({ status }: { status: BowelRhythmTypes['status'] }) => {
+const RhythmStatusIcon = ({
+  status,
+}: {
+  status: BowelRhythmTypes['status'];
+}) => {
   if (status === 'empty') {
     return (
       <span className="h-8 w-8 rounded-full border border-dashed border-beige-8 bg-beige-1" />

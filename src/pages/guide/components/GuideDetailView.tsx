@@ -1,6 +1,7 @@
-import { ArrowLeft, ChevronRight, Clock, Info } from 'lucide-react';
+import { ChevronRight, Clock, Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 import type { GuideDetailTypes, GuideRelatedTypes } from '../types/guideTypes';
 
 interface GuideDetailViewPropTypes {
@@ -18,20 +19,15 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
 
   return (
     <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pb-10 text-gray-10">
-      <header className="-mx-layout bg-beige-5">
-        <div className="h-10" />
-        <div className="relative flex h-12 items-center justify-center">
-          <button
-            type="button"
-            aria-label="뒤로가기"
-            className="absolute left-layout flex h-8 w-8 items-center justify-center text-gray-8"
-            onClick={handleBackClick}
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <h1 className="label text-gray-10">가이드 상세</h1>
-        </div>
-      </header>
+      <div className="-mx-layout">
+        <div className="h-10 bg-beige-5" />
+        <DefaultTopNavigation
+          title="가이드 상세"
+          isBorderVisible={false}
+          className="bg-beige-5"
+          onBackButtonClick={handleBackClick}
+        />
+      </div>
 
       <div className="pt-5">
         <GuideCategoryBadge guideDetail={guideDetail} />
@@ -56,25 +52,27 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
 
               {guideDetail.metrics && (
                 <div className="mt-4 flex flex-col gap-2">
-                  {guideDetail.metrics.map(({ colorClassName, label, value }) => (
-                    <div
-                      key={label}
-                      className="grid grid-cols-[4.5rem_1fr_2rem] items-center gap-2"
-                    >
-                      <span className="micro text-gray-7">{label}</span>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-gray-4">
-                        <div
-                          className={`h-full rounded-full ${
-                            colorClassName ?? 'bg-orange-6'
-                          }`}
-                          style={{ width: `${Math.min(value * 11, 100)}%` }}
-                        />
+                  {guideDetail.metrics.map(
+                    ({ colorClassName, label, value }) => (
+                      <div
+                        key={label}
+                        className="grid grid-cols-[4.5rem_1fr_2rem] items-center gap-2"
+                      >
+                        <span className="micro text-gray-7">{label}</span>
+                        <div className="h-1.5 overflow-hidden rounded-full bg-gray-4">
+                          <div
+                            className={`h-full rounded-full ${
+                              colorClassName ?? 'bg-orange-6'
+                            }`}
+                            style={{ width: `${Math.min(value * 11, 100)}%` }}
+                          />
+                        </div>
+                        <span className="micro text-right text-gray-7">
+                          {value}/7일
+                        </span>
                       </div>
-                      <span className="micro text-right text-gray-7">
-                        {value}/7일
-                      </span>
-                    </div>
-                  ))}
+                    ),
+                  )}
                 </div>
               )}
 
@@ -368,14 +366,7 @@ const PersonalGuideBadge = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <rect x="0.5" y="0.5" width="104" height="24" rx="11.5" fill="#FFF4EF" />
-    <rect
-      x="0.5"
-      y="0.5"
-      width="104"
-      height="24"
-      rx="11.5"
-      stroke="#FF8C61"
-    />
+    <rect x="0.5" y="0.5" width="104" height="24" rx="11.5" stroke="#FF8C61" />
     <path
       d="M26.294 11.8735L24.294 10.8735L22.5073 9.98016L22.4873 9.96016L21.594 8.1735L20.594 6.1735C20.3673 5.72016 19.6273 5.72016 19.4007 6.1735L18.4007 8.1735L17.5073 9.96016L17.4873 9.98016L15.7007 10.8735L13.7007 11.8735C13.474 11.9868 13.334 12.2202 13.334 12.4668C13.334 12.7135 13.474 12.9468 13.7007 13.0602L15.7007 14.0602L17.4873 14.9535L17.5073 14.9735L18.4007 16.7602L19.4007 18.7602C19.514 18.9868 19.7473 19.1268 19.994 19.1268C20.2407 19.1268 20.474 18.9868 20.5873 18.7602L21.5873 16.7602L22.4807 14.9735L22.5007 14.9535L24.2873 14.0602L26.2873 13.0602C26.514 12.9468 26.654 12.7135 26.654 12.4668C26.654 12.2202 26.514 11.9868 26.2873 11.8735H26.294Z"
       fill="#FF8C61"
@@ -387,7 +378,11 @@ const PersonalGuideBadge = () => (
   </svg>
 );
 
-const RelatedGuideCard = ({ relatedGuide }: { relatedGuide: GuideRelatedTypes }) => (
+const RelatedGuideCard = ({
+  relatedGuide,
+}: {
+  relatedGuide: GuideRelatedTypes;
+}) => (
   <Link
     to={`/guide?id=${relatedGuide.id ?? ''}`}
     className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
