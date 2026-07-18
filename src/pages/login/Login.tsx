@@ -5,7 +5,10 @@ import Onboarding from './Onboarding';
 import ProfileInputPage from './ProfileInputPage';
 import SocialLogin from './SocialLogin';
 import Splash from './Splash';
-import type { LoginPhaseTypes, ProfileInputValueTypes } from './types/loginTypes';
+import type {
+  LoginPhaseTypes,
+  ProfileInputValueTypes,
+} from './types/loginTypes';
 
 // 로그인/온보딩 전체 플로우를 phase 상태로 전환한다.
 // splash → onboarding → social → profile → (완료 시) 홈으로 이동

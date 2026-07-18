@@ -1,36 +1,55 @@
 import { createBrowserRouter } from 'react-router-dom';
-import MainLayout from '../layout/MainLayout';
-import Home from '../pages/home/Home';
-import Login from '../pages/login/Login';
-import Guide from '../pages/guide/Guide';
-import Report from '../pages/report/Report';
-import Calendar from '../pages/calendar/Calendar';
 
 export const Router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    lazy: async () => {
+      const { default: MainLayout } = await import('../layout/MainLayout');
+
+      return { Component: MainLayout };
+    },
     children: [
       {
         index: true,
-        element: <Home />,
+        lazy: async () => {
+          const { default: Home } = await import('../pages/home/Home');
+
+          return { Component: Home };
+        },
       },
       {
         path: 'calendar',
-        element: <Calendar />,
+        lazy: async () => {
+          const { default: Calendar } =
+            await import('../pages/calendar/Calendar');
+
+          return { Component: Calendar };
+        },
       },
       {
         path: 'report',
-        element: <Report />,
+        lazy: async () => {
+          const { default: Report } = await import('../pages/report/Report');
+
+          return { Component: Report };
+        },
       },
       {
         path: 'guide',
-        element: <Guide />,
+        lazy: async () => {
+          const { default: Guide } = await import('../pages/guide/Guide');
+
+          return { Component: Guide };
+        },
       },
     ],
   },
   {
     path: '/login',
-    element: <Login />,
+    lazy: async () => {
+      const { default: Login } = await import('../pages/login/Login');
+
+      return { Component: Login };
+    },
   },
 ]);

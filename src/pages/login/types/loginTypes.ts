@@ -8,10 +8,7 @@ export type ProfileStepTypes = 1 | 2 | 3;
 
 // 기준선 설정(배변 리듬) 선택지 값
 export type BowelRhythmValueTypes =
-  | 'regular'
-  | 'constipation'
-  | 'loose'
-  | 'unknown';
+  'regular' | 'constipation' | 'loose' | 'unknown';
 
 // 프로필 입력 최종 수집 데이터
 export interface ProfileInputValueTypes {
