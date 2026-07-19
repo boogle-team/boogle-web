@@ -35,7 +35,7 @@ const NicknameStep = ({
         />
       </div>
       <div>
-        <p className="body-m mb-2 text-gray-8">닉네임</p>
+        <p className="body-m mb-2 ml-[0.12rem] text-gray-8">닉네임</p>
         <InputText
           value={nickname}
           onChange={handleNicknameChange}

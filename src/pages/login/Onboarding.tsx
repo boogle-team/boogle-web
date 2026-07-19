@@ -24,11 +24,11 @@ const Onboarding = ({ onStart }: OnboardingPropTypes) => {
   }, [animationData]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-6 px-layout pb-[3.69rem] pt-[7.5rem]">
-      <h1 className="display-lg text-center text-gray-9">
+    <div className="flex min-h-dvh flex-col bg-beige-4 px-layout pb-[3.69rem] pt-[7.5rem]">
+      <h1 className="display-lg text-center text-gray-10">
         기록으로 시작하는
         <br />
-        나만의 <span className="text-orange-6">장 컨디션 관리</span>
+        나만의 <span className="text-orange-7">장 컨디션 관리</span>
       </h1>
       <p className="body-m mt-4 text-center text-gray-7">
         매일의 부글·생활 기록이 쌓이면, 나의 패턴이 보여요

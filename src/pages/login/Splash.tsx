@@ -29,7 +29,7 @@ const Splash = ({ onFinish }: SplashPropTypes) => {
 
   return (
     <div
-      className={`absolute inset-0 z-50 flex min-h-dvh items-center justify-center bg-orange-5 transition-opacity duration-500 ease-out ${
+      className={`absolute inset-0 z-50 flex min-h-dvh items-center justify-center bg-orange-6 transition-opacity duration-500 ease-out ${
         isFadingOut ? 'opacity-0' : 'opacity-100'
       }`}
     >

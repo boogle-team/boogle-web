@@ -12,7 +12,7 @@
   --color-orange-3: #ffcebb;
   --color-orange-4: #ffb79b;
   --color-orange-5: #ffa17d;
-  --color-orange-6: #ff8c61;
+  --color-orange-6: #ff8253;
   --color-orange-7: #f87442;
   --color-orange-8: #b56345;
   --color-orange-9: #915037;
@@ -51,7 +51,7 @@
   --color-gray-4: #f0f0f0;
   --color-gray-5: #dbdada;
   --color-gray-6: #c2c2c2;
-  --color-gray-7: #929090;
+  --color-gray-7: #868484;
   --color-gray-8: #615f5f;
   --color-gray-9: #4e4b4b;
   --color-gray-10: #302e2e;
@@ -201,8 +201,7 @@
 }
 
 @utility animate-complete-character {
-  animation: complete-character-pop 700ms
-    cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: complete-character-pop 700ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 @keyframes complete-content-fade-up {
