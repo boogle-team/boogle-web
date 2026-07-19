@@ -20,17 +20,18 @@ const CalendarDateCell = ({
 }: CalendarDateCellPropTypes) => {
   const { date, day, isCurrentMonth, isToday, isSunday, isSaturday } = cell;
 
-  const dayNumberClassName = isToday
-    ? 'bg-orange-6 text-beige-1'
-    : isSelected
-      ? 'border border-orange-6 text-orange-6'
-      : !isCurrentMonth
-        ? 'text-gray-5'
-        : isSunday
-          ? 'text-semantic-sunday'
-          : isSaturday
-            ? 'text-semantic-saturday'
-            : 'text-gray-8';
+  let dayNumberClassName = 'text-gray-8';
+  if (isToday) {
+    dayNumberClassName = 'bg-orange-6 text-beige-1';
+  } else if (isSelected) {
+    dayNumberClassName = 'border border-orange-6 text-orange-6';
+  } else if (!isCurrentMonth) {
+    dayNumberClassName = 'text-gray-5';
+  } else if (isSunday) {
+    dayNumberClassName = 'text-semantic-sunday';
+  } else if (isSaturday) {
+    dayNumberClassName = 'text-semantic-saturday';
+  }
 
   return (
     <button
