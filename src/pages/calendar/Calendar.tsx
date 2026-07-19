@@ -21,6 +21,15 @@ const Calendar = () => {
     setCurrentDate((prev) => prev.subtract(1, 'month'));
   const handleNextMonth = () => setCurrentDate((prev) => prev.add(1, 'month'));
 
+  const handleSelectDate = (date: string) => {
+    setSelectedDate(date);
+
+    const clickedDate = dayjs(date);
+    if (!clickedDate.isSame(currentDate, 'month')) {
+      setCurrentDate(clickedDate);
+    }
+  };
+
   return (
     <div>
       <div className="h-12.25" />
@@ -40,7 +49,7 @@ const Calendar = () => {
           currentDate={currentDate}
           recordMap={recordMap}
           selectedDate={selectedDate}
-          onSelectDate={setSelectedDate}
+          onSelectDate={handleSelectDate}
         />
       </div>
     </div>
