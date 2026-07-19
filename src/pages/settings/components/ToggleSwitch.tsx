@@ -16,13 +16,13 @@ const ToggleSwitch = ({
       aria-label={ariaLabel}
       aria-checked={isEnabled}
       onClick={onClick}
-      className={`relative inline-flex h-5.5 w-12 items-center rounded-full p-0.5 transition-colors duration-200 ${
+      className={`relative inline-flex h-5.5 w-10.5 items-center rounded-[99px] p-0.5 transition-colors duration-200 ${
         isEnabled ? 'bg-orange-5' : 'bg-gray-4'
       }`}
     >
       <span
-        className={`h-4.5 w-4.5 rounded-full bg-white shadow-[0_0.0625rem_0.125rem_rgba(0,0,0,0.16)] transition-transform duration-200 ${
-          isEnabled ? 'translate-x-[1.6rem]' : 'translate-x-0'
+        className={`h-4.5 w-4.5 rounded-[99px] bg-beige-1 transition-transform duration-200 ${
+          isEnabled ? 'translate-x-5' : 'translate-x-0'
         }`}
       />
     </button>

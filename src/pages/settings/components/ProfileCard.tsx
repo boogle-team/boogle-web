@@ -31,9 +31,9 @@ const ProfileCard = ({ member, onProfileEditClick }: ProfileCardPropTypes) => {
   const joinedDays = getJoinedDays(member.regDate);
 
   return (
-    <section className="flex items-center justify-between rounded-xl bg-white p-[1rem] shadow-[0_0_0.375rem_rgba(252,244,235,0.5)]">
+    <section className="flex items-center justify-between rounded-xl bg-white p-[1rem] shadow-sm">
       <div className="flex items-center gap-[1rem]">
-        <div className="flex h-13.5 w-13.5 items-center justify-center overflow-hidden rounded-full bg-[#FFCEBB]">
+        <div className="flex h-13.5 w-13.5 items-center justify-center overflow-hidden rounded-full bg-orange-3">
           {member.profileImage ? (
             <img
               src={member.profileImage}

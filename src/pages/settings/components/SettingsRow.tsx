@@ -34,7 +34,7 @@ const SettingsRow = ({
     <>
       <div className="flex min-w-0 flex-1 items-center gap-3">
         {iconLabel && (
-          <div className="flex h-5.5 w-5.5 items-center justify-center rounded-[1.25rem] bg-orange-4">
+          <div className="flex h-5.5 w-5.5 items-center justify-center rounded-[20px] bg-orange-4">
             {typeof iconLabel === 'string' ? (
               <span>{iconLabel}</span>
             ) : (
