@@ -19,8 +19,8 @@ export const BOWEL_RHYTHM_OPTIONS: {
   value: BowelRhythmValueTypes;
   label: string;
 }[] = [
-  { value: 'regular', label: '규칙적이에요 (주 3회 이상)' },
   { value: 'constipation', label: '변비 경향이 있어요' },
+  { value: 'regular', label: '규칙적이에요 (주 3회 이상)' },
   { value: 'loose', label: '묽은 변 경향이 있어요' },
   { value: 'unknown', label: '잘 모르겠어요' },
 ];

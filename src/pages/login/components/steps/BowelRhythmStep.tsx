@@ -19,7 +19,7 @@ const BowelRhythmStep = ({ value, onChange }: BowelRhythmStepPropTypes) => {
         수 있어요
       </p>
 
-      <div className="mt-8 flex flex-col gap-3">
+      <div className="mt-8 flex flex-col gap-2">
         {BOWEL_RHYTHM_OPTIONS.map((option) => (
           <Chip
             key={option.value}
