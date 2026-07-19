@@ -9,17 +9,17 @@ const MenstrualCycleStep = () => {
       <h2 className="display text-center text-gray-10">
         생리 주기도 함께 기록할까요?
       </h2>
-      <p className="body-m mt-3 text-center text-gray-7">
+      <p className="label mt-[0.38rem] text-center text-gray-7">
         배변 패턴과 생리 주기의 연관성을 분석해
         <br />더 정확한 인사이트를 제공해요.
       </p>
 
-      <div className="mt-8 rounded-2xl border border-gray-4 p-5">
-        <p className="body-m-bold text-gray-10">수집되는 데이터</p>
+      <div className="mt-8 rounded-2xl border border-gray-4 px-4 py-[0.62rem]">
+        <p className="body-m text-gray-8">수집되는 데이터</p>
 
-        <ul className="mt-4 flex flex-col gap-3">
+        <ul className="mt-2 flex flex-col gap-1">
           {MENSTRUAL_DATA_ITEMS.map((item) => (
-            <li key={item} className="flex items-center gap-2">
+            <li key={item} className="flex items-center gap-1">
               <Check
                 className="h-5 w-5 shrink-0  text-orange-5"
                 strokeWidth={4}
@@ -29,7 +29,7 @@ const MenstrualCycleStep = () => {
           ))}
         </ul>
 
-        <div className="mt-4 flex items-center gap-1 border-t border-gray-3 pt-4">
+        <div className="mt-1 flex items-center gap-1 border-t border-gray-4 pt-2">
           <LockKeyhole className="h-4 w-4 shrink-0 text-gray-7" />
           <span className="caption text-gray-7">
             배변 패턴 분석 목적으로만 사용돼요

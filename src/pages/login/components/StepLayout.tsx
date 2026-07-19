@@ -34,7 +34,7 @@ const StepLayout = ({
 
       <main className="flex flex-1 flex-col px-layout pt-6">{children}</main>
 
-      <footer className="px-layout pb-[3.69rem] pt-4">{footer}</footer>
+      <footer className="px-layout pb-[3.69rem]">{footer}</footer>
     </div>
   );
 };

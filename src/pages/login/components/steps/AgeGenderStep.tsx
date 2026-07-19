@@ -26,14 +26,14 @@ const AgeGenderStep = ({
       <h2 className="display text-center text-gray-10">
         정보를 조금만 더 알려주세요!
       </h2>
-      <p className="body-m mt-3 text-center text-gray-7">
+      <p className="label mt-[0.38rem] text-center text-gray-7">
         입력하면 <span className="text-orange-6">더 정확한 기준선</span>을 만들
         수 있어요
       </p>
 
-      <section className="mt-12">
-        <h3 className="body-lg text-center text-gray-8">나이대</h3>
-        <div className="mt-5 grid grid-cols-4 gap-2">
+      <section className="mt-8">
+        <h3 className="body-m text-center text-gray-8">나이대</h3>
+        <div className="mt-3 grid grid-cols-4 gap-2">
           {AGE_GROUP_OPTIONS.map((option) => (
             <Chip
               key={option.value}
@@ -46,11 +46,11 @@ const AgeGenderStep = ({
         </div>
       </section>
 
-      <div className="my-10 h-px bg-gray-3" />
+      <div className="my-8 h-px bg-gray-3" />
 
       <section>
-        <h3 className="body-lg text-center text-gray-8">성별</h3>
-        <div className="mx-auto mt-5 grid w-full max-w-[17rem] grid-cols-3 gap-2">
+        <h3 className="body-m text-center text-gray-8">성별</h3>
+        <div className="mx-auto mt-3 grid w-full max-w-[17rem] grid-cols-3 gap-2">
           {GENDER_OPTIONS.map((option) => (
             <Chip
               key={option.value}
