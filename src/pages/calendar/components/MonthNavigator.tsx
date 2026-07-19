@@ -7,7 +7,11 @@ interface MonthNavigatorPropTypes {
   onNextMonth: () => void;
 }
 
-const MonthNavigator = ({ currentDate, onPrevMonth, onNextMonth }: MonthNavigatorPropTypes) => {
+const MonthNavigator = ({
+  currentDate,
+  onPrevMonth,
+  onNextMonth,
+}: MonthNavigatorPropTypes) => {
   return (
     <div className="flex items-center justify-center gap-5 pt-[1.37rem] pb-6">
       <button
@@ -19,7 +23,9 @@ const MonthNavigator = ({ currentDate, onPrevMonth, onNextMonth }: MonthNavigato
         <ChevronLeft className="h-5 w-5" />
       </button>
 
-      <h2 className="body-m-bold text-gray-8">{currentDate.format('YYYY년 M월')}</h2>
+      <h2 className="body-m-bold text-gray-8">
+        {currentDate.format('YYYY년 M월')}
+      </h2>
 
       <button
         type="button"

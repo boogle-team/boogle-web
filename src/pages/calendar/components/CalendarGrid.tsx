@@ -11,7 +11,12 @@ interface CalendarGridPropTypes {
   onSelectDate: (date: string) => void;
 }
 
-const CalendarGrid = ({ currentDate, recordMap, selectedDate, onSelectDate }: CalendarGridPropTypes) => {
+const CalendarGrid = ({
+  currentDate,
+  recordMap,
+  selectedDate,
+  onSelectDate,
+}: CalendarGridPropTypes) => {
   const dateCells = generateMonthDates(currentDate);
 
   return (
@@ -21,7 +26,11 @@ const CalendarGrid = ({ currentDate, recordMap, selectedDate, onSelectDate }: Ca
           <span
             key={label}
             className={`mx-auto flex h-4.5 w-10 items-center justify-center text-[0.75rem] leading-[150%] font-bold ${
-              index === 0 ? 'text-semantic-sunday' : index === 6 ? 'text-semantic-saturday' : 'text-[#989EA7]'
+              index === 0
+                ? 'text-semantic-sunday'
+                : index === 6
+                  ? 'text-semantic-saturday'
+                  : 'text-[#989EA7]'
             }`}
           >
             {label}

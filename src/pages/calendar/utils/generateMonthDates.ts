@@ -3,7 +3,9 @@ import type { CalendarDateCellTypes } from '../types/calendarTypes';
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
-export const generateMonthDates = (currentDate: Dayjs): CalendarDateCellTypes[] => {
+export const generateMonthDates = (
+  currentDate: Dayjs,
+): CalendarDateCellTypes[] => {
   const startOfMonth = currentDate.startOf('month');
   const endOfMonth = currentDate.endOf('month');
   const startOfGrid = startOfMonth.startOf('week');

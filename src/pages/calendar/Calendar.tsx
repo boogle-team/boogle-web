@@ -8,11 +8,17 @@ import { DATE_FORMAT } from './utils/generateMonthDates';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(() => dayjs());
-  const [selectedDate, setSelectedDate] = useState(() => dayjs().format(DATE_FORMAT));
+  const [selectedDate, setSelectedDate] = useState(() =>
+    dayjs().format(DATE_FORMAT),
+  );
 
-  const recordMap = useMemo(() => getMockCalendarRecords(currentDate), [currentDate]);
+  const recordMap = useMemo(
+    () => getMockCalendarRecords(currentDate),
+    [currentDate],
+  );
 
-  const handlePrevMonth = () => setCurrentDate((prev) => prev.subtract(1, 'month'));
+  const handlePrevMonth = () =>
+    setCurrentDate((prev) => prev.subtract(1, 'month'));
   const handleNextMonth = () => setCurrentDate((prev) => prev.add(1, 'month'));
 
   return (
@@ -24,7 +30,11 @@ const Calendar = () => {
       </header>
 
       <div className="px-4">
-        <MonthNavigator currentDate={currentDate} onPrevMonth={handlePrevMonth} onNextMonth={handleNextMonth} />
+        <MonthNavigator
+          currentDate={currentDate}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
+        />
         <CalendarLegend />
         <CalendarGrid
           currentDate={currentDate}

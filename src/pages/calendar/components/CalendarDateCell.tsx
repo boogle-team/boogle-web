@@ -1,5 +1,8 @@
 import { CALENDAR_MARK_CONFIG } from '../constants/calendarMarkConfig';
-import type { CalendarDateCellTypes, CalendarMarkTypes } from '../types/calendarTypes';
+import type {
+  CalendarDateCellTypes,
+  CalendarMarkTypes,
+} from '../types/calendarTypes';
 
 interface CalendarDateCellPropTypes {
   cell: CalendarDateCellTypes;
@@ -8,7 +11,12 @@ interface CalendarDateCellPropTypes {
   onSelectDate: (date: string) => void;
 }
 
-const CalendarDateCell = ({ cell, marks, isSelected, onSelectDate }: CalendarDateCellPropTypes) => {
+const CalendarDateCell = ({
+  cell,
+  marks,
+  isSelected,
+  onSelectDate,
+}: CalendarDateCellPropTypes) => {
   const { date, day, isCurrentMonth, isToday, isSunday, isSaturday } = cell;
 
   const dayNumberClassName = isToday

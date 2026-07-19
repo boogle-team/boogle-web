@@ -1,4 +1,7 @@
-import { CALENDAR_MARK_CONFIG, CALENDAR_MARK_ORDER } from '../constants/calendarMarkConfig';
+import {
+  CALENDAR_MARK_CONFIG,
+  CALENDAR_MARK_ORDER,
+} from '../constants/calendarMarkConfig';
 
 const CalendarLegend = () => {
   return (
@@ -8,7 +11,9 @@ const CalendarLegend = () => {
 
         return (
           <li key={markType} className="flex items-center gap-2">
-            <span className={`h-3.5 w-3.5 shrink-0 rounded-full ${dotClassName}`} />
+            <span
+              className={`h-3.5 w-3.5 shrink-0 rounded-full ${dotClassName}`}
+            />
             <span className="caption text-gray-8">{label}</span>
           </li>
         );
