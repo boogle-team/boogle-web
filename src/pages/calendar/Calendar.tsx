@@ -8,7 +8,9 @@ import { DATE_FORMAT } from './utils/generateMonthDates';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(() => dayjs());
+  const [currentDate, setCurrentDate] = useState(() =>
+    dayjs().startOf('month'),
+  );
   const [selectedDate, setSelectedDate] = useState(() =>
     dayjs().format(DATE_FORMAT),
   );
@@ -19,15 +21,16 @@ const Calendar = () => {
   );
 
   const handlePrevMonth = () =>
-    setCurrentDate((prev) => prev.subtract(1, 'month'));
-  const handleNextMonth = () => setCurrentDate((prev) => prev.add(1, 'month'));
+    setCurrentDate((prev) => prev.subtract(1, 'month').startOf('month'));
+  const handleNextMonth = () =>
+    setCurrentDate((prev) => prev.add(1, 'month').startOf('month'));
 
   const handleSelectDate = (date: string) => {
     setSelectedDate(date);
 
     const clickedDate = dayjs(date);
     if (!clickedDate.isSame(currentDate, 'month')) {
-      setCurrentDate(clickedDate);
+      setCurrentDate(clickedDate.startOf('month'));
     }
   };
 
