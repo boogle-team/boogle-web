@@ -5,8 +5,10 @@ import InfoFlagIcon from '@/shared/assets/icons/infoFlagIcon.svg?react';
 import Button from '@/shared/components/Button';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
+import SettingsBottomAction from './components/SettingsBottomAction';
 import SettingsNotice from './components/SettingsNotice';
 import ToggleSwitch from './components/ToggleSwitch';
+import UnsavedChangesToast from './components/UnsavedChangesToast';
 
 import type { TfTypes } from './types/settingsTypes';
 
@@ -55,7 +57,7 @@ const SensitiveConsent = () => {
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
         <section className="mt-6 rounded-xl border border-orange-3 bg-orange-1 px-4 py-4">
           <div className="flex items-center gap-2 text-orange-7">
             <InfoFlagIcon
@@ -72,7 +74,7 @@ const SensitiveConsent = () => {
         <div className="my-8 border-t border-gray-4" />
 
         <section>
-          <h2 className="body-m mb-2 text-gray-8">동의 항목</h2>
+          <h2 className="body-m mb-2 px-2 text-gray-8">동의 항목</h2>
 
           <div className="rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
             <div className="flex items-start justify-between gap-4">
@@ -96,41 +98,30 @@ const SensitiveConsent = () => {
             </div>
           </div>
 
-          <SettingsNotice className="mt-2">
+          <SettingsNotice className="mt-2 px-2">
             철회 시 관련 항목과 기존 기록 데이터가 삭제돼요
           </SettingsNotice>
         </section>
 
         <section className="mt-8">
-          <h2 className="body-m mb-2 text-gray-8">수집되는 데이터</h2>
+          <h2 className="body-m mb-2 px-2 text-gray-8">수집되는 데이터</h2>
 
           <div className="caption rounded-xl border border-gray-4 bg-beige-1 px-4 py-3 text-gray-7">
             <p>· 생리·호르몬 상태 (없음 / 생리 중 / 호르몬 변화 있음)</p>
             <p className="mt-1">· 기록 날짜 및 시간</p>
           </div>
 
-          <SettingsNotice className="mt-2">
+          <SettingsNotice className="mt-2 px-2">
             패턴 분석 보조 목적으로만 사용되며 제3자에게 제공되지 않아요
           </SettingsNotice>
         </section>
 
-        <div className="mt-auto pt-12">
+        <SettingsBottomAction>
           <Button text="저장하기" variant="primary" onClick={handleSaveClick} />
-        </div>
+        </SettingsBottomAction>
       </main>
 
-      {isToastVisible && (
-        <div
-          role="status"
-          className="fixed bottom-24 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[24.875rem] -translate-x-1/2 items-center gap-2 rounded-xl bg-orange-5 px-4 py-3 text-beige-1 shadow-md"
-        >
-          <span
-            aria-hidden="true"
-            className="h-1.5 w-1.5 rounded-full bg-white"
-          />
-          <span className="caption">저장하지 않고 나가면 수정되지 않아요!</span>
-        </div>
-      )}
+      <UnsavedChangesToast isVisible={isToastVisible} />
     </div>
   );
 };

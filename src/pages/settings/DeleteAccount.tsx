@@ -108,7 +108,7 @@ const DeleteAccount = () => {
         <div className="my-8 border-t border-gray-4" />
 
         <section>
-          <h2 className="body-m mb-2 text-gray-8">
+          <h2 className="body-m mb-2 px-2 text-gray-8">
             탈퇴 이유를 알려주세요{' '}
             <span className="label text-gray-6">(선택)</span>
           </h2>
@@ -137,7 +137,7 @@ const DeleteAccount = () => {
         </section>
 
         <section className="mt-8">
-          <h2 className="body-m mb-2 text-gray-8">
+          <h2 className="body-m mb-2 px-2 text-gray-8">
             계속하려면{' '}
             <strong className="body-m-bold">
               “{DELETE_CONFIRMATION_TEXT}”

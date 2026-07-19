@@ -71,7 +71,7 @@ const LoginAccount = () => {
 
       <main className="flex-1 bg-beige-1 px-4 pb-6">
         <section className="mt-6">
-          <h2 className="body-m mb-2 text-gray-8">연동된 계정</h2>
+          <h2 className="body-m mb-2 px-2 text-gray-8">연동된 계정</h2>
 
           <div className="flex min-h-12 items-center justify-between rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
             <span className="label text-gray-10">계정</span>
@@ -86,7 +86,7 @@ const LoginAccount = () => {
         </section>
 
         <section className="mt-8">
-          <h2 className="body-m mb-2 text-gray-8">계정 정보</h2>
+          <h2 className="body-m mb-2 px-2 text-gray-8">계정 정보</h2>
 
           <div className="flex min-h-12 items-center justify-between rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
             <span className="label text-gray-10">가입일</span>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ProfileCard from './components/ProfileCard';
+import SettingsNotice from './components/SettingsNotice';
 import SettingsRow from './components/SettingsRow';
 import SettingsSection from './components/SettingsSection';
 import ToggleSwitch from './components/ToggleSwitch';
@@ -18,7 +19,6 @@ import NoteIcon from '@/shared/assets/icons/settingNoteIcon.svg?react';
 import PersonIcon from '@/shared/assets/icons/settingPersonIcon.svg?react';
 import ReportIcon from '@/shared/assets/icons/settingReportIcon.svg?react';
 import ShieldIcon from '@/shared/assets/icons/settingShieldIcon.svg?react';
-import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 
 import type {
   MemberAlarmTypes,
@@ -180,10 +180,9 @@ const Settings = () => {
           </SettingsRow>
         </SettingsSection>
 
-        <p className="mt-2 flex items-center gap-1.25 text-[0.75rem] font-medium text-gray-7">
-          <WarningIcon className="h-[0.8rem] w-[0.8rem]" />
-          <span>토글을 꺼도 위험 신호 발생 시 앱 내 안내는 항상 표시돼요</span>
-        </p>
+        <SettingsNotice className="mt-2 px-2">
+          토글을 꺼도 위험 신호 발생 시 앱 내 안내는 항상 표시돼요
+        </SettingsNotice>
 
         <SettingsSection title="데이터">
           <SettingsRow

@@ -8,7 +8,7 @@ interface SettingsSectionPropTypes {
 const SettingsSection = ({ title, children }: SettingsSectionPropTypes) => {
   return (
     <section className="mt-6">
-      <h2 className="mb-2 text-[0.875rem] font-semibold text-gray-8">
+      <h2 className="mb-2 px-2 text-[0.875rem] font-semibold text-gray-8">
         {title}
       </h2>
 

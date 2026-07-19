@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
+import SettingsBottomAction from './components/SettingsBottomAction';
+import UnsavedChangesToast from './components/UnsavedChangesToast';
 import useProfileSettings from './hooks/useProfileSettings';
 
 import type { BaselineTypeTypes } from './types/settingsTypes';
@@ -35,12 +37,31 @@ const BowelRhythmSetting = () => {
   const { memberProfile, saveBaselineType } = useProfileSettings();
   const [selectedBaselineType, setSelectedBaselineType] =
     useState<BaselineTypeTypes>(memberProfile.baselineType);
+  const [isToastVisible, setIsToastVisible] = useState(false);
+
+  const isModified = selectedBaselineType !== memberProfile.baselineType;
+
+  useEffect(() => {
+    if (!isToastVisible) return;
+
+    const timerId = window.setTimeout(() => {
+      setIsToastVisible(false);
+    }, 2500);
+
+    return () => window.clearTimeout(timerId);
+  }, [isToastVisible]);
 
   const handleOptionClick = (value: BaselineTypeTypes) => {
     setSelectedBaselineType(value);
+    setIsToastVisible(false);
   };
 
   const handleBackClick = () => {
+    if (isModified) {
+      setIsToastVisible(true);
+      return;
+    }
+
     navigate('/settings/profile');
   };
 
@@ -57,7 +78,7 @@ const BowelRhythmSetting = () => {
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-6">
+      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
         <div className="flex-1">
           <section className="mt-6 text-center">
             <h1 className="text-[1.375rem] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
@@ -99,10 +120,12 @@ const BowelRhythmSetting = () => {
           </section>
         </div>
 
-        <div className="mt-auto pt-12">
+        <SettingsBottomAction>
           <Button text="저장하기" variant="primary" onClick={handleSaveClick} />
-        </div>
+        </SettingsBottomAction>
       </main>
+
+      <UnsavedChangesToast isVisible={isToastVisible} />
     </div>
   );
 };

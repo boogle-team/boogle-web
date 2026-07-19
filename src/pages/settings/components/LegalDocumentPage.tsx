@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
-import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 import type { LegalDocumentTypes } from '../constants/legalDocumentConstants';
+import SettingsNotice from './SettingsNotice';
 
 interface LegalDocumentPagePropTypes {
   document: LegalDocumentTypes;
@@ -41,10 +41,9 @@ const LegalDocumentPage = ({ document }: LegalDocumentPagePropTypes) => {
           ))}
         </div>
 
-        <p className="caption mt-6 flex items-start gap-1.5 text-gray-6">
-          <WarningIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-          <span>{document.notice}</span>
-        </p>
+        <SettingsNotice className="mt-6" textColor="text-gray-6">
+          {document.notice}
+        </SettingsNotice>
       </main>
     </div>
   );

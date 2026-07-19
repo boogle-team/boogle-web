@@ -5,6 +5,8 @@ import InputText from '@/shared/components/InputText';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 import ProfileInfoRow from './components/ProfileInfoRow';
+import SettingsBottomAction from './components/SettingsBottomAction';
+import SettingsNotice from './components/SettingsNotice';
 import {
   AGE_GROUP_LABEL_MAP,
   BASELINE_TYPE_DETAIL_LABEL_MAP,
@@ -12,7 +14,6 @@ import {
 } from './constants/settingsConstants';
 import useProfileSettings from './hooks/useProfileSettings';
 
-import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 import Camera from '@/shared/assets/icons/camera.svg?react';
 
@@ -69,7 +70,7 @@ const ProfileEdit = () => {
         isBorderVisible={false}
       />
 
-      <main className="flex-1 bg-beige-1">
+      <main className="flex-1 bg-beige-1 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
         <div className="mt-8 flex justify-center">
           <div className="relative">
             <div className="flex h-30 w-30 items-center justify-center rounded-full bg-orange-3">
@@ -86,7 +87,7 @@ const ProfileEdit = () => {
         </div>
         <div className="px-4">
           <div className="mt-8">
-            <p className="mb-2 body-m leading-6 text-gray-8">닉네임</p>
+            <p className="body-m mb-2 px-2 leading-6 text-gray-8">닉네임</p>
 
             <InputText
               value={nicknameDraft}
@@ -96,7 +97,7 @@ const ProfileEdit = () => {
           </div>
 
           <div className="mt-8">
-            <div className="mb-2 flex items-baseline gap-2">
+            <div className="mb-2 flex items-baseline gap-2 px-2">
               <span className="text-gray-8">기준선 정보</span>
               <span className="text-[0.875rem] text-orange-5">선택</span>
             </div>
@@ -126,23 +127,21 @@ const ProfileEdit = () => {
             </div>
           </div>
 
-          <div className="mt-2 flex items-start gap-1.25 text-[0.75rem] font-medium text-gray-7">
-            <WarningIcon className="h-[1rem] w-[1rem] shrink-0" />
-
+          <SettingsNotice className="mt-2 px-2">
             <div className="flex flex-col">
               <span>기준선 정보는 패턴 분석 초기값으로만 쓰여요.</span>
               <span>기록이 쌓이면 실제 데이터가 우선 반영돼요.</span>
             </div>
-          </div>
+          </SettingsNotice>
 
-          <div className="mt-20 mb-[3.69rem]">
+          <SettingsBottomAction>
             <Button
               text="저장하기"
               variant="primary"
               disabled={!nicknameDraft.trim()}
               onClick={handleSaveClick}
             />
-          </div>
+          </SettingsBottomAction>
         </div>
       </main>
     </div>

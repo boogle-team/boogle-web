@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import Chip from '@/shared/components/Chip';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
+import SettingsBottomAction from './components/SettingsBottomAction';
+import UnsavedChangesToast from './components/UnsavedChangesToast';
 import useProfileSettings from './hooks/useProfileSettings';
 
 import type { AgeGroupTypes, GenderTypes } from './types/settingsTypes';
@@ -36,9 +38,39 @@ const BaselineInfoSetting = () => {
     memberProfile.ageGroup,
   );
   const [selectedGender, setSelectedGender] = useState(memberProfile.gender);
+  const [isToastVisible, setIsToastVisible] = useState(false);
+
+  const isModified =
+    selectedAgeGroup !== memberProfile.ageGroup ||
+    selectedGender !== memberProfile.gender;
+
+  useEffect(() => {
+    if (!isToastVisible) return;
+
+    const timerId = window.setTimeout(() => {
+      setIsToastVisible(false);
+    }, 2500);
+
+    return () => window.clearTimeout(timerId);
+  }, [isToastVisible]);
 
   const handleBackClick = () => {
+    if (isModified) {
+      setIsToastVisible(true);
+      return;
+    }
+
     navigate('/settings/profile');
+  };
+
+  const handleAgeGroupClick = (ageGroup: AgeGroupTypes) => {
+    setSelectedAgeGroup(ageGroup);
+    setIsToastVisible(false);
+  };
+
+  const handleGenderClick = (gender: GenderTypes) => {
+    setSelectedGender(gender);
+    setIsToastVisible(false);
   };
 
   const handleSaveClick = () => {
@@ -54,7 +86,7 @@ const BaselineInfoSetting = () => {
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-6">
+      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
         <section className="mt-6 text-center">
           <h1 className="text-[1.375rem] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
             정보를 조금만 더 알려주세요!
@@ -81,7 +113,7 @@ const BaselineInfoSetting = () => {
                   text={option.label}
                   size="compact"
                   isSelected={isSelected}
-                  onClick={() => setSelectedAgeGroup(option.value)}
+                  onClick={() => handleAgeGroupClick(option.value)}
                 />
               );
             })}
@@ -103,17 +135,19 @@ const BaselineInfoSetting = () => {
                   text={option.label}
                   size="compact"
                   isSelected={isSelected}
-                  onClick={() => setSelectedGender(option.value)}
+                  onClick={() => handleGenderClick(option.value)}
                 />
               );
             })}
           </div>
         </section>
 
-        <div className="mt-auto pt-12">
+        <SettingsBottomAction>
           <Button text="저장하기" variant="primary" onClick={handleSaveClick} />
-        </div>
+        </SettingsBottomAction>
       </main>
+
+      <UnsavedChangesToast isVisible={isToastVisible} />
     </div>
   );
 };
