@@ -7,12 +7,15 @@ interface InputTextPropTypes {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  minCount?: number;
   maxCount?: number;
+  showCounter?: boolean;
   isError?: boolean;
   errorMessage?: string;
   helperText?: string;
   actionLabel?: string;
   onAction?: () => void;
+  isActionDisabled?: boolean;
   disabled?: boolean;
 }
 
@@ -20,28 +23,47 @@ const InputText = ({
   value,
   onChange,
   placeholder,
+  minCount,
   maxCount,
+  showCounter,
   isError,
   errorMessage,
   helperText,
   actionLabel,
   onAction,
+  isActionDisabled,
   disabled,
 }: InputTextPropTypes) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
 
-  const hasCounter = maxCount !== undefined;
+  const hasCounter =
+    Boolean(showCounter ?? maxCount !== undefined) && maxCount !== undefined;
   const hasAction = Boolean(actionLabel && onAction);
-  const isMaxCountExceeded = hasCounter && value.length > maxCount;
-  const hasError = Boolean(isError || isMaxCountExceeded);
+  const isMinCountShort =
+    minCount !== undefined && value.length > 0 && value.length < minCount;
+  const isMaxCountExceeded = maxCount !== undefined && value.length > maxCount;
+  const hasError = Boolean(isError || isMinCountShort || isMaxCountExceeded);
+  const countRangeHelperMessage =
+    minCount !== undefined && maxCount !== undefined
+      ? `${minCount}~${maxCount}자 이내로 입력해주세요`
+      : helperText;
+  const minCountErrorMessage = `${minCount}자 이상 입력해주세요`;
   const maxCountErrorMessage = `${maxCount}자 이내로 입력해주세요`;
   const bottomMessage = hasError
-    ? isMaxCountExceeded
-      ? maxCountErrorMessage
-      : errorMessage
-    : helperText;
+    ? isMinCountShort
+      ? minCountErrorMessage
+      : isMaxCountExceeded
+        ? maxCountErrorMessage
+        : errorMessage
+    : countRangeHelperMessage;
+  const isCountInvalidForAction = Boolean(
+    (minCount !== undefined && value.length < minCount) || isMaxCountExceeded,
+  );
+  const shouldDisableAction = Boolean(
+    disabled || isActionDisabled || isCountInvalidForAction,
+  );
 
   return (
     <div className="w-full">
@@ -74,7 +96,7 @@ const InputText = ({
           <ConfirmButton
             label={actionLabel as string}
             onClick={onAction as () => void}
-            disabled={disabled}
+            disabled={shouldDisableAction}
           />
         )}
       </div>
