@@ -9,6 +9,10 @@ import type {
 
 export interface ProfileSettingsContextValueTypes {
   memberProfile: MemberProfileTypes;
+  nicknameDraft: string;
+  updateNicknameDraft: (nickname: string) => void;
+  resetNicknameDraft: () => void;
+  saveNickname: (nickname: string) => void;
   saveBaselineInfo: (ageGroup: AgeGroupTypes, gender: GenderTypes) => void;
   saveBaselineType: (baselineType: BaselineTypeTypes) => void;
 }

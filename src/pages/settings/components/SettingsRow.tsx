@@ -1,5 +1,5 @@
 ﻿import type { ReactNode } from 'react';
-import ChevronLeftIcon from '@/shared/assets/icons/chevronLeftIcon.svg?react';
+import { ChevronRight } from 'lucide-react';
 
 interface SettingsRowPropTypes {
   title: string;
@@ -22,12 +22,12 @@ const SettingsRow = ({
   children,
   onClick,
 }: SettingsRowPropTypes) => {
-  const rowClassName = `relative flex w-full items-center justify-between bg-white px-[16px] py-[16px] text-left ${
+  const rowClassName = `relative flex w-full items-center justify-between bg-white px-[1rem] py-[1rem] text-left ${
     onClick ? 'cursor-pointer' : 'cursor-default'
   }`;
 
-  const titleClassName = `text-[16px] font-medium ${
-    isDanger ? 'text-[#FF7675]' : 'text-[#4E4B4B]'
+  const titleClassName = `text-[1rem] body-m ${
+    isDanger ? 'text-semantic-danger' : 'text-gray-9'
   }`;
 
   const rowContent = (
@@ -48,7 +48,7 @@ const SettingsRow = ({
 
       <div className="flex items-center gap-2">
         {rightText && (
-          <span className="rounded-xl bg-gray-3 px-3 py-0.5 text-[12px] font-semibold text-gray-8">
+          <span className="rounded-xl bg-gray-3 px-3 py-0.5 text-[0.75rem] font-semibold text-gray-8">
             {rightText}
           </span>
         )}
@@ -56,12 +56,15 @@ const SettingsRow = ({
         {children}
 
         {onClick && !hideArrow && (
-          <ChevronLeftIcon className="h-4 w-4 rotate-180 text-gray-7" />
+          <ChevronRight
+            className="aspect-square h-6 w-6 text-gray-7"
+            strokeWidth={1.5}
+          />
         )}
       </div>
 
       {hasDivider && (
-        <div className="absolute bottom-0 left-[16px] right-[16px] border-b border-[#F0EDEA]" />
+        <div className="absolute bottom-0 left-[1rem] right-[1rem] border-b border-[#F0EDEA]" />
       )}
     </>
   );

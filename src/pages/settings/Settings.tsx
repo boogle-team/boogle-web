@@ -6,6 +6,7 @@ import SettingsRow from './components/SettingsRow';
 import SettingsSection from './components/SettingsSection';
 import ToggleSwitch from './components/ToggleSwitch';
 import { APP_VERSION, PROVIDER_LABEL_MAP } from './constants/settingsConstants';
+import useProfileSettings from './hooks/useProfileSettings';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import ConfirmModal from '@/shared/components/ConfirmModal';
@@ -27,7 +28,7 @@ import type {
 
 const MOCK_MEMBER: MemberTypes = {
   nickname: '이연수',
-  profileImg: null,
+  profileImage: null,
   gender: 'F',
   baselineType: 'R',
   regDate: '2026-07-08T00:00:00+09:00',
@@ -35,12 +36,13 @@ const MOCK_MEMBER: MemberTypes = {
 
 const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
   provider: 'K',
-  email: 'boogle****@kakao.com',
+  maskedEmail: 'boogle****@kakao.com',
   regDate: '2026-06-13T00:00:00+09:00',
 };
 
 const Settings = () => {
   const navigate = useNavigate();
+  const { memberProfile } = useProfileSettings();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const [memberAlarm, setMemberAlarm] = useState<MemberAlarmTypes>({
@@ -98,7 +100,13 @@ const Settings = () => {
     }));
   };
 
-  const isSensitiveConsentMenuVisible = MOCK_MEMBER.gender !== 'M';
+  const member = {
+    ...MOCK_MEMBER,
+    nickname: memberProfile.nickname,
+    gender: memberProfile.gender,
+    baselineType: memberProfile.baselineType,
+  };
+  const isSensitiveConsentMenuVisible = member.gender !== 'M';
   const providerLabel = PROVIDER_LABEL_MAP[MOCK_SOCIAL_ACCOUNT.provider];
 
   return (
@@ -106,12 +114,13 @@ const Settings = () => {
       <TopNavigation
         title="설정"
         onBackButtonClick={handleBackClick}
-        className="mt-[3.06rem] bg-beige-5!"
+        isBorderVisible={false}
+        className="mt-[3.06rem] bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
       />
 
-      <main className="min-h-screen bg-beige-5 px-5 pb-10">
+      <main className="min-h-screen bg-beige-5 pt-6 px-5 pb-10">
         <ProfileCard
-          member={MOCK_MEMBER}
+          member={member}
           onProfileEditClick={handleProfileEditClick}
         />
 
@@ -171,7 +180,7 @@ const Settings = () => {
           </SettingsRow>
         </SettingsSection>
 
-        <p className="mt-2 flex items-center gap-1.25 text-[12px] font-medium text-gray-7">
+        <p className="mt-2 flex items-center gap-1.25 text-[0.75rem] font-medium text-gray-7">
           <WarningIcon className="h-[0.8rem] w-[0.8rem]" />
           <span>토글을 꺼도 위험 신호 발생 시 앱 내 안내는 항상 표시돼요</span>
         </p>

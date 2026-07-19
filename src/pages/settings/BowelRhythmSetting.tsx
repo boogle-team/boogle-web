@@ -60,12 +60,12 @@ const BowelRhythmSetting = () => {
       <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-6">
         <div className="flex-1">
           <section className="mt-6 text-center">
-            <h1 className="text-[22px] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
+            <h1 className="text-[1.375rem] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
               평소 <span className="text-orange-6">배변 리듬</span>이 어떻게
               되세요?
             </h1>
 
-            <p className="mt-[0.37rem] text-[14px] font-medium leading-[1.225rem] tracking-[-0.0175rem] text-gray-7">
+            <p className="mt-[0.37rem] text-[0.875rem] font-medium leading-[1.225rem] tracking-[-0.0175rem] text-gray-7">
               입력하면 <span className="text-orange-6">더 정확한 기준선</span>을
               만들 수 있어요
             </p>
@@ -87,7 +87,7 @@ const BowelRhythmSetting = () => {
                   }`}
                 >
                   <p
-                    className={`text-[14px] font-semibold leading-[1.225rem] tracking-[-0.0175px] transition-colors duration-200 ease-in-out ${
+                    className={`text-[0.875rem] font-semibold leading-[1.225rem] tracking-[-0.00109375rem] transition-colors duration-200 ease-in-out ${
                       isSelected ? 'text-orange-7' : 'text-gray-7'
                     }`}
                   >

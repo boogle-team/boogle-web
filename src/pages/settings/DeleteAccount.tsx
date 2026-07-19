@@ -64,39 +64,39 @@ const DeleteAccount = () => {
           </div>
 
           <ul className="mt-2 space-y-1 pl-7">
-            <li className="caption flex items-start gap-2 text-gray-8">
+            <li className="label flex items-start gap-2 text-gray-8">
               <CheckIcon
                 aria-hidden="true"
                 className="h-3.5 w-3.5 shrink-0 text-orange-5"
               />
               <span>
                 부글기록·생활기록 데이터가{' '}
-                <strong className="font-semibold text-semantic-danger">
+                <strong className="label-bold text-semantic-danger">
                   모두 삭제
                 </strong>
                 돼요
               </span>
             </li>
-            <li className="caption flex items-start gap-2 text-gray-8">
+            <li className="label flex items-start gap-2 text-gray-8">
               <CheckIcon
                 aria-hidden="true"
                 className="h-3.5 w-3.5 shrink-0 text-orange-5"
               />
               <span>
                 삭제된 데이터는{' '}
-                <strong className="font-semibold text-semantic-danger">
+                <strong className="label-bold text-semantic-danger">
                   복구할 수 없어요
                 </strong>
               </span>
             </li>
-            <li className="caption flex items-start gap-2 text-gray-8">
+            <li className="label flex items-start gap-2 text-gray-8">
               <CheckIcon
                 aria-hidden="true"
                 className="h-3.5 w-3.5 shrink-0 text-orange-5"
               />
               <span>
                 저장된{' '}
-                <strong className="font-semibold text-semantic-danger">
+                <strong className="label-bold text-semantic-danger">
                   PDF 리포트
                 </strong>
                 도 함께 삭제돼요
@@ -123,7 +123,7 @@ const DeleteAccount = () => {
                   type="button"
                   aria-pressed={isSelected}
                   onClick={() => handleReasonClick(reason)}
-                  className={`label min-h-12 rounded-xl border bg-beige-1 px-3 transition-colors ${
+                  className={`label-semi min-h-12 rounded-xl border bg-beige-1 px-3 transition-colors ${
                     isSelected
                       ? 'border-orange-5 text-orange-7 bg-orange-1'
                       : 'border-gray-5 text-gray-7 bg-beige-1'

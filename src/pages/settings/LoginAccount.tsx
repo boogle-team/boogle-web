@@ -13,7 +13,7 @@ interface ProviderIconPropTypes {
 
 const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
   provider: 'K',
-  email: 'boogle****@kakao.com',
+  maskedEmail: 'boogle****@kakao.com',
   regDate: '2026.06.13',
 };
 
@@ -79,14 +79,14 @@ const LoginAccount = () => {
             <div className="flex min-w-0 items-center gap-2">
               <ProviderIcon provider={socialAccount.provider} />
               <span className="caption truncate text-gray-8">
-                {socialAccount.email}
+                {socialAccount.maskedEmail}
               </span>
             </div>
           </div>
         </section>
 
         <section className="mt-8">
-          <h2 className="label mb-2 text-gray-8">계정 정보</h2>
+          <h2 className="body-m mb-2 text-gray-8">계정 정보</h2>
 
           <div className="flex min-h-12 items-center justify-between rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
             <span className="label text-gray-10">가입일</span>

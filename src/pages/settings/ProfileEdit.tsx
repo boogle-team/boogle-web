@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
@@ -19,9 +18,16 @@ import Camera from '@/shared/assets/icons/camera.svg?react';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
-  const { memberProfile } = useProfileSettings();
+  const {
+    memberProfile,
+    nicknameDraft,
+    updateNicknameDraft,
+    resetNicknameDraft,
+    saveNickname,
+  } = useProfileSettings();
 
   const handleBackClick = () => {
+    resetNicknameDraft();
     navigate('/settings');
   };
 
@@ -37,20 +43,30 @@ const ProfileEdit = () => {
     navigate('/settings/baseline-info');
   };
 
-  const [nickname, setNickname] = useState('땅콩잼');
-
   const handleNicknameChange = (value: string) => {
     if (value.length <= 10) {
-      setNickname(value);
+      updateNicknameDraft(value);
     }
+  };
+
+  const handleSaveClick = () => {
+    const trimmedNickname = nicknameDraft.trim();
+
+    if (!trimmedNickname) {
+      return;
+    }
+
+    saveNickname(trimmedNickname);
+    navigate('/settings');
   };
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="mt-[3.06rem] bg-beige-2"
+        className="mt-[3.06rem] bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
         title="프로필 수정"
         onBackButtonClick={handleBackClick}
+        isBorderVisible={false}
       />
 
       <main className="flex-1 bg-beige-1">
@@ -73,7 +89,7 @@ const ProfileEdit = () => {
             <p className="mb-2 body-m leading-6 text-gray-8">닉네임</p>
 
             <InputText
-              value={nickname}
+              value={nicknameDraft}
               onChange={handleNicknameChange}
               maxCount={10}
             />
@@ -82,10 +98,10 @@ const ProfileEdit = () => {
           <div className="mt-8">
             <div className="mb-2 flex items-baseline gap-2">
               <span className="text-gray-8">기준선 정보</span>
-              <span className="text-[14px] text-orange-5">선택</span>
+              <span className="text-[0.875rem] text-orange-5">선택</span>
             </div>
 
-            <div className="flex flex-col">
+            <div className="overflow-hidden rounded-2xl border border-gray-4 bg-white">
               <ProfileInfoRow
                 title="평소 배변 리듬"
                 value={
@@ -94,7 +110,8 @@ const ProfileEdit = () => {
                 onClick={handleBowelRhythmClick}
               />
             </div>
-            <div className="pt-2 flex flex-col">
+
+            <div className="mt-2 divide-y divide-gray-4 overflow-hidden rounded-2xl border border-gray-4 bg-white">
               <ProfileInfoRow
                 title="나이대"
                 value={AGE_GROUP_LABEL_MAP[memberProfile.ageGroup]}
@@ -119,7 +136,12 @@ const ProfileEdit = () => {
           </div>
 
           <div className="mt-20 mb-[3.69rem]">
-            <Button text="저장하기" variant="primary" />
+            <Button
+              text="저장하기"
+              variant="primary"
+              disabled={!nicknameDraft.trim()}
+              onClick={handleSaveClick}
+            />
           </div>
         </div>
       </main>

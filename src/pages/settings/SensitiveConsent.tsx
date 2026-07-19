@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import InfoFlagIcon from '@/shared/assets/icons/infoFlagIcon.svg?react';
-import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 import Button from '@/shared/components/Button';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
+import SettingsNotice from './components/SettingsNotice';
 import ToggleSwitch from './components/ToggleSwitch';
 
 import type { TfTypes } from './types/settingsTypes';
@@ -72,12 +72,12 @@ const SensitiveConsent = () => {
         <div className="my-8 border-t border-gray-4" />
 
         <section>
-          <h2 className="label mb-2 text-gray-8">동의 항목</h2>
+          <h2 className="body-m mb-2 text-gray-8">동의 항목</h2>
 
           <div className="rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <h3 className="label-semi text-gray-10">
+                <h3 className="label-bold text-gray-10">
                   생리·호르몬 데이터 수집
                 </h3>
                 <p className="caption mt-1 text-gray-7">
@@ -96,28 +96,22 @@ const SensitiveConsent = () => {
             </div>
           </div>
 
-          <p className="caption mt-2 flex items-start gap-1.5 text-gray-7">
-            <WarningIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-            <span className="caption">
-              철회 시 관련 항목과 기존 기록 데이터가 삭제돼요
-            </span>
-          </p>
+          <SettingsNotice className="mt-2">
+            철회 시 관련 항목과 기존 기록 데이터가 삭제돼요
+          </SettingsNotice>
         </section>
 
         <section className="mt-8">
-          <h2 className="label mb-2 text-gray-8">수집되는 데이터</h2>
+          <h2 className="body-m mb-2 text-gray-8">수집되는 데이터</h2>
 
           <div className="caption rounded-xl border border-gray-4 bg-beige-1 px-4 py-3 text-gray-7">
             <p>· 생리·호르몬 상태 (없음 / 생리 중 / 호르몬 변화 있음)</p>
             <p className="mt-1">· 기록 날짜 및 시간</p>
           </div>
 
-          <p className="caption mt-2 flex items-start gap-1.5 text-gray-7">
-            <WarningIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-            <span className="caption">
-              패턴 분석 보조 목적으로만 사용되며 제3자에게 제공되지 않아요
-            </span>
-          </p>
+          <SettingsNotice className="mt-2">
+            패턴 분석 보조 목적으로만 사용되며 제3자에게 제공되지 않아요
+          </SettingsNotice>
         </section>
 
         <div className="mt-auto pt-12">
@@ -128,7 +122,7 @@ const SensitiveConsent = () => {
       {isToastVisible && (
         <div
           role="status"
-          className="fixed bottom-24 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[398px] -translate-x-1/2 items-center gap-2 rounded-xl bg-orange-5 px-4 py-3 text-beige-1 shadow-md"
+          className="fixed bottom-24 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[24.875rem] -translate-x-1/2 items-center gap-2 rounded-xl bg-orange-5 px-4 py-3 text-beige-1 shadow-md"
         >
           <span
             aria-hidden="true"

@@ -11,6 +11,7 @@ export type YnTypes = 'Y' | 'N';
 export type TfTypes = 'T' | 'F';
 
 export interface MemberProfileTypes {
+  nickname: string;
   ageGroup: AgeGroupTypes;
   gender: GenderTypes;
   baselineType: BaselineTypeTypes;
@@ -18,7 +19,7 @@ export interface MemberProfileTypes {
 
 export interface MemberTypes {
   nickname: string;
-  profileImg: string | null;
+  profileImage: string | null;
   gender: GenderTypes;
   baselineType: BaselineTypeTypes;
   regDate: string;
@@ -26,7 +27,7 @@ export interface MemberTypes {
 
 export interface SocialAccountTypes {
   provider: ProviderTypes;
-  email: string;
+  maskedEmail: string;
   regDate: string;
 }
 

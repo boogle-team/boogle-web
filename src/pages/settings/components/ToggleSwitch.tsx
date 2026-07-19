@@ -21,7 +21,7 @@ const ToggleSwitch = ({
       }`}
     >
       <span
-        className={`h-4.5 w-4.5 rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.16)] transition-transform duration-200 ${
+        className={`h-4.5 w-4.5 rounded-full bg-white shadow-[0_0.0625rem_0.125rem_rgba(0,0,0,0.16)] transition-transform duration-200 ${
           isEnabled ? 'translate-x-[1.6rem]' : 'translate-x-0'
         }`}
       />

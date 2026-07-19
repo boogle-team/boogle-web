@@ -56,18 +56,18 @@ const BaselineInfoSetting = () => {
 
       <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-6">
         <section className="mt-6 text-center">
-          <h1 className="text-[22px] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
+          <h1 className="text-[1.375rem] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
             정보를 조금만 더 알려주세요!
           </h1>
 
-          <p className="mt-[0.37rem] text-[14px] font-medium leading-[1.225rem] tracking-[-0.0175rem] text-gray-7">
+          <p className="mt-[0.37rem] text-[0.875rem] font-medium leading-[1.225rem] tracking-[-0.0175rem] text-gray-7">
             입력하면 <span className="text-orange-6">더 정확한 기준선</span>을
             만들 수 있어요
           </p>
         </section>
 
         <section className="mt-8">
-          <h2 className="mb-3 text-center text-[16px] font-medium leading-[1.4rem] tracking-[-0.02rem] text-gray-8">
+          <h2 className="mb-3 text-center text-[1rem] font-medium leading-[1.4rem] tracking-[-0.02rem] text-gray-8">
             나이대
           </h2>
 
@@ -89,7 +89,7 @@ const BaselineInfoSetting = () => {
         </section>
 
         <section className="mt-8 border-t border-gray-4 pt-8 px-[2.81rem]">
-          <h2 className="mb-3 text-center text-[16px] font-medium leading-[1.4rem] tracking-[-0.02rem] text-gray-8">
+          <h2 className="mb-3 text-center text-[1rem] font-medium leading-[1.4rem] tracking-[-0.02rem] text-gray-8">
             성별
           </h2>
 

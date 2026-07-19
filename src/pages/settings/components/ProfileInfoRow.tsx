@@ -1,14 +1,14 @@
-import ChevronLeftIcon from '@/shared/assets/icons/chevronLeftIcon.svg?react';
+import { ChevronRight } from 'lucide-react';
 
-interface ProfileInfoRowProps {
+interface ProfileInfoRowPropTypes {
   title: string;
   value: string;
   onClick?: () => void;
 }
 
-const ProfileInfoRow = ({ title, value, onClick }: ProfileInfoRowProps) => {
+const ProfileInfoRow = ({ title, value, onClick }: ProfileInfoRowPropTypes) => {
   return (
-    <div className="flex w-full items-center justify-between rounded-2xl border border-gray-4 bg-white px-4 py-[0.62rem] ">
+    <div className="flex w-full items-center justify-between bg-white px-4 py-[0.62rem]">
       <span>{title}</span>
 
       <div className="flex items-center gap-1">
@@ -18,9 +18,12 @@ const ProfileInfoRow = ({ title, value, onClick }: ProfileInfoRowProps) => {
           type="button"
           onClick={onClick}
           aria-label={`${title} 선택`}
-          className="flex h-8 w-8 items-center justify-center"
+          className="flex h-8 w-6 items-center justify-center"
         >
-          <ChevronLeftIcon className="h-4 w-4 rotate-180 text-orange-6" />
+          <ChevronRight
+            className="aspect-square h-6 w-6 text-orange-6"
+            strokeWidth={1.5}
+          />
         </button>
       </div>
     </div>

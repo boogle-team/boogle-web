@@ -1,7 +1,7 @@
 ﻿import { BASELINE_TYPE_LABEL_MAP } from '../constants/settingsConstants';
 import type { MemberTypes } from '../types/settingsTypes';
 
-import ChevronLeftIcon from '@/shared/assets/icons/chevronLeftIcon.svg?react';
+import { ChevronRight } from 'lucide-react';
 import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 
 interface ProfileCardPropTypes {
@@ -31,12 +31,12 @@ const ProfileCard = ({ member, onProfileEditClick }: ProfileCardPropTypes) => {
   const joinedDays = getJoinedDays(member.regDate);
 
   return (
-    <section className="flex items-center justify-between rounded-xl bg-white p-[16px] shadow-[0_0_6px_rgba(252,244,235,0.5)]">
-      <div className="flex items-center gap-[16px]">
+    <section className="flex items-center justify-between rounded-xl bg-white p-[1rem] shadow-[0_0_0.375rem_rgba(252,244,235,0.5)]">
+      <div className="flex items-center gap-[1rem]">
         <div className="flex h-13.5 w-13.5 items-center justify-center overflow-hidden rounded-full bg-[#FFCEBB]">
-          {member.profileImg ? (
+          {member.profileImage ? (
             <img
-              src={member.profileImg}
+              src={member.profileImage}
               alt={`${member.nickname} 프로필 이미지`}
               className="h-9 w-9 object-contain"
             />
@@ -47,12 +47,12 @@ const ProfileCard = ({ member, onProfileEditClick }: ProfileCardPropTypes) => {
 
         <div className="flex flex-col gap-1">
           <p className="flex items-baseline gap-0.5">
-            <span className="text-[18px] font-normal text-gray-10">
+            <span className="text-[1.125rem] font-normal text-gray-10">
               {member.nickname}
             </span>
           </p>
 
-          <p className="text-[12px] font-medium text-gray-7">
+          <p className="text-[0.75rem] font-medium text-gray-7">
             {baselineTypeLabel} · 가입 {joinedDays}일째
           </p>
         </div>
@@ -61,11 +61,11 @@ const ProfileCard = ({ member, onProfileEditClick }: ProfileCardPropTypes) => {
       <button
         type="button"
         onClick={onProfileEditClick}
-        className="flex items-center gap-1 text-[14px] font-normal text-orange-6"
+        className="flex items-center gap-1 text-[0.875rem] font-normal text-orange-6"
       >
         <span>프로필 수정</span>
 
-        <ChevronLeftIcon className="h-3.5 w-3.5 rotate-180" />
+        <ChevronRight className="aspect-square h-6 w-6" strokeWidth={1.5} />
       </button>
     </section>
   );
