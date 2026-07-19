@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { CALENDAR_MARK_CONFIG } from '../constants/calendarMarkConfig';
 import type {
   CalendarDateCellTypes,
@@ -34,6 +35,8 @@ const CalendarDateCell = ({
   return (
     <button
       type="button"
+      aria-label={dayjs(date).format('YYYY년 M월 D일')}
+      aria-pressed={isSelected}
       onClick={() => onSelectDate(date)}
       className="flex flex-col items-center gap-2 py-2"
     >
