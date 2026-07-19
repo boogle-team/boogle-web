@@ -1,8 +1,9 @@
 import type { Dayjs } from 'dayjs';
-import { WEEKDAY_LABELS } from '../constants/calendarMarkConfig';
 import { generateMonthDates } from '../utils/generateMonthDates';
 import type { CalendarRecordMapTypes } from '../types/calendarTypes';
 import CalendarDateCell from './CalendarDateCell';
+
+const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
 
 interface CalendarGridPropTypes {
   currentDate: Dayjs;

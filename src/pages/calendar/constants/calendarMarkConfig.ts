@@ -1,7 +1,5 @@
 import type { CalendarMarkTypes } from '../types/calendarTypes';
 
-export const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
-
 interface MarkConfigTypes {
   label: string;
   dotClassName: string;
