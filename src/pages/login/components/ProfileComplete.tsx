@@ -8,9 +8,8 @@ interface ProfileCompletePropTypes {
 
 const ProfileComplete = ({ onGoHome }: ProfileCompletePropTypes) => {
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-5 px-layout pb-8">
+    <div className="flex min-h-dvh flex-col bg-beige-5 px-layout pb-[3.69rem]">
       <div className="flex flex-1 flex-col items-center justify-center">
-        {/* TODO: figma 완료 캐릭터 일러스트 SVG 추출 후 교체 */}
         <div className="relative">
           <OnboardingCompleteCharacter className="animate-complete-character h-47 w-47" />
         </div>
