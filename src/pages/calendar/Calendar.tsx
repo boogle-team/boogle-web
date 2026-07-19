@@ -5,6 +5,7 @@ import CalendarLegend from './components/CalendarLegend';
 import CalendarGrid from './components/CalendarGrid';
 import { getMockCalendarRecords } from './utils/mockCalendarRecords';
 import { DATE_FORMAT } from './utils/generateMonthDates';
+import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(() => dayjs());
@@ -34,9 +35,7 @@ const Calendar = () => {
     <div>
       <div className="h-12.25" />
 
-      <header className="flex h-14.25 w-full items-center justify-center border-b border-gray-3 bg-beige-1">
-        <h1 className="body-lg text-gray-10">캘린더</h1>
-      </header>
+      <DefaultTopNavigation title="캘린더" isBackButtonVisible={false} />
 
       <div className="px-4">
         <MonthNavigator
