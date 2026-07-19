@@ -48,12 +48,13 @@ const CalendarDateCell = ({
       </span>
 
       <span className="flex h-1.5 items-center gap-1">
-        {marks.map((markType) => (
-          <span
-            key={markType}
-            className={`h-1.5 w-1.5 shrink-0 rounded-full ${CALENDAR_MARK_CONFIG[markType].dotClassName}`}
-          />
-        ))}
+        {isCurrentMonth &&
+          marks.map((markType) => (
+            <span
+              key={markType}
+              className={`h-1.5 w-1.5 shrink-0 rounded-full ${CALENDAR_MARK_CONFIG[markType].dotClassName}`}
+            />
+          ))}
       </span>
     </button>
   );
