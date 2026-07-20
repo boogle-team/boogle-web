@@ -1,10 +1,11 @@
 import type { ChangeEvent } from 'react';
 
+import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
+
 import {
   PAIN_LEVEL_LABELS,
   PAIN_LEVEL_MAX,
-} from '../constants/record.constants';
-import RecordSectionTitle from './RecordSectionTitle';
+} from '../constants/recordConstants';
 
 interface PainLevelFieldPropTypes {
   value: number;

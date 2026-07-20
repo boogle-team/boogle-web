@@ -1,9 +1,10 @@
 import BowelStatusNoIcon from '@/shared/assets/illustrations/record/bowelStatus/bowelStatusNo.svg?react';
 import BowelStatusYesIcon from '@/shared/assets/illustrations/record/bowelStatus/bowelStatusYes.svg?react';
 
-import { BOWEL_STATUS_OPTIONS } from '../constants/record.constants';
+import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
+
+import { BOWEL_STATUS_OPTIONS } from '../constants/recordConstants';
 import type { BowelStatusTypes } from '../types/recordTypes';
-import RecordSectionTitle from './RecordSectionTitle';
 
 interface BowelStatusFieldPropTypes {
   value: BowelStatusTypes;

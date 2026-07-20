@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { HOURS, MERIDIEMS, MINUTES } from '../constants/record.constants';
+import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
+
+import { HOURS, MERIDIEMS, MINUTES } from '../constants/recordConstants';
 import type { MeridiemTypes, RecordTimeValueTypes } from '../types/recordTypes';
-import RecordSectionTitle from './RecordSectionTitle';
 import TimeWheelColumn from './TimeWheelColumn';
 
 interface RecordTimeFieldPropTypes {

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import TooltipPopover from '@/shared/components/TooltipPopover';
 import useOutsideClick from '@/shared/hooks/useOutsideClick';
+import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
 import StoolType1Icon from '@/shared/assets/illustrations/record/stoolType/stoolType1.svg?react';
 import StoolType2Icon from '@/shared/assets/illustrations/record/stoolType/stoolType2.svg?react';
 import StoolType3Icon from '@/shared/assets/illustrations/record/stoolType/stoolType3.svg?react';
@@ -13,9 +14,8 @@ import StoolType7Icon from '@/shared/assets/illustrations/record/stoolType/stool
 import {
   BRISTOL_SCALE_DESCRIPTION,
   STOOL_TYPE_OPTIONS,
-} from '../constants/record.constants';
+} from '../constants/recordConstants';
 import type { StoolTypeId, StoolTypeOptionTypes } from '../types/recordTypes';
-import RecordSectionTitle from './RecordSectionTitle';
 
 interface StoolTypeFieldPropTypes {
   value: StoolTypeId | null;

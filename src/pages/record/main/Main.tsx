@@ -12,7 +12,7 @@ import StoolTypeField from './components/StoolTypeField';
 import { useRecordForm } from './hooks/useRecordForm';
 import { formatRecordDate } from './utils/formatRecordDate';
 
-const Record = () => {
+const Main = () => {
   const navigate = useNavigate();
 
   const {
@@ -83,4 +83,4 @@ const Record = () => {
   );
 };
 
-export default Record;
+export default Main;
