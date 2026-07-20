@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
+import Chip from '@/shared/components/Chip';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 import SettingsBottomAction from './components/SettingsBottomAction';
@@ -80,24 +81,12 @@ const BowelRhythmSetting = () => {
               const isSelected = selectedBaselineType === option.value;
 
               return (
-                <button
+                <Chip
                   key={option.value}
-                  type="button"
+                  text={option.label}
+                  isSelected={isSelected}
                   onClick={() => handleOptionClick(option.value)}
-                  className={`w-full rounded-xl border py-[0.88rem] text-center transition-all duration-200 ease-in-out ${
-                    isSelected
-                      ? 'border-orange-7 bg-orange-1'
-                      : 'border-gray-5 bg-beige-1'
-                  }`}
-                >
-                  <p
-                    className={`text-[0.875rem] font-semibold leading-[1.225rem] tracking-[-0.00109375rem] transition-colors duration-200 ease-in-out ${
-                      isSelected ? 'text-orange-7' : 'text-gray-7'
-                    }`}
-                  >
-                    {option.label}
-                  </p>
-                </button>
+                />
               );
             })}
           </section>
