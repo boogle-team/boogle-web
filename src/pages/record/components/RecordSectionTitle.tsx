@@ -20,7 +20,7 @@ const RecordSectionTitle = ({
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-1">
         <BulletPointIcon className="h-4 w-4" aria-hidden="true" />
-        <h2 className="body-m-bold text-gray-10">{title}</h2>
+        <h2 className="body-m tracking-[-0.02rem] text-gray-8">{title}</h2>
 
         {isInfoVisible && (
           <button
