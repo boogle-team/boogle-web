@@ -6,6 +6,7 @@ import Guide from '../pages/guide/Guide';
 import Report from '../pages/report/Report';
 import Calendar from '../pages/calendar/Calendar';
 import Record from '../pages/record/main/Main';
+import RecordEdit from '../pages/record/edit/Edit';
 
 export const Router = createBrowserRouter([
   {
@@ -37,5 +38,9 @@ export const Router = createBrowserRouter([
   {
     path: '/record',
     element: <Record />,
+  },
+  {
+    path: '/record/edit',
+    element: <RecordEdit />,
   },
 ]);

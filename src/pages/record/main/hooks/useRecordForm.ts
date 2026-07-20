@@ -16,10 +16,11 @@ const INITIAL_RECORD_FORM_STATE: RecordFormStateTypes = {
   painLevel: 0,
 };
 
-export const useRecordForm = () => {
-  const [formState, setFormState] = useState<RecordFormStateTypes>(
-    INITIAL_RECORD_FORM_STATE,
-  );
+export const useRecordForm = (
+  initialState: RecordFormStateTypes = INITIAL_RECORD_FORM_STATE,
+) => {
+  const [formState, setFormState] =
+    useState<RecordFormStateTypes>(initialState);
 
   const handleBowelStatusChange = (bowelStatus: BowelStatusTypes) => {
     setFormState((prev) => ({ ...prev, bowelStatus }));
