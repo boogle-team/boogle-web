@@ -11,6 +11,7 @@ import {
   AGE_GROUP_LABEL_MAP,
   BASELINE_TYPE_DETAIL_LABEL_MAP,
   GENDER_LABEL_MAP,
+  NICKNAME_MAX_LENGTH,
 } from './constants/settingsConstants';
 import useProfileSettings from './hooks/useProfileSettings';
 
@@ -44,16 +45,13 @@ const ProfileEdit = () => {
     navigate('/settings/baseline-info');
   };
 
-  const handleNicknameChange = (value: string) => {
-    if (value.length <= 10) {
-      updateNicknameDraft(value);
-    }
-  };
+  const isNicknameEmpty = !nicknameDraft.trim();
+  const isNicknameTooLong = nicknameDraft.length > NICKNAME_MAX_LENGTH;
 
   const handleSaveClick = () => {
     const trimmedNickname = nicknameDraft.trim();
 
-    if (!trimmedNickname) {
+    if (!trimmedNickname || isNicknameTooLong) {
       return;
     }
 
@@ -91,9 +89,11 @@ const ProfileEdit = () => {
 
             <InputText
               value={nicknameDraft}
-              onChange={handleNicknameChange}
+              onChange={updateNicknameDraft}
               placeholder="닉네임을 입력해주세요"
-              maxCount={10}
+              maxCount={NICKNAME_MAX_LENGTH}
+              isError={isNicknameTooLong}
+              errorMessage={`${NICKNAME_MAX_LENGTH}자 이내로 입력해주세요`}
             />
           </div>
 
@@ -139,7 +139,7 @@ const ProfileEdit = () => {
             <Button
               text="저장하기"
               variant="primary"
-              disabled={!nicknameDraft.trim()}
+              disabled={isNicknameEmpty || isNicknameTooLong}
               onClick={handleSaveClick}
             />
           </SettingsBottomAction>

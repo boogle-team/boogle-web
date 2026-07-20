@@ -5,6 +5,8 @@ import type {
   ProviderTypes,
 } from '../types/settingsTypes';
 
+export const NICKNAME_MAX_LENGTH = 10;
+
 export const BASELINE_TYPE_LABEL_MAP: Record<BaselineTypeTypes, string> = {
   R: '규칙형',
   C: '변비 경향형',
