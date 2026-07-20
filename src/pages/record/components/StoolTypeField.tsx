@@ -49,14 +49,14 @@ const StoolTypeButton = ({
       type="button"
       onClick={() => onSelect(option.id)}
       aria-pressed={isSelected}
-      className={`flex flex-col items-center gap-2 rounded-xl border px-4 py-2 transition-colors ${
+      className={`flex w-[5.40625rem] shrink-0 flex-col items-center gap-2 rounded-xl border px-4 py-2 transition-colors ${
         isSelected ? 'border-orange-6 bg-orange-1' : 'border-gray-4 bg-beige-1'
       }`}
     >
-      <StoolTypeIcon className="h-10 w-10" aria-hidden="true" />
+      <StoolTypeIcon className="h-13.5 w-13.5" aria-hidden="true" />
 
       <span
-        className={`caption text-center leading-tight ${
+        className={`caption whitespace-pre-line text-center leading-tight ${
           isSelected ? 'text-orange-6' : 'text-gray-7'
         }`}
       >
@@ -99,7 +99,7 @@ const StoolTypeField = ({ value, onChange }: StoolTypeFieldPropTypes) => {
         </TooltipPopover>
       )}
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="flex gap-2">
         {FIRST_ROW_OPTIONS.map((option) => (
           <StoolTypeButton
             key={option.id}
@@ -110,7 +110,7 @@ const StoolTypeField = ({ value, onChange }: StoolTypeFieldPropTypes) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="flex gap-2">
         {SECOND_ROW_OPTIONS.map((option) => (
           <StoolTypeButton
             key={option.id}

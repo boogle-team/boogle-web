@@ -10,9 +10,9 @@ export const BOWEL_STATUS_OPTIONS = [
 ] as const;
 
 export const STOOL_TYPE_OPTIONS: StoolTypeOptionTypes[] = [
-  { id: 1, label: '딱딱한 작은 덩어리' },
+  { id: 1, label: '딱딱한\n작은 덩어리' },
   { id: 2, label: '단단하고 울퉁불퉁' },
-  { id: 3, label: '균열 있는 소시지' },
+  { id: 3, label: '균열 있는\n소시지' },
   { id: 4, label: '부드러운 소시지' },
   { id: 5, label: '부드럽고 덩어리짐' },
   { id: 6, label: '퍼지고 흐름' },
