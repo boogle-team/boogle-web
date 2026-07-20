@@ -3,7 +3,7 @@ import {
   getStomachLabel,
   getStoolSimpleLabel,
 } from './constants/dailyRecordLabels';
-import DailyRecordChip from './DailyRecordChip';
+import BoogleRecordChip from './BoogleRecordChip';
 import type { BoogleRecordSummaryTypes } from './types/dailyRecordTypes';
 import { formatRecordTime } from './utils/dailyRecordUtils';
 
@@ -57,12 +57,12 @@ const BoogleRecordItem = ({
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <DailyRecordChip
+          <BoogleRecordChip
             variant="primary"
             text={`${getStoolSimpleLabel(stoolSimple)} (${stoolBristol}형)`}
           />
-          <DailyRecordChip text={getBowelFeelingLabel(bowelFeeling)} />
-          <DailyRecordChip text={getStomachLabel(stomach)} />
+          <BoogleRecordChip text={getBowelFeelingLabel(bowelFeeling)} />
+          <BoogleRecordChip text={getStomachLabel(stomach)} />
         </div>
       </div>
     </li>

@@ -8,7 +8,7 @@ interface DailyRecordChipPropTypes {
 }
 
 // 부글 기록 칩 스타일 컴포넌트
-const DailyRecordChip = ({
+const BoogleRecordChip = ({
   text,
   variant = 'soft',
 }: DailyRecordChipPropTypes) => {
@@ -19,11 +19,11 @@ const DailyRecordChip = ({
 
   return (
     <span
-      className={`label-semi inline-flex min-w-19 items-center justify-center rounded-full px-2 py-1 ${variantClassName}`}
+      className={`label-semi inline-flex items-center justify-center rounded-full px-3 py-1 ${variantClassName}`}
     >
       {text}
     </span>
   );
 };
 
-export default DailyRecordChip;
+export default BoogleRecordChip;
