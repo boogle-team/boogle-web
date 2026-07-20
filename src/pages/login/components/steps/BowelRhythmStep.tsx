@@ -15,7 +15,7 @@ const BowelRhythmStep = ({ value, onChange }: BowelRhythmStepPropTypes) => {
         평소 <span className="text-orange-6">배변 리듬</span>이 어떻게 되세요?
       </h2>
       <p className="label mt-[0.38rem] text-center text-gray-7">
-        입력하면 <span className="text-orange-6">더 정확한 기준선</span>을 만들
+        입력하면 <span className="text-orange-5">더 정확한 기준선</span>을 만들
         수 있어요
       </p>
 

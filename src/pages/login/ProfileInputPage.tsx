@@ -54,7 +54,7 @@ const ProfileInputPage = ({
         onBackButtonClick={handleBackButtonClick}
         footer={
           <div className="flex flex-col gap-3">
-            <p className="caption text-center text-gray-6">
+            <p className="caption text-center text-[#999999]">
               언제든 설정에서 변경할 수 있어요
             </p>
             <Button

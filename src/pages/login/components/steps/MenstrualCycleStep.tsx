@@ -1,4 +1,5 @@
-import { Check, LockKeyhole } from 'lucide-react';
+import Lock from '@/shared/assets/icons/lock.svg?react';
+import Check from '@/shared/assets/icons/checkIcon.svg?react';
 
 import { MENSTRUAL_DATA_ITEMS } from '../../constants/loginConstants';
 
@@ -30,7 +31,7 @@ const MenstrualCycleStep = () => {
         </ul>
 
         <div className="mt-1 flex items-center gap-1 border-t border-gray-4 pt-2">
-          <LockKeyhole className="h-4 w-4 shrink-0 text-gray-7" />
+          <Lock className="h-4 w-4 shrink-0 text-gray-7" />
           <span className="caption text-gray-7">
             배변 패턴 분석 목적으로만 사용돼요
           </span>
