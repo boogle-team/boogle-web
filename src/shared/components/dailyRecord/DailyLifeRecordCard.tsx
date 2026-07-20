@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   getMealRegularLabel,
   getSleepLabel,
@@ -8,6 +10,7 @@ import DailyRecordCardShell from './DailyRecordCardShell';
 import EmptyRecordState from './EmptyRecordState';
 import FoodList from './FoodList';
 import LifeMetricCard from './LifeMetricCard';
+import LifeRecordDetailSection from './LifeRecordDetailSection';
 import type {
   DailyRecordVariantTypes,
   LifeMetricTypes,
@@ -25,6 +28,7 @@ interface DailyLifeRecordCardPropTypes {
   variant: DailyRecordVariantTypes;
   record: LifeRecordSummaryTypes | null;
   status: LifeRecordStatusTypes;
+  shouldShowDetail?: boolean;
   onCreateClick: () => void;
   onEditClick?: (recordId: number) => void;
 }
@@ -38,13 +42,16 @@ const EMPTY_MESSAGE_MAP: Record<
   future: '아직 오지 않은 날이에요',
 };
 
+// 생활 기록 세부 항목 더보기 컴포넌트
 const DailyLifeRecordCard = ({
   variant,
   record,
   status,
+  shouldShowDetail = false,
   onCreateClick,
   onEditClick,
 }: DailyLifeRecordCardPropTypes) => {
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const isFuture = status === 'future';
   const isRecorded = status === 'recorded' && record;
   const isCalendarEditMode = variant === 'calendar' && Boolean(isRecorded);
@@ -57,6 +64,10 @@ const DailyLifeRecordCard = ({
     }
 
     onCreateClick();
+  };
+
+  const handleDetailToggleClick = () => {
+    setIsDetailOpen((previousIsDetailOpen) => !previousIsDetailOpen);
   };
 
   const metrics: LifeMetricTypes[] = record
@@ -114,6 +125,14 @@ const DailyLifeRecordCard = ({
           </div>
 
           <FoodList foods={record.foods} />
+          {/* 생활 기록 세부 항목을 보여줘야 한다면 */}
+          {shouldShowDetail ? (
+            <LifeRecordDetailSection
+              record={record}
+              isOpen={isDetailOpen}
+              onToggleClick={handleDetailToggleClick}
+            />
+          ) : null}
         </div>
       ) : status !== 'recorded' ? (
         <EmptyRecordState

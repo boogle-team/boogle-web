@@ -245,6 +245,7 @@ const CalendarPage = () => {
 
             <DailyLifeRecordCard
               variant="calendar"
+              shouldShowDetail
               record={lifeRecordSummary}
               status={lifeRecordStatus}
               onCreateClick={() => handleLifeCreateClick(selectedDate)}
@@ -272,6 +273,7 @@ const CalendarPage = () => {
               />
               <DailyLifeRecordCard
                 variant="calendar"
+                shouldShowDetail
                 record={lifeRecord}
                 status={lifeStatus}
                 onCreateClick={() => handleLifeCreateClick(date)}
