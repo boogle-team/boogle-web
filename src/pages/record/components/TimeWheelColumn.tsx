@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 
 interface TimeWheelColumnPropTypes<T> {
   items: T[];
@@ -7,9 +8,17 @@ interface TimeWheelColumnPropTypes<T> {
   formatItem?: (item: T) => string;
 }
 
-const ITEM_HEIGHT = 40;
-const VISIBLE_ROWS = 5;
+const ITEM_HEIGHT = 28;
+const VISIBLE_ROWS = 7;
 const PADDING_ROWS = Math.floor(VISIBLE_ROWS / 2);
+
+const getRowStyle = (distance: number): CSSProperties => {
+  const clampedDistance = Math.min(distance, PADDING_ROWS);
+  const scaleY = 1 - clampedDistance * 0.15;
+  const opacity = Math.max(0, 1 - clampedDistance * 0.28);
+
+  return { transform: `scaleY(${scaleY})`, opacity };
+};
 
 const TimeWheelColumn = <T,>({
   items,
@@ -70,24 +79,28 @@ const TimeWheelColumn = <T,>({
     <div
       ref={listRef}
       onScroll={handleScroll}
-      className="h-50 snap-y snap-mandatory overflow-y-auto scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      className="h-49 snap-y snap-mandatory overflow-y-auto scrollbar-none [-ms-overflow-style:none] [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] mask-[linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] [&::-webkit-scrollbar]:hidden"
     >
       <div style={{ height: PADDING_ROWS * ITEM_HEIGHT }} />
 
       {items.map((item, index) => {
         const isSelected = index === selectedIndex;
+        const distance = Math.abs(index - selectedIndex);
 
         return (
           <button
             key={index}
             type="button"
             onClick={() => handleItemClick(index)}
-            className="flex h-10 w-full snap-center items-center justify-center"
+            className="flex h-7 w-full snap-center items-center justify-center"
           >
             <span
-              className={
-                isSelected ? 'title text-orange-6' : 'body-m text-gray-5'
-              }
+              style={getRowStyle(distance)}
+              className={`transition-[transform,opacity] duration-200 ${
+                isSelected
+                  ? 'body-lg tracking-[-0.0225rem] text-gray-10'
+                  : 'body-m text-gray-5'
+              }`}
             >
               {formatItem ? formatItem(item) : String(item)}
             </span>

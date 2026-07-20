@@ -31,51 +31,67 @@ const RecordTimeField = ({ value, onChange }: RecordTimeFieldPropTypes) => {
           <button
             type="button"
             onClick={handleToggleEdit}
-            className="label-semi rounded-lg bg-orange-2 px-4 py-2 text-orange-6"
+            className={`label-semi flex items-center justify-center gap-2.5 rounded-[2.5rem] px-4 py-1 ${
+              isEditing
+                ? 'bg-orange-6 text-beige-1'
+                : 'bg-orange-3 text-beige-1'
+            }`}
           >
             {isEditing ? '확인' : '수정'}
           </button>
         }
       />
 
-      <p className="flex items-baseline gap-1">
-        <span className="display-lg text-gray-10">
-          {value.hour}:{formatTwoDigits(value.minute)}
-        </span>
-        <span className="body-m-bold text-orange-6">{value.meridiem}</span>
-      </p>
+      <div className="relative">
+        <p className="flex items-center gap-2">
+          <span
+            className={`display-lg ${isEditing ? 'text-orange-7' : 'text-gray-8'}`}
+          >
+            {formatTwoDigits(value.hour)}:{formatTwoDigits(value.minute)}
+          </span>
+          <span
+            className={`body-lg ${isEditing ? 'text-orange-7' : 'text-gray-7'}`}
+          >
+            {value.meridiem}
+          </span>
+        </p>
 
-      {isEditing && (
-        <div className="relative overflow-hidden rounded-2xl border border-gray-4 bg-beige-2 px-2">
-          <div className="pointer-events-none absolute inset-x-2 top-1/2 h-10 -translate-y-1/2 rounded-lg bg-orange-1" />
+        {isEditing && (
+          <div className="absolute left-0 top-full z-20 mt-2 flex h-50 w-45 flex-col items-center justify-center rounded-xl bg-beige-1 px-2.5 py-2.75 shadow-[0_15px_75px_0_rgba(0,0,0,0.18)]">
+            <div className="relative w-full">
+              <div className="pointer-events-none absolute inset-x-0 top-1/2 h-9 -translate-y-1/2 rounded-[0.4375rem] bg-beige-5" />
 
-          <div className="relative grid grid-cols-3">
-            <TimeWheelColumn
-              items={HOURS}
-              selectedIndex={hourIndex}
-              onSelect={(index) => onChange({ ...value, hour: HOURS[index] })}
-            />
-            <TimeWheelColumn
-              items={MINUTES}
-              selectedIndex={minuteIndex}
-              onSelect={(index) =>
-                onChange({ ...value, minute: MINUTES[index] })
-              }
-              formatItem={formatTwoDigits}
-            />
-            <TimeWheelColumn
-              items={MERIDIEMS}
-              selectedIndex={meridiemIndex}
-              onSelect={(index) =>
-                onChange({
-                  ...value,
-                  meridiem: MERIDIEMS[index] as MeridiemTypes,
-                })
-              }
-            />
+              <div className="relative grid grid-cols-3">
+                <TimeWheelColumn
+                  items={HOURS}
+                  selectedIndex={hourIndex}
+                  onSelect={(index) =>
+                    onChange({ ...value, hour: HOURS[index] })
+                  }
+                />
+                <TimeWheelColumn
+                  items={MINUTES}
+                  selectedIndex={minuteIndex}
+                  onSelect={(index) =>
+                    onChange({ ...value, minute: MINUTES[index] })
+                  }
+                  formatItem={formatTwoDigits}
+                />
+                <TimeWheelColumn
+                  items={MERIDIEMS}
+                  selectedIndex={meridiemIndex}
+                  onSelect={(index) =>
+                    onChange({
+                      ...value,
+                      meridiem: MERIDIEMS[index] as MeridiemTypes,
+                    })
+                  }
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 };
