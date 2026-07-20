@@ -43,7 +43,7 @@ const Record = () => {
         onBackButtonClick={handleBackButtonClick}
       />
 
-      <div className="flex flex-1 flex-col gap-8 px-layout py-6 pb-24">
+      <div className="flex flex-1 flex-col gap-12 px-layout pt-6 pb-[9.94rem]">
         <BowelStatusField
           value={formState.bowelStatus}
           onChange={handleBowelStatusChange}
