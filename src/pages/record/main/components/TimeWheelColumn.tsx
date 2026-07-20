@@ -31,6 +31,9 @@ const TimeWheelColumn = <T,>({
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
+  const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     const list = listRef.current;
@@ -68,11 +71,22 @@ const TimeWheelColumn = <T,>({
   };
 
   const handleItemClick = (index: number) => {
-    listRef.current?.scrollTo({
-      top: index * ITEM_HEIGHT,
-      behavior: 'smooth',
-    });
+    isProgrammaticScroll.current = true;
+
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    if (resetTimeoutRef.current) {
+      clearTimeout(resetTimeoutRef.current);
+    }
+
+    listRef.current?.scrollTo({ top: index * ITEM_HEIGHT, behavior: 'auto' });
     onSelect(index);
+
+    resetTimeoutRef.current = setTimeout(() => {
+      isProgrammaticScroll.current = false;
+    }, 50);
   };
 
   return (

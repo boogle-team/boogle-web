@@ -8,7 +8,7 @@ import TimeWheelColumn from './TimeWheelColumn';
 
 interface RecordTimeFieldPropTypes {
   value: RecordTimeValueTypes;
-  onChange: (value: RecordTimeValueTypes) => void;
+  onChange: (partialTime: Partial<RecordTimeValueTypes>) => void;
 }
 
 const formatTwoDigits = (value: number) => String(value).padStart(2, '0');
@@ -66,26 +66,19 @@ const RecordTimeField = ({ value, onChange }: RecordTimeFieldPropTypes) => {
                 <TimeWheelColumn
                   items={HOURS}
                   selectedIndex={hourIndex}
-                  onSelect={(index) =>
-                    onChange({ ...value, hour: HOURS[index] })
-                  }
+                  onSelect={(index) => onChange({ hour: HOURS[index] })}
                 />
                 <TimeWheelColumn
                   items={MINUTES}
                   selectedIndex={minuteIndex}
-                  onSelect={(index) =>
-                    onChange({ ...value, minute: MINUTES[index] })
-                  }
+                  onSelect={(index) => onChange({ minute: MINUTES[index] })}
                   formatItem={formatTwoDigits}
                 />
                 <TimeWheelColumn
                   items={MERIDIEMS}
                   selectedIndex={meridiemIndex}
                   onSelect={(index) =>
-                    onChange({
-                      ...value,
-                      meridiem: MERIDIEMS[index] as MeridiemTypes,
-                    })
+                    onChange({ meridiem: MERIDIEMS[index] as MeridiemTypes })
                   }
                 />
               </div>

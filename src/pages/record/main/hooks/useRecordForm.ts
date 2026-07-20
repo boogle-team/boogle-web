@@ -26,8 +26,13 @@ export const useRecordForm = (
     setFormState((prev) => ({ ...prev, bowelStatus }));
   };
 
-  const handleTimeChange = (time: RecordTimeValueTypes) => {
-    setFormState((prev) => ({ ...prev, time }));
+  // 시/분/오전오후 휠은 각각 독립적으로 바뀌므로 부분 업데이트를 받는다.
+  // 병합을 prev 기준으로 해야 여러 휠의 변경이 연속으로 들어와도 서로 덮어쓰지 않는다.
+  const handleTimeChange = (partialTime: Partial<RecordTimeValueTypes>) => {
+    setFormState((prev) => ({
+      ...prev,
+      time: { ...prev.time, ...partialTime },
+    }));
   };
 
   const handleStoolTypeChange = (stoolType: StoolTypeId) => {
