@@ -31,13 +31,14 @@ export const FEELING_OPTIONS: FeelingOptionTypes[] = [
   { value: 'difficult', label: '힘들었음' },
 ];
 
-export const PAIN_LEVEL_MAX = 3;
+export const PAIN_LEVEL_MAX = 4;
 
 export const PAIN_LEVEL_LABELS = [
   '없음',
   '약간 있어요',
-  '보통이에요',
-  '심해요',
+  '꽤 있어요',
+  '많이 있어요',
+  '매우 심해요',
 ];
 
 export const HOURS = Array.from({ length: 12 }, (_, index) => index + 1);
