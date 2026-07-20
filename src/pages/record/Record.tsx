@@ -35,7 +35,7 @@ const Record = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-beige-1">
+    <div className="flex min-h-screen flex-col bg-beige-1 pt-12.25">
       <TopNavigation
         variant="detail"
         title="부글 기록하기"
@@ -43,7 +43,7 @@ const Record = () => {
         onBackButtonClick={handleBackButtonClick}
       />
 
-      <div className="flex flex-1 flex-col gap-12 px-layout pt-6 pb-[9.94rem]">
+      <div className="flex flex-1 flex-col gap-12 px-layout pt-6 pb-[11.1275rem]">
         <BowelStatusField
           value={formState.bowelStatus}
           onChange={handleBowelStatusChange}
@@ -76,7 +76,7 @@ const Record = () => {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 bg-beige-1 px-layout py-4">
+      <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 bg-beige-1 px-layout pt-4 pb-14.76">
         <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
       </div>
     </div>
