@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
@@ -7,74 +6,44 @@ import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNa
 
 import SettingsBottomAction from './components/SettingsBottomAction';
 import UnsavedChangesToast from './components/UnsavedChangesToast';
-import useProfileSettings from './hooks/useProfileSettings';
+import {
+  AGE_GROUP_OPTIONS,
+  GENDER_OPTIONS,
+} from './constants/settingsConstants';
+import useBaselineInfoSettings from './hooks/useBaselineInfoSettings';
+import useUnsavedChangesToast from './hooks/useUnsavedChangesToast';
 
 import type { AgeGroupTypes, GenderTypes } from './types/settingsTypes';
 
-const AGE_GROUP_OPTIONS: {
-  label: string;
-  value: AgeGroupTypes;
-}[] = [
-  { label: '10대', value: 10 },
-  { label: '20대', value: 20 },
-  { label: '30대', value: 30 },
-  { label: '40대 이상', value: 40 },
-];
-
-const GENDER_OPTIONS: {
-  label: string;
-  value: GenderTypes;
-}[] = [
-  { label: '여성', value: 'F' },
-  { label: '남성', value: 'M' },
-  { label: '선택 안함', value: 'N' },
-];
-
 const BaselineInfoSetting = () => {
   const navigate = useNavigate();
-  const { memberProfile, saveBaselineInfo } = useProfileSettings();
-
-  const [selectedAgeGroup, setSelectedAgeGroup] = useState(
-    memberProfile.ageGroup,
-  );
-  const [selectedGender, setSelectedGender] = useState(memberProfile.gender);
-  const [isToastVisible, setIsToastVisible] = useState(false);
-
-  const isModified =
-    selectedAgeGroup !== memberProfile.ageGroup ||
-    selectedGender !== memberProfile.gender;
-
-  useEffect(() => {
-    if (!isToastVisible) return;
-
-    const timerId = window.setTimeout(() => {
-      setIsToastVisible(false);
-    }, 2500);
-
-    return () => window.clearTimeout(timerId);
-  }, [isToastVisible]);
+  const {
+    selectedAgeGroup,
+    selectedGender,
+    isModified,
+    selectAgeGroup,
+    selectGender,
+    saveSettings,
+  } = useBaselineInfoSettings();
+  const { isToastVisible, dismissToast, handleBackAttempt } =
+    useUnsavedChangesToast();
 
   const handleBackClick = () => {
-    if (isModified) {
-      setIsToastVisible(true);
-      return;
-    }
-
-    navigate('/settings/profile');
+    handleBackAttempt(isModified, () => navigate('/settings/profile'));
   };
 
   const handleAgeGroupClick = (ageGroup: AgeGroupTypes) => {
-    setSelectedAgeGroup(ageGroup);
-    setIsToastVisible(false);
+    selectAgeGroup(ageGroup);
+    dismissToast();
   };
 
   const handleGenderClick = (gender: GenderTypes) => {
-    setSelectedGender(gender);
-    setIsToastVisible(false);
+    selectGender(gender);
+    dismissToast();
   };
 
   const handleSaveClick = () => {
-    saveBaselineInfo(selectedAgeGroup, selectedGender);
+    saveSettings();
     navigate('/settings/profile');
   };
 

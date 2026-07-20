@@ -28,7 +28,6 @@ export interface MemberTypes {
 export interface SocialAccountTypes {
   provider: ProviderTypes;
   maskedEmail: string;
-  regDate: string;
 }
 
 export interface MemberAlarmTypes {

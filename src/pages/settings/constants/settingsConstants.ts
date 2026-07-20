@@ -31,6 +31,20 @@ export const GENDER_LABEL_MAP: Record<GenderTypes, string> = {
   N: '선택 안함',
 };
 
+export const AGE_GROUP_OPTIONS = Object.entries(AGE_GROUP_LABEL_MAP).map(
+  ([value, label]) => ({
+    value: Number(value) as AgeGroupTypes,
+    label,
+  }),
+);
+
+export const GENDER_OPTIONS = Object.entries(GENDER_LABEL_MAP).map(
+  ([value, label]) => ({
+    value: value as GenderTypes,
+    label,
+  }),
+);
+
 export const BASELINE_TYPE_DETAIL_LABEL_MAP: Record<BaselineTypeTypes, string> =
   {
     R: '규칙적이에요',

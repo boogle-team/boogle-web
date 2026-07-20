@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
@@ -6,7 +5,8 @@ import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNa
 
 import SettingsBottomAction from './components/SettingsBottomAction';
 import UnsavedChangesToast from './components/UnsavedChangesToast';
-import useProfileSettings from './hooks/useProfileSettings';
+import useBowelRhythmSettings from './hooks/useBowelRhythmSettings';
+import useUnsavedChangesToast from './hooks/useUnsavedChangesToast';
 
 import type { BaselineTypeTypes } from './types/settingsTypes';
 
@@ -34,39 +34,22 @@ const BOWEL_RHYTHM_OPTIONS: {
 
 const BowelRhythmSetting = () => {
   const navigate = useNavigate();
-  const { memberProfile, saveBaselineType } = useProfileSettings();
-  const [selectedBaselineType, setSelectedBaselineType] =
-    useState<BaselineTypeTypes>(memberProfile.baselineType);
-  const [isToastVisible, setIsToastVisible] = useState(false);
-
-  const isModified = selectedBaselineType !== memberProfile.baselineType;
-
-  useEffect(() => {
-    if (!isToastVisible) return;
-
-    const timerId = window.setTimeout(() => {
-      setIsToastVisible(false);
-    }, 2500);
-
-    return () => window.clearTimeout(timerId);
-  }, [isToastVisible]);
+  const { selectedBaselineType, isModified, selectBaselineType, saveSettings } =
+    useBowelRhythmSettings();
+  const { isToastVisible, dismissToast, handleBackAttempt } =
+    useUnsavedChangesToast();
 
   const handleOptionClick = (value: BaselineTypeTypes) => {
-    setSelectedBaselineType(value);
-    setIsToastVisible(false);
+    selectBaselineType(value);
+    dismissToast();
   };
 
   const handleBackClick = () => {
-    if (isModified) {
-      setIsToastVisible(true);
-      return;
-    }
-
-    navigate('/settings/profile');
+    handleBackAttempt(isModified, () => navigate('/settings/profile'));
   };
 
   const handleSaveClick = () => {
-    saveBaselineType(selectedBaselineType);
+    saveSettings();
     navigate('/settings/profile');
   };
 

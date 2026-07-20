@@ -5,17 +5,28 @@ import KakaoIcon from '@/shared/assets/icons/KakaoIcon.svg?react';
 import NaverIcon from '@/shared/assets/icons/NaverIcon.svg?react';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import type { ProviderTypes, SocialAccountTypes } from './types/settingsTypes';
+import type {
+  MemberTypes,
+  ProviderTypes,
+  SocialAccountTypes,
+} from './types/settingsTypes';
 
 interface ProviderIconPropTypes {
   provider: ProviderTypes;
 }
 
-const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
-  provider: 'K',
-  maskedEmail: 'boogle****@kakao.com',
-  regDate: '2026.06.13',
+const MOCK_MEMBER_ACCOUNT: Pick<MemberTypes, 'regDate'> & {
+  socialAccount: SocialAccountTypes;
+} = {
+  regDate: '2026-06-13T10:30:00',
+  socialAccount: {
+    provider: 'K',
+    maskedEmail: 'boogle****@kakao.com',
+  },
 };
+
+const formatRegDate = (regDate: string) =>
+  regDate.split('T')[0].replaceAll('-', '.');
 
 const ProviderIcon = ({ provider }: ProviderIconPropTypes) => {
   if (provider === 'K') {
@@ -55,7 +66,8 @@ const ProviderIcon = ({ provider }: ProviderIconPropTypes) => {
 
 const LoginAccount = () => {
   const navigate = useNavigate();
-  const socialAccount = MOCK_SOCIAL_ACCOUNT;
+  const { regDate, socialAccount } = MOCK_MEMBER_ACCOUNT;
+  const formattedRegDate = formatRegDate(regDate);
 
   const handleBackClick = () => {
     navigate('/settings');
@@ -90,7 +102,7 @@ const LoginAccount = () => {
 
           <div className="flex min-h-12 items-center justify-between rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
             <span className="label text-gray-10">가입일</span>
-            <span className="caption text-gray-8">{socialAccount.regDate}</span>
+            <span className="caption text-gray-8">{formattedRegDate}</span>
           </div>
         </section>
       </main>

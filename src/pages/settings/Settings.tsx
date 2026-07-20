@@ -7,6 +7,7 @@ import SettingsRow from './components/SettingsRow';
 import SettingsSection from './components/SettingsSection';
 import ToggleSwitch from './components/ToggleSwitch';
 import { APP_VERSION, PROVIDER_LABEL_MAP } from './constants/settingsConstants';
+import useAlarmSettings from './hooks/useAlarmSettings';
 import useProfileSettings from './hooks/useProfileSettings';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
@@ -20,11 +21,7 @@ import PersonIcon from '@/shared/assets/icons/settingPersonIcon.svg?react';
 import ReportIcon from '@/shared/assets/icons/settingReportIcon.svg?react';
 import ShieldIcon from '@/shared/assets/icons/settingShieldIcon.svg?react';
 
-import type {
-  MemberAlarmTypes,
-  MemberTypes,
-  SocialAccountTypes,
-} from './types/settingsTypes';
+import type { MemberTypes, SocialAccountTypes } from './types/settingsTypes';
 
 const MOCK_MEMBER: MemberTypes = {
   nickname: '이연수',
@@ -37,19 +34,13 @@ const MOCK_MEMBER: MemberTypes = {
 const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
   provider: 'K',
   maskedEmail: 'boogle****@kakao.com',
-  regDate: '2026-06-13T00:00:00+09:00',
 };
 
 const Settings = () => {
   const navigate = useNavigate();
   const { memberProfile } = useProfileSettings();
+  const { memberAlarm, toggleAlarm } = useAlarmSettings();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-
-  const [memberAlarm, setMemberAlarm] = useState<MemberAlarmTypes>({
-    recordAlarm: 'Y',
-    reportAlarm: 'Y',
-    warnAlarm: 'N',
-  });
 
   const handleBackClick = () => {
     navigate('/');
@@ -93,13 +84,6 @@ const Settings = () => {
     navigate('/settings/delete-account');
   };
 
-  const handleMemberAlarmToggleClick = (alarmKey: keyof MemberAlarmTypes) => {
-    setMemberAlarm((prevMemberAlarm) => ({
-      ...prevMemberAlarm,
-      [alarmKey]: prevMemberAlarm[alarmKey] === 'Y' ? 'N' : 'Y',
-    }));
-  };
-
   const member = {
     ...MOCK_MEMBER,
     nickname: memberProfile.nickname,
@@ -127,7 +111,7 @@ const Settings = () => {
         <SettingsSection title="계정">
           <SettingsRow
             title="로그인 계정"
-            iconLabel={<PersonIcon className="h-6 w-6 text-white" />}
+            icon={<PersonIcon className="h-6 w-6 text-white" />}
             rightText={providerLabel}
             hideArrow
             hasDivider={isSensitiveConsentMenuVisible}
@@ -137,7 +121,7 @@ const Settings = () => {
           {isSensitiveConsentMenuVisible && (
             <SettingsRow
               title="민감정보 수집 동의 관리"
-              iconLabel={<ShieldIcon className="h-6 w-6 text-white" />}
+              icon={<ShieldIcon className="h-6 w-6 text-white" />}
               onClick={handleSensitiveConsentClick}
             />
           )}
@@ -146,36 +130,36 @@ const Settings = () => {
         <SettingsSection title="알림">
           <SettingsRow
             title="기록 알림"
-            iconLabel={<BellIcon className="h-6 w-6 text-white" />}
+            icon={<BellIcon className="h-6 w-6 text-white" />}
             hasDivider
           >
             <ToggleSwitch
               ariaLabel="기록 알림 설정"
               isEnabled={memberAlarm.recordAlarm === 'Y'}
-              onClick={() => handleMemberAlarmToggleClick('recordAlarm')}
+              onClick={() => toggleAlarm('recordAlarm')}
             />
           </SettingsRow>
 
           <SettingsRow
             title="주간 리포트 알림"
-            iconLabel={<ReportIcon className="h-6 w-6 text-white" />}
+            icon={<ReportIcon className="h-6 w-6 text-white" />}
             hasDivider
           >
             <ToggleSwitch
               ariaLabel="주간 리포트 알림 설정"
               isEnabled={memberAlarm.reportAlarm === 'Y'}
-              onClick={() => handleMemberAlarmToggleClick('reportAlarm')}
+              onClick={() => toggleAlarm('reportAlarm')}
             />
           </SettingsRow>
 
           <SettingsRow
             title="주의 신호 알림"
-            iconLabel={<ErrorIcon className="h-6 w-6 text-white" />}
+            icon={<ErrorIcon className="h-6 w-6 text-white" />}
           >
             <ToggleSwitch
               ariaLabel="주의 신호 알림 설정"
               isEnabled={memberAlarm.warnAlarm === 'Y'}
-              onClick={() => handleMemberAlarmToggleClick('warnAlarm')}
+              onClick={() => toggleAlarm('warnAlarm')}
             />
           </SettingsRow>
         </SettingsSection>
@@ -187,14 +171,14 @@ const Settings = () => {
         <SettingsSection title="데이터">
           <SettingsRow
             title="개인정보 처리방침"
-            iconLabel={<LockedShieldIcon className="h-6 w-6 text-white" />}
+            icon={<LockedShieldIcon className="h-6 w-6 text-white" />}
             hasDivider
             onClick={handlePrivacyPolicyClick}
           />
 
           <SettingsRow
             title="이용 약관"
-            iconLabel={<NoteIcon className="h-6 w-6 text-white" />}
+            icon={<NoteIcon className="h-6 w-6 text-white" />}
             onClick={handleTermsClick}
           />
         </SettingsSection>

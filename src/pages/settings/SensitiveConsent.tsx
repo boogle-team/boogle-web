@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import InfoFlagIcon from '@/shared/assets/icons/infoFlagIcon.svg?react';
@@ -9,44 +8,28 @@ import SettingsBottomAction from './components/SettingsBottomAction';
 import SettingsNotice from './components/SettingsNotice';
 import ToggleSwitch from './components/ToggleSwitch';
 import UnsavedChangesToast from './components/UnsavedChangesToast';
-
-import type { TfTypes } from './types/settingsTypes';
+import useSensitiveConsent from './hooks/useSensitiveConsent';
+import useUnsavedChangesToast from './hooks/useUnsavedChangesToast';
 
 const SensitiveConsent = () => {
   const navigate = useNavigate();
-  const [sensInfo, setSensInfo] = useState<TfTypes>('T');
-  const [savedSensInfo, setSavedSensInfo] = useState<TfTypes>('T');
-  const [isToastVisible, setIsToastVisible] = useState(false);
-
-  const isModified = sensInfo !== savedSensInfo;
-
-  useEffect(() => {
-    if (!isToastVisible) return;
-
-    const timerId = window.setTimeout(() => {
-      setIsToastVisible(false);
-    }, 2500);
-
-    return () => window.clearTimeout(timerId);
-  }, [isToastVisible]);
+  const { sensInfo, isModified, toggleConsent, saveConsent } =
+    useSensitiveConsent();
+  const { isToastVisible, dismissToast, handleBackAttempt } =
+    useUnsavedChangesToast();
 
   const handleBackClick = () => {
-    if (isModified) {
-      setIsToastVisible(true);
-      return;
-    }
-
-    navigate('/settings');
+    handleBackAttempt(isModified, () => navigate('/settings'));
   };
 
   const handleConsentToggleClick = () => {
-    setSensInfo((prevSensInfo) => (prevSensInfo === 'T' ? 'F' : 'T'));
-    setIsToastVisible(false);
+    toggleConsent();
+    dismissToast();
   };
 
   const handleSaveClick = () => {
-    setSavedSensInfo(sensInfo);
-    setIsToastVisible(false);
+    saveConsent();
+    dismissToast();
   };
 
   return (

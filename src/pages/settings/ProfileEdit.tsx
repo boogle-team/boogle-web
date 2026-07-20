@@ -92,6 +92,7 @@ const ProfileEdit = () => {
             <InputText
               value={nicknameDraft}
               onChange={handleNicknameChange}
+              placeholder="닉네임을 입력해주세요"
               maxCount={10}
             />
           </div>

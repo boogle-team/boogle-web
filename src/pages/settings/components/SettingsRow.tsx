@@ -1,20 +1,29 @@
 ﻿import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
+import type { ReactElement } from 'react';
 
-interface SettingsRowPropTypes {
+interface SettingsRowBasePropTypes {
   title: string;
-  iconLabel?: ReactNode;
+  icon?: ReactElement;
   rightText?: string;
   isDanger?: boolean;
   hasDivider?: boolean;
   hideArrow?: boolean;
-  children?: ReactNode;
-  onClick?: () => void;
 }
+
+type SettingsRowPropTypes =
+  | (SettingsRowBasePropTypes & {
+      onClick: () => void;
+      children?: never;
+    })
+  | (SettingsRowBasePropTypes & {
+      onClick?: never;
+      children?: ReactNode;
+    });
 
 const SettingsRow = ({
   title,
-  iconLabel,
+  icon,
   rightText,
   isDanger = false,
   hasDivider = false,
@@ -33,13 +42,9 @@ const SettingsRow = ({
   const rowContent = (
     <>
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        {iconLabel && (
+        {icon && (
           <div className="flex h-5.5 w-5.5 items-center justify-center rounded-[20px] bg-orange-4">
-            {typeof iconLabel === 'string' ? (
-              <span>{iconLabel}</span>
-            ) : (
-              iconLabel
-            )}
+            {icon}
           </div>
         )}
 

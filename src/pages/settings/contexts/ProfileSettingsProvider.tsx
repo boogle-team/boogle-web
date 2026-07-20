@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useReducer, type ReactNode } from 'react';
 
 import ProfileSettingsContext from './profileSettingsContext';
 
@@ -13,6 +13,22 @@ interface ProfileSettingsProviderPropTypes {
   children: ReactNode;
 }
 
+interface ProfileSettingsStateTypes {
+  memberProfile: MemberProfileTypes;
+  nicknameDraft: string;
+}
+
+type ProfileSettingsActionTypes =
+  | { type: 'UPDATE_NICKNAME_DRAFT'; nickname: string }
+  | { type: 'RESET_NICKNAME_DRAFT' }
+  | { type: 'SAVE_NICKNAME'; nickname: string }
+  | {
+      type: 'SAVE_BASELINE_INFO';
+      ageGroup: AgeGroupTypes;
+      gender: GenderTypes;
+    }
+  | { type: 'SAVE_BASELINE_TYPE'; baselineType: BaselineTypeTypes };
+
 const INITIAL_MEMBER_PROFILE: MemberProfileTypes = {
   nickname: '이연수',
   ageGroup: 20,
@@ -20,50 +36,87 @@ const INITIAL_MEMBER_PROFILE: MemberProfileTypes = {
   baselineType: 'R',
 };
 
+const INITIAL_PROFILE_SETTINGS_STATE: ProfileSettingsStateTypes = {
+  memberProfile: INITIAL_MEMBER_PROFILE,
+  nicknameDraft: INITIAL_MEMBER_PROFILE.nickname,
+};
+
+const profileSettingsReducer = (
+  state: ProfileSettingsStateTypes,
+  action: ProfileSettingsActionTypes,
+): ProfileSettingsStateTypes => {
+  switch (action.type) {
+    case 'UPDATE_NICKNAME_DRAFT':
+      return {
+        ...state,
+        nicknameDraft: action.nickname,
+      };
+    case 'RESET_NICKNAME_DRAFT':
+      return {
+        ...state,
+        nicknameDraft: state.memberProfile.nickname,
+      };
+    case 'SAVE_NICKNAME':
+      return {
+        memberProfile: {
+          ...state.memberProfile,
+          nickname: action.nickname,
+        },
+        nicknameDraft: action.nickname,
+      };
+    case 'SAVE_BASELINE_INFO':
+      return {
+        ...state,
+        memberProfile: {
+          ...state.memberProfile,
+          ageGroup: action.ageGroup,
+          gender: action.gender,
+        },
+      };
+    case 'SAVE_BASELINE_TYPE':
+      return {
+        ...state,
+        memberProfile: {
+          ...state.memberProfile,
+          baselineType: action.baselineType,
+        },
+      };
+  }
+};
+
 const ProfileSettingsProvider = ({
   children,
 }: ProfileSettingsProviderPropTypes) => {
-  const [memberProfile, setMemberProfile] = useState(INITIAL_MEMBER_PROFILE);
-  const [nicknameDraft, setNicknameDraft] = useState(
-    INITIAL_MEMBER_PROFILE.nickname,
+  const [state, dispatch] = useReducer(
+    profileSettingsReducer,
+    INITIAL_PROFILE_SETTINGS_STATE,
   );
 
   const updateNicknameDraft = (nickname: string) => {
-    setNicknameDraft(nickname);
+    dispatch({ type: 'UPDATE_NICKNAME_DRAFT', nickname });
   };
 
   const resetNicknameDraft = () => {
-    setNicknameDraft(memberProfile.nickname);
+    dispatch({ type: 'RESET_NICKNAME_DRAFT' });
   };
 
   const saveNickname = (nickname: string) => {
-    setMemberProfile((prevMemberProfile) => ({
-      ...prevMemberProfile,
-      nickname,
-    }));
-    setNicknameDraft(nickname);
+    dispatch({ type: 'SAVE_NICKNAME', nickname });
   };
 
   const saveBaselineInfo = (ageGroup: AgeGroupTypes, gender: GenderTypes) => {
-    setMemberProfile((prevMemberProfile) => ({
-      ...prevMemberProfile,
-      ageGroup,
-      gender,
-    }));
+    dispatch({ type: 'SAVE_BASELINE_INFO', ageGroup, gender });
   };
 
   const saveBaselineType = (baselineType: BaselineTypeTypes) => {
-    setMemberProfile((prevMemberProfile) => ({
-      ...prevMemberProfile,
-      baselineType,
-    }));
+    dispatch({ type: 'SAVE_BASELINE_TYPE', baselineType });
   };
 
   return (
     <ProfileSettingsContext.Provider
       value={{
-        memberProfile,
-        nicknameDraft,
+        memberProfile: state.memberProfile,
+        nicknameDraft: state.nicknameDraft,
         updateNicknameDraft,
         resetNicknameDraft,
         saveNickname,
