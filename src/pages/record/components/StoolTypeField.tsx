@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import TooltipPopover from '@/shared/components/TooltipPopover';
+import useOutsideClick from '@/shared/hooks/useOutsideClick';
 import StoolType1Icon from '@/shared/assets/illustrations/record/stoolType/stoolType1.svg?react';
 import StoolType2Icon from '@/shared/assets/illustrations/record/stoolType/stoolType2.svg?react';
 import StoolType3Icon from '@/shared/assets/illustrations/record/stoolType/stoolType3.svg?react';
@@ -71,9 +72,12 @@ const SECOND_ROW_OPTIONS = STOOL_TYPE_OPTIONS.slice(4);
 
 const StoolTypeField = ({ value, onChange }: StoolTypeFieldPropTypes) => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useOutsideClick(sectionRef, () => setIsInfoOpen(false));
 
   return (
-    <section className="relative flex flex-col gap-3">
+    <section ref={sectionRef} className="relative flex flex-col gap-3">
       <RecordSectionTitle
         title="변 상태"
         isInfoVisible
