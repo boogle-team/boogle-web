@@ -9,36 +9,13 @@ import {
   getLifeRecordStatus,
   toBoogleRecordSummaries,
   toLifeRecordSummary,
-  type BoogleRecordStatusTypes,
-  type BoogleRecordSummaryTypes,
-  type LifeRecordStatusTypes,
-  type LifeRecordSummaryTypes,
 } from '@/shared/components/dailyRecord';
-import {
-  DAILY_RECORD_EXAMPLE_GOOD_LIFE_RECORD,
-  DAILY_RECORD_EXAMPLE_LIFE_RECORD,
-  DAILY_RECORD_EXAMPLE_NO_BOOGLE_SIGNAL_RECORDS,
-  DAILY_RECORD_EXAMPLE_RECORDED_BOOGLE_RECORDS,
-  DAILY_RECORD_EXAMPLE_SINGLE_BOOGLE_RECORD,
-} from '@/shared/components/dailyRecord/constants/dailyRecordExampleData';
-
 import useCalendarDailyRecordQuery from './hooks/useCalendarDailyRecordQuery';
 import type { CalendarMonthDayTypes } from './types/calendarRecordTypes';
 
 const RECORDED_DATE = '2026-06-17';
-const CALENDAR_EXAMPLE_DATE = '2026-06-18';
-const FUTURE_EXAMPLE_DATE = '2026-08-01';
 const CURRENT_MONTH_LABEL = '2026년 6월';
 const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
-
-interface CalendarDailyRecordExampleTypes {
-  title: string;
-  date: string;
-  boogleRecords: BoogleRecordSummaryTypes[];
-  boogleStatus: BoogleRecordStatusTypes;
-  lifeRecord: LifeRecordSummaryTypes | null;
-  lifeStatus: LifeRecordStatusTypes;
-}
 
 const CALENDAR_DAYS: CalendarMonthDayTypes[] = Array.from(
   { length: 30 },
@@ -54,57 +31,6 @@ const CALENDAR_DAYS: CalendarMonthDayTypes[] = Array.from(
     };
   },
 );
-
-const CALENDAR_DAILY_RECORD_EXAMPLES: CalendarDailyRecordExampleTypes[] = [
-  {
-    title: '캘린더 - 모두 기록',
-    date: CALENDAR_EXAMPLE_DATE,
-    boogleRecords: DAILY_RECORD_EXAMPLE_RECORDED_BOOGLE_RECORDS,
-    boogleStatus: 'recorded',
-    lifeRecord: DAILY_RECORD_EXAMPLE_LIFE_RECORD,
-    lifeStatus: 'recorded',
-  },
-  {
-    title: '캘린더 - 부글 기록만',
-    date: CALENDAR_EXAMPLE_DATE,
-    boogleRecords: DAILY_RECORD_EXAMPLE_SINGLE_BOOGLE_RECORD,
-    boogleStatus: 'recorded',
-    lifeRecord: null,
-    lifeStatus: 'pastEmpty',
-  },
-  {
-    title: '캘린더 - 생활 기록만',
-    date: CALENDAR_EXAMPLE_DATE,
-    boogleRecords: [],
-    boogleStatus: 'pastEmpty',
-    lifeRecord: DAILY_RECORD_EXAMPLE_GOOD_LIFE_RECORD,
-    lifeStatus: 'recorded',
-  },
-  {
-    title: '캘린더 - 부글 신호 없음',
-    date: CALENDAR_EXAMPLE_DATE,
-    boogleRecords: DAILY_RECORD_EXAMPLE_NO_BOOGLE_SIGNAL_RECORDS,
-    boogleStatus: 'noBoogleSignal',
-    lifeRecord: null,
-    lifeStatus: 'pastEmpty',
-  },
-  {
-    title: '캘린더 - 기록 없음',
-    date: CALENDAR_EXAMPLE_DATE,
-    boogleRecords: [],
-    boogleStatus: 'pastEmpty',
-    lifeRecord: null,
-    lifeStatus: 'pastEmpty',
-  },
-  {
-    title: '캘린더 - 미래 날짜',
-    date: FUTURE_EXAMPLE_DATE,
-    boogleRecords: [],
-    boogleStatus: 'future',
-    lifeRecord: null,
-    lifeStatus: 'future',
-  },
-];
 
 const formatKoreanDateLabel = (dateKey: string) => {
   const date = new Date(dateKey);
@@ -124,7 +50,9 @@ const CalendarPage = () => {
   const boogleRecordSummaries = toBoogleRecordSummaries(
     dailyRecord?.boogleRecords ?? [],
   );
-  const lifeRecordSummary = toLifeRecordSummary(dailyRecord?.lifeRecord ?? null);
+  const lifeRecordSummary = toLifeRecordSummary(
+    dailyRecord?.lifeRecord ?? null,
+  );
   const boogleRecordStatus = getBoogleRecordStatus({
     selectedDate,
     records: boogleRecordSummaries,
@@ -252,35 +180,6 @@ const CalendarPage = () => {
               onEditClick={handleLifeEditClick}
             />
           </>
-        )}
-      </section>
-
-      <section className="mt-8 space-y-5 border-t border-beige-7 pt-6">
-        <h2 className="body-m-bold text-gray-7">캘린더 상태 예시</h2>
-
-        {CALENDAR_DAILY_RECORD_EXAMPLES.map(
-          ({ title, date, boogleRecords, boogleStatus, lifeRecord, lifeStatus }) => (
-            <section key={title} className="space-y-3">
-              <h3 className="label-semi text-gray-6">
-                {title} · {formatKoreanDateLabel(date)}
-              </h3>
-              <DailyBoogleRecordCard
-                variant="calendar"
-                records={boogleRecords}
-                status={boogleStatus}
-                onCreateClick={() => handleBoogleCreateClick(date)}
-                onEditClick={handleBoogleEditClick}
-              />
-              <DailyLifeRecordCard
-                variant="calendar"
-                shouldShowDetail
-                record={lifeRecord}
-                status={lifeStatus}
-                onCreateClick={() => handleLifeCreateClick(date)}
-                onEditClick={handleLifeEditClick}
-              />
-            </section>
-          ),
         )}
       </section>
     </div>
