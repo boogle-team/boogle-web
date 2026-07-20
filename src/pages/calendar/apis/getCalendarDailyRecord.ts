@@ -31,9 +31,10 @@ const MOCK_CALENDAR_DAILY_RECORD_RESPONSE: CalendarDailyRecordResponseTypes = {
     lifeRecord: {
       id: 55,
       regDate: '2026-06-17T21:00:00',
-      sleep: 'N',
+      sleep: 'B',
       stress: 'L',
-      water: 'H',
+      water: 'L',
+      waterIntake: 1,
       mealRegular: 'R',
       sleepTime: 2,
       exercise: 'L',

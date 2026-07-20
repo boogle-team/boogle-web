@@ -57,6 +57,7 @@ export interface LifeRecordTypes {
   sleep: LifeConditionCodeTypes;
   stress: LifeConditionCodeTypes;
   water: LifeConditionCodeTypes;
+  waterIntake?: number;
   mealRegular: LifeConditionCodeTypes;
   sleepTime?: number;
   exercise?: LifeConditionCodeTypes;
@@ -86,8 +87,19 @@ export interface LifeRecordSummaryTypes {
   sleep: LifeConditionCodeTypes;
   stress: LifeConditionCodeTypes;
   water: LifeConditionCodeTypes;
+  waterIntake?: number;
   mealRegular: LifeConditionCodeTypes;
+  sleepTime?: number;
+  exercise?: LifeConditionCodeTypes;
+  caffeine?: LifeConditionCodeTypes;
+  medicine?: LifeConditionCodeTypes;
+  outing?: LifeConditionCodeTypes;
+  hormone?: LifeConditionCodeTypes;
+  memo?: string | null;
+  autoTags?: string[];
+  tags?: RecordTagTypes[];
   foods: FoodTypes[];
+  updatedAt?: string | null;
 }
 
 export interface LifeMetricTypes {

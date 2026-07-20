@@ -56,15 +56,44 @@ export const toLifeRecordSummary = (
 ): LifeRecordSummaryTypes | null => {
   if (!lifeRecord) return null;
 
-  const { id, sleep, stress, water, mealRegular, foods } = lifeRecord;
+  const {
+    id,
+    sleep,
+    stress,
+    water,
+    waterIntake,
+    mealRegular,
+    sleepTime,
+    exercise,
+    caffeine,
+    medicine,
+    outing,
+    hormone,
+    memo,
+    autoTags,
+    tags,
+    foods,
+    updatedAt,
+  } = lifeRecord;
 
   return {
     id,
     sleep,
     stress,
     water,
+    waterIntake,
     mealRegular,
+    sleepTime,
+    exercise,
+    caffeine,
+    medicine,
+    outing,
+    hormone,
+    memo,
+    autoTags,
+    tags,
     foods,
+    updatedAt,
   };
 };
 
