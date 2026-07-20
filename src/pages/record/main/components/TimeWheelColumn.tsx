@@ -50,6 +50,13 @@ const TimeWheelColumn = <T,>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(scrollTimeoutRef.current);
+      clearTimeout(resetTimeoutRef.current);
+    };
+  }, []);
+
   const handleScroll = () => {
     if (isProgrammaticScroll.current) return;
 
