@@ -11,9 +11,7 @@ const EmptyRecordState = ({
 }: EmptyRecordStatePropTypes) => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 px-23 py-8 text-center">
-      <div className="flex items-center justify-center">
-        {character}
-      </div>
+      <div className="flex items-center justify-center">{character}</div>
       <p className="label text-gray-7">{message}</p>
     </div>
   );

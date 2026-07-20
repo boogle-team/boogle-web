@@ -4,17 +4,10 @@ export type DailyRecordVariantTypes = 'home' | 'calendar';
 
 // noBoogleSignal은 사용자가 기록 화면에서 배변 없음을 선택한 저장된 기록 상태다.
 export type BoogleRecordStatusTypes =
-  | 'todayEmpty'
-  | 'pastEmpty'
-  | 'future'
-  | 'noBoogleSignal'
-  | 'recorded';
+  'todayEmpty' | 'pastEmpty' | 'future' | 'noBoogleSignal' | 'recorded';
 
 export type LifeRecordStatusTypes =
-  | 'todayEmpty'
-  | 'pastEmpty'
-  | 'future'
-  | 'recorded';
+  'todayEmpty' | 'pastEmpty' | 'future' | 'recorded';
 
 export type StoolSimpleCodeTypes = 'M' | 'T' | string;
 export type BowelFeelingCodeTypes = 'C' | 'H' | string;

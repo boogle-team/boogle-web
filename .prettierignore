@@ -1,0 +1,5 @@
+dist
+node_modules
+pnpm-lock.yaml
+vite-dev.log
+vite-dev-error.log
