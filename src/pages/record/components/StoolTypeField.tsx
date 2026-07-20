@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import TooltipPopover from '@/shared/components/TooltipPopover';
 import StoolType1Icon from '@/shared/assets/illustrations/record/stoolType/stoolType1.svg?react';
 import StoolType2Icon from '@/shared/assets/illustrations/record/stoolType/stoolType2.svg?react';
 import StoolType3Icon from '@/shared/assets/illustrations/record/stoolType/stoolType3.svg?react';
@@ -48,10 +49,8 @@ const StoolTypeButton = ({
       type="button"
       onClick={() => onSelect(option.id)}
       aria-pressed={isSelected}
-      className={`flex flex-col items-center gap-2 rounded-xl border-2 px-1 py-3 transition-colors ${
-        isSelected
-          ? 'border-orange-6 bg-orange-1'
-          : 'border-transparent bg-gray-3'
+      className={`flex flex-col items-center gap-2 rounded-xl border px-4 py-2 transition-colors ${
+        isSelected ? 'border-orange-6 bg-orange-1' : 'border-gray-4 bg-beige-1'
       }`}
     >
       <StoolTypeIcon className="h-10 w-10" aria-hidden="true" />
@@ -82,7 +81,10 @@ const StoolTypeField = ({ value, onChange }: StoolTypeFieldPropTypes) => {
       />
 
       {isInfoOpen && (
-        <div className="caption absolute left-0 top-9 z-10 w-[calc(100%-4.5rem)] rounded-xl bg-orange-7 px-4 py-3 text-beige-1 shadow-md">
+        <TooltipPopover
+          className="caption absolute left-0 top-9 z-10 w-[calc(100%-4.5rem)]"
+          arrowClassName="left-18"
+        >
           <p className="label-semi mb-1">Bristol Stool Scale이란?</p>
           <p className="mb-2 text-orange-1">
             변의 형태로 장 건강 상태를 파악하는 국제 표준 지표에요.
@@ -94,7 +96,7 @@ const StoolTypeField = ({ value, onChange }: StoolTypeFieldPropTypes) => {
               </li>
             ))}
           </ul>
-        </div>
+        </TooltipPopover>
       )}
 
       <div className="grid grid-cols-4 gap-2">
