@@ -41,10 +41,10 @@ const formatKoreanTime = (date: Date) => {
 };
 
 export const getNotificationDateLabel = (
-  createdAt: string,
+  regDate: string,
   today = new Date(),
 ) => {
-  const date = new Date(createdAt);
+  const date = new Date(regDate);
   const dayDifference = getDayDifference(date, today);
 
   if (dayDifference === 0) return '오늘';
@@ -55,10 +55,10 @@ export const getNotificationDateLabel = (
 };
 
 export const getNotificationTimestamp = (
-  createdAt: string,
+  regDate: string,
   today = new Date(),
 ) => {
-  const date = new Date(createdAt);
+  const date = new Date(regDate);
   const dayDifference = getDayDifference(date, today);
 
   if (dayDifference === 0) {
@@ -87,14 +87,14 @@ export const groupNotificationsByDate = (
 ): NotificationDateGroupTypes[] => {
   const sortedNotifications = [...notifications].sort(
     (firstNotification, secondNotification) =>
-      new Date(secondNotification.createdAt).getTime() -
-      new Date(firstNotification.createdAt).getTime(),
+      new Date(secondNotification.regDate).getTime() -
+      new Date(firstNotification.regDate).getTime(),
   );
 
   const notificationGroupMap = new Map<string, NotificationItemTypes[]>();
 
   sortedNotifications.forEach((notification) => {
-    const dateLabel = getNotificationDateLabel(notification.createdAt, today);
+    const dateLabel = getNotificationDateLabel(notification.regDate, today);
     const notificationGroup = notificationGroupMap.get(dateLabel) ?? [];
 
     notificationGroup.push(notification);

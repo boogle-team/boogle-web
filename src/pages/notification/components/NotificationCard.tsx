@@ -1,15 +1,15 @@
-import {
-  ChartNoAxesColumnIncreasing,
-  Clock3,
-  Flame,
-  TriangleAlert,
-} from 'lucide-react';
+import chartIcon from '@/shared/assets/icons/notificationPageIcons/chartIcon.svg?url';
+import clockIcon from '@/shared/assets/icons/notificationPageIcons/clockIcon.svg?url';
+import flameIcon from '@/shared/assets/icons/notificationPageIcons/flameIcon.svg?url';
+import roundedChartIcon from '@/shared/assets/icons/notificationPageIcons/roundedChartIcon.svg?url';
+import warningNoticeIcon from '@/shared/assets/icons/notificationPageIcons/warningNotice.svg?url';
 
 import { getNotificationTimestamp } from '../utils/notificationDate';
 
 import type {
+  NotificationCategoryTypes,
+  NotificationIconTypes,
   NotificationItemTypes,
-  NotificationTypeTypes,
 } from '../types/notificationTypes';
 
 interface NotificationCardPropTypes {
@@ -17,38 +17,34 @@ interface NotificationCardPropTypes {
   onClick: () => void;
 }
 
-const getNotificationIcon = (type: NotificationTypeTypes) => {
-  const iconClassName = 'h-6 w-6 text-beige-1';
+const NOTIFICATION_ICON_MAP = {
+  warning: warningNoticeIcon,
+  record: clockIcon,
+  weeklyReport: chartIcon,
+  monthlyReport: roundedChartIcon,
+  streak: flameIcon,
+} satisfies Record<NotificationIconTypes, string>;
 
-  if (type === 'N101') {
-    return <TriangleAlert aria-hidden="true" className={iconClassName} />;
-  }
+const DEFAULT_NOTIFICATION_ICON_MAP = {
+  W: 'warning',
+  R: 'record',
+  P: 'weeklyReport',
+} satisfies Record<NotificationCategoryTypes, NotificationIconTypes>;
 
-  if (type === 'N102') {
-    return <Clock3 aria-hidden="true" className={iconClassName} />;
-  }
-
-  if (type === 'N105') {
-    return <Flame aria-hidden="true" className={iconClassName} />;
-  }
-
-  return (
-    <ChartNoAxesColumnIncreasing aria-hidden="true" className={iconClassName} />
-  );
-};
+const NOTIFICATION_DOT_CLASS_MAP = {
+  W: 'bg-semantic-danger',
+  R: 'bg-orange-5',
+  P: 'bg-yellow-6',
+} satisfies Record<NotificationCategoryTypes, string>;
 
 const NotificationCard = ({
   notification,
   onClick,
 }: NotificationCardPropTypes) => {
-  const isWarning = notification.type === 'N101';
-  const isReport = notification.type === 'N103' || notification.type === 'N104';
-
-  const iconBackgroundClassName = isReport
-    ? 'bg-yellow-3'
-    : isWarning
-      ? 'bg-orange-5'
-      : 'bg-orange-3';
+  const isWarning = notification.category === 'W';
+  const iconType =
+    notification.iconType ??
+    DEFAULT_NOTIFICATION_ICON_MAP[notification.category];
 
   return (
     <button
@@ -60,11 +56,12 @@ const NotificationCard = ({
           : 'bg-beige-1 shadow-sm'
       }`}
     >
-      <span
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] ${iconBackgroundClassName}`}
-      >
-        {getNotificationIcon(notification.type)}
-      </span>
+      <img
+        src={NOTIFICATION_ICON_MAP[iconType]}
+        alt=""
+        aria-hidden="true"
+        className="h-10 w-10 shrink-0"
+      />
 
       <span className="min-w-0 flex-1 pr-2">
         <strong
@@ -75,20 +72,22 @@ const NotificationCard = ({
           {notification.title}
         </strong>
         <span className="caption-reg mt-1 block text-gray-7">
-          {notification.description}
+          {notification.content}
         </span>
         <time
-          dateTime={notification.createdAt}
+          dateTime={notification.regDate}
           className="micro mt-1 block text-gray-6"
         >
-          {getNotificationTimestamp(notification.createdAt)}
+          {getNotificationTimestamp(notification.regDate)}
         </time>
       </span>
 
       {!notification.isRead && (
         <span
           aria-label="읽지 않은 알림"
-          className="absolute top-3 right-3 h-1.5 w-1.5 rounded-[99px] bg-semantic-danger"
+          className={`absolute top-3 right-3 h-1.5 w-1.5 rounded-[99px] ${
+            NOTIFICATION_DOT_CLASS_MAP[notification.category]
+          }`}
         />
       )}
     </button>

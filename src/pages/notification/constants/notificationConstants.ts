@@ -1,19 +1,18 @@
 import type {
+  GetNotificationsDataTypes,
   NotificationItemTypes,
-  NotificationTypeTypes,
+  NotificationLinkToTypes,
 } from '../types/notificationTypes';
 
 export const NOTIFICATION_API_ENDPOINT = '/api/v1/notifications';
 
 export const NOTIFICATION_DESTINATION_MAP: Record<
-  NotificationTypeTypes,
+  NotificationLinkToTypes,
   string
 > = {
-  N101: '/report',
-  N102: '/',
-  N103: '/report',
-  N104: '/report',
-  N105: '/',
+  GUIDE_WARNING: '/guide#warning-signals',
+  HOME: '/',
+  REPORT: '/report',
 };
 
 const getRelativeTimestamp = (hoursAgo: number, minutesAgo = 0) => {
@@ -34,44 +33,60 @@ const getYesterdayTimestamp = (hours: number, minutes: number) => {
 
 export const MOCK_NOTIFICATIONS: NotificationItemTypes[] = [
   {
-    id: 1,
-    type: 'N101',
+    id: 5001,
+    category: 'W',
     title: '주의가 필요한 기록이 있어요',
-    description:
+    content:
       '오늘 기록에서 붉은색 변이 감지됐어요. 가이드 탭에서 자세한 안내를 확인해보세요.',
-    createdAt: getRelativeTimestamp(0),
+    linkTo: 'GUIDE_WARNING',
+    regDate: getRelativeTimestamp(0),
     isRead: false,
+    iconType: 'warning',
   },
   {
-    id: 2,
-    type: 'N102',
+    id: 5000,
+    category: 'R',
     title: '기록할 시간이에요',
-    description: '30초면 충분해요. 지금 기록해볼까요?',
-    createdAt: getRelativeTimestamp(3),
+    content: '30초면 충분해요. 지금 기록해볼까요?',
+    linkTo: 'HOME',
+    regDate: getRelativeTimestamp(3),
     isRead: false,
+    iconType: 'record',
   },
   {
-    id: 3,
-    type: 'N103',
+    id: 4999,
+    category: 'P',
     title: '이번 주 리포트가 도착했어요',
-    description: '이번 주 패턴을 확인해보세요',
-    createdAt: getRelativeTimestamp(8),
+    content: '이번 주 패턴을 확인해보세요',
+    linkTo: 'REPORT',
+    regDate: getRelativeTimestamp(8),
     isRead: false,
+    iconType: 'weeklyReport',
   },
   {
-    id: 4,
-    type: 'N104',
+    id: 4998,
+    category: 'P',
     title: '월간 리포트 PDF 저장이 완료됐어요',
-    description: '다운로드함에서 확인할 수 있어요',
-    createdAt: getYesterdayTimestamp(18, 20),
+    content: '다운로드함에서 확인할 수 있어요',
+    linkTo: 'REPORT',
+    regDate: getYesterdayTimestamp(18, 20),
     isRead: true,
+    iconType: 'monthlyReport',
   },
   {
-    id: 5,
-    type: 'N105',
+    id: 4997,
+    category: 'R',
     title: '3일째 기록 중이에요!',
-    description: '꾸준한 기록이 패턴 분석의 기본이에요',
-    createdAt: getYesterdayTimestamp(9, 10),
+    content: '꾸준한 기록이 패턴 분석의 기본이에요',
+    linkTo: 'HOME',
+    regDate: getYesterdayTimestamp(9, 10),
     isRead: true,
+    iconType: 'streak',
   },
 ];
+
+export const MOCK_NOTIFICATION_DATA: GetNotificationsDataTypes = {
+  unreadCount: MOCK_NOTIFICATIONS.filter((notification) => !notification.isRead)
+    .length,
+  notifications: MOCK_NOTIFICATIONS,
+};

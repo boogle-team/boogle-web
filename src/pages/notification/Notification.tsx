@@ -2,59 +2,39 @@ import { useNavigate } from 'react-router-dom';
 
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import NotificationCard from './components/NotificationCard';
+import NotificationList from './components/NotificationList';
 import {
-  MOCK_NOTIFICATIONS,
+  MOCK_NOTIFICATION_DATA,
   NOTIFICATION_DESTINATION_MAP,
 } from './constants/notificationConstants';
-import { groupNotificationsByDate } from './utils/notificationDate';
 
 import type { NotificationItemTypes } from './types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
-  const notificationGroups = groupNotificationsByDate(MOCK_NOTIFICATIONS);
 
   const handleBackButtonClick = () => {
     navigate('/');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {
-    navigate(NOTIFICATION_DESTINATION_MAP[notification.type]);
+    navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
   };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-2">
+    <div className="flex min-h-dvh flex-col bg-beige-5">
       <DefaultTopNavigation
         title="알림"
         onBackButtonClick={handleBackButtonClick}
         isBorderVisible={false}
-        className="mt-[3.06rem] bg-beige-2"
+        className="mt-[3.06rem] bg-beige-5"
       />
 
       <main className="flex-1 bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
-        {notificationGroups.map((notificationGroup, groupIndex) => (
-          <section
-            key={notificationGroup.dateLabel}
-            className={
-              groupIndex === 0 ? 'pt-6' : 'mt-8 border-t border-gray-4 pt-8'
-            }
-          >
-            <h2 className="label-semi mb-2 text-gray-8">
-              {notificationGroup.dateLabel}
-            </h2>
-
-            <div className="flex flex-col gap-2">
-              {notificationGroup.notifications.map((notification) => (
-                <NotificationCard
-                  key={notification.id}
-                  notification={notification}
-                  onClick={() => handleNotificationClick(notification)}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+        <NotificationList
+          notifications={MOCK_NOTIFICATION_DATA.notifications}
+          onNotificationClick={handleNotificationClick}
+        />
       </main>
     </div>
   );
