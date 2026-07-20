@@ -43,7 +43,7 @@ const Record = () => {
         onBackButtonClick={handleBackButtonClick}
       />
 
-      <div className="flex flex-1 flex-col gap-8 px-layout py-6">
+      <div className="flex flex-1 flex-col gap-8 px-layout py-6 pb-24">
         <BowelStatusField
           value={formState.bowelStatus}
           onChange={handleBowelStatusChange}
@@ -76,7 +76,7 @@ const Record = () => {
         )}
       </div>
 
-      <div className="sticky bottom-0 bg-beige-1 px-layout py-4">
+      <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 bg-beige-1 px-layout py-4">
         <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
       </div>
     </div>
