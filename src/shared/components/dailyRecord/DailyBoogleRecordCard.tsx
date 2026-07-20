@@ -38,10 +38,24 @@ const DailyBoogleRecordCard = ({
   const isFuture = status === 'future';
   const isBowelRecorded = status === 'recorded';
   const hasAnyRecord = records.length > 0;
+  const noBoogleSignalRecordId = records[0]?.id;
+  const isNoBoogleSignalRecord = status === 'noBoogleSignal' && hasAnyRecord;
   const shouldShowItemEditButton = variant === 'calendar' && isBowelRecorded;
+  const shouldShowHeaderEditButton =
+    variant === 'calendar' &&
+    isNoBoogleSignalRecord &&
+    noBoogleSignalRecordId !== undefined;
   const shouldShowHeaderCreateButton =
-    variant === 'home' || !hasAnyRecord || isFuture;
-  const actionType = shouldShowHeaderCreateButton ? 'create' : 'none';
+    !shouldShowHeaderEditButton &&
+    (variant === 'home' || !hasAnyRecord || isFuture);
+  const actionType = shouldShowHeaderEditButton
+    ? 'edit'
+    : shouldShowHeaderCreateButton
+      ? 'create'
+      : 'none';
+  const actionLabel = shouldShowHeaderEditButton
+    ? '부글 배변 없음 기록 수정'
+    : '부글 기록 작성';
   const statusText = isBowelRecorded ? `${records.length}회` : undefined;
   const emptyCharacter =
     status === 'noBoogleSignal' ? (
@@ -50,14 +64,23 @@ const DailyBoogleRecordCard = ({
       <NoBoogleRecordCharacter className="h-12 w-12" />
     );
 
+  const handleCardActionClick = () => {
+    if (shouldShowHeaderEditButton && noBoogleSignalRecordId !== undefined) {
+      onEditClick?.(noBoogleSignalRecordId);
+      return;
+    }
+
+    onCreateClick();
+  };
+
   return (
     <DailyRecordCardShell
       title="부글 기록"
       statusText={statusText}
-      actionLabel="부글 기록 작성"
+      actionLabel={actionLabel}
       actionType={actionType}
       isActionDisabled={isFuture}
-      onActionClick={onCreateClick}
+      onActionClick={handleCardActionClick}
     >
       {isBowelRecorded ? (
         <ul className="space-y-1 px-4 py-4">
@@ -71,7 +94,6 @@ const DailyBoogleRecordCard = ({
           ))}
         </ul>
       ) : (
-        // TODO: 디자이너 답변 후 캘린더의 배변 없음 기록 수정 진입 UI를 확정해서 반영한다.
         <EmptyRecordState
           message={EMPTY_MESSAGE_MAP[status]}
           character={emptyCharacter}
