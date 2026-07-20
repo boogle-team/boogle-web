@@ -76,7 +76,7 @@ const Main = () => {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 bg-beige-1 px-layout pt-4 pb-14.76">
+      <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 px-layout pt-4 pb-[3.69rem]">
         <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
       </div>
     </div>
