@@ -43,9 +43,16 @@ const PainLevelField = ({ value, onChange }: PainLevelFieldPropTypes) => {
         className="h-2 w-full cursor-pointer appearance-none rounded-full [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-4 [&::-moz-range-thumb]:border-orange-2 [&::-moz-range-thumb]:bg-orange-6 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-orange-2 [&::-webkit-slider-thumb]:bg-orange-6"
       />
 
-      <div className="caption flex justify-between text-gray-6">
+      {/* 라벨 중심을 각 값의 thumb 중심(양끝에서 thumb 반지름만큼 안쪽) 위치에 맞춘다 */}
+      <div className="caption relative h-[1.05rem] text-gray-6">
         {Array.from({ length: PAIN_LEVEL_MAX + 1 }, (_, level) => (
-          <span key={level}>
+          <span
+            key={level}
+            className="absolute -translate-x-1/2"
+            style={{
+              left: `calc(0.625rem + (100% - 1.25rem) * ${level / PAIN_LEVEL_MAX})`,
+            }}
+          >
             {level === 0 ? '없음' : level === PAIN_LEVEL_MAX ? '심함' : level}
           </span>
         ))}
