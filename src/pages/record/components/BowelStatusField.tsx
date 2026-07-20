@@ -20,7 +20,7 @@ const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
     <section className="flex flex-col gap-3">
       <RecordSectionTitle title="배변 여부" />
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-gray-3 p-1.5">
         {BOWEL_STATUS_OPTIONS.map((option) => {
           const isSelected = value === option.value;
           const BowelStatusIcon = BOWEL_STATUS_ICONS[option.value];
@@ -31,16 +31,14 @@ const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isSelected}
-              className={`flex flex-col items-center gap-3 rounded-2xl border-2 py-6 transition-colors ${
-                isSelected
-                  ? 'border-orange-6 bg-orange-1'
-                  : 'border-transparent bg-gray-3'
+              className={`flex flex-col items-center gap-3 rounded-xl py-5 transition-colors ${
+                isSelected ? 'bg-beige-1 shadow-sm' : 'bg-transparent'
               }`}
             >
               <BowelStatusIcon className="h-18 w-18" aria-hidden="true" />
 
               <span
-                className={`label-semi ${isSelected ? 'text-orange-6' : 'text-gray-7'}`}
+                className={`label-semi ${isSelected ? 'text-gray-10' : 'text-gray-6'}`}
               >
                 {option.label}
               </span>
