@@ -1,10 +1,17 @@
 import type { ComponentType, SVGProps } from 'react';
+import type { GuideFeedbackTypes } from './guideApiTypes';
+
+export type GuideMainCategoryTypes = 'P' | 'H' | 'W';
+export type GuideFeedbackStatusTypes = GuideFeedbackTypes | null;
 
 export interface GuideMainItemTypes {
-  description: string;
+  category: GuideMainCategoryTypes;
+  feedbackStatus: GuideFeedbackStatusTypes;
+  guideContentId: number;
   iconBackgroundColor: string;
   iconColor: string;
-  id?: string;
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
+  routeId: string;
+  summary: string;
   title: string;
 }

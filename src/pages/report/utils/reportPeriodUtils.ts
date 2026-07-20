@@ -64,6 +64,45 @@ const getRelativeTitle = (distance: number, unit: '주' | '달') => {
 const getMonthDayText = (date: Date) =>
   `${date.getMonth() + 1}월 ${date.getDate()}일`;
 
+const getDateValue = (date: Date) => {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+export const getReportDateRange = (
+  selectedMode: ReportModeTypes,
+  currentPeriodDate: Date,
+) => {
+  if (selectedMode === 'weekly') {
+    const weekStartDate = getWeekStartDate(currentPeriodDate);
+    const weekEndDate = addDays(weekStartDate, 6);
+
+    return {
+      endDate: getDateValue(weekEndDate),
+      startDate: getDateValue(weekStartDate),
+    };
+  }
+
+  const monthStartDate = new Date(
+    currentPeriodDate.getFullYear(),
+    currentPeriodDate.getMonth(),
+    1,
+  );
+  const monthEndDate = new Date(
+    currentPeriodDate.getFullYear(),
+    currentPeriodDate.getMonth() + 1,
+    0,
+  );
+
+  return {
+    endDate: getDateValue(monthEndDate),
+    startDate: getDateValue(monthStartDate),
+  };
+};
+
 export const getPeriodText = (
   selectedMode: ReportModeTypes,
   currentPeriodDate: Date,

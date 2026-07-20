@@ -1,0 +1,185 @@
+const BristolScaleTypeThreeIcon = () => (
+  <svg
+    width="36"
+    height="37"
+    viewBox="0 0 36 37"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <g filter="url(#bristol-scale-type-three-filter0)">
+      <path
+        d="M8.19869 19.8936C8.78885 19.2717 8.99615 17.9458 10.2978 16.8551C11.5995 15.7644 12.7369 15.7775 13.6539 15.1687C13.934 14.9838 14.244 13.9959 14.5185 13.6055C15.3646 12.401 16.5654 11.2898 17.8914 10.6286C18.3751 10.3877 19.716 10.0721 19.7907 10.0067C19.8523 9.95444 20.1343 8.98891 20.4742 8.54256C25.2552 2.27686 34.9273 7.98229 30.5516 15.4451C30.1426 16.1436 29.1939 16.7337 29.0706 16.9522C28.9082 17.2417 28.8316 18.4183 28.6542 18.9636C28.1611 20.4801 27.2367 22.0096 25.9892 23.0218C25.5017 23.4177 24.2505 23.9743 24.0375 24.2451C23.7985 24.5495 23.5875 25.4497 23.3036 25.939C22.3847 27.5171 20.6423 28.9607 18.9559 29.6218C18.0875 29.9636 16.8885 30.0196 16.2853 30.3128C15.8632 30.5164 15.4243 31.1868 14.6941 31.523C12.5912 32.4904 9.46117 32.5408 7.37136 31.551C2.93215 29.4519 2.97884 23.1413 6.88206 20.5361C7.21635 20.3138 8.03808 20.0636 8.19869 19.8936ZM20.3846 20.0617C20.3846 19.5668 19.9831 19.1653 19.4881 19.1653C18.9932 19.1653 18.5917 19.5668 18.5917 20.0617C18.5917 20.5566 18.9932 20.9582 19.4881 20.9582C19.9831 20.9582 20.3846 20.5566 20.3846 20.0617ZM15.0452 21.821C15.0452 21.3261 14.6437 20.9245 14.1488 20.9245C13.6539 20.9245 13.2523 21.3261 13.2523 21.821C13.2523 22.3159 13.6539 22.7174 14.1488 22.7174C14.6437 22.7174 15.0452 22.3159 15.0452 21.821ZM16.0798 23.1021C16.0985 23.2366 16.1882 23.3505 16.3151 23.4009C17.1313 23.7315 18.6982 23.1376 18.5189 22.2767C18.3713 21.5633 17.516 22.8407 17.2676 22.8986C17.0192 22.9565 16.6588 22.8369 16.3338 22.8201C16.1807 22.8108 16.0593 22.9509 16.0798 23.104V23.1021Z"
+        fill="#D8937A"
+      />
+    </g>
+    <g filter="url(#bristol-scale-type-three-filter1)">
+      <path
+        d="M23.959 10.585C25.0354 10.7713 27.369 11.6752 28.0923 13.7998"
+        stroke="#C9866D"
+        strokeWidth="1.06981"
+        strokeLinecap="round"
+      />
+    </g>
+    <g filter="url(#bristol-scale-type-three-filter2)">
+      <path
+        d="M13.4688 23.2441C14.3233 23.8841 15.9503 25.7198 15.6214 27.9434"
+        stroke="#C9866D"
+        strokeWidth="1.06981"
+        strokeLinecap="round"
+      />
+    </g>
+    <g filter="url(#bristol-scale-type-three-filter3)">
+      <path
+        d="M18.1055 14.1416C21.7525 14.3457 24.9944 16.3869 24.9944 21.4898"
+        stroke="#C9866D"
+        strokeWidth="1.06981"
+        strokeLinecap="round"
+      />
+    </g>
+    <defs>
+      <filter
+        id="bristol-scale-type-three-filter0"
+        x="3.71946"
+        y="5.58323"
+        width="28.2173"
+        height="26.9649"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.36148390173912048 0.36148390173912048"
+          numOctaves="3"
+          seed="6468"
+        />
+        <feDisplacementMap
+          in="shape"
+          scale="0.55327498912811279"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="displacedImage"
+          width="100%"
+          height="100%"
+        />
+        <feMerge result="effect1_texture_1654_11946">
+          <feMergeNode in="displacedImage" />
+        </feMerge>
+      </filter>
+      <filter
+        id="bristol-scale-type-three-filter1"
+        x="23.2099"
+        y="9.83584"
+        width="5.63105"
+        height="4.71308"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.46737316250801086 0.46737316250801086"
+          numOctaves="3"
+          seed="2123"
+        />
+        <feDisplacementMap
+          in="shape"
+          scale="0.42792361974716187"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="displacedImage"
+          width="100%"
+          height="100%"
+        />
+        <feMerge result="effect1_texture_1654_11946">
+          <feMergeNode in="displacedImage" />
+        </feMerge>
+      </filter>
+      <filter
+        id="bristol-scale-type-three-filter2"
+        x="12.7196"
+        y="22.495"
+        width="3.69355"
+        height="6.19745"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.46737316250801086 0.46737316250801086"
+          numOctaves="3"
+          seed="2123"
+        />
+        <feDisplacementMap
+          in="shape"
+          scale="0.42792361974716187"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="displacedImage"
+          width="100%"
+          height="100%"
+        />
+        <feMerge result="effect1_texture_1654_11946">
+          <feMergeNode in="displacedImage" />
+        </feMerge>
+      </filter>
+      <filter
+        id="bristol-scale-type-three-filter3"
+        x="17.3564"
+        y="13.3925"
+        width="8.38691"
+        height="8.84638"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.46737316250801086 0.46737316250801086"
+          numOctaves="3"
+          seed="2123"
+        />
+        <feDisplacementMap
+          in="shape"
+          scale="0.42792361974716187"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="displacedImage"
+          width="100%"
+          height="100%"
+        />
+        <feMerge result="effect1_texture_1654_11946">
+          <feMergeNode in="displacedImage" />
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+);
+
+export default BristolScaleTypeThreeIcon;

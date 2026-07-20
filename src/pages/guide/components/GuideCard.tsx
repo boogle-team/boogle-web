@@ -18,13 +18,13 @@ const FULL_SIZE_ICON_IDS = [
 ];
 
 const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
-  const { description, iconBackgroundColor, iconColor, id, Icon, title } =
+  const { iconBackgroundColor, iconColor, routeId, Icon, summary, title } =
     guideItem;
-  const hasFullIcon = id ? FULL_SIZE_ICON_IDS.includes(id) : false;
+  const hasFullIcon = FULL_SIZE_ICON_IDS.includes(routeId);
 
   return (
     <Link
-      to={id ? `/guide?id=${id}` : '/guide'}
+      to={`/guide?id=${routeId}`}
       className="flex min-h-[4.5rem] items-center gap-3 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
     >
       <span
@@ -34,14 +34,14 @@ const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
       </span>
       <span className="min-w-0 flex-1">
         <strong
-          className={`caption-bold block ${
+          className={`label-bold block ${
             isWarning ? 'text-semantic-danger' : 'text-gray-10'
           }`}
         >
           {title}
         </strong>
-        <span className="micro mt-1 line-clamp-2 block text-gray-7">
-          {description}
+        <span className="caption-reg mt-1 line-clamp-2 block text-gray-7">
+          {summary}
         </span>
       </span>
       <ChevronRight className="h-4 w-4 shrink-0 text-gray-6" />

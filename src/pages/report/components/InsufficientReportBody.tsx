@@ -21,15 +21,15 @@ const InsufficientReportBody = ({
     <div className="mt-4 flex min-h-[31rem] flex-col gap-8">
       <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
         <div className="flex items-center justify-between">
-          <p className="caption text-gray-8">
+          <p className="caption text-gray-9">
             {insufficientReport.trackerLabel.replace(
-              `${insufficientReport.currentCount}`,
+              `${insufficientReport.currentCount}일째`,
               '',
             )}
             <span className="caption-bold text-orange-6">
-              {insufficientReport.currentCount}
+              {insufficientReport.currentCount}일
             </span>
-            일째
+            째
           </p>
         </div>
         <div className="mt-4 grid grid-cols-[1fr_2.5rem] items-center gap-3">

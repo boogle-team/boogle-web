@@ -1,0 +1,65 @@
+interface RhythmSmileIconPropTypes {
+  fillColor: string;
+}
+
+const RhythmSmileIcon = ({ fillColor }: RhythmSmileIconPropTypes) => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <g clipPath="url(#rhythmSmileIconClipPath)">
+      <g filter="url(#rhythmSmileIconFilter)">
+        <path
+          d="M16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16C0 7.16344 7.16344 0 16 0ZM15.2041 18.7617C14.9848 18.5426 14.6294 18.5425 14.4102 18.7617C14.1912 18.981 14.1911 19.3365 14.4102 19.5557C15.5597 20.7052 17.4237 20.7051 18.5732 19.5557C18.7925 19.3364 18.7925 18.981 18.5732 18.7617C18.354 18.5425 17.9986 18.5425 17.7793 18.7617C17.0683 19.4727 15.9151 19.4727 15.2041 18.7617ZM13.123 14.667C12.5029 14.667 12 15.1699 12 15.79C12.0002 16.41 12.503 16.9121 13.123 16.9121C13.743 16.912 14.2458 16.41 14.2461 15.79C14.2461 15.1699 13.7432 14.6671 13.123 14.667ZM19.8604 14.667C19.2402 14.6671 18.7373 15.1699 18.7373 15.79C18.7375 16.41 19.2404 16.912 19.8604 16.9121C20.4804 16.9121 20.9832 16.41 20.9834 15.79C20.9834 15.1699 20.4805 14.667 19.8604 14.667Z"
+          fill={fillColor}
+        />
+      </g>
+    </g>
+    <defs>
+      <filter
+        id="rhythmSmileIconFilter"
+        x="-0.5"
+        y="-0.5"
+        width="33"
+        height="33"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.25 0.25"
+          numOctaves="3"
+          seed="2953"
+        />
+        <feDisplacementMap
+          in="shape"
+          scale="1"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="displacedImage"
+          width="100%"
+          height="100%"
+        />
+        <feMerge result="effect1_texture_382_9963">
+          <feMergeNode in="displacedImage" />
+        </feMerge>
+      </filter>
+      <clipPath id="rhythmSmileIconClipPath">
+        <rect width="32" height="32" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+export default RhythmSmileIcon;

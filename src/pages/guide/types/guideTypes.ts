@@ -1,4 +1,4 @@
-export type GuideCategoryTypes = '장 건강 정보' | '나 기록 기반' | '주의 신호';
+export type GuideCategoryTypes = '내 기록 기반' | '장 건강 정보' | '주의 신호';
 
 export interface GuideMetricTypes {
   colorClassName?: string;
@@ -15,16 +15,32 @@ export interface GuideRelatedTypes {
 export interface GuideWarningSignTypes {
   description: string;
   notice: string;
+  subDescription?: string;
   title: string;
+}
+
+export interface GuideActionTypes {
+  description?: string;
+  source?: string;
+  title: string;
+}
+
+export interface GuideInfoSectionTypes {
+  description: string;
+  title: string;
+  visualType?: 'bristolScale';
 }
 
 export interface GuideDetailTypes {
   actionDescription?: string;
   actionSource?: string;
   actionTitle?: string;
+  actions?: GuideActionTypes[];
   category: GuideCategoryTypes;
   description: string;
   id: string;
+  infoNotice?: string;
+  infoSections?: GuideInfoSectionTypes[];
   metrics?: GuideMetricTypes[];
   notice?: string;
   noticeHighlight?: string;
