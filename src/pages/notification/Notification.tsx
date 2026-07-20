@@ -7,17 +7,22 @@ import {
   MOCK_NOTIFICATION_DATA,
   NOTIFICATION_DESTINATION_MAP,
 } from './constants/notificationConstants';
+import { useNotificationReadState } from './hooks/useNotificationReadState';
 
 import type { NotificationItemTypes } from './types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
+  const { notifications, markNotificationAsRead } = useNotificationReadState(
+    MOCK_NOTIFICATION_DATA.notifications,
+  );
 
   const handleBackButtonClick = () => {
     navigate('/');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {
+    markNotificationAsRead(notification.id);
     navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
   };
 
@@ -32,7 +37,7 @@ const Notification = () => {
 
       <main className="flex-1 bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <NotificationList
-          notifications={MOCK_NOTIFICATION_DATA.notifications}
+          notifications={notifications}
           onNotificationClick={handleNotificationClick}
         />
       </main>
