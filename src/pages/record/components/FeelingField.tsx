@@ -22,7 +22,7 @@ const FeelingField = ({ value, onChange }: FeelingFieldPropTypes) => {
     <section className="flex flex-col gap-3">
       <RecordSectionTitle title="배변 느낌" />
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="flex gap-2.5 rounded-xl bg-beige-5 p-1">
         {FEELING_OPTIONS.map((option) => {
           const isSelected = value === option.value;
           const FeelingIcon = FEELING_ICONS[option.value];
@@ -33,16 +33,14 @@ const FeelingField = ({ value, onChange }: FeelingFieldPropTypes) => {
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isSelected}
-              className={`flex flex-col items-center gap-2 rounded-2xl border-2 py-5 transition-colors ${
-                isSelected
-                  ? 'border-orange-6 bg-orange-1'
-                  : 'border-transparent bg-gray-3'
+              className={`flex flex-1 flex-col items-center gap-2 rounded-xl px-4 py-2 transition-colors ${
+                isSelected ? 'bg-beige-1 shadow-md' : 'bg-transparent'
               }`}
             >
               <FeelingIcon className="h-12 w-12" aria-hidden="true" />
 
               <span
-                className={`label-semi ${isSelected ? 'text-orange-6' : 'text-gray-7'}`}
+                className={`label-semi ${isSelected ? 'text-gray-10' : 'text-gray-6'}`}
               >
                 {option.label}
               </span>
