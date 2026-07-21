@@ -1,4 +1,3 @@
-import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import type { GuideMainItemTypes } from '../types/guideMainTypes';
@@ -21,16 +20,19 @@ const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
   const { iconBackgroundColor, iconColor, routeId, Icon, summary, title } =
     guideItem;
   const hasFullIcon = FULL_SIZE_ICON_IDS.includes(routeId);
+  const iconClassName = hasFullIcon ? 'h-10 w-10' : 'h-5 w-5';
 
   return (
     <Link
       to={`/guide?id=${routeId}`}
-      className="flex min-h-[4.5rem] items-center gap-3 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
+      className="flex min-h-[4.5rem] items-start gap-3 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
     >
       <span
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconBackgroundColor} ${iconColor}`}
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+          hasFullIcon ? '' : `${iconBackgroundColor} ${iconColor}`
+        }`}
       >
-        <Icon className={hasFullIcon ? 'h-10 w-10' : 'h-5 w-5'} />
+        <Icon aria-hidden="true" className={iconClassName} />
       </span>
       <span className="min-w-0 flex-1">
         <strong
@@ -40,11 +42,10 @@ const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
         >
           {title}
         </strong>
-        <span className="caption-reg mt-1 line-clamp-2 block text-gray-7">
+        <span className="caption mt-1 line-clamp-2 block text-gray-7">
           {summary}
         </span>
       </span>
-      <ChevronRight className="h-4 w-4 shrink-0 text-gray-6" />
     </Link>
   );
 };

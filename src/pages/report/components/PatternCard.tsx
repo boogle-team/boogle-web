@@ -1,7 +1,7 @@
 import type { PatternTypes } from '../types/reportTypes';
-import PatternCheckIcon from './icons/PatternCheckIcon';
-import PatternDangerIcon from './icons/PatternDangerIcon';
-import PatternWarningIcon from './icons/PatternWarningIcon';
+import PatternCheckIcon from '../assets/icons/PatternCheckIcon';
+import PatternDangerIcon from '../assets/icons/PatternDangerIcon';
+import PatternWarningIcon from '../assets/icons/PatternWarningIcon';
 
 interface PatternCardPropTypes {
   patterns: PatternTypes[];
@@ -15,14 +15,20 @@ const PatternCard = ({ patterns, title }: PatternCardPropTypes) => (
       {patterns.map(({ description, icon, title: patternTitle }, index) => (
         <article
           key={patternTitle}
-          className={`grid grid-cols-[2rem_1fr] gap-3 py-2 ${
+          className={`grid grid-cols-[2.5rem_1fr] gap-3 py-2 ${
             index > 0 ? 'border-t border-beige-7' : ''
           }`}
         >
-          <div className="flex h-7 w-7 items-center justify-center rounded-md">
-            {icon === 'check' && <PatternCheckIcon />}
-            {icon === 'warning' && <PatternWarningIcon />}
-            {icon === 'danger' && <PatternDangerIcon />}
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl">
+            {icon === 'check' && (
+              <PatternCheckIcon aria-hidden="true" className="h-10 w-10" />
+            )}
+            {icon === 'warning' && (
+              <PatternWarningIcon aria-hidden="true" className="h-10 w-10" />
+            )}
+            {icon === 'danger' && (
+              <PatternDangerIcon aria-hidden="true" className="h-10 w-10" />
+            )}
           </div>
           <div>
             <h3 className="label-bold tracking-[-0.0175rem] text-gray-10">

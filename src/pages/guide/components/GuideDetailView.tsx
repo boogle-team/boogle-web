@@ -1,6 +1,6 @@
 ﻿import { useNavigate } from 'react-router-dom';
 
-import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import type { GuideDetailTypes } from '../types/guideTypes';
 import GuideActionSection from './GuideActionSection';
 import GuideCategoryBadge from './GuideCategoryBadge';
@@ -28,7 +28,7 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
     <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pb-10 text-gray-10">
       <div className="-mx-layout">
         <div className="h-10 bg-beige-5" />
-        <DefaultTopNavigation
+        <TopNavigation
           title="가이드 상세"
           isBorderVisible={false}
           className="bg-beige-5"
@@ -36,15 +36,15 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
         />
       </div>
 
-      <div className="pt-5">
+      <div className="pt-6">
         <GuideCategoryBadge guideDetail={guideDetail} />
 
-        <h2 className="display mt-4 tracking-[-0.06875rem] text-gray-10">
+        <h2 className="display mt-5 tracking-[-0.06875rem] text-gray-10">
           {guideDetail.title}
         </h2>
         <DescriptionText text={guideDetail.description} />
 
-        <section className="mt-8">
+        <section className="mt-9">
           {!isInfoGuide && (
             <h3 className="caption-bold mb-2 text-gray-8">
               {isWarningGuide ? '증상별 확인' : '이 패턴이 나온 이유'}
@@ -58,7 +58,11 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
           )}
 
           {hasInfoSections && (
-            <div className={hasSummaryCard ? 'mt-8' : undefined}>
+            <div
+              className={
+                hasSummaryCard ? 'mt-5 border-t border-beige-7 pt-5' : undefined
+              }
+            >
               <GuideInfoSectionCard guideDetail={guideDetail} />
             </div>
           )}
@@ -87,15 +91,19 @@ const DescriptionText = ({ text }: { text: string }) => {
   const highlightText = highlightTextList.find((item) => text.includes(item));
 
   if (!highlightText) {
-    return <p className="label mt-3 whitespace-pre-line text-gray-7">{text}</p>;
+    return (
+      <p className="body-m mt-3 whitespace-pre-line tracking-[-0.02rem] text-gray-8">
+        {text}
+      </p>
+    );
   }
 
   const [beforeText, afterText] = text.split(highlightText);
 
   return (
-    <p className="label mt-3 whitespace-pre-line text-gray-7">
+    <p className="body-m mt-3 whitespace-pre-line tracking-[-0.02rem] text-gray-8">
       {beforeText}
-      <strong className="label-bold text-gray-7">{highlightText}</strong>
+      <strong className="body-m-bold text-gray-10">{highlightText}</strong>
       {afterText}
     </p>
   );
@@ -105,8 +113,8 @@ const GuideInfoSourceText = ({
 }: {
   guideDetail: GuideDetailTypes;
 }) => (
-  <p className="caption mt-8 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7">
-    출처: {guideDetail.source}
+  <p className="caption mt-9 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7">
+    <GuideSourceLink guideDetail={guideDetail} />
   </p>
 );
 
@@ -127,10 +135,30 @@ const GuideWarningNoticeSection = ({
         </p>
       </article>
       <p className="caption mt-6 text-center tracking-[-0.015rem] text-gray-7">
-        출처: {guideDetail.source}
+        <GuideSourceLink guideDetail={guideDetail} />
       </p>
     </>
   );
 };
 
+const GuideSourceLink = ({ guideDetail }: { guideDetail: GuideDetailTypes }) => {
+  const sourceText = `출처: ${guideDetail.source}`;
+
+  if (!guideDetail.sourceUrl) {
+    return sourceText;
+  }
+
+  return (
+    <a
+      href={guideDetail.sourceUrl}
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={`${sourceText} 외부 링크 열기`}
+    >
+      {sourceText}
+    </a>
+  );
+};
+
 export default GuideDetailView;
+

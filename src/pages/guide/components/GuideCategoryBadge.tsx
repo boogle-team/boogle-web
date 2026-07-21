@@ -1,3 +1,4 @@
+import PersonalCategoryIcon from '../assets/illustrations/PersonalCategoryIcon.svg?react';
 import type { GuideDetailTypes } from '../types/guideTypes';
 
 interface GuideCategoryBadgePropTypes {
@@ -16,28 +17,13 @@ const GuideCategoryBadge = ({ guideDetail }: GuideCategoryBadgePropTypes) => (
       CATEGORY_STYLE_MAP[guideDetail.category]
     }`}
   >
-    {guideDetail.category === '내 기록 기반' && <PersonalCategoryIcon />}
+    {guideDetail.category === '내 기록 기반' && (
+      <PersonalCategoryIcon aria-hidden="true" className="h-4 w-4 shrink-0" />
+    )}
     {guideDetail.category === '내 기록 기반'
       ? '내 기록 연결'
       : guideDetail.category}
   </span>
-);
-
-const PersonalCategoryIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    className="shrink-0"
-  >
-    <path
-      d="M14.294 7.3735L12.294 6.3735L10.5073 5.48016L10.4873 5.46016L9.59398 3.6735L8.59398 1.6735C8.36732 1.22016 7.62732 1.22016 7.40065 1.6735L6.40065 3.6735L5.50732 5.46016L5.48732 5.48016L3.70065 6.3735L1.70065 7.3735C1.47398 7.48683 1.33398 7.72016 1.33398 7.96683C1.33398 8.2135 1.47398 8.44683 1.70065 8.56016L3.70065 9.56016L5.48732 10.4535L5.50732 10.4735L6.40065 12.2602L7.40065 14.2602C7.51398 14.4868 7.74732 14.6268 7.99398 14.6268C8.24065 14.6268 8.47398 14.4868 8.58732 14.2602L9.58732 12.2602L10.4807 10.4735L10.5007 10.4535L12.2873 9.56016L14.2873 8.56016C14.514 8.44683 14.654 8.2135 14.654 7.96683C14.654 7.72016 14.514 7.48683 14.2873 7.3735H14.294Z"
-      fill="#FF8C61"
-    />
-  </svg>
 );
 
 export default GuideCategoryBadge;

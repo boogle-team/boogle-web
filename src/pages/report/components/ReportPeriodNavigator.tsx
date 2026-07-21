@@ -1,5 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
+import PeriodChevronRightIcon from '../assets/illustrations/PeriodChevronRightIcon.svg?react';
 import type { ReportPeriodTextTypes } from '../types/reportTypes';
 
 interface ReportPeriodNavigatorPropTypes {
@@ -18,25 +17,32 @@ const ReportPeriodNavigator = ({
       type="button"
       aria-label="이전 기간"
       onClick={onPreviousClick}
-      className="absolute left-[3.25rem] bottom-1 flex h-6 w-6 items-center justify-center text-gray-7"
+      className="absolute bottom-1 left-[4.75rem] flex h-6 w-6 items-center justify-center"
     >
-      <ChevronLeft className="h-4 w-4" />
+      <PeriodChevronRightIcon
+        aria-hidden="true"
+        className="h-[0.875rem] w-2 rotate-180"
+      />
     </button>
 
     <div>
       {periodText.title && (
-        <p className="micro text-gray-7">{periodText.title}</p>
+        <p className="label text-center tracking-[-0.0175rem] text-gray-8">
+          {periodText.title}
+        </p>
       )}
-      <p className="caption-bold text-gray-9">{periodText.description}</p>
+      <p className="body-m-bold tracking-[-0.02rem] text-gray-8">
+        {periodText.description}
+      </p>
     </div>
 
     <button
       type="button"
       aria-label="다음 기간"
       onClick={onNextClick}
-      className="absolute right-[3.25rem] bottom-1 flex h-6 w-6 items-center justify-center text-gray-7"
+      className="absolute bottom-1 right-[4.75rem] flex h-6 w-6 items-center justify-center"
     >
-      <ChevronRight className="h-4 w-4" />
+      <PeriodChevronRightIcon aria-hidden="true" className="h-[0.875rem] w-2" />
     </button>
   </section>
 );

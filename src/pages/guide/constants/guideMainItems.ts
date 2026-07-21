@@ -1,10 +1,10 @@
+import BristolStoolChartIcon from '../assets/icons/BristolStoolChartIcon';
+import NormalBowelCountIcon from '../assets/icons/NormalBowelCountIcon';
+import SleepConditionIcon from '../assets/icons/SleepConditionIcon';
+import StressGutIcon from '../assets/icons/StressGutIcon';
+import WarningSignIcon from '../assets/icons/WarningSignIcon';
+import WaterDropIcon from '../assets/icons/WaterDropIcon';
 import type { GuideMainItemTypes } from '../types/guideMainTypes';
-import BristolStoolChartIcon from '../components/icons/BristolStoolChartIcon';
-import NormalBowelCountIcon from '../components/icons/NormalBowelCountIcon';
-import SleepConditionIcon from '../components/icons/SleepConditionIcon';
-import StressGutIcon from '../components/icons/StressGutIcon';
-import WarningSignIcon from '../components/icons/WarningSignIcon';
-import WaterDropIcon from '../components/icons/WaterDropIcon';
 
 export const PERSONAL_GUIDES: GuideMainItemTypes[] = [
   {
@@ -78,6 +78,6 @@ export const WARNING_GUIDE: GuideMainItemTypes = {
   iconColor: 'text-beige-1',
   Icon: WarningSignIcon,
   routeId: 'warning-signs',
-  summary: '혈변·흑변, 4일 이상 배변 없음·복통, 2주 이상 묽은 변',
+  summary: '혈변·흑변, 4일 이상 배변 없음+복통, 2주 이상 묽은 변',
   title: '이런 증상이면 전문가 상담을',
 };

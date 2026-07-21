@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import { postReportPdf } from './apis/reportApis';
 import InsufficientReportBody from './components/InsufficientReportBody';
 import MonthlyReportBody from './components/MonthlyReportBody';
@@ -20,6 +20,7 @@ import {
 const Report = () => {
   const [currentPeriodDate, setCurrentPeriodDate] =
     useState<Date>(BASE_REPORT_DATE);
+  const [pdfErrorMessage, setPdfErrorMessage] = useState('');
   const [selectedMode, setSelectedMode] = useState<ReportModeTypes>('weekly');
   const isWeeklyReport = selectedMode === 'weekly';
   const isMonthlyTypePreview =
@@ -51,18 +52,25 @@ const Report = () => {
       selectedMode,
       currentPeriodDate,
     );
-    const reportPdf = await postReportPdf({
-      endDate,
-      includeDailyRecords: true,
-      startDate,
-    });
-    const pdfUrl = URL.createObjectURL(reportPdf);
-    const downloadLink = document.createElement('a');
 
-    downloadLink.href = pdfUrl;
-    downloadLink.download = `boogle-report-${startDate}-${endDate}.pdf`;
-    downloadLink.click();
-    URL.revokeObjectURL(pdfUrl);
+    try {
+      setPdfErrorMessage('');
+
+      const reportPdf = await postReportPdf({
+        endDate,
+        includeDailyRecords: true,
+        startDate,
+      });
+      const pdfUrl = URL.createObjectURL(reportPdf);
+      const downloadLink = document.createElement('a');
+
+      downloadLink.href = pdfUrl;
+      downloadLink.download = `boogle-report-${startDate}-${endDate}.pdf`;
+      downloadLink.click();
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
+    } catch {
+      setPdfErrorMessage('PDF 저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+    }
   };
 
   if (isMonthlyTypePreview) {
@@ -70,10 +78,9 @@ const Report = () => {
   }
 
   return (
-    <section className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem] text-gray-10">
+    <section className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem] pt-[3.06rem] text-gray-10">
       <div className="bg-beige-5">
-        <div className="h-10" />
-        <DefaultTopNavigation
+        <TopNavigation
           title="리포트"
           isBackButtonVisible={false}
           isBorderVisible={false}
@@ -81,7 +88,7 @@ const Report = () => {
         />
       </div>
 
-      <div className="border-t border-beige-7 bg-beige-5 px-layout pb-6 pt-3">
+      <div className="bg-beige-5 px-layout pb-6 pt-3">
         <ReportModeTabs
           selectedMode={selectedMode}
           onModeClick={handleModeClick}
@@ -98,7 +105,10 @@ const Report = () => {
         ) : isWeeklyReport ? (
           <WeeklyReportBody />
         ) : (
-          <MonthlyReportBody onPdfButtonClick={handlePdfButtonClick} />
+          <MonthlyReportBody
+            pdfErrorMessage={pdfErrorMessage}
+            onPdfButtonClick={handlePdfButtonClick}
+          />
         )}
       </div>
     </section>
@@ -106,3 +116,4 @@ const Report = () => {
 };
 
 export default Report;
+

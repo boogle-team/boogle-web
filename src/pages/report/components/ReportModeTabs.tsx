@@ -10,7 +10,7 @@ const ReportModeTabs = ({
   onModeClick,
   selectedMode,
 }: ReportModeTabsPropTypes) => (
-  <div className="grid grid-cols-2 text-center">
+  <div className="flex items-center justify-center gap-[5rem] text-center">
     {MODE_OPTIONS.map(({ label, value }) => {
       const isSelected = selectedMode === value;
 
@@ -19,8 +19,8 @@ const ReportModeTabs = ({
           key={value}
           type="button"
           onClick={() => onModeClick(value)}
-          className={`caption relative h-8 ${
-            isSelected ? 'text-orange-6' : 'text-gray-6'
+          className={`relative flex h-8 w-20 shrink-0 flex-col items-center gap-1 text-center tracking-[-0.0175rem] ${
+            isSelected ? 'label-semi text-orange-6' : 'label text-gray-6'
           }`}
         >
           {label}

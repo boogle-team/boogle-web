@@ -30,14 +30,19 @@ const SummaryCards = ({
 );
 
 const SummaryValue = ({ value }: { value: string }) => {
-  const matchedValue = value.match(/^(\d+(?:\.\d+)?)(회|%)$/);
+  const unitMatch = value.match(/^(\d+(?:\.\d+)?)(회|%)$/);
 
-  if (matchedValue) {
-    const [, amount, unit] = matchedValue;
+  if (unitMatch) {
+    const [, amount, unit] = unitMatch;
+    const isHighlightedValue = value === '5회';
 
     return (
       <strong className="inline-flex items-baseline justify-center">
-        <span className="text-[1.375rem] font-semibold leading-[130%] tracking-[-0.06875rem] text-orange-6">
+        <span
+          className={`text-[1.375rem] font-semibold leading-[130%] tracking-[-0.06875rem] ${
+            isHighlightedValue ? 'text-orange-6' : 'text-gray-10'
+          }`}
+        >
           {amount}
         </span>
         <span className="label tracking-[-0.0175rem] text-gray-7">{unit}</span>

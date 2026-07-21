@@ -8,16 +8,16 @@ const LifeGuideCard = () => (
       <p className="caption mt-1 tracking-[-0.015rem] text-gray-7">
         하루 물 6~8잔을 목표로 해보세요. 딱딱한 변이 개선될 수 있어요.
       </p>
-      <div className="mt-3 grid grid-cols-2 gap-2">
+      <div className="mt-3 flex gap-2">
         <button
           type="button"
-          className="caption-bold h-8 rounded-full bg-orange-6 text-beige-1"
+          className="label h-9 w-[6.6875rem] rounded-full bg-orange-6 tracking-[-0.0175rem] text-beige-1"
         >
           도움이 됐어요
         </button>
         <button
           type="button"
-          className="caption-bold h-8 rounded-full border border-gray-5 bg-beige-1 text-gray-7"
+          className="label h-9 w-[6.6875rem] rounded-full bg-beige-1 tracking-[-0.0175rem] text-gray-7"
         >
           이미 해요
         </button>

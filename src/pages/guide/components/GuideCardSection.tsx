@@ -17,7 +17,7 @@ const GuideCardSection = ({
   title,
 }: GuideCardSectionPropTypes) => (
   <section>
-    <h2 className="label text-gray-8">{title}</h2>
+    <h2 className="label-semi text-gray-8">{title}</h2>
     <div className="mt-3 flex flex-col gap-2">
       {children ??
         guideItems.map((guideItem) => (

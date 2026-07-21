@@ -1,9 +1,10 @@
-import { ChevronRight, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import RelatedBristolIcon from '../assets/icons/RelatedBristolIcon';
+import RelatedSleepIcon from '../assets/icons/RelatedSleepIcon';
+import RelatedGuideChevronRightIcon from '../assets/illustrations/RelatedGuideChevronRightIcon.svg?react';
 import type { GuideRelatedTypes } from '../types/guideTypes';
-import RelatedBristolIcon from './icons/RelatedBristolIcon';
-import RelatedSleepIcon from './icons/RelatedSleepIcon';
 
 interface GuideRelatedGuideListPropTypes {
   relatedGuides: GuideRelatedTypes[];
@@ -43,13 +44,13 @@ const RelatedGuideCard = ({
     <span className="flex items-center gap-2">
       <span
         className={`flex h-6 w-6 items-center justify-center rounded-md text-beige-1 ${
-          relatedGuide.icon === 'stool' ? 'bg-orange-3' : 'bg-yellow-4'
+          relatedGuide.icon === 'stool' ? 'bg-transparent' : 'bg-yellow-4'
         }`}
       >
         {relatedGuide.icon === 'sleep' ? (
-          <RelatedSleepIcon />
+          <RelatedSleepIcon className="h-6 w-6" />
         ) : relatedGuide.icon === 'stool' ? (
-          <RelatedBristolIcon />
+          <RelatedBristolIcon className="h-6 w-6" />
         ) : (
           <Info className="h-3.5 w-3.5" />
         )}
@@ -58,7 +59,10 @@ const RelatedGuideCard = ({
         {relatedGuide.title}
       </span>
     </span>
-    <ChevronRight className="h-4 w-4 text-gray-7" />
+    <RelatedGuideChevronRightIcon
+      aria-hidden="true"
+      className="h-5 w-5 shrink-0"
+    />
   </Link>
 );
 
