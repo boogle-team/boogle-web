@@ -24,7 +24,7 @@ const GuideDetailSummaryCard = ({
             <span className="caption whitespace-nowrap tracking-[-0.015rem] text-[#929090]">
               {label}
             </span>
-            <div className="h-2.5 overflow-hidden rounded-full bg-[#F9F7F5]">
+            <div className="h-2.5 overflow-hidden rounded-full bg-beige-5">
               <div
                 className="h-full rounded-full"
                 style={{
@@ -116,4 +116,3 @@ const NoticeText = ({
 };
 
 export default GuideDetailSummaryCard;
-

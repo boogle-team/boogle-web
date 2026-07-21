@@ -10,7 +10,7 @@ interface PatternCardPropTypes {
 
 const PatternCard = ({ patterns, title }: PatternCardPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-    <h2 className="caption-bold text-gray-9">{title}</h2>
+    <h2 className="body-m text-gray-9">{title}</h2>
     <div className="mt-3 flex flex-col">
       {patterns.map(({ description, icon, title: patternTitle }, index) => (
         <article

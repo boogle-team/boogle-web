@@ -2,7 +2,7 @@ import { WEEKLY_TRENDS } from '../constants/reportConstants';
 
 const MonthlyWeeklyTrendCard = () => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-    <h2 className="caption-bold text-gray-9">주간 컨디션 점수</h2>
+    <h2 className="body-m text-gray-9">주간 배변 추이 (4주)</h2>
     <div className="mt-3 flex flex-col gap-3">
       {WEEKLY_TRENDS.map(({ count, week }) => (
         <div

@@ -56,11 +56,11 @@ interface MonthlyTypeCardItemPropTypes {
 
 const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
   <section className="rounded-xl bg-orange-6 px-4 py-4 text-beige-1 shadow-sm">
-    <h2 className="caption-bold">이번 달 나의 유형</h2>
-    <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-center gap-3">
+    <h2 className="body-m">이번 달 나의 유형</h2>
+    <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-3">
       <MonthlyTypeIcon symbol={monthlyType.symbol} />
       <div>
-        <h3 className="label-bold">{monthlyType.title}</h3>
+        <h3 className="display">{monthlyType.title}</h3>
         {monthlyType.description.split('\n').map((text, index) => (
           <p
             key={text}
@@ -96,7 +96,9 @@ const MonthlyTypeIcon = ({
   const iconClassName = 'h-10 w-10 shrink-0';
 
   if (symbol === 'R') {
-    return <MonthlyRegularTypeIcon aria-hidden="true" className={iconClassName} />;
+    return (
+      <MonthlyRegularTypeIcon aria-hidden="true" className={iconClassName} />
+    );
   }
 
   if (symbol === 'C') {
@@ -109,7 +111,9 @@ const MonthlyTypeIcon = ({
   }
 
   if (symbol === '?') {
-    return <MonthlyPendingTypeIcon aria-hidden="true" className={iconClassName} />;
+    return (
+      <MonthlyPendingTypeIcon aria-hidden="true" className={iconClassName} />
+    );
   }
 
   return (

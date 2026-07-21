@@ -25,7 +25,7 @@ const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
   return (
     <Link
       to={`/guide?id=${routeId}`}
-      className="flex min-h-[4.5rem] items-start gap-3 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
+      className="flex min-h-[4.5rem] items-start gap-4 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
     >
       <span
         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
@@ -42,7 +42,7 @@ const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
         >
           {title}
         </strong>
-        <span className="caption mt-1 line-clamp-2 block text-gray-7">
+        <span className="caption mt-[0.12rem] line-clamp-2 block text-gray-7">
           {summary}
         </span>
       </span>

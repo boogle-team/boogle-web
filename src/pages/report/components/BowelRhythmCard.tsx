@@ -6,7 +6,7 @@ const BOWEL_RHYTHM_DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
 const BowelRhythmCard = () => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-    <h2 className="caption-bold text-gray-9">배변 리듬</h2>
+    <h2 className="body-m text-gray-9">배변 리듬</h2>
     <div className="mt-4 grid grid-cols-7 text-center">
       {BOWEL_RHYTHMS.map(({ status }, index) => {
         const day = BOWEL_RHYTHM_DAYS[index];

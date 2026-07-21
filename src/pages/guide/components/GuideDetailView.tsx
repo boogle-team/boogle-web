@@ -46,7 +46,7 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
 
         <section className="mt-9">
           {!isInfoGuide && (
-            <h3 className="caption-bold mb-2 text-gray-8">
+            <h3 className="label-semi mb-2 text-gray-8">
               {isWarningGuide ? '증상별 확인' : '이 패턴이 나온 이유'}
             </h3>
           )}
@@ -141,7 +141,11 @@ const GuideWarningNoticeSection = ({
   );
 };
 
-const GuideSourceLink = ({ guideDetail }: { guideDetail: GuideDetailTypes }) => {
+const GuideSourceLink = ({
+  guideDetail,
+}: {
+  guideDetail: GuideDetailTypes;
+}) => {
   const sourceText = `출처: ${guideDetail.source}`;
 
   if (!guideDetail.sourceUrl) {
@@ -161,4 +165,3 @@ const GuideSourceLink = ({ guideDetail }: { guideDetail: GuideDetailTypes }) => 
 };
 
 export default GuideDetailView;
-

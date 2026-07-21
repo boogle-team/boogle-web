@@ -11,7 +11,7 @@ const MonthlyConditionScoreCard = () => (
         </span>
       </div>
       <div>
-        <h2 className="caption-bold text-gray-10">부글 컨디션 점수</h2>
+        <h2 className="body-m text-gray-10">부글 컨디션 점수</h2>
         <div className="mt-2 flex flex-col gap-1.5">
           {MONTHLY_SCORES.map(({ label, value }) => (
             <div
