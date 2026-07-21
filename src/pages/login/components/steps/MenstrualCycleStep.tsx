@@ -22,7 +22,7 @@ const MenstrualCycleStep = () => {
           {MENSTRUAL_DATA_ITEMS.map((item) => (
             <li key={item} className="flex items-center gap-1">
               <Check
-                className="h-5 w-5 shrink-0  text-orange-5"
+                className="h-[0.83419rem] w-[0.83419rem] shrink-0  text-orange-5"
                 strokeWidth={4}
               />
               <span className="label text-gray-7">{item}</span>
