@@ -17,8 +17,8 @@ const Chip = ({
   ...props
 }: ChipPropTypes) => {
   const sizeClassName = {
-    default: 'h-12 w-full px-4 body-m',
-    compact: 'h-9 min-w-21 px-4 label-semi',
+    default: 'h-12 w-full px-4 label-semi',
+    compact: 'h-9 min-w-21 px-4 label',
   }[size];
 
   const chipClassName = [

@@ -23,9 +23,9 @@ const Button = ({
   ...props
 }: ButtonPropTypes) => {
   const sizeClassName = {
-    lg: 'min-h-14 rounded-2xl body-m',
+    lg: 'min-h-14 rounded-2xl body-lg',
     md: 'min-h-[3.5rem] rounded-xl body-m',
-    sm: 'min-h-[3rem] rounded-lg label',
+    sm: 'min-h-[3rem] rounded-xl label',
   }[size];
 
   const disabledClassName = {
