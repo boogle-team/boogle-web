@@ -1,4 +1,4 @@
-﻿import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import {
   HEALTH_GUIDES,
   PERSONAL_GUIDES,
@@ -59,7 +59,3 @@ const InsufficientGuideCard = () => (
 );
 
 export default GuideMainView;
-
-
-
-

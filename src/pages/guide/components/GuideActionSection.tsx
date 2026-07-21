@@ -1,11 +1,21 @@
-﻿import type { GuideActionTypes, GuideDetailTypes } from '../types/guideTypes';
+import Chip from '@/shared/components/Chip';
+import type { GuideFeedbackTypes } from '../types/guideApiTypes';
+import type { GuideActionTypes, GuideDetailTypes } from '../types/guideTypes';
 import ActionTitleIcon from '../assets/illustrations/ActionTitleIcon.svg?react';
 
 interface GuideActionSectionPropTypes {
+  feedbackStatus?: GuideFeedbackTypes | null;
   guideDetail: GuideDetailTypes;
+  isFeedbackPending?: boolean;
+  onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
 }
 
-const GuideActionSection = ({ guideDetail }: GuideActionSectionPropTypes) => {
+const GuideActionSection = ({
+  feedbackStatus = null,
+  guideDetail,
+  isFeedbackPending = false,
+  onFeedbackClick,
+}: GuideActionSectionPropTypes) => {
   const guideActions = getGuideActions(guideDetail);
 
   if (guideActions.length === 0) {
@@ -23,19 +33,26 @@ const GuideActionSection = ({ guideDetail }: GuideActionSectionPropTypes) => {
         ))}
       </div>
 
-      <GuideFeedbackButtons />
+      <GuideFeedbackButtons
+        feedbackStatus={feedbackStatus}
+        isFeedbackPending={isFeedbackPending}
+        onFeedbackClick={onFeedbackClick}
+      />
     </section>
   );
 };
 
-const GuideActionCard = ({
-  guideAction,
-}: {
+interface GuideActionCardPropTypes {
   guideAction: GuideActionTypes;
-}) => (
+}
+
+const GuideActionCard = ({ guideAction }: GuideActionCardPropTypes) => (
   <article className="rounded-lg bg-beige-1 p-4 shadow-sm">
     <h4 className="body-m-bold flex items-center gap-2 text-gray-10">
-      <ActionTitleIcon aria-hidden="true" className="h-[1.125rem] w-4 shrink-0" />
+      <ActionTitleIcon
+        aria-hidden="true"
+        className="h-[1.125rem] w-4 shrink-0"
+      />
       {guideAction.title}
     </h4>
     {guideAction.description && (
@@ -62,27 +79,48 @@ const getGuideActions = (guideDetail: GuideDetailTypes): GuideActionTypes[] => {
   ];
 };
 
-const GuideFeedbackButtons = () => (
-  <div className="mt-5 text-center">
-    <p className="caption tracking-[-0.015rem] text-gray-7">
-      이 가이드가 도움이 됐나요?
-    </p>
-    <div className="mt-3 flex justify-center gap-2">
-      <button
-        type="button"
-        className="label rounded-full bg-orange-6 px-5 py-2 tracking-[-0.0175rem] text-beige-1"
-      >
-        도움이 됐어요
-      </button>
-      <button
-        type="button"
-        className="caption-bold rounded-full bg-beige-1 px-5 py-2 text-gray-7"
-      >
-        이미 해요
-      </button>
+interface GuideFeedbackButtonsPropTypes {
+  feedbackStatus: GuideFeedbackTypes | null;
+  isFeedbackPending: boolean;
+  onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
+}
+
+const GuideFeedbackButtons = ({
+  feedbackStatus,
+  isFeedbackPending,
+  onFeedbackClick,
+}: GuideFeedbackButtonsPropTypes) => {
+  const handleHelpfulChipClick = () => {
+    onFeedbackClick?.('G');
+  };
+
+  const handleAlreadyDoingChipClick = () => {
+    onFeedbackClick?.('A');
+  };
+
+  return (
+    <div className="mt-5 text-center">
+      <p className="caption tracking-[-0.015rem] text-gray-7">
+        이 가이드가 도움이 됐나요?
+      </p>
+      <div className="mt-3 flex justify-center gap-2">
+        <Chip
+          text="도움이 됐어요"
+          size="compact"
+          variant="orange"
+          disabled={isFeedbackPending}
+          onClick={handleHelpfulChipClick}
+        />
+        <Chip
+          text="이미 해요"
+          size="compact"
+          isSelected={feedbackStatus === 'A'}
+          disabled={isFeedbackPending}
+          onClick={handleAlreadyDoingChipClick}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default GuideActionSection;
-

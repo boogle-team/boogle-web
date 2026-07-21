@@ -5,6 +5,7 @@ import RelatedBristolIcon from '../assets/icons/RelatedBristolIcon';
 import RelatedSleepIcon from '../assets/icons/RelatedSleepIcon';
 import RelatedGuideChevronRightIcon from '../assets/illustrations/RelatedGuideChevronRightIcon.svg?react';
 import type { GuideRelatedTypes } from '../types/guideTypes';
+import { getGuideDetailPath } from '../utils/guideRouteUtils';
 
 interface GuideRelatedGuideListPropTypes {
   relatedGuides: GuideRelatedTypes[];
@@ -32,13 +33,16 @@ const GuideRelatedGuideList = ({
   );
 };
 
-const RelatedGuideCard = ({
-  relatedGuide,
-}: {
+interface RelatedGuideCardPropTypes {
   relatedGuide: GuideRelatedTypes;
-}) => (
+}
+
+const RelatedGuideCard = ({ relatedGuide }: RelatedGuideCardPropTypes) => (
   <Link
-    to={`/guide?id=${relatedGuide.id ?? ''}`}
+    to={getGuideDetailPath({
+      guideContentId: relatedGuide.guideContentId,
+      routeId: relatedGuide.id,
+    })}
     className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
   >
     <span className="flex items-center gap-2">

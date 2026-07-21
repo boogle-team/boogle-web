@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import type { GuideMainItemTypes } from '../types/guideMainTypes';
+import { getGuideDetailPath } from '../utils/guideRouteUtils';
 
 interface GuideCardPropTypes {
   guideItem: GuideMainItemTypes;
@@ -17,14 +18,22 @@ const FULL_SIZE_ICON_IDS = [
 ];
 
 const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
-  const { iconBackgroundColor, iconColor, routeId, Icon, summary, title } =
-    guideItem;
+  const {
+    guideContentId,
+    iconBackgroundColor,
+    iconColor,
+    routeId,
+    Icon,
+    summary,
+    title,
+  } = guideItem;
   const hasFullIcon = FULL_SIZE_ICON_IDS.includes(routeId);
   const iconClassName = hasFullIcon ? 'h-10 w-10' : 'h-5 w-5';
+  const detailPath = getGuideDetailPath({ guideContentId, routeId });
 
   return (
     <Link
-      to={`/guide?id=${routeId}`}
+      to={detailPath}
       className="flex min-h-[4.5rem] items-start gap-4 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
     >
       <span

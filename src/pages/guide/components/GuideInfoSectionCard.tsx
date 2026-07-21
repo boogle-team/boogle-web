@@ -1,13 +1,7 @@
-﻿import type { GuideDetailTypes } from '../types/guideTypes';
-import BristolScaleTypeFiveIcon from '../assets/icons/BristolScaleTypeFiveIcon';
-import BristolScaleTypeFourIcon from '../assets/icons/BristolScaleTypeFourIcon';
-import BristolScaleTypeOneIcon from '../assets/icons/BristolScaleTypeOneIcon';
-import BristolScaleTypeSevenIcon from '../assets/icons/BristolScaleTypeSevenIcon';
-import BristolScaleTypeSixIcon from '../assets/icons/BristolScaleTypeSixIcon';
-import BristolScaleTypeThreeIcon from '../assets/icons/BristolScaleTypeThreeIcon';
-import BristolScaleTypeTwoIcon from '../assets/icons/BristolScaleTypeTwoIcon';
+import type { GuideDetailTypes } from '../types/guideTypes';
 import InfoNoticeIcon from '../assets/illustrations/InfoNoticeIcon.svg?react';
 import WaterNoticeIcon from '../assets/illustrations/WaterNoticeIcon.svg?react';
+import BristolScalePreview from './BristolScalePreview';
 
 interface GuideInfoSectionCardPropTypes {
   guideDetail: GuideDetailTypes;
@@ -60,7 +54,10 @@ const GuideInfoSectionCard = ({
           {guideDetail.id === 'water-and-hard-stool' ? (
             <WaterNoticeIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
           ) : (
-            <InfoNoticeIcon aria-hidden="true" className="h-[1.375rem] w-[1.375rem] shrink-0" />
+            <InfoNoticeIcon
+              aria-hidden="true"
+              className="h-[1.375rem] w-[1.375rem] shrink-0"
+            />
           )}
           <span>{guideDetail.infoNotice}</span>
         </p>
@@ -69,51 +66,13 @@ const GuideInfoSectionCard = ({
   );
 };
 
-const BristolScalePreview = () => (
-  <div className="mt-3 flex items-center justify-between">
-    {Array.from({ length: 7 }, (_, index) => (
-      <div key={index + 1} className="flex items-center">
-        <BristolScaleIcon index={index} />
-      </div>
-    ))}
-  </div>
-);
+interface InfoSectionDescriptionTextPropTypes {
+  text: string;
+}
 
-const BristolScaleIcon = ({ index }: { index: number }) => {
-  const iconClassName = 'h-[2.3125rem] w-[2.25rem] shrink-0';
-
-  if (index === 0) {
-    return <BristolScaleTypeOneIcon className={iconClassName} />;
-  }
-
-  if (index === 1) {
-    return <BristolScaleTypeTwoIcon className={iconClassName} />;
-  }
-
-  if (index === 2) {
-    return <BristolScaleTypeThreeIcon className={iconClassName} />;
-  }
-
-  if (index === 3) {
-    return <BristolScaleTypeFourIcon className={iconClassName} />;
-  }
-
-  if (index === 4) {
-    return <BristolScaleTypeFiveIcon className={iconClassName} />;
-  }
-
-  if (index === 5) {
-    return <BristolScaleTypeSixIcon className={iconClassName} />;
-  }
-
-  if (index === 6) {
-    return <BristolScaleTypeSevenIcon className={iconClassName} />;
-  }
-
-  return null;
-};
-
-const InfoSectionDescriptionText = ({ text }: { text: string }) => {
+const InfoSectionDescriptionText = ({
+  text,
+}: InfoSectionDescriptionTextPropTypes) => {
   const highlightText = '일주일에 최소 3번, 하루에 최대 3번';
   const className =
     'label mt-4 whitespace-pre-line tracking-[-0.0175rem] text-[#868484]';
@@ -134,4 +93,3 @@ const InfoSectionDescriptionText = ({ text }: { text: string }) => {
 };
 
 export default GuideInfoSectionCard;
-

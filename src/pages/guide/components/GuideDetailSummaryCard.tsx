@@ -1,4 +1,4 @@
-﻿import type { GuideDetailTypes } from '../types/guideTypes';
+import type { GuideDetailTypes } from '../types/guideTypes';
 import NoticeIcon from '../assets/illustrations/NoticeIcon.svg?react';
 
 interface GuideDetailSummaryCardPropTypes {
@@ -59,7 +59,11 @@ const getMetricBarColor = (colorClassName?: string) =>
   METRIC_BAR_COLOR_MAP[colorClassName ?? 'bg-semantic-danger'] ??
   'var(--color-semantic-danger)';
 
-const SummaryDescriptionText = ({ text }: { text: string }) => {
+interface SummaryDescriptionTextPropTypes {
+  text: string;
+}
+
+const SummaryDescriptionText = ({ text }: SummaryDescriptionTextPropTypes) => {
   if (!text) {
     return null;
   }
@@ -85,13 +89,12 @@ const SummaryDescriptionText = ({ text }: { text: string }) => {
   );
 };
 
-const NoticeText = ({
-  highlightText,
-  notice,
-}: {
+interface NoticeTextPropTypes {
   highlightText?: string;
   notice: string;
-}) => {
+}
+
+const NoticeText = ({ highlightText, notice }: NoticeTextPropTypes) => {
   const targetHighlightText =
     highlightText ?? (notice.includes('100%') ? '100%' : '3일 연속');
   const hasHighlightText = notice.includes(targetHighlightText);

@@ -1,19 +1,28 @@
-﻿import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import type { GuideFeedbackTypes } from '../types/guideApiTypes';
 import type { GuideDetailTypes } from '../types/guideTypes';
 import GuideActionSection from './GuideActionSection';
 import GuideCategoryBadge from './GuideCategoryBadge';
+import GuideDescriptionText, { GuideSourceText } from './GuideDescriptionText';
 import GuideDetailSummaryCard from './GuideDetailSummaryCard';
 import GuideInfoSectionCard from './GuideInfoSectionCard';
 import GuideRelatedGuideList from './GuideRelatedGuideList';
+import GuideWarningNoticeSection from './GuideWarningNoticeSection';
 import GuideWarningSignList from './GuideWarningSignList';
 
 interface GuideDetailViewPropTypes {
   guideDetail: GuideDetailTypes;
+  isFeedbackPending?: boolean;
+  onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
 }
 
-const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
+const GuideDetailView = ({
+  guideDetail,
+  isFeedbackPending = false,
+  onFeedbackClick,
+}: GuideDetailViewPropTypes) => {
   const navigate = useNavigate();
   const isInfoGuide = guideDetail.type === 'info';
   const isWarningGuide = guideDetail.type === 'warning';
@@ -42,7 +51,7 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
         <h2 className="display mt-5 tracking-[-0.06875rem] text-gray-10">
           {guideDetail.title}
         </h2>
-        <DescriptionText text={guideDetail.description} />
+        <GuideDescriptionText text={guideDetail.description} />
 
         <section className="mt-9">
           {!isInfoGuide && (
@@ -68,9 +77,14 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
           )}
         </section>
 
-        <GuideActionSection guideDetail={guideDetail} />
+        <GuideActionSection
+          feedbackStatus={guideDetail.feedbackStatus}
+          guideDetail={guideDetail}
+          isFeedbackPending={isFeedbackPending}
+          onFeedbackClick={onFeedbackClick}
+        />
 
-        {!isWarningGuide && <GuideInfoSourceText guideDetail={guideDetail} />}
+        {!isWarningGuide && <GuideSourceText guideDetail={guideDetail} />}
         {isWarningGuide && (
           <GuideWarningNoticeSection guideDetail={guideDetail} />
         )}
@@ -80,87 +94,6 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
         <div className="mx-auto mt-14 h-1 w-[6.75rem] rounded-full bg-gray-10" />
       </div>
     </section>
-  );
-};
-
-const DescriptionText = ({ text }: { text: string }) => {
-  const highlightTextList = [
-    '본인에게 맞는 리듬',
-    '3~4형이 이상적인 형태예요.',
-  ];
-  const highlightText = highlightTextList.find((item) => text.includes(item));
-
-  if (!highlightText) {
-    return (
-      <p className="body-m mt-3 whitespace-pre-line tracking-[-0.02rem] text-gray-8">
-        {text}
-      </p>
-    );
-  }
-
-  const [beforeText, afterText] = text.split(highlightText);
-
-  return (
-    <p className="body-m mt-3 whitespace-pre-line tracking-[-0.02rem] text-gray-8">
-      {beforeText}
-      <strong className="body-m-bold text-gray-10">{highlightText}</strong>
-      {afterText}
-    </p>
-  );
-};
-const GuideInfoSourceText = ({
-  guideDetail,
-}: {
-  guideDetail: GuideDetailTypes;
-}) => (
-  <p className="caption mt-9 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7">
-    <GuideSourceLink guideDetail={guideDetail} />
-  </p>
-);
-
-const GuideWarningNoticeSection = ({
-  guideDetail,
-}: {
-  guideDetail: GuideDetailTypes;
-}) => {
-  if (!guideDetail.notice) {
-    return null;
-  }
-
-  return (
-    <>
-      <article className="mt-10 rounded-lg bg-beige-1 px-4 py-4 shadow-sm">
-        <p className="label whitespace-pre-line text-gray-7">
-          {guideDetail.notice}
-        </p>
-      </article>
-      <p className="caption mt-6 text-center tracking-[-0.015rem] text-gray-7">
-        <GuideSourceLink guideDetail={guideDetail} />
-      </p>
-    </>
-  );
-};
-
-const GuideSourceLink = ({
-  guideDetail,
-}: {
-  guideDetail: GuideDetailTypes;
-}) => {
-  const sourceText = `출처: ${guideDetail.source}`;
-
-  if (!guideDetail.sourceUrl) {
-    return sourceText;
-  }
-
-  return (
-    <a
-      href={guideDetail.sourceUrl}
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label={`${sourceText} 외부 링크 열기`}
-    >
-      {sourceText}
-    </a>
   );
 };
 

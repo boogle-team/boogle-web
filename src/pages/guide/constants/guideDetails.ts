@@ -2,11 +2,13 @@ import type { GuideDetailTypes, GuideRelatedTypes } from '../types/guideTypes';
 
 const DEFAULT_RELATED_GUIDES: GuideRelatedTypes[] = [
   {
+    guideContentId: 11,
     icon: 'stool',
     id: 'bristol-stool-chart',
     title: '브리스톨 변 형태 척도란?',
   },
   {
+    guideContentId: 12,
     icon: 'stress',
     id: 'stress-and-gut',
     title: '스트레스와 장의 관계',
@@ -15,11 +17,13 @@ const DEFAULT_RELATED_GUIDES: GuideRelatedTypes[] = [
 
 const BRISTOL_RELATED_GUIDES: GuideRelatedTypes[] = [
   {
+    guideContentId: 10,
     icon: 'stool',
     id: 'normal-bowel-count',
     title: '정상 배변 횟수는?',
   },
   {
+    guideContentId: 12,
     icon: 'stress',
     id: 'stress-and-gut',
     title: '스트레스와 장의 관계',
@@ -28,11 +32,13 @@ const BRISTOL_RELATED_GUIDES: GuideRelatedTypes[] = [
 
 const STRESS_RELATED_GUIDES: GuideRelatedTypes[] = [
   {
+    guideContentId: 10,
     icon: 'stool',
     id: 'normal-bowel-count',
     title: '정상 배변 횟수는?',
   },
   {
+    guideContentId: 11,
     icon: 'stool',
     id: 'bristol-stool-chart',
     title: '브리스톨 변 형태 척도란?',
