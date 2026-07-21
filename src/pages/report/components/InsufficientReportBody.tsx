@@ -1,15 +1,18 @@
 import InsufficientReportIcon from '../assets/illustrations/InsufficientReportIcon.svg?react';
-import { INSUFFICIENT_REPORT_BY_MODE } from '../constants/reportConstants';
-import type { ReportModeTypes } from '../types/reportTypes';
+import type {
+  InsufficientReportTypes,
+  ReportModeTypes,
+} from '../types/reportTypes';
 
 interface InsufficientReportBodyPropTypes {
+  insufficientReport: InsufficientReportTypes;
   selectedMode: ReportModeTypes;
 }
 
 const InsufficientReportBody = ({
+  insufficientReport,
   selectedMode,
 }: InsufficientReportBodyPropTypes) => {
-  const insufficientReport = INSUFFICIENT_REPORT_BY_MODE[selectedMode];
   const isWeeklyReport = selectedMode === 'weekly';
   const progressWidth = `${
     (insufficientReport.currentCount / insufficientReport.requiredCount) * 100

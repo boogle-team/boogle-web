@@ -1,4 +1,3 @@
-﻿import RhythmSmileIcon from './RhythmSmileIcon.svg?react';
+import RhythmSmileIcon from './RhythmSmileIcon.svg?react';
 
 export default RhythmSmileIcon;
-

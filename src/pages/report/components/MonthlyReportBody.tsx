@@ -1,8 +1,12 @@
-import MonthlyPdfSaveButtonIcon from '../assets/illustrations/MonthlyPdfSaveButtonIcon.svg?react';
-import {
-  MONTHLY_PATTERNS,
-  MONTHLY_SUMMARIES,
-} from '../constants/reportConstants';
+﻿import Button from '@/shared/components/Button';
+import type {
+  ConditionProgressTypes,
+  MonthlyScoreTypes,
+  MonthlyTypeTypes,
+  PatternTypes,
+  ReportSummaryTypes,
+  WeeklyTrendTypes,
+} from '../types/reportTypes';
 import ConditionDistributionCard from './ConditionDistributionCard';
 import MonthlyConditionScoreCard from './MonthlyConditionScoreCard';
 import MonthlyTypeCard from './MonthlyTypeCard';
@@ -11,32 +15,47 @@ import PatternCard from './PatternCard';
 import SummaryCards from './SummaryCards';
 
 interface MonthlyReportBodyPropTypes {
+  conditionProgress: ConditionProgressTypes[];
+  conditionScore: number;
+  monthlyType: MonthlyTypeTypes;
   onPdfButtonClick: () => void;
+  patterns: PatternTypes[];
   pdfErrorMessage?: string;
+  scores: MonthlyScoreTypes[];
+  summaries: ReportSummaryTypes[];
+  weeklyTrends: WeeklyTrendTypes[];
 }
 
 const MonthlyReportBody = ({
+  conditionProgress,
+  conditionScore,
+  monthlyType,
   onPdfButtonClick,
+  patterns,
   pdfErrorMessage,
+  scores,
+  summaries,
+  weeklyTrends,
 }: MonthlyReportBodyPropTypes) => (
-  <div className="mt-4 flex flex-col gap-4">
-    <MonthlyConditionScoreCard />
-    <SummaryCards summaries={MONTHLY_SUMMARIES} showDescription={false} />
-    <MonthlyWeeklyTrendCard />
-    <ConditionDistributionCard />
-    <MonthlyTypeCard />
-    <PatternCard patterns={MONTHLY_PATTERNS} title="이번 달 패턴" />
-    <button
-      type="button"
-      aria-label="이번 달 리포트 PDF 저장"
-      onClick={onPdfButtonClick}
-      className="body-m flex h-9 items-center justify-center"
-    >
-      <MonthlyPdfSaveButtonIcon
-        aria-hidden="true"
-        className="h-9 w-[6.6875rem] shrink-0"
+  <div className="mt-4 flex flex-col gap-8">
+    <MonthlyConditionScoreCard
+      conditionScore={conditionScore}
+      scores={scores}
+    />
+    <SummaryCards summaries={summaries} showDescription={false} />
+    <MonthlyWeeklyTrendCard weeklyTrends={weeklyTrends} />
+    <ConditionDistributionCard conditionProgress={conditionProgress} />
+    <MonthlyTypeCard monthlyType={monthlyType} />
+    <PatternCard patterns={patterns} title="이번 달 패턴" />
+    <div className="flex justify-center">
+      <Button
+        text="이번 달 리포트 PDF 저장"
+        size="lg"
+        variant="ghost"
+        onClick={onPdfButtonClick}
+        aria-label="이번 달 리포트 PDF 저장"
       />
-    </button>
+    </div>
     {pdfErrorMessage && (
       <p
         role="alert"

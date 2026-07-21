@@ -1,80 +1,68 @@
-import { useState } from 'react';
+﻿import { useSearchParams } from 'react-router-dom';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
-import { postReportPdf } from './apis/reportApis';
 import InsufficientReportBody from './components/InsufficientReportBody';
 import MonthlyReportBody from './components/MonthlyReportBody';
 import { MonthlyTypePreview } from './components/MonthlyTypeCard';
 import ReportModeTabs from './components/ReportModeTabs';
 import ReportPeriodNavigator from './components/ReportPeriodNavigator';
 import WeeklyReportBody from './components/WeeklyReportBody';
-import { BASE_REPORT_DATE } from './constants/reportConstants';
-import type { ReportModeTypes } from './types/reportTypes';
-import {
-  addDays,
-  addMonths,
-  getPeriodText,
-  getReportDateRange,
-} from './utils/reportPeriodUtils';
+import { useReportGuideFeedback } from './hooks/useReportGuideFeedback';
+import { useReportPdfDownload } from './hooks/useReportPdfDownload';
+import { useReportPeriod } from './hooks/useReportPeriod';
+import { useReportViewData } from './hooks/useReportViewData';
+import type {
+  ReportGuideFeedbackTypes,
+  ReportModeTypes,
+} from './types/reportTypes';
 
 const Report = () => {
-  const [currentPeriodDate, setCurrentPeriodDate] =
-    useState<Date>(BASE_REPORT_DATE);
-  const [pdfErrorMessage, setPdfErrorMessage] = useState('');
-  const [selectedMode, setSelectedMode] = useState<ReportModeTypes>('weekly');
-  const isWeeklyReport = selectedMode === 'weekly';
-  const isMonthlyTypePreview =
-    new URLSearchParams(window.location.search).get('preview') ===
-    'monthly-types';
+  const [searchParams] = useSearchParams();
+  const {
+    changeReportMode,
+    currentPeriodDate,
+    isWeeklyReport,
+    moveToNextPeriod,
+    moveToPreviousPeriod,
+    periodText,
+    selectedMode,
+  } = useReportPeriod();
+  const { downloadReportPdf, pdfErrorMessage } = useReportPdfDownload();
+  const { insufficientReport, monthlyReportViewData, weeklyReportViewData } =
+    useReportViewData(selectedMode);
+  const {
+    feedbackStatus: lifeGuideFeedbackStatus,
+    isFeedbackPending: isLifeGuideFeedbackPending,
+    submitGuideFeedback,
+  } = useReportGuideFeedback(weeklyReportViewData.lifeGuide);
+  const isMonthlyTypePreview = searchParams.get('preview') === 'monthly-types';
   const isInsufficientReportPreview =
-    new URLSearchParams(window.location.search).get('preview') ===
-    'insufficient';
-  const periodText = getPeriodText(selectedMode, currentPeriodDate);
+    searchParams.get('preview') === 'insufficient';
 
   const handleModeClick = (mode: ReportModeTypes) => {
-    setSelectedMode(mode);
+    changeReportMode(mode);
   };
 
   const handlePreviousPeriodClick = () => {
-    setCurrentPeriodDate((previousDate) =>
-      isWeeklyReport ? addDays(previousDate, -7) : addMonths(previousDate, -1),
-    );
+    moveToPreviousPeriod();
   };
 
   const handleNextPeriodClick = () => {
-    setCurrentPeriodDate((previousDate) =>
-      isWeeklyReport ? addDays(previousDate, 7) : addMonths(previousDate, 1),
-    );
+    moveToNextPeriod();
   };
 
-  const handlePdfButtonClick = async () => {
-    const { endDate, startDate } = getReportDateRange(
-      selectedMode,
-      currentPeriodDate,
-    );
+  const handlePdfButtonClick = () => {
+    void downloadReportPdf(selectedMode, currentPeriodDate);
+  };
 
-    try {
-      setPdfErrorMessage('');
-
-      const reportPdf = await postReportPdf({
-        endDate,
-        includeDailyRecords: true,
-        startDate,
-      });
-      const pdfUrl = URL.createObjectURL(reportPdf);
-      const downloadLink = document.createElement('a');
-
-      downloadLink.href = pdfUrl;
-      downloadLink.download = `boogle-report-${startDate}-${endDate}.pdf`;
-      downloadLink.click();
-      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
-    } catch {
-      setPdfErrorMessage('PDF 저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
-    }
+  const handleLifeGuideFeedbackClick = (feedback: ReportGuideFeedbackTypes) => {
+    void submitGuideFeedback(feedback);
   };
 
   if (isMonthlyTypePreview) {
-    return <MonthlyTypePreview />;
+    return (
+      <MonthlyTypePreview monthlyTypes={monthlyReportViewData.monthlyTypes} />
+    );
   }
 
   return (
@@ -101,11 +89,20 @@ const Report = () => {
         />
 
         {isInsufficientReportPreview ? (
-          <InsufficientReportBody selectedMode={selectedMode} />
+          <InsufficientReportBody
+            insufficientReport={insufficientReport}
+            selectedMode={selectedMode}
+          />
         ) : isWeeklyReport ? (
-          <WeeklyReportBody />
+          <WeeklyReportBody
+            {...weeklyReportViewData}
+            lifeGuideFeedbackStatus={lifeGuideFeedbackStatus}
+            isLifeGuideFeedbackPending={isLifeGuideFeedbackPending}
+            onLifeGuideFeedbackClick={handleLifeGuideFeedbackClick}
+          />
         ) : (
           <MonthlyReportBody
+            {...monthlyReportViewData}
             pdfErrorMessage={pdfErrorMessage}
             onPdfButtonClick={handlePdfButtonClick}
           />
@@ -116,4 +113,3 @@ const Report = () => {
 };
 
 export default Report;
-

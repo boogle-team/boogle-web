@@ -1,17 +1,19 @@
-import type {
+﻿import type {
   BowelRhythmTypes,
   ConditionProgressTypes,
   InsufficientReportTypes,
+  LifeGuideTypes,
   MonthlyScoreTypes,
+  MonthlyTypeTypes,
   PatternTypes,
   ReportModeTypes,
   ReportSummaryTypes,
   WeeklyTrendTypes,
 } from '../types/reportTypes';
 
-export const BASE_REPORT_DATE = new Date(2026, 5, 14);
-
 export const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+
+export const DEFAULT_MONTHLY_CONDITION_SCORE = 46;
 
 export const MODE_OPTIONS: { label: string; value: ReportModeTypes }[] = [
   {
@@ -168,6 +170,51 @@ export const WEEKLY_TRENDS: WeeklyTrendTypes[] = [
     week: '4주',
   },
 ];
+
+export const MONTHLY_TYPES: MonthlyTypeTypes[] = [
+  {
+    description: '주 3회 이상 + 보통 변 55%\n지난달에 이어 유지 중이에요',
+    symbol: 'R',
+    title: '규칙형',
+  },
+  {
+    description:
+      '평균 간격 3.2일 + 딱딱한 변 42%\n수분 섭취를 늘려보면 도움이 될 수 있어요',
+    symbol: 'C',
+    title: '변비경향형',
+  },
+  {
+    description:
+      '묽은 변 45% + 배변 횟수 주 6회 이상\n자극적인 음식 섭취와 자주 겹쳤어요',
+    symbol: 'L',
+    title: '묽은변경향형',
+  },
+  {
+    description:
+      '수면 부족, 스트레스 높음과 변 상태 변화가 자주 함께 나타났어요',
+    symbol: 'L',
+    title: '생활영향형',
+  },
+  {
+    description:
+      '배변 간격이 1일부터 5일까지 들쭉날쭉해요\n뚜렷한 패턴이 아직 보이지 않아요',
+    symbol: 'I',
+    title: '불규칙형',
+  },
+  {
+    description:
+      '이번 달 기록이 8일뿐이라 아직 유형을 정확히 알기 어려워요 (15일 이상 필요)',
+    symbol: '?',
+    title: '유형 진단 중',
+  },
+];
+
+export const WEEKLY_LIFE_GUIDE: LifeGuideTypes = {
+  description: '하루 물 6~8잔을 목표로 해보세요. 딱딱한 변이 개선될 수 있어요.',
+  feedbackStatus: null,
+  guideContentId: 1,
+  title: '수분 섭취와 딱딱한 변',
+};
 
 export const INSUFFICIENT_REPORT_BY_MODE: Record<
   ReportModeTypes,

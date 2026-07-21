@@ -1,4 +1,4 @@
-export type ReportModeTypes = 'weekly' | 'monthly';
+﻿export type ReportModeTypes = 'weekly' | 'monthly';
 
 export interface ReportSummaryTypes {
   description: string;
@@ -31,6 +31,23 @@ export interface MonthlyScoreTypes {
 export interface WeeklyTrendTypes {
   count: number;
   week: string;
+}
+
+export interface MonthlyTypeTypes {
+  description: string;
+  symbol: 'R' | 'C' | 'L' | 'I' | '?';
+  title: string;
+}
+
+export type ReportGuideFeedbackTypes = 'A' | 'G';
+export type ReportGuideFeedbackStatusTypes =
+  ReportGuideFeedbackTypes | 'N' | null;
+
+export interface LifeGuideTypes {
+  description: string;
+  feedbackStatus?: ReportGuideFeedbackStatusTypes;
+  guideContentId: number;
+  title: string;
 }
 
 export interface InsufficientReportTypes {

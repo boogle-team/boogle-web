@@ -29,8 +29,12 @@ const SummaryCards = ({
   </section>
 );
 
-const SummaryValue = ({ value }: { value: string }) => {
-  const unitMatch = value.match(/^(\d+(?:\.\d+)?)(회|%)$/);
+interface SummaryValuePropTypes {
+  value: string;
+}
+
+const SummaryValue = ({ value }: SummaryValuePropTypes) => {
+  const unitMatch = value.match(/^(\d+(?:\.\d+)?)(회|일|%)$/);
 
   if (unitMatch) {
     const [, amount, unit] = unitMatch;

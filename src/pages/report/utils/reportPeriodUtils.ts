@@ -1,7 +1,4 @@
-import {
-  BASE_REPORT_DATE,
-  MILLISECONDS_PER_DAY,
-} from '../constants/reportConstants';
+import { MILLISECONDS_PER_DAY } from '../constants/reportConstants';
 import type {
   ReportModeTypes,
   ReportPeriodTextTypes,
@@ -30,17 +27,17 @@ const getWeekStartDate = (date: Date) => {
   return weekStartDate;
 };
 
-const getMonthDistance = (date: Date) =>
-  (date.getFullYear() - BASE_REPORT_DATE.getFullYear()) * 12 +
+const getMonthDistance = (date: Date, comparisonDate: Date) =>
+  (date.getFullYear() - comparisonDate.getFullYear()) * 12 +
   date.getMonth() -
-  BASE_REPORT_DATE.getMonth();
+  comparisonDate.getMonth();
 
-const getWeekDistance = (date: Date) => {
-  const baseWeekStartDate = getWeekStartDate(BASE_REPORT_DATE);
+const getWeekDistance = (date: Date, comparisonDate: Date) => {
+  const comparisonWeekStartDate = getWeekStartDate(comparisonDate);
   const currentWeekStartDate = getWeekStartDate(date);
 
   return Math.round(
-    (currentWeekStartDate.getTime() - baseWeekStartDate.getTime()) /
+    (currentWeekStartDate.getTime() - comparisonWeekStartDate.getTime()) /
       (MILLISECONDS_PER_DAY * 7),
   );
 };
@@ -58,7 +55,9 @@ const getRelativeTitle = (distance: number, unit: '주' | '달') => {
     return `다음 ${unit}`;
   }
 
-  return '';
+  return distance < 0
+    ? `${Math.abs(distance)}${unit} 전`
+    : `${distance}${unit} 후`;
 };
 
 const getMonthDayText = (date: Date) =>
@@ -106,6 +105,7 @@ export const getReportDateRange = (
 export const getPeriodText = (
   selectedMode: ReportModeTypes,
   currentPeriodDate: Date,
+  comparisonDate = new Date(),
 ): ReportPeriodTextTypes => {
   if (selectedMode === 'weekly') {
     const weekStartDate = getWeekStartDate(currentPeriodDate);
@@ -115,7 +115,10 @@ export const getPeriodText = (
       description: `${getMonthDayText(weekStartDate)} - ${getMonthDayText(
         weekEndDate,
       )}`,
-      title: getRelativeTitle(getWeekDistance(currentPeriodDate), '주'),
+      title: getRelativeTitle(
+        getWeekDistance(currentPeriodDate, comparisonDate),
+        '주',
+      ),
     };
   }
 
@@ -123,6 +126,9 @@ export const getPeriodText = (
     description: `${currentPeriodDate.getFullYear()}년 ${
       currentPeriodDate.getMonth() + 1
     }월`,
-    title: getRelativeTitle(getMonthDistance(currentPeriodDate), '달'),
+    title: getRelativeTitle(
+      getMonthDistance(currentPeriodDate, comparisonDate),
+      '달',
+    ),
   };
 };
