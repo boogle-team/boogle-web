@@ -18,7 +18,7 @@ const NotificationListSkeleton = () => {
       {[0, 1, 2].map((skeletonId) => (
         <div
           key={skeletonId}
-          className="flex animate-pulse gap-3 rounded-[12px] bg-beige-1 p-3"
+          className="flex animate-pulse gap-4 rounded-[12px] bg-beige-1 p-3"
         >
           <div className="h-10 w-10 shrink-0 rounded-[12px] bg-beige-6" />
           <div className="flex-1 py-1">

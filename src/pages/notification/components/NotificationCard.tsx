@@ -31,12 +31,6 @@ const DEFAULT_NOTIFICATION_ICON_MAP = {
   P: 'weeklyReport',
 } satisfies Record<NotificationCategoryTypes, NotificationIconTypes>;
 
-const NOTIFICATION_DOT_CLASS_MAP = {
-  W: 'bg-semantic-danger',
-  R: 'bg-orange-5',
-  P: 'bg-yellow-6',
-} satisfies Record<NotificationCategoryTypes, string>;
-
 const NotificationCard = ({
   notification,
   onClick,
@@ -50,7 +44,7 @@ const NotificationCard = ({
     <button
       type="button"
       onClick={onClick}
-      className={`relative flex w-full items-start gap-3 rounded-[12px] p-[0.75rem] text-left ${
+      className={`relative flex w-full items-start gap-4 rounded-[12px] p-[0.75rem] text-left ${
         isWarning
           ? 'border border-orange-3 bg-orange-1'
           : 'bg-beige-1 shadow-sm'
@@ -71,7 +65,7 @@ const NotificationCard = ({
         >
           {notification.title}
         </strong>
-        <span className="caption-reg mt-1 block text-gray-7">
+        <span className="caption-reg mt-[0.13rem] block text-gray-7">
           {notification.content}
         </span>
         <time
@@ -85,9 +79,7 @@ const NotificationCard = ({
       {!notification.isRead && (
         <span
           aria-label="읽지 않은 알림"
-          className={`absolute top-3 right-3 h-1.5 w-1.5 rounded-[99px] ${
-            NOTIFICATION_DOT_CLASS_MAP[notification.category]
-          }`}
+          className="absolute top-3 right-3 h-1.5 w-1.5 rounded-[99px] bg-semantic-danger"
         />
       )}
     </button>
