@@ -12,7 +12,7 @@ export const CALENDAR_MARK_CONFIG: Record<CalendarMarkTypes, MarkConfigTypes> =
       dotClassName: 'bg-orange-6',
     },
     life: {
-      label: '생활',
+      label: '생활 기록',
       dotClassName: 'bg-yellow-6',
     },
     noBowel: {
