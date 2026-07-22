@@ -1,0 +1,45 @@
+<svg width="188" height="188" viewBox="0 0 188 188" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_374_3430)">
+<g filter="url(#filter0_g_374_3430)">
+<ellipse cx="95.9512" cy="161.714" rx="50.5859" ry="19.3913" fill="#FFE3D9"/>
+</g>
+<g filter="url(#filter1_g_374_3430)">
+<path d="M100.031 55.3293C113.475 55.3296 124.947 64.1466 129.45 76.55C142.975 80.2171 152.938 92.764 152.938 107.68C152.938 117.665 148.472 126.589 141.463 132.498C141.694 133.982 141.816 135.505 141.816 137.055C141.816 153.007 129.105 165.939 113.427 165.94C106.667 165.939 100.459 163.534 95.584 159.52C90.8861 163.793 84.8297 166.368 78.2178 166.368C64.0745 166.368 52.4685 154.595 51.2803 139.596C42.0732 135.265 35.6836 125.786 35.6836 114.787C35.6839 103.528 42.3794 93.8603 51.9395 89.679C51.4448 87.9585 51.1787 86.1383 51.1787 84.2551C51.1789 73.6055 59.6641 64.9722 70.1309 64.9719C72.4389 64.972 74.6517 65.3917 76.6973 66.1604C82.4536 59.5092 90.7758 55.3295 100.031 55.3293ZM102.311 121.951C101.725 121.349 100.775 121.349 100.189 121.951C98.2899 123.904 95.2101 123.904 93.3105 121.951C92.7248 121.349 91.7752 121.349 91.1895 121.951C90.6037 122.554 90.6037 123.53 91.1895 124.132C94.2606 127.289 99.2394 127.289 102.311 124.132C102.896 123.53 102.896 122.554 102.311 121.951ZM84.5908 110.134C82.193 110.134 80.2492 112.112 80.249 114.552C80.2492 116.992 82.193 118.97 84.5908 118.97C86.9885 118.97 88.9325 116.992 88.9326 114.552C88.9325 112.112 86.9885 110.134 84.5908 110.134ZM109.799 110.134C107.401 110.134 105.457 112.112 105.457 114.552C105.457 116.992 107.401 118.97 109.799 118.97C112.196 118.97 114.14 116.992 114.141 114.552C114.14 112.112 112.196 110.134 109.799 110.134Z" fill="#FFB79B"/>
+</g>
+<g filter="url(#filter2_g_374_3430)">
+<path d="M153.918 3C172.482 3 187.532 15.933 187.532 31.8867C187.532 47.8403 172.482 60.7734 153.918 60.7734C152.708 60.7734 151.513 60.7165 150.336 60.6094C146.142 64.9278 141.417 66.5916 137.661 66.9766C135.739 67.173 134.937 64.7205 135.729 62.957C136.52 61.1933 136.996 59.1372 137.246 56.9746C127.125 51.9966 120.305 42.6263 120.305 31.8867C120.305 15.9332 135.354 3.00024 153.918 3ZM169.636 19.1982C167.85 17.8553 165.313 18.2142 163.97 20L151.695 36.3154L145.118 28.3535C143.695 26.6308 141.144 26.3883 139.421 27.8115C137.698 29.2349 137.455 31.7858 138.878 33.5088L146.856 43.167C149.475 46.3369 154.369 46.2251 156.841 42.9395L170.438 24.8652C171.781 23.0792 171.422 20.5418 169.636 19.1982Z" fill="#FFA17D"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_g_374_3430" x="44.6285" y="141.586" width="102.645" height="40.256" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.13572776317596436 0.13572776317596436" numOctaves="3" seed="5578" />
+<feDisplacementMap in="shape" scale="1.4735379219055176" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_374_3430">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+<filter id="filter1_g_374_3430" x="34.7414" y="54.3872" width="119.139" height="112.923" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.13267247378826141 0.13267247378826141" numOctaves="3" seed="2953" />
+<feDisplacementMap in="shape" scale="1.8843396902084351" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_374_3430">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+<filter id="filter2_g_374_3430" x="119.842" y="2.5375" width="68.1525" height="64.9125" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.21621622145175934 0.21621622145175934" numOctaves="3" seed="375" />
+<feDisplacementMap in="shape" scale="0.92500001192092896" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_374_3430">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+<clipPath id="clip0_374_3430">
+<rect width="188" height="188" fill="white"/>
+</clipPath>
+</defs>
+</svg>

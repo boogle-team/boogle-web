@@ -1,0 +1,3 @@
+- [] 로그인 컴포넌트 만들기
+- [] theme.css letter spacing 관련해서 알아보기
+- [] 로그인 화면 ui 만들기
