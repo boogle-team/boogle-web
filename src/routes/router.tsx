@@ -1,88 +1,160 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
-import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
-import DeleteAccount from '@/pages/settings/DeleteAccount';
-import LoginAccount from '@/pages/settings/LoginAccount';
-import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
-import SensitiveConsent from '@/pages/settings/SensitiveConsent';
-import Settings from '@/pages/settings/Settings';
-import Terms from '@/pages/settings/Terms';
-
-import MainLayout from '../layout/MainLayout';
-import Calendar from '../pages/calendar/Calendar';
-import Guide from '../pages/guide/Guide';
-import Home from '../pages/home/Home';
-import Login from '../pages/login/Login';
-import Notification from '../pages/notification/Notification';
-import Report from '../pages/report/Report';
-import ProfileEdit from '../pages/settings/ProfileEdit';
-
 export const Router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    lazy: async () => {
+      const { default: MainLayout } = await import('../layout/MainLayout');
+
+      return { Component: MainLayout };
+    },
     children: [
       {
         index: true,
-        element: <Home />,
+        lazy: async () => {
+          const { default: Home } = await import('../pages/home/Home');
+
+          return { Component: Home };
+        },
       },
       {
         path: 'calendar',
-        element: <Calendar />,
+        lazy: async () => {
+          const { default: Calendar } =
+            await import('../pages/calendar/Calendar');
+
+          return { Component: Calendar };
+        },
       },
       {
         path: 'report',
-        element: <Report />,
+        lazy: async () => {
+          const { default: Report } = await import('../pages/report/Report');
+
+          return { Component: Report };
+        },
       },
       {
         path: 'guide',
-        element: <Guide />,
+        lazy: async () => {
+          const { default: Guide } = await import('../pages/guide/Guide');
+
+          return { Component: Guide };
+        },
       },
     ],
   },
   {
+    path: '/onboarding',
+    lazy: async () => {
+      const { default: Onboarding } =
+        await import('../pages/onboarding/Onboarding');
+
+      return { Component: Onboarding };
+    },
+  },
+  {
     path: '/login',
-    element: <Login />,
+    lazy: async () => {
+      const { default: Login } = await import('../pages/login/Login');
+
+      return { Component: Login };
+    },
+  },
+  {
+    path: '/onboarding/profile',
+    lazy: async () => {
+      const { default: Profile } = await import('../pages/onboarding/Profile');
+
+      return { Component: Profile };
+    },
   },
   {
     path: '/settings',
-    element: <Settings />,
+    lazy: async () => {
+      const { default: Settings } = await import('../pages/settings/Settings');
+
+      return { Component: Settings };
+    },
   },
   {
     path: '/notifications',
-    element: <Notification />,
+    lazy: async () => {
+      const { default: Notification } =
+        await import('../pages/notification/Notification');
+
+      return { Component: Notification };
+    },
   },
   {
     path: '/settings/profile',
-    element: <ProfileEdit />,
+    lazy: async () => {
+      const { default: ProfileEdit } =
+        await import('../pages/settings/ProfileEdit');
+
+      return { Component: ProfileEdit };
+    },
   },
   {
     path: '/settings/bowel-rhythm',
-    element: <BowelRhythmSetting />,
+    lazy: async () => {
+      const { default: BowelRhythmSetting } =
+        await import('../pages/settings/BowelRhythmSetting');
+
+      return { Component: BowelRhythmSetting };
+    },
   },
   {
     path: '/settings/baseline-info',
-    element: <BaselineInfoSetting />,
+    lazy: async () => {
+      const { default: BaselineInfoSetting } =
+        await import('../pages/settings/BaselineInfoSetting');
+
+      return { Component: BaselineInfoSetting };
+    },
   },
   {
     path: '/settings/login-account',
-    element: <LoginAccount />,
+    lazy: async () => {
+      const { default: LoginAccount } =
+        await import('../pages/settings/LoginAccount');
+
+      return { Component: LoginAccount };
+    },
   },
   {
     path: '/settings/sensitive-consent',
-    element: <SensitiveConsent />,
+    lazy: async () => {
+      const { default: SensitiveConsent } =
+        await import('../pages/settings/SensitiveConsent');
+
+      return { Component: SensitiveConsent };
+    },
   },
   {
     path: '/settings/privacy-policy',
-    element: <PrivacyPolicy />,
+    lazy: async () => {
+      const { default: PrivacyPolicy } =
+        await import('../pages/settings/PrivacyPolicy');
+
+      return { Component: PrivacyPolicy };
+    },
   },
   {
     path: '/settings/terms',
-    element: <Terms />,
+    lazy: async () => {
+      const { default: Terms } = await import('../pages/settings/Terms');
+
+      return { Component: Terms };
+    },
   },
   {
     path: '/settings/delete-account',
-    element: <DeleteAccount />,
+    lazy: async () => {
+      const { default: DeleteAccount } =
+        await import('../pages/settings/DeleteAccount');
+
+      return { Component: DeleteAccount };
+    },
   },
 ]);

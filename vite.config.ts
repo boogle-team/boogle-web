@@ -75,9 +75,21 @@ export default defineConfig({
     }),
   ],
 
+  optimizeDeps: {
+    include: ['lottie-react'],
+  },
+
   resolve: {
+    // lottie-react는 exports 필드가 없고 browser 필드가 UMD를 가리킴.
+    // browser보다 module(ESM)을 먼저 찾도록 우선순위 지정.
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'browser', 'main'],
+
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      react: fileURLToPath(new URL('./node_modules/react', import.meta.url)),
+      'react-dom': fileURLToPath(
+        new URL('./node_modules/react-dom', import.meta.url),
+      ),
     },
   },
 });

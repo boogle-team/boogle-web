@@ -14,7 +14,7 @@ const ConfirmButton = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="caption shrink-0 rounded-lg bg-orange-2 px-4 py-1.5 text-orange-7 disabled:opacity-50"
+      className="label shrink-0 px-1 py-1 text-orange-6 transition-colors hover:not-disabled:text-orange-7 disabled:cursor-not-allowed disabled:text-gray-5"
     >
       {label}
     </button>
