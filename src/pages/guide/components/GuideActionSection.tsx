@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import Chip from '@/shared/components/Chip';
 import type { GuideFeedbackTypes } from '../types/guideApiTypes';
 import type { GuideActionTypes, GuideDetailTypes } from '../types/guideTypes';
 import ActionTitleIcon from '../assets/illustrations/ActionTitleIcon.svg?react';
+import FeedbackCompleteIcon from '../assets/icons/FeedbackCompleteIcon.svg?react';
 
 interface GuideActionSectionPropTypes {
   feedbackStatus?: GuideFeedbackTypes | null;
@@ -35,6 +38,7 @@ const GuideActionSection = ({
 
       <GuideFeedbackButtons
         feedbackStatus={feedbackStatus}
+        guideId={guideDetail.id}
         isFeedbackPending={isFeedbackPending}
         onFeedbackClick={onFeedbackClick}
       />
@@ -81,22 +85,50 @@ const getGuideActions = (guideDetail: GuideDetailTypes): GuideActionTypes[] => {
 
 interface GuideFeedbackButtonsPropTypes {
   feedbackStatus: GuideFeedbackTypes | null;
+  guideId: string;
   isFeedbackPending: boolean;
   onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
 }
 
 const GuideFeedbackButtons = ({
   feedbackStatus,
+  guideId,
   isFeedbackPending,
   onFeedbackClick,
 }: GuideFeedbackButtonsPropTypes) => {
+  const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(
+    Boolean(feedbackStatus),
+  );
+
+  useEffect(() => {
+    setIsFeedbackSubmitted(Boolean(feedbackStatus));
+  }, [feedbackStatus, guideId]);
+
   const handleHelpfulChipClick = () => {
+    setIsFeedbackSubmitted(true);
     onFeedbackClick?.('G');
   };
 
   const handleAlreadyDoingChipClick = () => {
+    setIsFeedbackSubmitted(true);
     onFeedbackClick?.('A');
   };
+
+  if (isFeedbackSubmitted) {
+    return (
+      <div
+        className="label-semi mt-5 flex items-center justify-center gap-2 text-orange-6"
+        role="status"
+        aria-live="polite"
+      >
+        <FeedbackCompleteIcon
+          aria-hidden="true"
+          className="h-3.5 w-[1.125rem] shrink-0"
+        />
+        <span>소중한 의견 감사합니다.</span>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-5 text-center">
