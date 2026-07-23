@@ -3,8 +3,8 @@ import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ConfirmModal from '@/shared/components/ConfirmModal';
-import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButtons';
+import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 
@@ -75,52 +75,42 @@ const Edit = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-beige-1 pt-12.25">
-      <TopNavigation
-        variant="detail"
-        title="부글 기록하기"
-        subTitle={formatRecordDate(dayjs(recordDate).toDate())}
-        onBackButtonClick={handleBackButtonClick}
-        isDeleteButtonVisible
-        onDeleteButtonClick={handleDeleteButtonClick}
+    <RecordPageLayout
+      title="부글 기록하기"
+      subTitle={formatRecordDate(dayjs(recordDate).toDate())}
+      contentClassName="gap-12"
+      onBackButtonClick={handleBackButtonClick}
+      isDeleteButtonVisible
+      onDeleteButtonClick={handleDeleteButtonClick}
+      footer={<CancelSaveButtons onCancel={handleCancel} onSave={handleSave} />}
+    >
+      <BowelStatusField
+        value={formState.bowelStatus}
+        onChange={handleBowelStatusChange}
       />
 
-      <div className="flex flex-1 flex-col gap-12 px-layout pt-6 pb-[11.1275rem]">
-        <BowelStatusField
-          value={formState.bowelStatus}
-          onChange={handleBowelStatusChange}
-        />
+      {formState.bowelStatus === 'yes' && (
+        <>
+          <RecordTimeField value={formState.time} onChange={handleTimeChange} />
 
-        {formState.bowelStatus === 'yes' && (
-          <>
-            <RecordTimeField
-              value={formState.time}
-              onChange={handleTimeChange}
-            />
+          <StoolTypeField
+            value={formState.stoolType}
+            onChange={handleStoolTypeChange}
+          />
 
-            <StoolTypeField
-              value={formState.stoolType}
-              onChange={handleStoolTypeChange}
-            />
+          <FeelingField
+            value={formState.feeling}
+            onChange={handleFeelingChange}
+          />
 
-            <FeelingField
-              value={formState.feeling}
-              onChange={handleFeelingChange}
-            />
+          <PainLevelField
+            value={formState.painLevel}
+            onChange={handlePainLevelChange}
+          />
 
-            <PainLevelField
-              value={formState.painLevel}
-              onChange={handlePainLevelChange}
-            />
-
-            <DetailRecordLink onClick={handleDetailRecordLinkClick} />
-          </>
-        )}
-      </div>
-
-      <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 px-layout pt-4 pb-[3.69rem]">
-        <CancelSaveButtons onCancel={handleCancel} onSave={handleSave} />
-      </div>
+          <DetailRecordLink onClick={handleDetailRecordLinkClick} />
+        </>
+      )}
 
       <ConfirmModal
         isOpen={isDeleteModalOpen}
@@ -131,7 +121,7 @@ const Edit = () => {
         onCancel={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
       />
-    </div>
+    </RecordPageLayout>
   );
 };
 

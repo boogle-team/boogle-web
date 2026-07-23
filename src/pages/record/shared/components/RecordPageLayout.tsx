@@ -14,6 +14,9 @@ interface RecordPageLayoutPropTypes {
   /** 본문 컨테이너에 덧붙일 클래스. 섹션 간 간격(gap)을 페이지마다 지정한다. */
   contentClassName?: string;
   onBackButtonClick?: () => void;
+  /** 기록 수정처럼 삭제가 가능한 화면에서만 헤더 우측 삭제 버튼을 노출한다. */
+  isDeleteButtonVisible?: boolean;
+  onDeleteButtonClick?: () => void;
 }
 
 const RecordPageLayout = ({
@@ -23,6 +26,8 @@ const RecordPageLayout = ({
   footer,
   contentClassName = '',
   onBackButtonClick,
+  isDeleteButtonVisible = false,
+  onDeleteButtonClick,
 }: RecordPageLayoutPropTypes) => {
   const navigate = useNavigate();
 
@@ -44,6 +49,8 @@ const RecordPageLayout = ({
         title={title}
         subTitle={subTitle}
         onBackButtonClick={handleBackButtonClick}
+        isDeleteButtonVisible={isDeleteButtonVisible}
+        onDeleteButtonClick={onDeleteButtonClick}
       />
 
       <div
