@@ -8,10 +8,19 @@ import svgr from 'vite-plugin-svgr';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    // Preserve the original colors of multicolor notification icons.
+    svgr({
+      include: '**/icons/notificationPageIcons/**/*.svg?react',
+      svgrOptions: {
+        icon: true,
+      },
+    }),
+
     // 단색 아이콘 (line icon)
     // 모든 색을 currentColor로 치환해서 className으로 색 조절 가능
     svgr({
       include: '**/icons/**/*.svg?react',
+      exclude: '**/icons/notificationPageIcons/**/*.svg?react',
       svgrOptions: {
         icon: true,
         plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],

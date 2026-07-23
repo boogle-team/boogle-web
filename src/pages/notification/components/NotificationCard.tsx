@@ -1,8 +1,8 @@
-import chartIcon from '@/shared/assets/icons/notificationPageIcons/chartIcon.svg?url';
-import clockIcon from '@/shared/assets/icons/notificationPageIcons/clockIcon.svg?url';
-import flameIcon from '@/shared/assets/icons/notificationPageIcons/flameIcon.svg?url';
-import roundedChartIcon from '@/shared/assets/icons/notificationPageIcons/roundedChartIcon.svg?url';
-import warningNoticeIcon from '@/shared/assets/icons/notificationPageIcons/warningNotice.svg?url';
+import ChartIcon from '@/shared/assets/icons/notificationPageIcons/chartIcon.svg?react';
+import ClockIcon from '@/shared/assets/icons/notificationPageIcons/clockIcon.svg?react';
+import FlameIcon from '@/shared/assets/icons/notificationPageIcons/flameIcon.svg?react';
+import RoundedChartIcon from '@/shared/assets/icons/notificationPageIcons/roundedChartIcon.svg?react';
+import WarningNoticeIcon from '@/shared/assets/icons/notificationPageIcons/warningNotice.svg?react';
 
 import { getNotificationTimestamp } from '../utils/notificationDate';
 
@@ -11,6 +11,7 @@ import type {
   NotificationIconTypes,
   NotificationItemTypes,
 } from '../types/notificationTypes';
+import type { ComponentType, SVGProps } from 'react';
 
 interface NotificationCardPropTypes {
   notification: NotificationItemTypes;
@@ -18,12 +19,15 @@ interface NotificationCardPropTypes {
 }
 
 const NOTIFICATION_ICON_MAP = {
-  warning: warningNoticeIcon,
-  record: clockIcon,
-  weeklyReport: chartIcon,
-  monthlyReport: roundedChartIcon,
-  streak: flameIcon,
-} satisfies Record<NotificationIconTypes, string>;
+  warning: WarningNoticeIcon,
+  record: ClockIcon,
+  weeklyReport: ChartIcon,
+  monthlyReport: RoundedChartIcon,
+  streak: FlameIcon,
+} satisfies Record<
+  NotificationIconTypes,
+  ComponentType<SVGProps<SVGSVGElement>>
+>;
 
 const DEFAULT_NOTIFICATION_ICON_MAP = {
   W: 'warning',
@@ -39,6 +43,7 @@ const NotificationCard = ({
   const iconType =
     notification.iconType ??
     DEFAULT_NOTIFICATION_ICON_MAP[notification.category];
+  const NotificationIcon = NOTIFICATION_ICON_MAP[iconType];
 
   return (
     <button
@@ -50,10 +55,9 @@ const NotificationCard = ({
           : 'bg-beige-1 shadow-sm'
       }`}
     >
-      <img
-        src={NOTIFICATION_ICON_MAP[iconType]}
-        alt=""
+      <NotificationIcon
         aria-hidden="true"
+        focusable="false"
         className="h-10 w-10 shrink-0"
       />
 
