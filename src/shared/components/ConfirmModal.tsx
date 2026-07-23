@@ -2,6 +2,7 @@ import { createPortal } from 'react-dom';
 import { useEffect, useId } from 'react';
 import type { ReactNode } from 'react';
 import { FocusTrap } from 'focus-trap-react';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 import Button, { type ButtonPropTypes } from './Button';
 
 interface ConfirmModalPropTypes {
@@ -32,6 +33,8 @@ const ConfirmModal = ({
 }: ConfirmModalPropTypes) => {
   const titleId = useId();
   const descriptionId = useId();
+
+  useBodyScrollLock(isOpen);
 
   useEffect(() => {
     if (!isOpen || !onCancel) return;
