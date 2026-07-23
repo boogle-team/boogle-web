@@ -5,6 +5,8 @@ import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDa
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import Button from '@/shared/components/Button';
 
+import FoodField from './components/FoodField';
+import MemoField from './components/MemoField';
 import OptionChipField from './components/OptionChipField';
 import {
   HYDRATION_OPTIONS,
@@ -24,6 +26,8 @@ const Life = () => {
     handleStressChange,
     handleMealRegularityChange,
     handleHydrationChange,
+    handleFoodToggle,
+    handleMemoChange,
   } = useLifeRecordForm();
 
   const handleSubmit = () => {
@@ -68,7 +72,11 @@ const Life = () => {
         onChange={handleHydrationChange}
       />
 
-      {/* TODO: 오늘 먹은 것 · 특이 사항 메모 · 더 자세히 기록하기 */}
+      <FoodField value={formState.foods} onToggle={handleFoodToggle} />
+
+      <MemoField value={formState.memo} onChange={handleMemoChange} />
+
+      {/* TODO: 더 자세히 기록하기 */}
     </RecordPageLayout>
   );
 };

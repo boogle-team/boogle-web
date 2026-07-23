@@ -20,7 +20,7 @@ const FoodChip = ({
       type="button"
       onClick={onClick}
       aria-pressed={isSelected}
-      className={`flex w-[7.29169rem] flex-col items-start justify-between rounded-xl border bg-beige-1 px-4 py-2 transition-colors hover:not-disabled:cursor-pointer ${
+      className={`flex w-full flex-col items-start justify-between rounded-xl border bg-beige-1 px-4 py-2 transition-colors hover:not-disabled:cursor-pointer ${
         isSelected ? 'border-orange-6 bg-orange-1' : 'border-gray-4'
       }`}
     >

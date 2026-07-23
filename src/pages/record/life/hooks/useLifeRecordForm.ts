@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { useLifeRecordDraftStore } from '../stores/lifeRecordDraftStore';
 import type {
+  FoodTypes,
   HydrationTypes,
   MealRegularityTypes,
   SleepTypes,
@@ -30,6 +31,20 @@ export const useLifeRecordForm = () => {
     updateLifeRecord({ hydration });
   };
 
+  // '오늘 먹은 것'은 중복 선택이라 이미 담긴 값을 다시 누르면 해제한다.
+  const handleFoodToggle = (food: FoodTypes) => {
+    const { foods } = formState;
+    const nextFoods = foods.includes(food)
+      ? foods.filter((selectedFood) => selectedFood !== food)
+      : [...foods, food];
+
+    updateLifeRecord({ foods: nextFoods });
+  };
+
+  const handleMemoChange = (memo: string) => {
+    updateLifeRecord({ memo });
+  };
+
   // 특이 사항 메모를 제외한 나머지가 모두 채워져야 완료할 수 있다.
   const isSubmittable = useMemo(() => {
     const { sleep, stress, mealRegularity, hydration, foods } = formState;
@@ -50,5 +65,7 @@ export const useLifeRecordForm = () => {
     handleStressChange,
     handleMealRegularityChange,
     handleHydrationChange,
+    handleFoodToggle,
+    handleMemoChange,
   };
 };
