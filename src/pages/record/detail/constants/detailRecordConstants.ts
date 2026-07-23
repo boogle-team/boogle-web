@@ -20,9 +20,9 @@ import type {
   SeverityTooltipTypes,
   SeverityTypes,
   StoolColorOptionTypes,
+  StoolColorTypes,
 } from '../types/detailRecordTypes';
 
-/** 세부 항목 아이콘 원본 크기(54px). */
 export const SEVERITY_ICON_CLASS_NAME = 'h-13.5 w-13.5';
 
 export const SEVERITY_LABELS: Record<SeverityTypes, string> = {
@@ -100,6 +100,21 @@ export const STOOL_COLOR_OPTIONS: StoolColorOptionTypes[] = [
   { value: 'red', label: '붉은색', color: '#BF3B3B' },
   { value: 'grayWhite', label: '회·흰색', color: '#ADA69A' },
 ];
+
+export const ABNORMAL_STOOL_COLORS: StoolColorTypes[] = ['black', 'red'];
+
+export const ABNORMAL_COLOR_MODAL = {
+  title: '주의가 필요한 기록이에요',
+  confirmText: '확인했어요',
+} as const;
+
+export const LIFE_RECORD_MODAL = {
+  title: '오늘의 생활 기록도 할까요?',
+  description:
+    '식단, 수분, 스트레스 등을 함께 기록하면\n더 정확한 분석이 가능해요',
+  cancelText: '다음에 할게요',
+  confirmText: '생활 기록 하기',
+} as const;
 
 export const BLOATING_TOOLTIP: SeverityTooltipTypes = {
   title: '복부 팽만이란?',

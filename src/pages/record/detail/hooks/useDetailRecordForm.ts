@@ -45,8 +45,13 @@ export const useDetailRecordForm = () => {
     setFormState((prev) => ({ ...prev, stoolColor }));
   };
 
+  const isSubmittable = Object.values(formState).every(
+    (fieldValue) => fieldValue !== null,
+  );
+
   return {
     formState,
+    isSubmittable,
     handleBloatingChange,
     handleTenesmusChange,
     handleUrgencyChange,
