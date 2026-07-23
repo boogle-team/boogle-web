@@ -130,8 +130,10 @@ const TagSettingModal = ({
           </div>
 
           <div className="flex w-full flex-col px-4">
-            <div className="flex h-12 items-center justify-between rounded-xl bg-beige-5 px-4 py-2.5">
-              <span className="label truncate text-gray-10">{memo}</span>
+            <div className="flex h-12 items-center rounded-xl bg-beige-5 px-4 py-2.5">
+              <span className="label min-w-0 flex-1 truncate text-gray-10">
+                {memo}
+              </span>
             </div>
 
             <div className="mt-2">

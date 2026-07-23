@@ -1,24 +1,16 @@
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
-import DetailRecordLink from '@/pages/record/main/components/DetailRecordLink';
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import Button from '@/shared/components/Button';
 
-import FoodField from './components/FoodField';
-import MemoField from './components/MemoField';
-import OptionChipField from './components/OptionChipField';
+import LifeRecordFields from './components/LifeRecordFields';
 import TagSettingModal from './components/TagSettingModal';
-import {
-  HYDRATION_OPTIONS,
-  MEAL_REGULARITY_OPTIONS,
-  SLEEP_OPTIONS,
-  STRESS_OPTIONS,
-} from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 
 // TODO: 저장 응답으로 받은 AI 추천 태그로 교체
 const MOCK_RECOMMENDED_TAGS = ['음주', '야식', '자극적'];
@@ -27,19 +19,20 @@ const Life = () => {
   const navigate = useNavigate();
   const recordDate = useRecordDraftDate();
 
+  const startLifeRecord = useLifeRecordDraftStore(
+    (state) => state.startLifeRecord,
+  );
+
+  // 날짜가 같으면 같은 초안으로 보고 유지한다. 세부 기록에서 돌아와도 값이 남아야 하므로.
+  useLayoutEffect(() => {
+    startLifeRecord({ draftKey: `new-${recordDate}` });
+  }, [startLifeRecord, recordDate]);
+
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const {
-    formState,
-    isSubmittable,
-    handleSleepChange,
-    handleStressChange,
-    handleMealRegularityChange,
-    handleHydrationChange,
-    handleFoodToggle,
-    handleMemoChange,
-  } = useLifeRecordForm();
+  const form = useLifeRecordForm();
+  const { formState, isSubmittable } = form;
 
   const handleSubmit = () => {
     if (!isSubmittable) return;
@@ -94,41 +87,9 @@ const Life = () => {
         <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
       }
     >
-      <OptionChipField
-        title="수면"
-        options={SLEEP_OPTIONS}
-        value={formState.sleep}
-        onChange={handleSleepChange}
-      />
-
-      <OptionChipField
-        title="스트레스"
-        options={STRESS_OPTIONS}
-        value={formState.stress}
-        onChange={handleStressChange}
-      />
-
-      <OptionChipField
-        title="식사 규칙성"
-        options={MEAL_REGULARITY_OPTIONS}
-        value={formState.mealRegularity}
-        onChange={handleMealRegularityChange}
-      />
-
-      <OptionChipField
-        title="수분"
-        options={HYDRATION_OPTIONS}
-        value={formState.hydration}
-        onChange={handleHydrationChange}
-      />
-
-      <FoodField value={formState.foods} onToggle={handleFoodToggle} />
-
-      <MemoField value={formState.memo} onChange={handleMemoChange} />
-
-      <DetailRecordLink
-        description="수면시간 · 운동 · 카페인 · 약 등"
-        onClick={handleDetailRecordLinkClick}
+      <LifeRecordFields
+        form={form}
+        onDetailRecordLinkClick={handleDetailRecordLinkClick}
       />
 
       <TagSettingModal
