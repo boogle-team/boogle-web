@@ -1,9 +1,12 @@
+import dayjs from 'dayjs';
 import { TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
+import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 
 import { formatRecordDate } from '../main/utils/formatRecordDate';
 import AmountField from './components/AmountField';
@@ -15,15 +18,16 @@ import UrgencyField from './components/UrgencyField';
 import {
   ABNORMAL_COLOR_MODAL,
   ABNORMAL_STOOL_COLORS,
-  LIFE_RECORD_MODAL,
 } from './constants/detailRecordConstants';
 import { useDetailRecordForm } from './hooks/useDetailRecordForm';
 import { buildAbnormalColorDescription } from './utils/buildAbnormalColorDescription';
 
 const Detail = () => {
+  const navigate = useNavigate();
   const [isAbnormalColorModalOpen, setIsAbnormalColorModalOpen] =
     useState(false);
-  const [isLifeRecordModalOpen, setIsLifeRecordModalOpen] = useState(false);
+
+  const recordDate = useRecordDraftStore((state) => state.recordDate);
 
   const {
     formState,
@@ -40,38 +44,27 @@ const Detail = () => {
   const isAbnormalColorSelected =
     stoolColor !== null && ABNORMAL_STOOL_COLORS.includes(stoolColor);
 
+  // 실제 저장은 메인 기록의 완료에서 한 번에 이뤄진다. 여기서는 초안에 담고 돌아간다.
   const handleSubmit = () => {
     if (!isSubmittable) return;
-    // TODO: 부글 세부 항목 기록 API 연동
 
-    // 주의 색상을 골랐다면 안내를 먼저 보여주고, 확인 후 생활 기록 유도로 이어간다.
     if (isAbnormalColorSelected) {
       setIsAbnormalColorModalOpen(true);
       return;
     }
 
-    setIsLifeRecordModalOpen(true);
+    navigate(-1);
   };
 
   const handleAbnormalColorConfirm = () => {
     setIsAbnormalColorModalOpen(false);
-    setIsLifeRecordModalOpen(true);
-  };
-
-  const handleLifeRecordCancel = () => {
-    setIsLifeRecordModalOpen(false);
-    // TODO: 기록 완료 후 이동할 화면 연결
-  };
-
-  const handleLifeRecordConfirm = () => {
-    setIsLifeRecordModalOpen(false);
-    // TODO: 생활 기록 페이지 라우트 연결
+    navigate(-1);
   };
 
   return (
     <RecordPageLayout
       title="부글 세부 항목 기록"
-      subTitle={formatRecordDate(new Date())}
+      subTitle={formatRecordDate(dayjs(recordDate).toDate())}
       contentClassName="gap-10"
       footer={
         <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
@@ -118,16 +111,6 @@ const Detail = () => {
         confirmText={ABNORMAL_COLOR_MODAL.confirmText}
         confirmVariant="destructive"
         onConfirm={handleAbnormalColorConfirm}
-      />
-
-      <ConfirmModal
-        isOpen={isLifeRecordModalOpen}
-        title={LIFE_RECORD_MODAL.title}
-        description={LIFE_RECORD_MODAL.description}
-        cancelText={LIFE_RECORD_MODAL.cancelText}
-        confirmText={LIFE_RECORD_MODAL.confirmText}
-        onCancel={handleLifeRecordCancel}
-        onConfirm={handleLifeRecordConfirm}
       />
     </RecordPageLayout>
   );

@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import dayjs from 'dayjs';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ConfirmModal from '@/shared/components/ConfirmModal';
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButtons';
+import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
+import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 
 import BowelStatusField from '../main/components/BowelStatusField';
 import DetailRecordLink from '../main/components/DetailRecordLink';
@@ -18,6 +21,16 @@ const Edit = () => {
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const recordDate = useRecordDraftDate();
+  const startDraft = useRecordDraftStore((state) => state.startDraft);
+  const resetDraft = useRecordDraftStore((state) => state.resetDraft);
+
+  // 새 기록 작성 초안과 섞이지 않도록 수정 전용 키로 시작한다.
+  // TODO: 라우트에 기록 id가 생기면 `edit-${recordId}` 키와 조회한 값으로 초안을 채운다.
+  useLayoutEffect(() => {
+    startDraft({ draftKey: 'edit', recordDate });
+  }, [startDraft, recordDate]);
+
   const {
     formState,
     isSubmittable,
@@ -29,16 +42,23 @@ const Edit = () => {
   } = useRecordForm();
 
   const handleBackButtonClick = () => {
+    resetDraft();
     navigate(-1);
   };
 
   const handleCancel = () => {
+    resetDraft();
     navigate(-1);
   };
 
   const handleSave = () => {
     if (!isSubmittable) return;
-    // TODO: 부글 기록 수정 API 연동
+    // TODO: 부글 기록 수정 API 연동 (메인 + 세부 항목을 함께 제출)
+    resetDraft();
+  };
+
+  const handleDetailRecordLinkClick = () => {
+    navigate('/record/detail');
   };
 
   const handleDeleteButtonClick = () => {
@@ -59,7 +79,7 @@ const Edit = () => {
       <TopNavigation
         variant="detail"
         title="부글 기록하기"
-        subTitle={formatRecordDate(new Date())}
+        subTitle={formatRecordDate(dayjs(recordDate).toDate())}
         onBackButtonClick={handleBackButtonClick}
         isDeleteButtonVisible
         onDeleteButtonClick={handleDeleteButtonClick}
@@ -93,7 +113,7 @@ const Edit = () => {
               onChange={handlePainLevelChange}
             />
 
-            <DetailRecordLink />
+            <DetailRecordLink onClick={handleDetailRecordLinkClick} />
           </>
         )}
       </div>
