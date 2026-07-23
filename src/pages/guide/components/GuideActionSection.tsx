@@ -99,34 +99,53 @@ const GuideFeedbackButtons = ({
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(
     Boolean(feedbackStatus),
   );
+  const [isToastVisible, setIsToastVisible] = useState(false);
 
   useEffect(() => {
     setIsFeedbackSubmitted(Boolean(feedbackStatus));
+    setIsToastVisible(false);
   }, [feedbackStatus, guideId]);
 
-  const handleHelpfulChipClick = () => {
+  useEffect(() => {
+    if (!isToastVisible) return;
+
+    const toastTimerId = window.setTimeout(() => {
+      setIsToastVisible(false);
+    }, 2500);
+
+    return () => window.clearTimeout(toastTimerId);
+  }, [isToastVisible]);
+
+  const handleFeedbackClick = (feedback: GuideFeedbackTypes) => {
     setIsFeedbackSubmitted(true);
-    onFeedbackClick?.('G');
+    setIsToastVisible(true);
+    onFeedbackClick?.(feedback);
+  };
+
+  const handleHelpfulChipClick = () => {
+    handleFeedbackClick('G');
   };
 
   const handleAlreadyDoingChipClick = () => {
-    setIsFeedbackSubmitted(true);
-    onFeedbackClick?.('A');
+    handleFeedbackClick('A');
   };
 
   if (isFeedbackSubmitted) {
     return (
-      <div
-        className="label-semi mt-5 flex items-center justify-center gap-2 text-orange-6"
-        role="status"
-        aria-live="polite"
-      >
-        <FeedbackCompleteIcon
-          aria-hidden="true"
-          className="h-3.5 w-[1.125rem] shrink-0"
-        />
-        <span>소중한 의견 감사합니다.</span>
-      </div>
+      isToastVisible && (
+        <div
+          className="label-semi fixed left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-[22.375rem] -translate-x-1/2 items-center justify-start gap-2 rounded-xl border border-orange-4 bg-orange-1 px-4 py-3 text-orange-6 shadow-sm"
+          style={{ bottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}
+          role="status"
+          aria-live="polite"
+        >
+          <FeedbackCompleteIcon
+            aria-hidden="true"
+            className="h-3.5 w-[1.125rem] shrink-0"
+          />
+          <span>소중한 의견 감사합니다.</span>
+        </div>
+      )
     );
   }
 
