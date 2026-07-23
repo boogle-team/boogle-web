@@ -5,11 +5,26 @@ import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDa
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import Button from '@/shared/components/Button';
 
+import OptionChipField from './components/OptionChipField';
+import {
+  HYDRATION_OPTIONS,
+  MEAL_REGULARITY_OPTIONS,
+  SLEEP_OPTIONS,
+  STRESS_OPTIONS,
+} from './constants/lifeRecordConstants';
+import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+
 const Life = () => {
   const recordDate = useRecordDraftDate();
 
-  // TODO: 생활 기록 폼 상태(useLifeRecordForm) 연결 후 필수값 충족 여부로 교체
-  const isSubmittable = false;
+  const {
+    formState,
+    isSubmittable,
+    handleSleepChange,
+    handleStressChange,
+    handleMealRegularityChange,
+    handleHydrationChange,
+  } = useLifeRecordForm();
 
   const handleSubmit = () => {
     if (!isSubmittable) return;
@@ -25,9 +40,35 @@ const Life = () => {
         <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
       }
     >
-      <>
-        {/* TODO: 수면 · 스트레스 · 식사 규칙성 · 수분 · 오늘 먹은 것 · 특이 사항 메모 · 더 자세히 기록하기 */}
-      </>
+      <OptionChipField
+        title="수면"
+        options={SLEEP_OPTIONS}
+        value={formState.sleep}
+        onChange={handleSleepChange}
+      />
+
+      <OptionChipField
+        title="스트레스"
+        options={STRESS_OPTIONS}
+        value={formState.stress}
+        onChange={handleStressChange}
+      />
+
+      <OptionChipField
+        title="식사 규칙성"
+        options={MEAL_REGULARITY_OPTIONS}
+        value={formState.mealRegularity}
+        onChange={handleMealRegularityChange}
+      />
+
+      <OptionChipField
+        title="수분"
+        options={HYDRATION_OPTIONS}
+        value={formState.hydration}
+        onChange={handleHydrationChange}
+      />
+
+      {/* TODO: 오늘 먹은 것 · 특이 사항 메모 · 더 자세히 기록하기 */}
     </RecordPageLayout>
   );
 };
