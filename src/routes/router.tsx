@@ -7,6 +7,7 @@ import Report from '../pages/report/Report';
 import Calendar from '../pages/calendar/Calendar';
 import Record from '../pages/record/main/Main';
 import RecordEdit from '../pages/record/edit/Edit';
+import RecordDetail from '../pages/record/detail/Detail';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
 import ProfileEdit from '../pages/settings/ProfileEdit';
@@ -94,6 +95,10 @@ export const Router = createBrowserRouter([
   {
     path: '/record/edit',
     element: <RecordEdit />,
+  },
+  {
+    path: '/record/detail',
+    element: <RecordDetail />,
   },
   {
     path: '/settings',
