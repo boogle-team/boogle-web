@@ -1,8 +1,7 @@
 import type { ChangeEvent } from 'react';
 
-import AiLogoIcon from '@/shared/assets/illustrations/record/aiLogo.svg?react';
-
 import { MEMO_MAX_LENGTH } from '../constants/lifeRecordConstants';
+import AiHintText from './AiHintText';
 import LifeSectionTitle from './LifeSectionTitle';
 
 interface MemoFieldPropTypes {
@@ -29,10 +28,7 @@ const MemoField = ({ value, onChange }: MemoFieldPropTypes) => {
       />
 
       <div className="flex items-center justify-between">
-        <span className="caption flex items-center gap-1 text-orange-6">
-          <AiLogoIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
-          입력하면 AI가 태그를 자동 추천해요!
-        </span>
+        <AiHintText text="입력하면 AI가 태그를 자동 추천해요!" />
 
         <span className="caption text-gray-6">
           {value.length}/{MEMO_MAX_LENGTH}

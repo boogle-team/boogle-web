@@ -30,7 +30,7 @@ const Button = ({
 
   const disabledClassName = {
     default: 'border-transparent bg-gray-4 text-gray-6',
-    bright: 'border-transparent bg-orange-2 text-beige-1',
+    bright: 'border-transparent bg-orange-3 text-beige-1',
   }[disabledVariant];
 
   const variantClassName = {
