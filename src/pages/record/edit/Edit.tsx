@@ -108,7 +108,10 @@ const Edit = () => {
             onChange={handlePainLevelChange}
           />
 
-          <DetailRecordLink onClick={handleDetailRecordLinkClick} />
+          <DetailRecordLink
+            description="복부팽만 · 잔변감 · 변 색상 등"
+            onClick={handleDetailRecordLinkClick}
+          />
         </>
       )}
 

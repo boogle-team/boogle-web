@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
+import DetailRecordLink from '@/pages/record/main/components/DetailRecordLink';
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import Button from '@/shared/components/Button';
 
@@ -17,6 +19,7 @@ import {
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
 
 const Life = () => {
+  const navigate = useNavigate();
   const recordDate = useRecordDraftDate();
 
   const {
@@ -33,6 +36,11 @@ const Life = () => {
   const handleSubmit = () => {
     if (!isSubmittable) return;
     // TODO: 생활 기록 저장 API 연동 후 L-03(태그 추천 모달) 노출
+  };
+
+  const handleDetailRecordLinkClick = () => {
+    // TODO: L-02(생활 세부 항목 기록) 라우트 연결
+    navigate('/record/life/detail');
   };
 
   return (
@@ -76,7 +84,10 @@ const Life = () => {
 
       <MemoField value={formState.memo} onChange={handleMemoChange} />
 
-      {/* TODO: 더 자세히 기록하기 */}
+      <DetailRecordLink
+        description="수면시간 · 운동 · 카페인 · 약 등"
+        onClick={handleDetailRecordLinkClick}
+      />
     </RecordPageLayout>
   );
 };

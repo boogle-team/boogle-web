@@ -1,10 +1,14 @@
 import { ChevronRight, SquarePen } from 'lucide-react';
 
 interface DetailRecordLinkPropTypes {
+  description: string;
   onClick?: () => void;
 }
 
-const DetailRecordLink = ({ onClick }: DetailRecordLinkPropTypes) => {
+const DetailRecordLink = ({
+  description,
+  onClick,
+}: DetailRecordLinkPropTypes) => {
   return (
     <button
       type="button"
@@ -17,9 +21,7 @@ const DetailRecordLink = ({ onClick }: DetailRecordLinkPropTypes) => {
 
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="label-semi text-orange-6">더 자세히 기록하기</span>
-        <span className="caption text-gray-6">
-          복부팽만 · 잔변감 · 변 색상 등
-        </span>
+        <span className="caption text-gray-6">{description}</span>
       </span>
 
       <ChevronRight
