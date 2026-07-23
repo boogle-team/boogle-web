@@ -1,5 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import Notification from '@/pages/notification/Notification';
+import Settings from '@/pages/settings/Settings';
+import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
+import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
+import DeleteAccount from '@/pages/settings/DeleteAccount';
+import LoginAccount from '@/pages/settings/LoginAccount';
+import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
+import SensitiveConsent from '@/pages/settings/SensitiveConsent';
+import Terms from '@/pages/settings/Terms';
+
+import RecordEdit from '../pages/record/edit/Edit';
+import Record from '../pages/record/main/Main';
+import ProfileEdit from '../pages/settings/ProfileEdit';
+
 export const Router = createBrowserRouter([
   {
     path: '/',
@@ -70,91 +84,51 @@ export const Router = createBrowserRouter([
     },
   },
   {
+    path: '/record',
+    element: <Record />,
+  },
+  {
+    path: '/record/edit',
+    element: <RecordEdit />,
+  },
+  {
     path: '/settings',
-    lazy: async () => {
-      const { default: Settings } = await import('../pages/settings/Settings');
-
-      return { Component: Settings };
-    },
+    element: <Settings />,
   },
   {
     path: '/notifications',
-    lazy: async () => {
-      const { default: Notification } =
-        await import('../pages/notification/Notification');
-
-      return { Component: Notification };
-    },
+    element: <Notification />,
   },
   {
     path: '/settings/profile',
-    lazy: async () => {
-      const { default: ProfileEdit } =
-        await import('../pages/settings/ProfileEdit');
-
-      return { Component: ProfileEdit };
-    },
+    element: <ProfileEdit />,
   },
   {
     path: '/settings/bowel-rhythm',
-    lazy: async () => {
-      const { default: BowelRhythmSetting } =
-        await import('../pages/settings/BowelRhythmSetting');
-
-      return { Component: BowelRhythmSetting };
-    },
+    element: <BowelRhythmSetting />,
   },
   {
     path: '/settings/baseline-info',
-    lazy: async () => {
-      const { default: BaselineInfoSetting } =
-        await import('../pages/settings/BaselineInfoSetting');
-
-      return { Component: BaselineInfoSetting };
-    },
+    element: <BaselineInfoSetting />,
   },
   {
     path: '/settings/login-account',
-    lazy: async () => {
-      const { default: LoginAccount } =
-        await import('../pages/settings/LoginAccount');
-
-      return { Component: LoginAccount };
-    },
+    element: <LoginAccount />,
   },
   {
     path: '/settings/sensitive-consent',
-    lazy: async () => {
-      const { default: SensitiveConsent } =
-        await import('../pages/settings/SensitiveConsent');
-
-      return { Component: SensitiveConsent };
-    },
+    element: <SensitiveConsent />,
   },
   {
     path: '/settings/privacy-policy',
-    lazy: async () => {
-      const { default: PrivacyPolicy } =
-        await import('../pages/settings/PrivacyPolicy');
-
-      return { Component: PrivacyPolicy };
-    },
+    element: <PrivacyPolicy />,
   },
   {
     path: '/settings/terms',
-    lazy: async () => {
-      const { default: Terms } = await import('../pages/settings/Terms');
-
-      return { Component: Terms };
-    },
+    element: <Terms />,
   },
   {
     path: '/settings/delete-account',
-    lazy: async () => {
-      const { default: DeleteAccount } =
-        await import('../pages/settings/DeleteAccount');
-
-      return { Component: DeleteAccount };
-    },
+    element: <DeleteAccount />,
   },
 ]);
