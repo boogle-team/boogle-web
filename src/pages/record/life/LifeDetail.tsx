@@ -6,6 +6,7 @@ import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout'
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import Button from '@/shared/components/Button';
 
+import MedicineField from './components/MedicineField';
 import SegmentedChipField from './components/SegmentedChipField';
 import WaterIntakeField from './components/WaterIntakeField';
 import {
@@ -28,6 +29,7 @@ const LifeDetail = () => {
     handleExerciseChange,
     handleCaffeineChange,
     handleWaterIntakeChange,
+    handleMedicineToggle,
     handleOutingChange,
   } = useLifeDetailRecordForm();
 
@@ -72,7 +74,10 @@ const LifeDetail = () => {
         onChange={handleWaterIntakeChange}
       />
 
-      {/* TODO: 약/영양제 필드 자리 */}
+      <MedicineField
+        value={formState.medicines}
+        onToggle={handleMedicineToggle}
+      />
 
       <SegmentedChipField
         title="외출·여행"
