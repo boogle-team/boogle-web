@@ -79,3 +79,6 @@ export const FOOD_OPTIONS: FoodOptionTypes[] = [
 ];
 
 export const MEMO_MAX_LENGTH = 100;
+
+/** 하나의 기록에 설정할 수 있는 태그 개수 상한. */
+export const MAX_TAG_COUNT = 6;

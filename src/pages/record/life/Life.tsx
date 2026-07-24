@@ -9,6 +9,7 @@ import Button from '@/shared/components/Button';
 
 import LifeRecordFields from './components/LifeRecordFields';
 import TagSettingModal from './components/TagSettingModal';
+import { MAX_TAG_COUNT } from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 
@@ -47,20 +48,33 @@ const Life = () => {
     // TODO: 저장 완료 후 홈으로 복귀
   };
 
+  // 해제는 항상 허용하고, 추가만 상한(MAX_TAG_COUNT)에서 막는다.
   const handleTagToggle = (tag: string) => {
-    setSelectedTags((previousTags) =>
-      previousTags.includes(tag)
-        ? previousTags.filter((selectedTag) => selectedTag !== tag)
-        : [...previousTags, tag],
-    );
+    setSelectedTags((previousTags) => {
+      if (previousTags.includes(tag)) {
+        return previousTags.filter((selectedTag) => selectedTag !== tag);
+      }
+
+      if (previousTags.length >= MAX_TAG_COUNT) return previousTags;
+
+      return [...previousTags, tag];
+    });
   };
 
   const handleTagAdd = (tag: string) => {
-    // TODO: 2~6자 검증 및 최대 6개 제한 반영
     const trimmedTag = tag.trim();
-    if (!trimmedTag || selectedTags.includes(trimmedTag)) return;
+    if (!trimmedTag) return;
 
-    setSelectedTags((previousTags) => [...previousTags, trimmedTag]);
+    setSelectedTags((previousTags) => {
+      if (
+        previousTags.includes(trimmedTag) ||
+        previousTags.length >= MAX_TAG_COUNT
+      ) {
+        return previousTags;
+      }
+
+      return [...previousTags, trimmedTag];
+    });
   };
 
   const handleTagModalCancel = () => {

@@ -7,6 +7,7 @@ import Chip from '@/shared/components/Chip';
 import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 import useBodyScrollLock from '@/shared/hooks/useBodyScrollLock';
 
+import { MAX_TAG_COUNT } from '../constants/lifeRecordConstants';
 import AddTagChip from './AddTagChip';
 import AiHintText from './AiHintText';
 import TagInputField from './TagInputField';
@@ -83,6 +84,9 @@ const TagSettingModal = ({
   // 설정할 태그가 하나도 없으면 완료할 수 없다.
   const canConfirm = selectedTags.length > 0;
 
+  // 상한에 닿으면 새로 고르거나 추가하는 경로를 모두 막는다.
+  const isTagLimitReached = selectedTags.length >= MAX_TAG_COUNT;
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -156,12 +160,16 @@ const TagSettingModal = ({
                   text={`#${tag}`}
                   isSelected={selectedTags.includes(tag)}
                   onClick={() => onToggleTag(tag)}
+                  disabled={isTagLimitReached && !selectedTags.includes(tag)}
                   className="shrink-0"
                 />
               ))}
 
               {!isAddingTag && (
-                <AddTagChip onClick={() => setIsAddingTag(true)} />
+                <AddTagChip
+                  onClick={() => setIsAddingTag(true)}
+                  disabled={isTagLimitReached}
+                />
               )}
             </div>
 
