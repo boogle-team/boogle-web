@@ -1,11 +1,10 @@
 export type HomeDateRecordStatusTypes =
-  | 'none'
-  | 'complete'
-  | 'boogleOnly'
-  | 'noBoogle'
-  | 'dailyOnly';
+  'none' | 'complete' | 'boogleOnly' | 'noBoogle' | 'dailyOnly';
 
-export type HomeRecordStatusMapTypes = Record<string, HomeDateRecordStatusTypes>;
+export type HomeRecordStatusMapTypes = Record<
+  string,
+  HomeDateRecordStatusTypes
+>;
 
 export interface HomeUserTypes {
   id: number;
@@ -51,6 +50,11 @@ export interface HomeLifeRecordTypes {
   foods: HomeFoodTypes[];
 }
 
+export interface HomeTagTypes {
+  id: number;
+  label: string;
+}
+
 export interface HomeWeeklyPatternTypes {
   ruleCode: string;
   label: string;
@@ -65,6 +69,7 @@ export interface HomeDataTypes {
   boogleCount: number;
   boogleRecords: HomeBoogleRecordTypes[];
   lifeRecord: HomeLifeRecordTypes | null;
+  tags: HomeTagTypes[];
   weeklyPattern: HomeWeeklyPatternTypes | null;
 }
 
