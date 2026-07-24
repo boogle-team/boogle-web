@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSearchParams } from 'react-router-dom';
 
 import { RECORD_DATE_FORMAT } from '../stores/recordDraftStore';
+
+// 기본 dayjs는 두 번째 포맷 인자를 무시해서 '07/23/2026' 같은 값도 통과시킨다.
+dayjs.extend(customParseFormat);
 
 /**
  * 기록 대상 날짜를 쿼리스트링에서 읽는다. (예: /record?date=2026-07-23)
@@ -12,8 +16,14 @@ export const useRecordDraftDate = () => {
   const [searchParams] = useSearchParams();
   const dateParam = searchParams.get('date');
 
-  if (dateParam && dayjs(dateParam, RECORD_DATE_FORMAT).isValid()) {
-    return dayjs(dateParam).format(RECORD_DATE_FORMAT);
+  // strict(세 번째 인자)까지 켜야 '2026-13-45'처럼 범위를 벗어난 값이
+  // 다른 날짜로 넘어가지 않고 형식 오류로 걸러진다.
+  const parsedDate = dateParam
+    ? dayjs(dateParam, RECORD_DATE_FORMAT, true)
+    : null;
+
+  if (parsedDate?.isValid()) {
+    return parsedDate.format(RECORD_DATE_FORMAT);
   }
 
   return dayjs().format(RECORD_DATE_FORMAT);
