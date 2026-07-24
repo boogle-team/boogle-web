@@ -11,5 +11,7 @@ export interface LifeDetailRecordFormStateTypes {
   sleepDuration: SleepDurationTypes | null;
   exercise: ExerciseTypes | null;
   caffeine: CaffeineTypes | null;
+  /** 물 섭취량(잔). 0도 유효한 값이라 null을 쓰지 않는다. */
+  waterIntake: number;
   outing: OutingTypes | null;
 }

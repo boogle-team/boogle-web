@@ -7,6 +7,7 @@ import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDa
 import Button from '@/shared/components/Button';
 
 import SegmentedChipField from './components/SegmentedChipField';
+import WaterIntakeField from './components/WaterIntakeField';
 import {
   CAFFEINE_OPTIONS,
   EXERCISE_OPTIONS,
@@ -26,6 +27,7 @@ const LifeDetail = () => {
     handleSleepDurationChange,
     handleExerciseChange,
     handleCaffeineChange,
+    handleWaterIntakeChange,
     handleOutingChange,
   } = useLifeDetailRecordForm();
 
@@ -65,7 +67,12 @@ const LifeDetail = () => {
         onChange={handleCaffeineChange}
       />
 
-      {/* TODO: 물 섭취량 · 약/영양제 필드 자리 */}
+      <WaterIntakeField
+        value={formState.waterIntake}
+        onChange={handleWaterIntakeChange}
+      />
+
+      {/* TODO: 약/영양제 필드 자리 */}
 
       <SegmentedChipField
         title="외출·여행"

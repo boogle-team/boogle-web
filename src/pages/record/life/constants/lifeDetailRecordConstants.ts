@@ -25,6 +25,17 @@ export const CAFFEINE_OPTIONS: LifeRecordOptionTypes<CaffeineTypes>[] = [
   { value: 'twoCupsOrMore', label: '2잔 이상' },
 ];
 
+export const MIN_WATER_INTAKE = 0;
+export const MAX_WATER_INTAKE = 9;
+
+/** 슬라이더 아래 눈금. 최소~최대 구간을 3등분한 지점이다. */
+export const WATER_INTAKE_MARKS = [
+  { value: 0, label: '0잔' },
+  { value: 3, label: '3잔' },
+  { value: 6, label: '6잔' },
+  { value: 9, label: '9잔+' },
+];
+
 export const OUTING_OPTIONS: LifeRecordOptionTypes<OutingTypes>[] = [
   { value: 'usual', label: '평소와 같음' },
   { value: 'frequent', label: '외출 많음' },

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 
+import { MIN_WATER_INTAKE } from '../constants/lifeDetailRecordConstants';
 import type {
   CaffeineTypes,
   ExerciseTypes,
@@ -12,6 +13,7 @@ const INITIAL_FORM_STATE: LifeDetailRecordFormStateTypes = {
   sleepDuration: null,
   exercise: null,
   caffeine: null,
+  waterIntake: MIN_WATER_INTAKE,
   outing: null,
 };
 
@@ -32,6 +34,10 @@ export const useLifeDetailRecordForm = () => {
     setFormState((previousState) => ({ ...previousState, caffeine }));
   };
 
+  const handleWaterIntakeChange = (waterIntake: number) => {
+    setFormState((previousState) => ({ ...previousState, waterIntake }));
+  };
+
   const handleOutingChange = (outing: OutingTypes) => {
     setFormState((previousState) => ({ ...previousState, outing }));
   };
@@ -48,6 +54,7 @@ export const useLifeDetailRecordForm = () => {
     handleSleepDurationChange,
     handleExerciseChange,
     handleCaffeineChange,
+    handleWaterIntakeChange,
     handleOutingChange,
   };
 };
