@@ -31,7 +31,8 @@ const WaterIntakeField = ({ value, onChange }: WaterIntakeFieldPropTypes) => {
       <LifeSectionTitle title="물 섭취량" />
 
       <div className="mt-2 flex items-center justify-between">
-        <div className="flex items-end gap-1">
+        {/* 스테퍼를 눌러도 포커스가 버튼에 머물러서, 바뀐 값은 이 영역이 읽어준다. */}
+        <div className="flex items-end gap-1" aria-live="polite">
           <span className="display-lg w-7 text-center text-orange-6">
             {value}
           </span>
@@ -63,9 +64,9 @@ const WaterIntakeField = ({ value, onChange }: WaterIntakeFieldPropTypes) => {
         </div>
       </div>
 
-      {/* 값 조절은 스테퍼로만 하고, 막대는 현재 값을 보여주기만 한다. */}
+      {/* 값 조절은 스테퍼로만 하고, 막대와 눈금은 현재 값을 그림으로 보여주기만 한다. */}
       <div
-        role="presentation"
+        aria-hidden="true"
         className="mt-5 h-2 w-full overflow-hidden rounded-full bg-gray-3"
       >
         <div
