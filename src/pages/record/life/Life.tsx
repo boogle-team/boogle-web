@@ -9,7 +9,10 @@ import Button from '@/shared/components/Button';
 
 import LifeRecordFields from './components/LifeRecordFields';
 import TagSettingModal from './components/TagSettingModal';
-import { MAX_TAG_COUNT } from './constants/lifeRecordConstants';
+import {
+  isValidTagLength,
+  MAX_TAG_COUNT,
+} from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 
@@ -63,7 +66,7 @@ const Life = () => {
 
   const handleTagAdd = (tag: string) => {
     const trimmedTag = tag.trim();
-    if (!trimmedTag) return;
+    if (!isValidTagLength(trimmedTag)) return;
 
     setSelectedTags((previousTags) => {
       if (

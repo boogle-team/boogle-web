@@ -7,13 +7,14 @@ import Chip from '@/shared/components/Chip';
 import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 import useBodyScrollLock from '@/shared/hooks/useBodyScrollLock';
 
-import { MAX_TAG_COUNT } from '../constants/lifeRecordConstants';
+import {
+  isValidTagLength,
+  MAX_TAG_COUNT,
+  TAG_MAX_LENGTH,
+} from '../constants/lifeRecordConstants';
 import AddTagChip from './AddTagChip';
 import AiHintText from './AiHintText';
 import TagInputField from './TagInputField';
-
-const TAG_MIN_LENGTH = 2;
-const TAG_MAX_LENGTH = 6;
 
 interface TagSettingModalPropTypes {
   isOpen: boolean;
@@ -64,8 +65,7 @@ const TagSettingModal = ({
   // 2자 이상 6자 미만만 유효. 6자부터는 초과로 보고 에러 상태로 표시한다.
   const trimmedTag = tagInput.trim();
   const isTagTooLong = trimmedTag.length >= TAG_MAX_LENGTH;
-  const isTagValid =
-    trimmedTag.length >= TAG_MIN_LENGTH && trimmedTag.length < TAG_MAX_LENGTH;
+  const isTagValid = isValidTagLength(trimmedTag);
 
   const handleTagConfirm = () => {
     if (!isTagValid) return;

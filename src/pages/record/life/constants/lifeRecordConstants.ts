@@ -82,3 +82,10 @@ export const MEMO_MAX_LENGTH = 100;
 
 /** 하나의 기록에 설정할 수 있는 태그 개수 상한. */
 export const MAX_TAG_COUNT = 6;
+
+/** 직접 추가하는 태그 길이 제한. 2자 이상 6자 미만만 허용한다. */
+export const TAG_MIN_LENGTH = 2;
+export const TAG_MAX_LENGTH = 6;
+
+export const isValidTagLength = (tag: string) =>
+  tag.length >= TAG_MIN_LENGTH && tag.length < TAG_MAX_LENGTH;
