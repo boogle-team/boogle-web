@@ -17,7 +17,7 @@ const SegmentedChipField = <T extends string>({
   onChange,
 }: SegmentedChipFieldPropTypes<T>) => {
   return (
-    <section className="flex flex-col gap-[0.62rem]">
+    <section className="flex flex-col gap-2">
       <LifeSectionTitle title={title} />
 
       <div
