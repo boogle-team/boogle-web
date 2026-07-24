@@ -5,6 +5,7 @@ import Home from '@/shared/assets/icons/home.svg?react';
 import Calendar from '@/shared/assets/icons/calendar.svg?react';
 import Report from '@/shared/assets/icons/report.svg?react';
 import Guide from '@/shared/assets/icons/guide.svg?react';
+import RecordBottomSheet from '@/shared/components/recordBottomSheet/RecordBottomSheet';
 import useBottomNavigation from '@/shared/hooks/useBottomNavigation';
 import {
   createNavBarPath,
@@ -55,6 +56,7 @@ const BottomNavigation = () => {
     handleTabClick,
     handlePlusClick,
     handleModalClose,
+    handleRecordSelectClick,
   } = useBottomNavigation();
 
   return (
@@ -129,14 +131,11 @@ const BottomNavigation = () => {
           <Plus className="h-[2rem] w-[2rem]" strokeWidth={3} />
         </button>
       </nav>
-
-      {/* TODO: 배변 기록 바텀 모달 - 실제 모달 컴포넌트로 교체 예정 */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-[60] bg-black/30"
-          onClick={handleModalClose}
-        />
-      )}
+      <RecordBottomSheet
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onSelect={handleRecordSelectClick}
+      />
     </>
   );
 };
