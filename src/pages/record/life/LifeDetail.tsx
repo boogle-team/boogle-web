@@ -40,6 +40,7 @@ const LifeDetail = () => {
     isSensitiveInfoConsented: IS_SENSITIVE_INFO_CONSENTED,
   });
 
+  // TODO: 초안 스토어 연동 후 세부값을 반영한 채로 L-01에 복귀시킨다.
   const handleSubmit = () => {
     if (!isSubmittable) return;
 

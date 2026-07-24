@@ -29,7 +29,9 @@ interface UseLifeDetailRecordFormParamTypes {
   isSensitiveInfoConsented: boolean;
 }
 
-// TODO: 초안 스토어로 옮겨 L-01과 값을 주고받는다.
+// TODO: 세부 항목을 lifeRecordDraftStore로 옮긴다.
+// 지금은 페이지 로컬 상태라 완료로 L-01에 돌아가면 입력값이 사라진다.
+// 저장은 L-01 완료 시 한 번에 이뤄지므로 두 페이지가 같은 초안을 봐야 한다.
 export const useLifeDetailRecordForm = ({
   isSensitiveInfoConsented,
 }: UseLifeDetailRecordFormParamTypes) => {
