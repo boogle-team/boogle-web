@@ -10,6 +10,7 @@ import type {
   CaffeineTypes,
   ExerciseTypes,
   MedicineOptionTypes,
+  MenstruationTypes,
   OutingTypes,
   SleepDurationTypes,
 } from '../types/lifeDetailRecordTypes';
@@ -61,3 +62,13 @@ export const OUTING_OPTIONS: LifeRecordOptionTypes<OutingTypes>[] = [
   { value: 'frequent', label: '외출 많음' },
   { value: 'traveling', label: '여행 중' },
 ];
+
+export const MENSTRUATION_OPTIONS: LifeRecordOptionTypes<MenstruationTypes>[] =
+  [
+    { value: 'none', label: '없음' },
+    { value: 'menstruating', label: '생리 중' },
+    { value: 'hormonalChange', label: '호르몬 변화 있음' },
+  ];
+
+export const MENSTRUATION_NOTICE =
+  "생리 중이 아니어도 배란기 등 호르몬 변화가 느껴지는 날은 '호르몬 변화 있음'을 선택해주세요";

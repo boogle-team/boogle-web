@@ -12,6 +12,8 @@ export type MedicineTypes =
 
 export type OutingTypes = 'usual' | 'frequent' | 'traveling';
 
+export type MenstruationTypes = 'none' | 'menstruating' | 'hormonalChange';
+
 export interface MedicineOptionTypes {
   value: MedicineTypes;
   label: string;
@@ -26,4 +28,6 @@ export interface LifeDetailRecordFormStateTypes {
   waterIntake: number;
   medicines: MedicineTypes[];
   outing: OutingTypes | null;
+  /** 민감정보 수집에 동의한 사용자에게만 노출되는 항목. */
+  menstruation: MenstruationTypes | null;
 }

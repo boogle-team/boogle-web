@@ -16,7 +16,8 @@ const SegmentedChip = ({
       onClick={onClick}
       aria-pressed={isSelected}
       // min-w-0을 함께 줘야 라벨이 길어져도 세 칸이 균등하게 유지된다.
-      className={`label-semi min-w-0 flex-1 rounded-xl px-4 py-2 text-center transition-colors hover:not-disabled:cursor-pointer ${
+      // 좌우 여백은 '호르몬 변화 있음'처럼 긴 라벨이 한 줄에 들어가는 값으로 잡았다.
+      className={`label-semi min-w-0 flex-1 rounded-xl px-2 py-2 text-center whitespace-nowrap transition-colors hover:not-disabled:cursor-pointer ${
         isSelected ? 'bg-beige-1 text-gray-8 shadow-md' : 'text-gray-6'
       }`}
     >

@@ -9,6 +9,7 @@ import type {
   ExerciseTypes,
   LifeDetailRecordFormStateTypes,
   MedicineTypes,
+  MenstruationTypes,
   OutingTypes,
   SleepDurationTypes,
 } from '../types/lifeDetailRecordTypes';
@@ -20,10 +21,18 @@ const INITIAL_FORM_STATE: LifeDetailRecordFormStateTypes = {
   waterIntake: MIN_WATER_INTAKE,
   medicines: [],
   outing: null,
+  menstruation: null,
 };
 
-// TODO: 남은 항목(생리·호르몬 변화) 추가 후 초안 스토어로 옮긴다.
-export const useLifeDetailRecordForm = () => {
+interface UseLifeDetailRecordFormParamTypes {
+  /** 미동의 사용자에게는 생리·호르몬 변화가 노출되지 않아 필수 검사에서도 빠진다. */
+  isSensitiveInfoConsented: boolean;
+}
+
+// TODO: 초안 스토어로 옮겨 L-01과 값을 주고받는다.
+export const useLifeDetailRecordForm = ({
+  isSensitiveInfoConsented,
+}: UseLifeDetailRecordFormParamTypes) => {
   const [formState, setFormState] =
     useState<LifeDetailRecordFormStateTypes>(INITIAL_FORM_STATE);
 
@@ -77,19 +86,31 @@ export const useLifeDetailRecordForm = () => {
     setFormState((previousState) => ({ ...previousState, outing }));
   };
 
+  const handleMenstruationChange = (menstruation: MenstruationTypes) => {
+    setFormState((previousState) => ({ ...previousState, menstruation }));
+  };
+
   // L-02는 진입 시점부터 모든 항목이 필수라 하나라도 비면 완료할 수 없다.
   // 물 섭취량은 0잔도 유효한 답이라 검사 대상이 아니다.
   const isSubmittable = useMemo(() => {
-    const { sleepDuration, exercise, caffeine, medicines, outing } = formState;
+    const {
+      sleepDuration,
+      exercise,
+      caffeine,
+      medicines,
+      outing,
+      menstruation,
+    } = formState;
 
     return (
       sleepDuration !== null &&
       exercise !== null &&
       caffeine !== null &&
       medicines.length > 0 &&
-      outing !== null
+      outing !== null &&
+      (!isSensitiveInfoConsented || menstruation !== null)
     );
-  }, [formState]);
+  }, [formState, isSensitiveInfoConsented]);
 
   return {
     formState,
@@ -100,5 +121,6 @@ export const useLifeDetailRecordForm = () => {
     handleWaterIntakeChange,
     handleMedicineToggle,
     handleOutingChange,
+    handleMenstruationChange,
   };
 };

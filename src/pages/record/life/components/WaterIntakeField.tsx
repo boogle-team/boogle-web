@@ -1,12 +1,12 @@
 import StepperPlusIcon from '@/shared/assets/illustrations/record/stepper/stepperPlus.svg?react';
 import StepperSubtractIcon from '@/shared/assets/illustrations/record/stepper/stepperSubtract.svg?react';
-import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 
 import {
   MAX_WATER_INTAKE,
   MIN_WATER_INTAKE,
   WATER_INTAKE_MARKS,
 } from '../constants/lifeDetailRecordConstants';
+import FieldNotice from './FieldNotice';
 import LifeSectionTitle from './LifeSectionTitle';
 
 interface WaterIntakeFieldPropTypes {
@@ -87,16 +87,7 @@ const WaterIntakeField = ({ value, onChange }: WaterIntakeFieldPropTypes) => {
         ))}
       </div>
 
-      <div className="mt-5 flex items-center gap-1">
-        <WarningIcon
-          className="h-4 w-4 shrink-0 text-gray-6"
-          aria-hidden="true"
-        />
-
-        <span className="caption text-gray-7">
-          1잔 = 종이컵 1잔(약 200ml) 기준
-        </span>
-      </div>
+      <FieldNotice text="1잔 = 종이컵 1잔(약 200ml) 기준" className="mt-5" />
     </section>
   );
 };

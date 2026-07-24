@@ -7,6 +7,7 @@ import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDa
 import Button from '@/shared/components/Button';
 
 import MedicineField from './components/MedicineField';
+import MenstruationField from './components/MenstruationField';
 import SegmentedChipField from './components/SegmentedChipField';
 import WaterIntakeField from './components/WaterIntakeField';
 import {
@@ -16,6 +17,9 @@ import {
   SLEEP_DURATION_OPTIONS,
 } from './constants/lifeDetailRecordConstants';
 import { useLifeDetailRecordForm } from './hooks/useLifeDetailRecordForm';
+
+// TODO: 민감정보 수집 동의 조회 API로 교체
+const IS_SENSITIVE_INFO_CONSENTED = false;
 
 /** L-02 생활 세부 항목 기록. 완료하면 세부값을 반영한 채 L-01로 돌아간다. */
 const LifeDetail = () => {
@@ -31,12 +35,19 @@ const LifeDetail = () => {
     handleWaterIntakeChange,
     handleMedicineToggle,
     handleOutingChange,
-  } = useLifeDetailRecordForm();
+    handleMenstruationChange,
+  } = useLifeDetailRecordForm({
+    isSensitiveInfoConsented: IS_SENSITIVE_INFO_CONSENTED,
+  });
 
   const handleSubmit = () => {
     if (!isSubmittable) return;
 
     navigate(-1);
+  };
+
+  const handleConsentLinkClick = () => {
+    navigate('/settings/sensitive-consent');
   };
 
   return (
@@ -86,7 +97,12 @@ const LifeDetail = () => {
         onChange={handleOutingChange}
       />
 
-      {/* TODO: 생리·호르몬 변화 필드 자리 */}
+      <MenstruationField
+        isSensitiveInfoConsented={IS_SENSITIVE_INFO_CONSENTED}
+        value={formState.menstruation}
+        onChange={handleMenstruationChange}
+        onConsentLinkClick={handleConsentLinkClick}
+      />
     </RecordPageLayout>
   );
 };
