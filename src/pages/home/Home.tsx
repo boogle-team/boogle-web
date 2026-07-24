@@ -1,20 +1,20 @@
-﻿import { useState } from 'react';
-import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TagsSection from '@/shared/components/tagSection/TagsSection';
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import CalendarPicker from './components/CalendarPicker';
 import DateBottomModal from './components/DateBottomModal';
-import WeeklyPatternSection from './components/WeeklyPatternSection';
+import HomeContentSection from './components/HomeContentSection';
 import {
   MOCK_HOME_RECORD_STATUS_BY_DATE,
   MOCK_HOME_RESPONSE,
 } from './constants/mockHomeData';
 import { getHomeDateSubTitle, getHomeDateTitle } from './utils/homeDateUtils';
+import { getHomeMessageBannerContent } from './utils/homeMessageUtils';
 
 const Home = () => {
   const navigate = useNavigate();
   const homeData = MOCK_HOME_RESPONSE.data;
+  const messageBannerContent = getHomeMessageBannerContent(homeData);
   const [selectedDate, setSelectedDate] = useState(homeData.today.date);
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
 
@@ -39,7 +39,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-beige-6">
+    <div className="-mb-[10rem] min-h-screen bg-beige-6 pb-[10rem]">
       <div className="bg-beige-1">
         <div className="h-12.25" />
         <TopNavigation
@@ -59,19 +59,11 @@ const Home = () => {
         />
       </div>
 
-      <div className="min-h-[24rem] bg-beige-6 py-8">
-        <div className="flex flex-col gap-8">
-          <TagsSection
-            icon={<Sparkle />}
-            title="이날의 태그"
-            description="AI가 메모에서 찾아냈어요!"
-            tags={homeData.tags}
-          />
-          <div className="mx-layout h-px bg-beige-7" />
-          <WeeklyPatternSection weeklyPattern={homeData.weeklyPattern} />
-        </div>
-      </div>
-
+      <HomeContentSection
+        messageBannerContent={messageBannerContent}
+        autoTags={homeData.lifeRecord?.autoTags ?? []}
+        weeklyPattern={homeData.weeklyPattern}
+      />
       <DateBottomModal
         isOpen={isDateModalOpen}
         onClose={handleDateModalClose}

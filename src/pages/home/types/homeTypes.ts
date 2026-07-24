@@ -47,12 +47,8 @@ export interface HomeLifeRecordTypes {
   water: string;
   waterIntake: number;
   mealRegular: string;
+  autoTags: string[];
   foods: HomeFoodTypes[];
-}
-
-export interface HomeTagTypes {
-  id: number;
-  label: string;
 }
 
 export interface HomeWeeklyPatternTypes {
@@ -69,7 +65,6 @@ export interface HomeDataTypes {
   boogleCount: number;
   boogleRecords: HomeBoogleRecordTypes[];
   lifeRecord: HomeLifeRecordTypes | null;
-  tags: HomeTagTypes[];
   weeklyPattern: HomeWeeklyPatternTypes | null;
 }
 

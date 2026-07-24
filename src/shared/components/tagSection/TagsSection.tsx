@@ -26,10 +26,8 @@ const TagsSection = ({
     return null;
   }
 
-  const sectionClassName = ['px-layout', className].filter(Boolean).join(' ');
-
   return (
-    <section className={sectionClassName}>
+    <section className={className}>
       <SectionTitle icon={icon} title={title} description={description} />
       <div className="mt-3 flex flex-wrap gap-2">
         {tags.map(({ id, label }) => (

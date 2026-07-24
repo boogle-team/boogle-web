@@ -57,17 +57,12 @@ export const MOCK_HOME_RESPONSE: HomeResponseTypes = {
       water: 'L',
       waterIntake: 1,
       mealRegular: 'R',
+      autoTags: ['음주', '자극적', '야식'],
       foods: [
         { id: 7, name: '야식' },
         { id: 1, name: '자극적인 음식' },
       ],
     },
-    tags: [
-      { id: 1, label: '음주' },
-      { id: 2, label: '자극적' },
-      { id: 3, label: '야식' },
-      { id: 4, label: '스트레스' },
-    ],
     weeklyPattern: {
       ruleCode: 'CONSTIPATION_PATTERN',
       label: '딱딱한 변 경향',

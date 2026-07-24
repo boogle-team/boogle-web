@@ -15,7 +15,7 @@ const WeeklyPatternSection = ({
   }
 
   return (
-    <section className="px-layout">
+    <section>
       <SectionTitle icon={<BarGraph />} title="이번 주 패턴" />
       <article className="mt-2 rounded-xl border border-orange-3 bg-yellow-1 px-4 py-4">
         <div className="flex gap-3">
