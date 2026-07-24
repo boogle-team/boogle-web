@@ -97,7 +97,7 @@ const BottomNavigation = () => {
         )}
 
         {/* 네비게이션 아이템 */}
-        <div className="absolute inset-x-0 bottom-0 z-20 grid h-[6.25rem] grid-cols-[1fr_1fr_5rem_1fr_1fr] items-end gap-x-[1.06rem] px-[1.56rem] pb-[1.56rem]">
+        <div className="absolute inset-x-0 bottom-0 z-20 grid h-[6.25rem] grid-cols-[1fr_1fr_5rem_1fr_1fr] items-end gap-x-[1.06rem] px-[1.56rem] pb-[2.13rem]">
           {NAV_ITEMS.map(({ label, path, Icon }, index) => {
             const isActive = pathname === path;
 
