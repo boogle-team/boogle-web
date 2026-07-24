@@ -87,6 +87,12 @@ const TagSettingModal = ({
   // 상한에 닿으면 새로 고르거나 추가하는 경로를 모두 막는다.
   const isTagLimitReached = selectedTags.length >= MAX_TAG_COUNT;
 
+  // 직접 추가한 태그는 추천 목록에 없으므로, 둘을 합쳐야 화면에서 사라지지 않는다.
+  const displayedTags = [
+    ...recommendedTags,
+    ...selectedTags.filter((tag) => !recommendedTags.includes(tag)),
+  ];
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -152,8 +158,8 @@ const TagSettingModal = ({
             </div>
 
             {/* 태그가 화면 밖으로 넘치면 가로 스크롤한다. */}
-            <div className="mt-6 flex gap-2 overflow-x-auto">
-              {recommendedTags.map((tag) => (
+            <div className="scrollbar-hide mt-6 flex gap-2 overflow-x-auto">
+              {displayedTags.map((tag) => (
                 <Chip
                   key={tag}
                   size="compact"
@@ -193,7 +199,7 @@ const TagSettingModal = ({
               />
               <p
                 className={`label ${
-                  isTagTooLong ? 'text-semantic-danger' : 'text-gray-10'
+                  isTagTooLong ? 'text-semantic-danger' : 'text-gray-7'
                 }`}
               >
                 {guidanceText}
