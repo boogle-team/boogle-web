@@ -76,6 +76,7 @@ const RecordBottomSheet = ({
             focusTrapOptions={{
               escapeDeactivates: false,
               clickOutsideDeactivates: false,
+              allowOutsideClick: true,
             }}
           >
             <motion.div
