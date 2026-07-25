@@ -24,14 +24,12 @@ const CalendarDateCell = ({
   const dateLabel = dayjs(date).format('YYYY년 M월 D일');
 
   let dayNumberClassName = 'text-gray-8';
-  if (isToday) {
+  if (isSelected) {
     dayNumberClassName = 'bg-orange-6 text-beige-1';
-  } else if (isSelected && isFutureDate) {
-    dayNumberClassName = 'border border-orange-6 text-gray-6';
+  } else if (isToday) {
+    dayNumberClassName = 'border border-orange-6 text-orange-6';
   } else if (isFutureDate) {
     dayNumberClassName = 'text-gray-6';
-  } else if (isSelected) {
-    dayNumberClassName = 'border border-orange-6 text-orange-6';
   } else if (isSunday) {
     dayNumberClassName = 'text-semantic-sunday';
   } else if (isSaturday) {
