@@ -5,10 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,
-  getBoogleRecordStatus,
-  getLifeRecordStatus,
-  toBoogleRecordSummaries,
-  toLifeRecordSummary,
+  getBoogleRecordView,
+  getLifeRecordView,
 } from '@/shared/components/dailyRecord';
 import useCalendarDailyRecordQuery from './hooks/useCalendarDailyRecordQuery';
 import type { CalendarMonthDayTypes } from './types/calendarRecordTypes';
@@ -47,19 +45,13 @@ const CalendarPage = () => {
   const { data: dailyRecord, isLoading } =
     useCalendarDailyRecordQuery(selectedDate);
 
-  const boogleRecordSummaries = toBoogleRecordSummaries(
-    dailyRecord?.boogleRecords ?? [],
-  );
-  const lifeRecordSummary = toLifeRecordSummary(
-    dailyRecord?.lifeRecord ?? null,
-  );
-  const boogleRecordStatus = getBoogleRecordStatus({
+  const boogleRecordView = getBoogleRecordView({
     selectedDate,
-    records: boogleRecordSummaries,
+    records: dailyRecord?.boogleRecords ?? [],
   });
-  const lifeRecordStatus = getLifeRecordStatus({
+  const lifeRecordView = getLifeRecordView({
     selectedDate,
-    record: lifeRecordSummary,
+    record: dailyRecord?.lifeRecord ?? null,
   });
 
   const handleBoogleCreateClick = (dateKey: string) => {
@@ -164,18 +156,14 @@ const CalendarPage = () => {
         ) : (
           <>
             <DailyBoogleRecordCard
-              variant="calendar"
-              records={boogleRecordSummaries}
-              status={boogleRecordStatus}
+              view={boogleRecordView}
               onCreateClick={() => handleBoogleCreateClick(selectedDate)}
               onEditClick={handleBoogleEditClick}
             />
 
             <DailyLifeRecordCard
-              variant="calendar"
+              view={lifeRecordView}
               shouldShowDetail
-              record={lifeRecordSummary}
-              status={lifeRecordStatus}
               onCreateClick={() => handleLifeCreateClick(selectedDate)}
               onEditClick={handleLifeEditClick}
             />

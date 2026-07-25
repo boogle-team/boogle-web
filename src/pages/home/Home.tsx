@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,
-  getBoogleRecordStatus,
-  getLifeRecordStatus,
-  toBoogleRecordSummaries,
-  toLifeRecordSummary,
+  getBoogleRecordView,
+  getLifeRecordView,
 } from '@/shared/components/dailyRecord';
 import TopNavigation from '@/shared/components/topNavigation';
 
@@ -46,17 +44,13 @@ const Home = () => {
     );
   }
 
-  const boogleRecordSummaries = toBoogleRecordSummaries(
-    homeDashboard.boogleRecords,
-  );
-  const lifeRecordSummary = toLifeRecordSummary(homeDashboard.lifeRecord);
-  const boogleRecordStatus = getBoogleRecordStatus({
+  const boogleRecordView = getBoogleRecordView({
     selectedDate: SELECTED_DATE,
-    records: boogleRecordSummaries,
+    records: homeDashboard.boogleRecords,
   });
-  const lifeRecordStatus = getLifeRecordStatus({
+  const lifeRecordView = getLifeRecordView({
     selectedDate: SELECTED_DATE,
-    record: lifeRecordSummary,
+    record: homeDashboard.lifeRecord,
   });
 
   return (
@@ -71,16 +65,12 @@ const Home = () => {
       <main className="px-4 py-6">
         <section className="space-y-6">
           <DailyBoogleRecordCard
-            variant="home"
-            records={boogleRecordSummaries}
-            status={boogleRecordStatus}
+            view={boogleRecordView}
             onCreateClick={() => handleBoogleCreateClick(SELECTED_DATE)}
           />
 
           <DailyLifeRecordCard
-            variant="home"
-            record={lifeRecordSummary}
-            status={lifeRecordStatus}
+            view={lifeRecordView}
             onCreateClick={() => handleLifeCreateClick(SELECTED_DATE)}
           />
         </section>

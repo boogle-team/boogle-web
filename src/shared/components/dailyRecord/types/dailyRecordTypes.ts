@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
 
-export type DailyRecordVariantTypes = 'home' | 'calendar';
-
 // noBoogleSignal은 사용자가 기록 화면에서 배변 없음을 선택한 저장된 기록 상태다.
 export type BoogleRecordStatusTypes =
   'todayEmpty' | 'pastEmpty' | 'future' | 'noBoogleSignal' | 'recorded';
@@ -9,10 +7,14 @@ export type BoogleRecordStatusTypes =
 export type LifeRecordStatusTypes =
   'todayEmpty' | 'pastEmpty' | 'future' | 'recorded';
 
-export type StoolSimpleCodeTypes = 'M' | 'T' | string;
-export type BowelFeelingCodeTypes = 'C' | 'H' | string;
-export type StomachCodeTypes = 'N' | string;
-export type LifeConditionCodeTypes = 'B' | 'N' | 'L' | 'H' | 'R' | 'O' | string;
+type LiteralUnionTypes<T extends string> = T | (string & {});
+
+export type StoolSimpleCodeTypes = LiteralUnionTypes<'M' | 'T'>;
+export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'H'>;
+export type StomachCodeTypes = LiteralUnionTypes<'N'>;
+export type LifeConditionCodeTypes = LiteralUnionTypes<
+  'B' | 'N' | 'L' | 'H' | 'R' | 'O'
+>;
 
 export interface RecordTagTypes {
   id: number;
@@ -94,6 +96,15 @@ export interface LifeRecordSummaryTypes {
   foods: FoodTypes[];
   updatedAt?: string | null;
 }
+
+export type BoogleRecordViewTypes =
+  | { status: 'recorded'; records: BoogleRecordSummaryTypes[] }
+  | { status: 'noBoogleSignal'; record: BoogleRecordSummaryTypes }
+  | { status: 'todayEmpty' | 'pastEmpty' | 'future' };
+
+export type LifeRecordViewTypes =
+  | { status: 'recorded'; record: LifeRecordSummaryTypes }
+  | { status: 'todayEmpty' | 'pastEmpty' | 'future' };
 
 export interface LifeMetricTypes {
   key: string;

@@ -4,17 +4,16 @@ export type {
   BoogleRecordStatusTypes,
   BoogleRecordSummaryTypes,
   BoogleRecordTypes,
-  DailyRecordVariantTypes,
+  BoogleRecordViewTypes,
   FoodTypes,
   LifeRecordStatusTypes,
   LifeRecordSummaryTypes,
   LifeRecordTypes,
+  LifeRecordViewTypes,
   RecordTagTypes,
 } from './types/dailyRecordTypes';
 export {
   formatDateKey,
-  getBoogleRecordStatus,
-  getLifeRecordStatus,
-  toBoogleRecordSummaries,
-  toLifeRecordSummary,
+  getBoogleRecordView,
+  getLifeRecordView,
 } from './utils/dailyRecordUtils';

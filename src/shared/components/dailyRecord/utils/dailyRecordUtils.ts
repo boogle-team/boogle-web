@@ -1,8 +1,8 @@
 import type {
-  BoogleRecordStatusTypes,
+  BoogleRecordViewTypes,
   BoogleRecordSummaryTypes,
   BoogleRecordTypes,
-  LifeRecordStatusTypes,
+  LifeRecordViewTypes,
   LifeRecordSummaryTypes,
   LifeRecordTypes,
 } from '../types/dailyRecordTypes';
@@ -28,7 +28,7 @@ export const formatRecordTime = (dateTime: string) =>
     hour12: false,
   }).format(new Date(dateTime));
 
-export const toBoogleRecordSummaries = (
+const toBoogleRecordSummaries = (
   boogleRecords: BoogleRecordTypes[],
 ): BoogleRecordSummaryTypes[] =>
   boogleRecords.map(
@@ -51,7 +51,7 @@ export const toBoogleRecordSummaries = (
     }),
   );
 
-export const toLifeRecordSummary = (
+const toLifeRecordSummary = (
   lifeRecord: LifeRecordTypes | null,
 ): LifeRecordSummaryTypes | null => {
   if (!lifeRecord) return null;
@@ -97,32 +97,46 @@ export const toLifeRecordSummary = (
   };
 };
 
-export const getBoogleRecordStatus = ({
+export const getBoogleRecordView = ({
   selectedDate,
   records,
 }: {
   selectedDate: string;
-  records: BoogleRecordSummaryTypes[];
-}): BoogleRecordStatusTypes => {
-  if (isFutureDate(selectedDate)) return 'future';
+  records: BoogleRecordTypes[];
+}): BoogleRecordViewTypes => {
+  if (isFutureDate(selectedDate)) return { status: 'future' };
 
-  if (records.some(({ hasBowel }) => hasBowel)) return 'recorded';
+  const bowelRecords = toBoogleRecordSummaries(
+    records.filter(({ hasBowel }) => hasBowel),
+  );
 
-  if (records.some(({ hasBowel }) => !hasBowel)) return 'noBoogleSignal';
+  if (bowelRecords.length > 0) {
+    return { status: 'recorded', records: bowelRecords };
+  }
 
-  return isTodayDate(selectedDate) ? 'todayEmpty' : 'pastEmpty';
+  const [noBoogleSignalRecord] = toBoogleRecordSummaries(records);
+
+  if (noBoogleSignalRecord) {
+    return { status: 'noBoogleSignal', record: noBoogleSignalRecord };
+  }
+
+  return { status: isTodayDate(selectedDate) ? 'todayEmpty' : 'pastEmpty' };
 };
 
-export const getLifeRecordStatus = ({
+export const getLifeRecordView = ({
   selectedDate,
   record,
 }: {
   selectedDate: string;
-  record: LifeRecordSummaryTypes | null;
-}): LifeRecordStatusTypes => {
-  if (isFutureDate(selectedDate)) return 'future';
+  record: LifeRecordTypes | null;
+}): LifeRecordViewTypes => {
+  if (isFutureDate(selectedDate)) return { status: 'future' };
 
-  if (record) return 'recorded';
+  const lifeRecordSummary = toLifeRecordSummary(record);
 
-  return isTodayDate(selectedDate) ? 'todayEmpty' : 'pastEmpty';
+  if (lifeRecordSummary) {
+    return { status: 'recorded', record: lifeRecordSummary };
+  }
+
+  return { status: isTodayDate(selectedDate) ? 'todayEmpty' : 'pastEmpty' };
 };

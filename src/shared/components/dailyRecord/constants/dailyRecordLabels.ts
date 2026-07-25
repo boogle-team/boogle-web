@@ -44,7 +44,7 @@ export const MEAL_REGULAR_LABELS: Record<string, string> = {
 
 export const SLEEP_TIME_LABELS: Record<number, string> = {
   1: '7시간 이상',
-  2: '5시간 이하',
+  2: '5시간 이상',
   3: '5시간 미만',
 };
 

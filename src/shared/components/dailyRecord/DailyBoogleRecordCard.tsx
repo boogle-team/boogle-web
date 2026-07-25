@@ -3,17 +3,14 @@ import DailyRecordCardShell from './DailyRecordCardShell';
 import EmptyRecordState from './EmptyRecordState';
 import type {
   BoogleRecordStatusTypes,
-  BoogleRecordSummaryTypes,
-  DailyRecordVariantTypes,
+  BoogleRecordViewTypes,
 } from './types/dailyRecordTypes';
 
 import NoBoogleRecordCharacter from '@/shared/assets/illustrations/dailyRecord/noBoogleRecordCharacter.svg?react';
 import NoBoogleSignCharacter from '@/shared/assets/illustrations/dailyRecord/noBoogleSignCharacter.svg?react';
 
 interface DailyBoogleRecordCardPropTypes {
-  variant: DailyRecordVariantTypes;
-  records: BoogleRecordSummaryTypes[];
-  status: BoogleRecordStatusTypes;
+  view: BoogleRecordViewTypes;
   onCreateClick: () => void;
   onEditClick?: (recordId: number) => void;
 }
@@ -29,44 +26,35 @@ const EMPTY_MESSAGE_MAP: Record<
 };
 
 const DailyBoogleRecordCard = ({
-  variant,
-  records,
-  status,
+  view,
   onCreateClick,
   onEditClick,
 }: DailyBoogleRecordCardPropTypes) => {
-  const isFuture = status === 'future';
-  const isBowelRecorded = status === 'recorded';
-  const hasAnyRecord = records.length > 0;
-  const noBoogleSignalRecordId = records[0]?.id;
-  const isNoBoogleSignalRecord = status === 'noBoogleSignal' && hasAnyRecord;
-  const shouldShowItemEditButton = variant === 'calendar' && isBowelRecorded;
-  const shouldShowHeaderEditButton =
-    variant === 'calendar' &&
-    isNoBoogleSignalRecord &&
-    noBoogleSignalRecordId !== undefined;
-  const shouldShowHeaderCreateButton =
-    !shouldShowHeaderEditButton &&
-    (variant === 'home' || !hasAnyRecord || isFuture);
-  const actionType = shouldShowHeaderEditButton
-    ? 'edit'
-    : shouldShowHeaderCreateButton
-      ? 'create'
-      : 'none';
-  const actionLabel = shouldShowHeaderEditButton
-    ? '부글 배변 없음 기록 수정'
-    : '부글 기록 작성';
-  const statusText = isBowelRecorded ? `${records.length}회` : undefined;
+  const isFuture = view.status === 'future';
+  const canEdit = Boolean(onEditClick);
+
+  const getActionType = (): 'create' | 'edit' | 'none' => {
+    if (!canEdit) return 'create';
+    if (view.status === 'noBoogleSignal') return 'edit';
+    if (view.status === 'recorded') return 'none';
+    return 'create';
+  };
+
+  const actionType = getActionType();
+  const actionLabel =
+    actionType === 'edit' ? '부글 배변 없음 기록 수정' : '부글 기록 작성';
+  const statusText =
+    view.status === 'recorded' ? `${view.records.length}회` : undefined;
   const emptyCharacter =
-    status === 'noBoogleSignal' ? (
+    view.status === 'noBoogleSignal' ? (
       <NoBoogleSignCharacter className="h-[4.5rem] w-[4.5rem]" />
     ) : (
       <NoBoogleRecordCharacter className="h-12 w-12" />
     );
 
   const handleCardActionClick = () => {
-    if (shouldShowHeaderEditButton && noBoogleSignalRecordId !== undefined) {
-      onEditClick?.(noBoogleSignalRecordId);
+    if (view.status === 'noBoogleSignal' && onEditClick) {
+      onEditClick(view.record.id);
       return;
     }
 
@@ -82,20 +70,20 @@ const DailyBoogleRecordCard = ({
       isActionDisabled={isFuture}
       onActionClick={handleCardActionClick}
     >
-      {isBowelRecorded ? (
+      {view.status === 'recorded' ? (
         <ul className="space-y-1 px-4 py-4">
-          {records.map((record, index) => (
+          {view.records.map((record, index) => (
             <BoogleRecordItem
               key={record.id}
               record={record}
-              isLastItem={index === records.length - 1}
-              onEditClick={shouldShowItemEditButton ? onEditClick : undefined}
+              isLastItem={index === view.records.length - 1}
+              onEditClick={onEditClick}
             />
           ))}
         </ul>
       ) : (
         <EmptyRecordState
-          message={EMPTY_MESSAGE_MAP[status]}
+          message={EMPTY_MESSAGE_MAP[view.status]}
           character={emptyCharacter}
         />
       )}
