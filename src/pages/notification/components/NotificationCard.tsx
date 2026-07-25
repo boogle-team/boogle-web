@@ -49,7 +49,7 @@ const NotificationCard = ({
     <button
       type="button"
       onClick={onClick}
-      className={`relative flex w-full items-start gap-4 rounded-[12px] p-[0.75rem] text-left ${
+      className={`relative flex w-full items-start gap-4 rounded-xl p-3 text-left ${
         isWarning
           ? 'border border-orange-3 bg-orange-1'
           : 'bg-beige-1 shadow-sm'
