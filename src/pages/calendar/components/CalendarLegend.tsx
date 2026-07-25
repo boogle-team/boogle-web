@@ -1,7 +1,7 @@
 import {
   CALENDAR_MARK_CONFIG,
   CALENDAR_MARK_ORDER,
-} from '../constants/calendarMarkConfig';
+} from '@/pages/calendar/constants/calendarMarkConfig';
 
 const CalendarLegend = () => {
   return (

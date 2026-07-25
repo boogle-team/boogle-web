@@ -4,10 +4,10 @@ import {
   DailyLifeRecordCard,
 } from '@/shared/components/dailyRecord';
 import TagsSection from '@/shared/components/tagSection/TagsSection';
-import type { HomeSelectedDateContentTypes } from '../types/homeTypes';
-import { isHomeToday } from '../utils/homeDateUtils';
-import HomeMessageBanner from './HomeMessageBanner';
-import WeeklyPatternSection from './WeeklyPatternSection';
+import type { HomeSelectedDateContentTypes } from '@/pages/home/types/homeTypes';
+import { isHomeToday } from '@/pages/home/utils/homeDateUtils';
+import HomeMessageBanner from '@/pages/home/components/HomeMessageBanner';
+import WeeklyPatternSection from '@/pages/home/components/WeeklyPatternSection';
 
 interface HomeContentSectionPropTypes {
   selectedDateContent: HomeSelectedDateContentTypes;
@@ -41,7 +41,8 @@ const HomeContentSection = ({
     id: `${tagLabel}-${tagIndex}`,
     label: tagLabel,
   }));
-  const shouldShowSectionDivider = tagItems.length > 0 && Boolean(weeklyPattern);
+  const shouldShowSectionDivider =
+    tagItems.length > 0 && Boolean(weeklyPattern);
   const shouldShowMessageBanner = isHomeToday(selectedDate, todayDate);
 
   return (

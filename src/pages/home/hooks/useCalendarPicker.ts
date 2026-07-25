@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { generateHomePickerDates } from '../utils/homeDateUtils';
+import { generateHomePickerDates } from '@/pages/home/utils/homeDateUtils';
 
 interface UseCalendarPickerParamTypes {
   selectedDate: string;

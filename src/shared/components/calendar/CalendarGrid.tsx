@@ -1,10 +1,10 @@
 import type { Dayjs } from 'dayjs';
-import CalendarDateCell from './CalendarDateCell';
+import CalendarDateCell from '@/shared/components/calendar/CalendarDateCell';
 import type {
   CalendarMarkConfigMapTypes,
   CalendarRecordMapTypes,
-} from './types/calendarTypes';
-import { generateMonthDates } from './utils/generateMonthDates';
+} from '@/shared/components/calendar/types/calendarTypes';
+import { generateMonthDates } from '@/shared/components/calendar/utils/generateMonthDates';
 
 const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
 

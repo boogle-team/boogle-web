@@ -2,15 +2,15 @@ import {
   getBoogleRecordView,
   getLifeRecordView,
 } from '@/shared/components/dailyRecord';
-import { DEFAULT_HOME_RECORD_STATUS } from '../constants/homeCalendarConfig';
-import { getHomeMessageBannerContentByStatus } from './homeMessageUtils';
+import { DEFAULT_HOME_RECORD_STATUS } from '@/pages/home/constants/homeCalendarConfig';
+import { getHomeMessageBannerContentByStatus } from '@/pages/home/utils/homeMessageUtils';
 import type {
   HomeDataTypes,
   HomeDateRecordStatusTypes,
   HomeRecordStatusMapTypes,
   HomeSelectedDateContentTypes,
   HomeViewModelTypes,
-} from '../types/homeTypes';
+} from '@/pages/home/types/homeTypes';
 
 const getFallbackRecordStatusByDate = ({
   boogleRecords,

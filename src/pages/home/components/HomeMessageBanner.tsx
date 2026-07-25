@@ -1,8 +1,8 @@
-﻿import Flame from '../assets/icons/flame.svg?react';
-import Speaker from '../assets/icons/speaker.svg?react';
-import BoogleMessageBox from '../assets/illustrations/boogleMessageBox.svg?react';
-import BoogleWaitingCharacter from '../assets/illustrations/boogleWaitingCharacter.svg?react';
-import type { HomeMessageBannerContentTypes } from '../types/homeTypes';
+﻿import Flame from '@/pages/home/assets/icons/flame.svg?react';
+import Speaker from '@/pages/home/assets/icons/speaker.svg?react';
+import BoogleMessageBox from '@/pages/home/assets/illustrations/boogleMessageBox.svg?react';
+import BoogleWaitingCharacter from '@/pages/home/assets/illustrations/boogleWaitingCharacter.svg?react';
+import type { HomeMessageBannerContentTypes } from '@/pages/home/types/homeTypes';
 
 interface HomeMessageBannerPropTypes {
   content: HomeMessageBannerContentTypes;

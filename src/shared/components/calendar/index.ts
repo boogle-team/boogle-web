@@ -1,7 +1,10 @@
-export { default as CalendarGrid } from './CalendarGrid';
-export { default as CalendarDateCell } from './CalendarDateCell';
-export { default as MonthNavigator } from './MonthNavigator';
-export { DATE_FORMAT, generateMonthDates } from './utils/generateMonthDates';
+export { default as CalendarGrid } from '@/shared/components/calendar/CalendarGrid';
+export { default as CalendarDateCell } from '@/shared/components/calendar/CalendarDateCell';
+export { default as MonthNavigator } from '@/shared/components/calendar/MonthNavigator';
+export {
+  DATE_FORMAT,
+  generateMonthDates,
+} from '@/shared/components/calendar/utils/generateMonthDates';
 export type {
   CalendarDateCellTypes,
   CalendarDayRecordTypes,
@@ -9,4 +12,4 @@ export type {
   CalendarMarkConfigTypes,
   CalendarMarkTypes,
   CalendarRecordMapTypes,
-} from './types/calendarTypes';
+} from '@/shared/components/calendar/types/calendarTypes';

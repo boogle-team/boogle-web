@@ -1,6 +1,6 @@
 ﻿import type { CalendarRecordMapTypes } from '@/shared/components/calendar';
-import { HOME_RECORD_STATUS_MARK_MAP } from '../constants/homeCalendarConfig';
-import type { HomeRecordStatusMapTypes } from '../types/homeTypes';
+import { HOME_RECORD_STATUS_MARK_MAP } from '@/pages/home/constants/homeCalendarConfig';
+import type { HomeRecordStatusMapTypes } from '@/pages/home/types/homeTypes';
 
 export const getCalendarRecordMapFromHomeStatus = (
   recordStatusByDate: HomeRecordStatusMapTypes,

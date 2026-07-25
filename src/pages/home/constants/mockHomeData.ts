@@ -1,7 +1,7 @@
 ﻿import type {
   HomeRecordStatusMapTypes,
   HomeResponseTypes,
-} from '../types/homeTypes';
+} from '@/pages/home/types/homeTypes';
 
 const MOCK_HOME_RECORD_STATUS_BY_DATE: HomeRecordStatusMapTypes = {
   '2026-05-10': 'none',

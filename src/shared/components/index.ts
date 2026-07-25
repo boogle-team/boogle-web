@@ -1,26 +1,29 @@
-export { default as Button } from './Button';
-export type { ButtonPropTypes } from './Button';
-export { default as Chip } from './Chip';
-export type { ChipPropTypes } from './Chip';
-export { default as SectionTitle } from './tagSection/SectionTitle';
-export type { SectionTitlePropTypes } from './tagSection/SectionTitle';
-export { default as Tag } from './tagSection/Tag';
-export type { TagPropTypes } from './tagSection/Tag';
-export { default as TagsSection } from './tagSection/TagsSection';
+export { default as Button } from '@/shared/components/Button';
+export type { ButtonPropTypes } from '@/shared/components/Button';
+export { default as Chip } from '@/shared/components/Chip';
+export type { ChipPropTypes } from '@/shared/components/Chip';
+export { default as SectionTitle } from '@/shared/components/tagSection/SectionTitle';
+export type { SectionTitlePropTypes } from '@/shared/components/tagSection/SectionTitle';
+export { default as Tag } from '@/shared/components/tagSection/Tag';
+export type { TagPropTypes } from '@/shared/components/tagSection/Tag';
+export { default as TagsSection } from '@/shared/components/tagSection/TagsSection';
 export type {
   TagsSectionPropTypes,
   TagItemTypes,
-} from './tagSection/TagsSection';
-export { default as TooltipPopover } from './TooltipPopover';
-export type { TooltipPopoverPropTypes } from './TooltipPopover';
-export { DailyBoogleRecordCard, DailyLifeRecordCard } from './dailyRecord';
+} from '@/shared/components/tagSection/TagsSection';
+export { default as TooltipPopover } from '@/shared/components/TooltipPopover';
+export type { TooltipPopoverPropTypes } from '@/shared/components/TooltipPopover';
+export {
+  DailyBoogleRecordCard,
+  DailyLifeRecordCard,
+} from '@/shared/components/dailyRecord';
 export {
   CalendarDateCell,
   CalendarGrid,
   DATE_FORMAT,
   generateMonthDates,
   MonthNavigator,
-} from './calendar';
+} from '@/shared/components/calendar';
 export type {
   CalendarDateCellTypes,
   CalendarDayRecordTypes,
@@ -28,4 +31,4 @@ export type {
   CalendarMarkConfigTypes,
   CalendarMarkTypes,
   CalendarRecordMapTypes,
-} from './calendar';
+} from '@/shared/components/calendar';

@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Record from '../pages/record/main/Main';
-import RecordEdit from '../pages/record/edit/Edit';
+import Record from '@/pages/record/main/Main';
+import RecordEdit from '@/pages/record/edit/Edit';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
-import ProfileEdit from '../pages/settings/ProfileEdit';
+import ProfileEdit from '@/pages/settings/ProfileEdit';
 import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
 import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
 import LoginAccount from '@/pages/settings/LoginAccount';
@@ -16,7 +16,7 @@ export const Router = createBrowserRouter([
   {
     path: '/',
     lazy: async () => {
-      const { default: MainLayout } = await import('../layout/MainLayout');
+      const { default: MainLayout } = await import('@/layout/MainLayout');
 
       return { Component: MainLayout };
     },
@@ -24,7 +24,7 @@ export const Router = createBrowserRouter([
       {
         index: true,
         lazy: async () => {
-          const { default: Home } = await import('../pages/home/Home');
+          const { default: Home } = await import('@/pages/home/Home');
 
           return { Component: Home };
         },
@@ -33,7 +33,7 @@ export const Router = createBrowserRouter([
         path: 'calendar',
         lazy: async () => {
           const { default: Calendar } =
-            await import('../pages/calendar/Calendar');
+            await import('@/pages/calendar/Calendar');
 
           return { Component: Calendar };
         },
@@ -58,7 +58,7 @@ export const Router = createBrowserRouter([
       {
         path: 'report',
         lazy: async () => {
-          const { default: Report } = await import('../pages/report/Report');
+          const { default: Report } = await import('@/pages/report/Report');
 
           return { Component: Report };
         },
@@ -66,7 +66,7 @@ export const Router = createBrowserRouter([
       {
         path: 'guide',
         lazy: async () => {
-          const { default: Guide } = await import('../pages/guide/Guide');
+          const { default: Guide } = await import('@/pages/guide/Guide');
 
           return { Component: Guide };
         },
@@ -77,7 +77,7 @@ export const Router = createBrowserRouter([
     path: '/onboarding',
     lazy: async () => {
       const { default: Onboarding } =
-        await import('../pages/onboarding/Onboarding');
+        await import('@/pages/onboarding/Onboarding');
 
       return { Component: Onboarding };
     },
@@ -85,7 +85,7 @@ export const Router = createBrowserRouter([
   {
     path: '/login',
     lazy: async () => {
-      const { default: Login } = await import('../pages/login/Login');
+      const { default: Login } = await import('@/pages/login/Login');
 
       return { Component: Login };
     },
@@ -93,7 +93,7 @@ export const Router = createBrowserRouter([
   {
     path: '/onboarding/profile',
     lazy: async () => {
-      const { default: Profile } = await import('../pages/onboarding/Profile');
+      const { default: Profile } = await import('@/pages/onboarding/Profile');
 
       return { Component: Profile };
     },

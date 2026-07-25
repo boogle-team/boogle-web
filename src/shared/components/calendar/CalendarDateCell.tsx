@@ -3,7 +3,7 @@ import type {
   CalendarDateCellTypes,
   CalendarMarkConfigMapTypes,
   CalendarMarkTypes,
-} from './types/calendarTypes';
+} from '@/shared/components/calendar/types/calendarTypes';
 
 interface CalendarDateCellPropTypes {
   cell: CalendarDateCellTypes;
@@ -22,6 +22,9 @@ const CalendarDateCell = ({
 }: CalendarDateCellPropTypes) => {
   const { date, day, isFutureDate, isToday, isSunday, isSaturday } = cell;
   const dateLabel = dayjs(date).format('YYYY년 M월 D일');
+  const handleDateCellClick = () => {
+    onSelectDate(date);
+  };
 
   let dayNumberClassName = 'text-gray-8';
   if (isSelected) {
@@ -41,7 +44,7 @@ const CalendarDateCell = ({
       type="button"
       aria-label={dateLabel}
       aria-pressed={isSelected}
-      onClick={() => onSelectDate(date)}
+      onClick={handleDateCellClick}
       className="flex flex-col items-center gap-2 py-2"
     >
       <span

@@ -1,16 +1,16 @@
 ﻿import type { FunctionComponent, SVGProps } from 'react';
 import dayjs from 'dayjs';
-import DateCellNoRecord from '../assets/illustrations/dateCellNoRecord.svg?react';
-import DateCellRecordCompleteCharacter from '../assets/illustrations/dateCellRecordCompleteCharacter.svg?react';
-import DateCellOnlyBoogleRecord from '../assets/illustrations/dateCellOnlyBoogleRecord.svg?react';
-import DateCellNoBoogleCharacter from '../assets/illustrations/dateCellNoBoogleCharacter.svg?react';
-import DateCellOnlyDailyRecord from '../assets/illustrations/dateCellOnlyDailyRecord.svg?react';
-import type { HomeDateRecordStatusTypes } from '../types/homeTypes';
+import DateCellNoRecord from '@/pages/home/assets/illustrations/dateCellNoRecord.svg?react';
+import DateCellRecordCompleteCharacter from '@/pages/home/assets/illustrations/dateCellRecordCompleteCharacter.svg?react';
+import DateCellOnlyBoogleRecord from '@/pages/home/assets/illustrations/dateCellOnlyBoogleRecord.svg?react';
+import DateCellNoBoogleCharacter from '@/pages/home/assets/illustrations/dateCellNoBoogleCharacter.svg?react';
+import DateCellOnlyDailyRecord from '@/pages/home/assets/illustrations/dateCellOnlyDailyRecord.svg?react';
+import type { HomeDateRecordStatusTypes } from '@/pages/home/types/homeTypes';
 import {
   getHomeDayLabel,
   isHomeSaturday,
   isHomeSunday,
-} from '../utils/homeDateUtils';
+} from '@/pages/home/utils/homeDateUtils';
 
 interface CalendarChipPropTypes {
   date: string;

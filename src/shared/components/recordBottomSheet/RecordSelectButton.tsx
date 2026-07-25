@@ -4,19 +4,25 @@ interface RecordSelectButtonPropTypes {
   title: string;
   description: string;
   Icon: FunctionComponent<SVGProps<SVGSVGElement>>;
-  onClick: () => void;
+  path: string;
+  onSelect: (path: string) => void;
 }
 
 const RecordSelectButton = ({
   title,
   description,
   Icon,
-  onClick,
+  path,
+  onSelect,
 }: RecordSelectButtonPropTypes) => {
+  const handleRecordSelectButtonClick = () => {
+    onSelect(path);
+  };
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleRecordSelectButtonClick}
       className="flex min-h-[8.5rem] w-full flex-col items-center justify-center rounded-xl border border-gray-4 bg-beige-1 px-2 py-1 transition-colors active:border-orange-3 active:bg-orange-1"
     >
       <Icon aria-hidden="true" className="mb-2 h-[4.25rem] w-[4.25rem]" />

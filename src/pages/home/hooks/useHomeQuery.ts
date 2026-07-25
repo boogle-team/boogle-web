@@ -1,5 +1,5 @@
 ﻿import { useQuery } from '@tanstack/react-query';
-import { getMockHome } from '../apis/mockHomeApis';
+import { getMockHome } from '@/pages/home/apis/mockHomeApis';
 
 const HOME_QUERY_KEY = ['home'];
 

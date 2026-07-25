@@ -1,5 +1,5 @@
 import dayjs, { type Dayjs } from 'dayjs';
-import type { CalendarDateCellTypes } from '../types/calendarTypes';
+import type { CalendarDateCellTypes } from '@/shared/components/calendar/types/calendarTypes';
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 

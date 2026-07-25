@@ -1,4 +1,4 @@
-import type { HomeDashboardResponseTypes } from '../types/homeDashboardTypes';
+import type { HomeDashboardResponseTypes } from '@/pages/home/types/homeDashboardTypes';
 
 const RECORDED_DATE = '2026-05-12';
 

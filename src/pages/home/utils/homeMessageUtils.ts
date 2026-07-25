@@ -2,7 +2,7 @@
   HomeDataTypes,
   HomeDateRecordStatusTypes,
   HomeMessageBannerContentTypes,
-} from '../types/homeTypes';
+} from '@/pages/home/types/homeTypes';
 
 interface HomeMessageBannerParamTypes {
   boogleCount: number;

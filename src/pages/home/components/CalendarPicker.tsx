@@ -1,11 +1,11 @@
-﻿import CalendarChip from './CalendarChip';
-import useCalendarPicker from '../hooks/useCalendarPicker';
-import { DEFAULT_HOME_RECORD_STATUS } from '../constants/homeCalendarConfig';
+﻿import CalendarChip from '@/pages/home/components/CalendarChip';
+import useCalendarPicker from '@/pages/home/hooks/useCalendarPicker';
+import { DEFAULT_HOME_RECORD_STATUS } from '@/pages/home/constants/homeCalendarConfig';
 import type {
   HomeDateRecordStatusTypes,
   HomeRecordStatusMapTypes,
-} from '../types/homeTypes';
-import { isHomeToday } from '../utils/homeDateUtils';
+} from '@/pages/home/types/homeTypes';
+import { isHomeToday } from '@/pages/home/utils/homeDateUtils';
 
 interface CalendarPickerPropTypes {
   selectedDate: string;

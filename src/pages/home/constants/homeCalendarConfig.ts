@@ -1,5 +1,5 @@
 ﻿import type { CalendarMarkTypes } from '@/shared/components/calendar';
-import type { HomeDateRecordStatusTypes } from '../types/homeTypes';
+import type { HomeDateRecordStatusTypes } from '@/pages/home/types/homeTypes';
 
 export const DEFAULT_HOME_RECORD_STATUS: HomeDateRecordStatusTypes = 'none';
 

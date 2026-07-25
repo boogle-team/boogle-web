@@ -13,10 +13,10 @@ import {
   getLifeRecordView,
 } from '@/shared/components/dailyRecord';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
-import CalendarLegend from './components/CalendarLegend';
-import { CALENDAR_MARK_CONFIG } from './constants/calendarMarkConfig';
-import useCalendarDailyRecordQuery from './hooks/useCalendarDailyRecordQuery';
-import { getMockCalendarRecords } from './utils/mockCalendarRecords';
+import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
+import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
+import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
+import { getMockCalendarRecords } from '@/pages/calendar/utils/mockCalendarRecords';
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -27,8 +27,11 @@ const Calendar = () => {
     dayjs().format(DATE_FORMAT),
   );
 
-  const { data: selectedDailyRecord, isError, isLoading } =
-    useCalendarDailyRecordQuery(selectedDate);
+  const {
+    data: selectedDailyRecord,
+    isError,
+    isLoading,
+  } = useCalendarDailyRecordQuery(selectedDate);
 
   const recordMap = useMemo(
     () => getMockCalendarRecords(currentDate),
@@ -53,16 +56,16 @@ const Calendar = () => {
     [selectedDailyRecord?.lifeRecord, selectedDate],
   );
 
-  const handlePrevMonth = () =>
+  const handlePreviousMonthButtonClick = () =>
     setCurrentDate((previousDate) =>
       previousDate.subtract(1, 'month').startOf('month'),
     );
-  const handleNextMonth = () =>
+  const handleNextMonthButtonClick = () =>
     setCurrentDate((previousDate) =>
       previousDate.add(1, 'month').startOf('month'),
     );
 
-  const handleSelectDate = (date: string) => {
+  const handleDateCellClick = (date: string) => {
     setSelectedDate(date);
   };
 
@@ -92,8 +95,8 @@ const Calendar = () => {
         <div className="px-4 pb-6">
           <MonthNavigator
             currentDate={currentDate}
-            onPrevMonth={handlePrevMonth}
-            onNextMonth={handleNextMonth}
+            onPrevMonth={handlePreviousMonthButtonClick}
+            onNextMonth={handleNextMonthButtonClick}
           />
           <CalendarLegend />
           <CalendarGrid
@@ -101,7 +104,7 @@ const Calendar = () => {
             recordMap={recordMap}
             selectedDate={selectedDate}
             markConfig={CALENDAR_MARK_CONFIG}
-            onSelectDate={handleSelectDate}
+            onSelectDate={handleDateCellClick}
           />
         </div>
       </div>

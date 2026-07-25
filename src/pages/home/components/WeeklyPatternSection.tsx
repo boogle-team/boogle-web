@@ -1,7 +1,7 @@
 import MessageBox from '@/pages/home/assets/icons/infoMessageBox.svg?react';
 import BarGraph from '@/shared/assets/icons/weekPatternGraph.svg?react';
 import SectionTitle from '@/shared/components/tagSection/SectionTitle';
-import type { HomeWeeklyPatternTypes } from '../types/homeTypes';
+import type { HomeWeeklyPatternTypes } from '@/pages/home/types/homeTypes';
 
 interface WeeklyPatternSectionPropTypes {
   onCardClick: () => void;

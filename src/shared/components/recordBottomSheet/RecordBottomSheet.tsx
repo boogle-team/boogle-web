@@ -7,7 +7,7 @@ import type { FunctionComponent, MouseEvent, SVGProps } from 'react';
 import BoogleRecordIcon from '@/shared/assets/illustrations/record/bottomModalBoogleRecord.svg?react';
 import DailyRecordIcon from '@/shared/assets/illustrations/record/bottomModalDailyRecord.svg?react';
 
-import RecordSelectButton from './RecordSelectButton';
+import RecordSelectButton from '@/shared/components/recordBottomSheet/RecordSelectButton';
 
 interface RecordOptionTypes {
   title: string;
@@ -44,6 +44,10 @@ const RecordBottomSheet = ({
 }: RecordBottomSheetPropTypes) => {
   const handleSheetClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
+  };
+
+  const handleRecordSelectButtonClick = (path: string) => {
+    onSelect(path);
   };
 
   useEffect(() => {
@@ -109,7 +113,8 @@ const RecordBottomSheet = ({
                     title={title}
                     description={description}
                     Icon={Icon}
-                    onClick={() => onSelect(path)}
+                    path={path}
+                    onSelect={handleRecordSelectButtonClick}
                   />
                 ))}
               </div>
