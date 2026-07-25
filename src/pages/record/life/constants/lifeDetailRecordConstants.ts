@@ -19,7 +19,7 @@ export const SLEEP_DURATION_OPTIONS: LifeRecordOptionTypes<SleepDurationTypes>[]
   [
     { value: 'lessThan5Hours', label: '5시간 이하' },
     { value: 'from5To7Hours', label: '5~7시간' },
-    { value: 'moreThan7Hours', label: '7시간' },
+    { value: 'moreThan7Hours', label: '7시간 이상' },
   ];
 
 export const EXERCISE_OPTIONS: LifeRecordOptionTypes<ExerciseTypes>[] = [
