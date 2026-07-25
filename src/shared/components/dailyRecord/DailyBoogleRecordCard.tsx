@@ -31,18 +31,6 @@ const DailyBoogleRecordCard = ({
   onEditClick,
 }: DailyBoogleRecordCardPropTypes) => {
   const isFuture = view.status === 'future';
-  const canEdit = Boolean(onEditClick);
-
-  const getActionType = (): 'create' | 'edit' | 'none' => {
-    if (!canEdit) return 'create';
-    if (view.status === 'noBoogleSignal') return 'edit';
-    if (view.status === 'recorded') return 'none';
-    return 'create';
-  };
-
-  const actionType = getActionType();
-  const actionLabel =
-    actionType === 'edit' ? '부글 배변 없음 기록 수정' : '부글 기록 작성';
   const statusText =
     view.status === 'recorded' ? `${view.records.length}회` : undefined;
   const emptyCharacter =
@@ -53,11 +41,6 @@ const DailyBoogleRecordCard = ({
     );
 
   const handleCardActionClick = () => {
-    if (view.status === 'noBoogleSignal' && onEditClick) {
-      onEditClick(view.record.id);
-      return;
-    }
-
     onCreateClick();
   };
 
@@ -65,8 +48,8 @@ const DailyBoogleRecordCard = ({
     <DailyRecordCardShell
       title="부글 기록"
       statusText={statusText}
-      actionLabel={actionLabel}
-      actionType={actionType}
+      actionLabel="부글 기록 작성"
+      actionType="create"
       isActionDisabled={isFuture}
       onActionClick={handleCardActionClick}
     >

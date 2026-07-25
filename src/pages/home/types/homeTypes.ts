@@ -1,4 +1,12 @@
-﻿export type HomeDateRecordStatusTypes =
+import type {
+  BoogleRecordTypes,
+  BoogleRecordViewTypes,
+  FoodTypes,
+  LifeRecordTypes,
+  LifeRecordViewTypes,
+} from '@/shared/components/dailyRecord';
+
+export type HomeDateRecordStatusTypes =
   'none' | 'complete' | 'boogleOnly' | 'noBoogle' | 'dailyOnly';
 
 export type HomeRecordStatusMapTypes = Record<
@@ -40,32 +48,9 @@ export interface HomeWeekStripItemTypes {
   hasRecord: boolean;
 }
 
-export interface HomeBoogleRecordTypes {
-  id: number;
-  regDate: string;
-  hasBowel: boolean;
-  stoolBristol: number | null;
-  stoolSimple: string | null;
-  bowelFeeling: string | null;
-  stomach: string | null;
-}
-
-export interface HomeFoodTypes {
-  id: number;
-  name: string;
-}
-
-export interface HomeLifeRecordTypes {
-  id: number;
-  regDate: string;
-  sleep: string;
-  stress: string;
-  water: string;
-  waterIntake: number;
-  mealRegular: string;
-  autoTags: string[];
-  foods: HomeFoodTypes[];
-}
+export type HomeFoodTypes = FoodTypes;
+export type HomeBoogleRecordTypes = BoogleRecordTypes;
+export type HomeLifeRecordTypes = LifeRecordTypes;
 
 export interface HomeWeeklyPatternTypes {
   ruleCode: string;
@@ -95,6 +80,8 @@ export interface HomeResponseTypes {
 
 export interface HomeSelectedDateContentTypes {
   messageBannerContent: HomeMessageBannerContentTypes;
+  boogleRecordView: BoogleRecordViewTypes;
+  lifeRecordView: LifeRecordViewTypes;
   autoTags: string[];
   weeklyPattern: HomeWeeklyPatternTypes | null;
 }

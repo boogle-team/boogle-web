@@ -83,5 +83,6 @@ export const getHomeDashboard = async (date: string) => {
     boogleCount: 0,
     boogleRecords: [],
     lifeRecord: null,
+    weeklyPattern: null,
   };
 };

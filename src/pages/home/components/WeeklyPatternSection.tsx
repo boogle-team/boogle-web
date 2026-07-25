@@ -4,10 +4,12 @@ import SectionTitle from '@/shared/components/tagSection/SectionTitle';
 import type { HomeWeeklyPatternTypes } from '../types/homeTypes';
 
 interface WeeklyPatternSectionPropTypes {
+  onCardClick: () => void;
   weeklyPattern: HomeWeeklyPatternTypes | null;
 }
 
 const WeeklyPatternSection = ({
+  onCardClick,
   weeklyPattern,
 }: WeeklyPatternSectionPropTypes) => {
   if (!weeklyPattern) {
@@ -17,7 +19,12 @@ const WeeklyPatternSection = ({
   return (
     <section>
       <SectionTitle icon={<BarGraph />} title="이번 주 패턴" />
-      <article className="mt-2 rounded-xl border border-orange-3 bg-yellow-1 px-4 py-4">
+      <button
+        type="button"
+        aria-label="이번 주 패턴 리포트로 이동"
+        onClick={onCardClick}
+        className="mt-2 w-full rounded-xl border border-orange-3 bg-yellow-1 px-4 py-4 text-left transition active:scale-[0.99]"
+      >
         <div className="flex gap-3">
           <MessageBox className="w-5.5 h-5.5 text-orange-6" />
           <div className="min-w-0">
@@ -27,7 +34,7 @@ const WeeklyPatternSection = ({
             </p>
           </div>
         </div>
-      </article>
+      </button>
     </section>
   );
 };

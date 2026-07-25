@@ -22,6 +22,11 @@ const Home = () => {
     handleSettingButtonClick,
     handleCalendarDateSelect,
     handleDateModalSelect,
+    handleBoogleRecordCreateButtonClick,
+    handleBoogleRecordEditButtonClick,
+    handleLifeRecordCreateButtonClick,
+    handleLifeRecordEditButtonClick,
+    handleWeeklyPatternCardClick,
   } = useHomeState();
 
   if (isLoading) {
@@ -68,6 +73,13 @@ const Home = () => {
 
       <HomeContentSection
         selectedDateContent={homeViewModel.selectedDateContent}
+        selectedDate={selectedDateValue}
+        todayDate={homeViewModel.todayDate}
+        onBoogleRecordCreateClick={handleBoogleRecordCreateButtonClick}
+        onBoogleRecordEditClick={handleBoogleRecordEditButtonClick}
+        onLifeRecordCreateClick={handleLifeRecordCreateButtonClick}
+        onLifeRecordEditClick={handleLifeRecordEditButtonClick}
+        onWeeklyPatternCardClick={handleWeeklyPatternCardClick}
       />
       <DateBottomModal
         isOpen={isDateModalOpen}

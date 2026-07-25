@@ -31,6 +31,11 @@ interface UseHomeStateReturnTypes {
   handleSettingButtonClick: () => void;
   handleCalendarDateSelect: (date: string) => void;
   handleDateModalSelect: (date: string) => void;
+  handleBoogleRecordCreateButtonClick: () => void;
+  handleBoogleRecordEditButtonClick: (recordId: number) => void;
+  handleLifeRecordCreateButtonClick: () => void;
+  handleLifeRecordEditButtonClick: (recordId: number) => void;
+  handleWeeklyPatternCardClick: () => void;
 }
 
 const useHomeState = (): UseHomeStateReturnTypes => {
@@ -93,6 +98,26 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     setSelectedDate(date);
   };
 
+  const handleBoogleRecordCreateButtonClick = () => {
+    navigate(`/boogle-record/new?date=${selectedDateValue}`);
+  };
+
+  const handleBoogleRecordEditButtonClick = (recordId: number) => {
+    navigate(`/boogle-record/edit/${recordId}`);
+  };
+
+  const handleLifeRecordCreateButtonClick = () => {
+    navigate(`/life-record/new?date=${selectedDateValue}`);
+  };
+
+  const handleLifeRecordEditButtonClick = (recordId: number) => {
+    navigate(`/life-record/edit/${recordId}`);
+  };
+
+  const handleWeeklyPatternCardClick = () => {
+    navigate('/report');
+  };
+
   return {
     isLoading,
     isError,
@@ -110,6 +135,11 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     handleSettingButtonClick,
     handleCalendarDateSelect,
     handleDateModalSelect,
+    handleBoogleRecordCreateButtonClick,
+    handleBoogleRecordEditButtonClick,
+    handleLifeRecordCreateButtonClick,
+    handleLifeRecordEditButtonClick,
+    handleWeeklyPatternCardClick,
   };
 };
 

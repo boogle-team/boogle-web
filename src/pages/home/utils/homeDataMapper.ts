@@ -1,4 +1,8 @@
-﻿import { DEFAULT_HOME_RECORD_STATUS } from '../constants/homeCalendarConfig';
+import {
+  getBoogleRecordView,
+  getLifeRecordView,
+} from '@/shared/components/dailyRecord';
+import { DEFAULT_HOME_RECORD_STATUS } from '../constants/homeCalendarConfig';
 import { getHomeMessageBannerContentByStatus } from './homeMessageUtils';
 import type {
   HomeDataTypes,
@@ -38,6 +42,42 @@ const getFallbackRecordStatusByDate = ({
   }
 
   return recordStatusByDate;
+};
+
+const isSameRecordDate = ({
+  recordDate,
+  selectedDate,
+}: {
+  recordDate: string;
+  selectedDate: string;
+}) => recordDate.startsWith(selectedDate);
+
+const getBoogleRecordsBySelectedDate = ({
+  homeData,
+  selectedDate,
+}: {
+  homeData: HomeDataTypes;
+  selectedDate: string;
+}) =>
+  homeData.boogleRecords.filter(({ regDate }) =>
+    isSameRecordDate({ recordDate: regDate, selectedDate }),
+  );
+
+const getLifeRecordBySelectedDate = ({
+  homeData,
+  selectedDate,
+}: {
+  homeData: HomeDataTypes;
+  selectedDate: string;
+}) => {
+  if (!homeData.lifeRecord) return null;
+
+  return isSameRecordDate({
+    recordDate: homeData.lifeRecord.regDate,
+    selectedDate,
+  })
+    ? homeData.lifeRecord
+    : null;
 };
 
 const getBoogleCountBySelectedDate = ({
@@ -87,6 +127,14 @@ const getSelectedDateContent = ({
 }): HomeSelectedDateContentTypes => {
   const recordStatus =
     recordStatusByDate[selectedDate] ?? DEFAULT_HOME_RECORD_STATUS;
+  const selectedDateBoogleRecords = getBoogleRecordsBySelectedDate({
+    homeData,
+    selectedDate,
+  });
+  const selectedDateLifeRecord = getLifeRecordBySelectedDate({
+    homeData,
+    selectedDate,
+  });
 
   return {
     messageBannerContent: getHomeMessageBannerContentByStatus({
@@ -101,12 +149,16 @@ const getSelectedDateContent = ({
         selectedDate,
       }),
     }),
-    autoTags:
-      selectedDate === homeData.today.date
-        ? (homeData.lifeRecord?.autoTags ?? [])
-        : [],
-    weeklyPattern:
-      selectedDate === homeData.today.date ? homeData.weeklyPattern : null,
+    boogleRecordView: getBoogleRecordView({
+      selectedDate,
+      records: selectedDateBoogleRecords,
+    }),
+    lifeRecordView: getLifeRecordView({
+      selectedDate,
+      record: selectedDateLifeRecord,
+    }),
+    autoTags: selectedDateLifeRecord?.autoTags ?? [],
+    weeklyPattern: homeData.weeklyPattern ?? null,
   };
 };
 
