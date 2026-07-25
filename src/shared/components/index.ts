@@ -13,6 +13,7 @@ export type {
 } from './tagSection/TagsSection';
 export { default as TooltipPopover } from './TooltipPopover';
 export type { TooltipPopoverPropTypes } from './TooltipPopover';
+export { DailyBoogleRecordCard, DailyLifeRecordCard } from './dailyRecord';
 export {
   CalendarDateCell,
   CalendarGrid,
