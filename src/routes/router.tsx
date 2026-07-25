@@ -1,18 +1,18 @@
 import { createBrowserRouter } from 'react-router-dom';
-
+import BoogleRecordFormPage from '../pages/boogleRecord/BoogleRecordFormPage';
+import LifeRecordFormPage from '../pages/lifeRecord/LifeRecordFormPage';
+import Record from '../pages/record/main/Main';
+import RecordEdit from '../pages/record/edit/Edit';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
+import ProfileEdit from '../pages/settings/ProfileEdit';
 import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
 import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
-import DeleteAccount from '@/pages/settings/DeleteAccount';
 import LoginAccount from '@/pages/settings/LoginAccount';
 import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
 import SensitiveConsent from '@/pages/settings/SensitiveConsent';
 import Terms from '@/pages/settings/Terms';
-
-import RecordEdit from '../pages/record/edit/Edit';
-import Record from '../pages/record/main/Main';
-import ProfileEdit from '../pages/settings/ProfileEdit';
+import DeleteAccount from '@/pages/settings/DeleteAccount';
 
 export const Router = createBrowserRouter([
   {
@@ -39,6 +39,23 @@ export const Router = createBrowserRouter([
 
           return { Component: Calendar };
         },
+      },
+      // TODO: 실제 부글/생활 기록 작성·수정 페이지 구현 후 임시 페이지 컴포넌트를 교체하면 됨.
+      {
+        path: 'boogle-record/new',
+        element: <BoogleRecordFormPage />,
+      },
+      {
+        path: 'boogle-record/edit/:recordId',
+        element: <BoogleRecordFormPage />,
+      },
+      {
+        path: 'life-record/new',
+        element: <LifeRecordFormPage />,
+      },
+      {
+        path: 'life-record/edit/:recordId',
+        element: <LifeRecordFormPage />,
       },
       {
         path: 'report',
