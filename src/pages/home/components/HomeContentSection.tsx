@@ -1,21 +1,17 @@
-import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
+﻿import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
 import TagsSection from '@/shared/components/tagSection/TagsSection';
-import type { HomeWeeklyPatternTypes } from '../types/homeTypes';
-import type { HomeMessageBannerContentTypes } from '../utils/homeMessageUtils';
+import type { HomeSelectedDateContentTypes } from '../types/homeTypes';
 import HomeMessageBanner from './HomeMessageBanner';
 import WeeklyPatternSection from './WeeklyPatternSection';
 
 interface HomeContentSectionPropTypes {
-  messageBannerContent: HomeMessageBannerContentTypes;
-  autoTags: string[];
-  weeklyPattern: HomeWeeklyPatternTypes | null;
+  selectedDateContent: HomeSelectedDateContentTypes;
 }
 
 const HomeContentSection = ({
-  messageBannerContent,
-  autoTags,
-  weeklyPattern,
+  selectedDateContent,
 }: HomeContentSectionPropTypes) => {
+  const { autoTags, messageBannerContent, weeklyPattern } = selectedDateContent;
   const tagItems = autoTags.map((tagLabel, tagIndex) => ({
     id: `${tagLabel}-${tagIndex}`,
     label: tagLabel,

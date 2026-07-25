@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { generateHomePickerDates } from '../utils/homeDateUtils';
 
 interface UseCalendarPickerParamTypes {
@@ -20,13 +20,8 @@ const useCalendarPicker = ({
   const latestSelectedDateRef = useRef(selectedDate);
   const [isScrollReady, setIsScrollReady] = useState(false);
 
-  const pickerDates = useMemo(
-    () =>
-      generateHomePickerDates(
-        initialSelectedDateRef.current,
-        PICKER_SIDE_DATE_COUNT,
-      ),
-    [],
+  const [pickerDates] = useState(() =>
+    generateHomePickerDates(selectedDate, PICKER_SIDE_DATE_COUNT),
   );
 
   const scrollToDate = (date: string, behavior: ScrollBehavior = 'auto') => {

@@ -1,46 +1,169 @@
 ﻿import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { AnimatePresence, motion } from 'motion/react';
+import { FocusTrap } from 'focus-trap-react';
 import type { MouseEvent } from 'react';
+import Button from '@/shared/components/Button';
+import {
+  CalendarGrid,
+  DATE_FORMAT,
+  MonthNavigator,
+  type CalendarMarkConfigMapTypes,
+  type CalendarRecordMapTypes,
+} from '@/shared/components/calendar';
 
 interface DateBottomModalPropTypes {
   isOpen: boolean;
+  selectedDate: string;
+  todayDate: string;
+  recordMap: CalendarRecordMapTypes;
+  markConfig: CalendarMarkConfigMapTypes;
   onClose: () => void;
+  onSelectDate: (date: string) => void;
 }
 
-const DateBottomModal = ({ isOpen, onClose }: DateBottomModalPropTypes) => {
+interface DateBottomModalSheetPropTypes {
+  selectedDate: string;
+  todayDate: string;
+  recordMap: CalendarRecordMapTypes;
+  markConfig: CalendarMarkConfigMapTypes;
+  onClose: () => void;
+  onSelectDate: (date: string) => void;
+}
+
+const DateBottomModalSheet = ({
+  selectedDate,
+  todayDate,
+  recordMap,
+  markConfig,
+  onClose,
+  onSelectDate,
+}: DateBottomModalSheetPropTypes) => {
+  const [currentDate, setCurrentDate] = useState(() =>
+    dayjs(selectedDate).startOf('month'),
+  );
+
   const handleModalContentClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
   };
 
-  if (!isOpen) return null;
+  const handlePrevMonth = () => {
+    setCurrentDate((prev) => prev.subtract(1, 'month').startOf('month'));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate((prev) => prev.add(1, 'month').startOf('month'));
+  };
+
+  const handleDateSelect = (date: string) => {
+    onSelectDate(date);
+    onClose();
+  };
+
+  const handleTodayButtonClick = () => {
+    onSelectDate(dayjs(todayDate).format(DATE_FORMAT));
+    onClose();
+  };
+
+  return (
+    <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-label="날짜 선택"
+      initial={{ y: 40, scale: 0.94, opacity: 0 }}
+      animate={{
+        y: [40, -10, 4, 0],
+        scale: [0.94, 1.03, 0.995, 1],
+        opacity: [0, 1, 1, 1],
+      }}
+      exit={{ y: 22, scale: 0.98, opacity: 0 }}
+      transition={{
+        duration: 0.46,
+        times: [0, 0.58, 0.82, 1],
+        ease: ['easeOut', 'easeInOut', 'easeOut'],
+      }}
+      onClick={handleModalContentClick}
+      className="-mb-4 w-full max-w-[430px] origin-bottom rounded-t-[24px] bg-beige-1 px-4 pt-[0.31rem] pb-[calc(2rem+1rem)] shadow-[0_0.94rem_4.69rem_rgba(0,0,0,0.18)]"
+    >
+      <div className="mx-auto mb-[0.56rem] h-1 w-10 rounded-full bg-gray-4" />
+      <MonthNavigator
+        currentDate={currentDate}
+        onPrevMonth={handlePrevMonth}
+        onNextMonth={handleNextMonth}
+      />
+      <CalendarGrid
+        currentDate={currentDate}
+        recordMap={recordMap}
+        selectedDate={selectedDate}
+        todayDate={todayDate}
+        markConfig={markConfig}
+        onSelectDate={handleDateSelect}
+      />
+      <Button
+        text="오늘로 이동"
+        size="md"
+        variant="ghost"
+        className="mt-6"
+        onClick={handleTodayButtonClick}
+      />
+    </motion.div>
+  );
+};
+
+const DateBottomModal = ({
+  isOpen,
+  selectedDate,
+  todayDate,
+  recordMap,
+  markConfig,
+  onClose,
+  onSelectDate,
+}: DateBottomModalPropTypes) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscapeKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKeyDown);
+
+    return () => document.removeEventListener('keydown', handleEscapeKeyDown);
+  }, [isOpen, onClose]);
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/30"
-      onClick={onClose}
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="날짜 선택"
-        onClick={handleModalContentClick}
-        className="w-full max-w-[430px] rounded-t-[1.25rem] bg-beige-1 px-[1.25rem] pt-[0.75rem] pb-[2rem] shadow-[0_-0.5rem_1.5rem_rgba(0,0,0,0.08)]"
-      >
-        <div className="mx-auto mb-[1rem] h-[0.25rem] w-[2.5rem] rounded-full bg-gray-5" />
-        <div className="flex items-center justify-between">
-          <h2 className="body-m-bold text-gray-10">날짜 선택</h2>
-          <button
-            type="button"
-            aria-label="날짜 선택 모달 닫기"
-            onClick={onClose}
-            className="flex h-[2rem] w-[2rem] items-center justify-center rounded-full bg-orange-1 text-orange-6"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="date-bottom-modal-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.16, ease: 'easeOut' }}
+          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/25"
+          onClick={onClose}
+        >
+          <FocusTrap
+            focusTrapOptions={{
+              escapeDeactivates: false,
+              clickOutsideDeactivates: false,
+            }}
           >
-            <X aria-hidden="true" className="h-[1.125rem] w-[1.125rem]" />
-          </button>
-        </div>
-        <div className="h-[8rem]" />
-      </div>
-    </div>,
+            <DateBottomModalSheet
+              selectedDate={selectedDate}
+              todayDate={todayDate}
+              recordMap={recordMap}
+              markConfig={markConfig}
+              onClose={onClose}
+              onSelectDate={onSelectDate}
+            />
+          </FocusTrap>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     document.body,
   );
 };

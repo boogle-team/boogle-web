@@ -1,8 +1,19 @@
-import type {
-  HomeDateRecordStatusTypes,
+﻿import type {
   HomeRecordStatusMapTypes,
   HomeResponseTypes,
 } from '../types/homeTypes';
+
+const MOCK_HOME_RECORD_STATUS_BY_DATE: HomeRecordStatusMapTypes = {
+  '2026-05-10': 'none',
+  '2026-05-11': 'dailyOnly',
+  '2026-05-12': 'complete',
+  '2026-05-13': 'none',
+  '2026-05-14': 'none',
+  '2026-05-15': 'none',
+  '2026-05-16': 'none',
+  '2026-05-18': 'boogleOnly',
+  '2026-05-20': 'noBoogle',
+};
 
 export const MOCK_HOME_RESPONSE: HomeResponseTypes = {
   success: true,
@@ -68,20 +79,16 @@ export const MOCK_HOME_RESPONSE: HomeResponseTypes = {
       label: '딱딱한 변 경향',
       description: '수분이 부족했던 날과 함께 나타났어요.',
     },
+    recordStatusByDate: MOCK_HOME_RECORD_STATUS_BY_DATE,
+    boogleCountByDate: {
+      '2026-05-12': 2,
+      '2026-05-18': 1,
+    },
+    streakByDate: {
+      '2026-05-12': 2,
+      '2026-05-18': 1,
+      '2026-05-20': 1,
+    },
   },
   message: '요청이 성공적으로 처리되었습니다.',
 };
-
-export const MOCK_HOME_RECORD_STATUS_BY_DATE: HomeRecordStatusMapTypes = {
-  '2026-05-10': 'none',
-  '2026-05-11': 'dailyOnly',
-  '2026-05-12': 'complete',
-  '2026-05-13': 'none',
-  '2026-05-14': 'none',
-  '2026-05-15': 'none',
-  '2026-05-16': 'none',
-  '2026-05-18': 'boogleOnly',
-  '2026-05-20': 'noBoogle',
-};
-
-export const DEFAULT_HOME_RECORD_STATUS: HomeDateRecordStatusTypes = 'none';

@@ -1,42 +1,48 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
-import CalendarPicker from './components/CalendarPicker';
-import DateBottomModal from './components/DateBottomModal';
-import HomeContentSection from './components/HomeContentSection';
-import {
-  MOCK_HOME_RECORD_STATUS_BY_DATE,
-  MOCK_HOME_RESPONSE,
-} from './constants/mockHomeData';
-import { getHomeDateSubTitle, getHomeDateTitle } from './utils/homeDateUtils';
-import { getHomeMessageBannerContent } from './utils/homeMessageUtils';
+import CalendarPicker from '@/pages/home/components/CalendarPicker';
+import DateBottomModal from '@/pages/home/components/DateBottomModal';
+import HomeContentSection from '@/pages/home/components/HomeContentSection';
+import useHomeState from '@/pages/home/hooks/useHomeState';
 
 const Home = () => {
-  const navigate = useNavigate();
-  const homeData = MOCK_HOME_RESPONSE.data;
-  const messageBannerContent = getHomeMessageBannerContent(homeData);
-  const [selectedDate, setSelectedDate] = useState(homeData.today.date);
-  const [isDateModalOpen, setIsDateModalOpen] = useState(false);
+  const {
+    isLoading,
+    isError,
+    selectedDateValue,
+    homeViewModel,
+    dateModalRecordMap,
+    dateModalMarkConfig,
+    calendarPickerKey,
+    homeDateTitle,
+    homeDateSubTitle,
+    isDateModalOpen,
+    handleDateTitleClick,
+    handleDateModalClose,
+    handleNotificationButtonClick,
+    handleSettingButtonClick,
+    handleCalendarDateSelect,
+    handleDateModalSelect,
+  } = useHomeState();
 
-  const handleDateTitleClick = () => {
-    setIsDateModalOpen(true);
-  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-beige-6">
+        <div className="h-12.25 bg-beige-1" />
+        <div className="h-[13.1875rem] bg-beige-1" />
+        <section className="min-h-[24rem] bg-beige-6 px-layout py-8">
+          <div className="h-[5.75rem] rounded-xl bg-beige-1" />
+        </section>
+      </div>
+    );
+  }
 
-  const handleDateModalClose = () => {
-    setIsDateModalOpen(false);
-  };
-
-  const handleNotificationButtonClick = () => {
-    navigate('/notifications');
-  };
-
-  const handleSettingButtonClick = () => {
-    navigate('/settings');
-  };
-
-  const handleCalendarDateSelect = (date: string) => {
-    setSelectedDate(date);
-  };
+  if (isError || !homeViewModel || !selectedDateValue) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-beige-6 px-layout text-center">
+        <p className="body-m-bold text-gray-8">홈 정보를 불러오지 못했어요</p>
+      </div>
+    );
+  }
 
   return (
     <div className="-mb-[10rem] min-h-screen bg-beige-6 pb-[10rem]">
@@ -44,29 +50,33 @@ const Home = () => {
         <div className="h-12.25" />
         <TopNavigation
           variant="home"
-          title={getHomeDateTitle(selectedDate)}
-          subTitle={getHomeDateSubTitle(selectedDate)}
+          title={homeDateTitle}
+          subTitle={homeDateSubTitle}
           hasUnreadNotification
           onTitleClick={handleDateTitleClick}
           onNotificationButtonClick={handleNotificationButtonClick}
           onSettingButtonClick={handleSettingButtonClick}
         />
         <CalendarPicker
-          selectedDate={selectedDate}
-          todayDate={homeData.today.date}
-          recordStatusByDate={MOCK_HOME_RECORD_STATUS_BY_DATE}
+          key={calendarPickerKey}
+          selectedDate={selectedDateValue}
+          todayDate={homeViewModel.todayDate}
+          recordStatusByDate={homeViewModel.recordStatusByDate}
           onSelectDate={handleCalendarDateSelect}
         />
       </div>
 
       <HomeContentSection
-        messageBannerContent={messageBannerContent}
-        autoTags={homeData.lifeRecord?.autoTags ?? []}
-        weeklyPattern={homeData.weeklyPattern}
+        selectedDateContent={homeViewModel.selectedDateContent}
       />
       <DateBottomModal
         isOpen={isDateModalOpen}
+        selectedDate={selectedDateValue}
+        todayDate={homeViewModel.todayDate}
+        recordMap={dateModalRecordMap}
+        markConfig={dateModalMarkConfig}
         onClose={handleDateModalClose}
+        onSelectDate={handleDateModalSelect}
       />
     </div>
   );

@@ -130,4 +130,3 @@ export const Router = createBrowserRouter([
     element: <DeleteAccount />,
   },
 ]);
-

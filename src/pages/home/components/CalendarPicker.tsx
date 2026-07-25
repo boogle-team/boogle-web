@@ -1,19 +1,16 @@
 ﻿import CalendarChip from './CalendarChip';
 import useCalendarPicker from '../hooks/useCalendarPicker';
+import { DEFAULT_HOME_RECORD_STATUS } from '../constants/homeCalendarConfig';
 import type {
   HomeDateRecordStatusTypes,
   HomeRecordStatusMapTypes,
 } from '../types/homeTypes';
-import {
-  DEFAULT_HOME_RECORD_STATUS,
-  MOCK_HOME_RECORD_STATUS_BY_DATE,
-} from '../constants/mockHomeData';
 import { isHomeToday } from '../utils/homeDateUtils';
 
 interface CalendarPickerPropTypes {
   selectedDate: string;
   todayDate: string;
-  recordStatusByDate?: HomeRecordStatusMapTypes;
+  recordStatusByDate: HomeRecordStatusMapTypes;
   onSelectDate: (date: string) => void;
 }
 
@@ -26,14 +23,19 @@ const getRecordStatus = (
 const CalendarPicker = ({
   selectedDate,
   todayDate,
-  recordStatusByDate = MOCK_HOME_RECORD_STATUS_BY_DATE,
+  recordStatusByDate,
   onSelectDate,
 }: CalendarPickerPropTypes) => {
-  const { pickerDates, scrollContainerRef, setChipRef, handleScroll } =
-    useCalendarPicker({
-      selectedDate,
-      onSelectDate,
-    });
+  const {
+    pickerDates,
+    scrollContainerRef,
+    setChipRef,
+    handleScroll,
+    handleChipClick,
+  } = useCalendarPicker({
+    selectedDate,
+    onSelectDate,
+  });
 
   // selected chip slot size and horizontal scroll padding must stay in sync.
   const selectorFrameClassName = 'h-[5.5625rem] w-[4rem]';
@@ -57,8 +59,8 @@ const CalendarPicker = ({
             recordStatus={getRecordStatus(date, recordStatusByDate)}
             isSelected={date === selectedDate}
             isToday={isHomeToday(date, todayDate)}
+            onSelectDate={handleChipClick}
             setChipRef={setChipRef(date)}
-            isInteractive={false}
           />
         ))}
       </div>
@@ -67,6 +69,3 @@ const CalendarPicker = ({
 };
 
 export default CalendarPicker;
-
-
-

@@ -99,7 +99,9 @@ const CalendarChip = ({
             />
           ) : null}
 
-          <span className="caption relative z-20 text-gray-9">{dateNumber}</span>
+          <span className="caption relative z-20 text-gray-9">
+            {dateNumber}
+          </span>
           <RecordStatusIcon
             aria-hidden="true"
             className={`${statusIconClassName} relative z-20 overflow-visible`}

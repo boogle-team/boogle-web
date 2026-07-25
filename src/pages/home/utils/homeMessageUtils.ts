@@ -1,45 +1,56 @@
-import type { HomeDataTypes } from '../types/homeTypes';
+﻿import type {
+  HomeDataTypes,
+  HomeDateRecordStatusTypes,
+  HomeMessageBannerContentTypes,
+} from '../types/homeTypes';
 
-export type HomeMessageBannerStatusTypes = 'waiting' | 'sent' | 'noBowel';
-
-export interface HomeMessageDescriptionSegmentTypes {
-  text: string;
-  isBold?: boolean;
-}
-
-export interface HomeMessageBannerContentTypes {
-  status: HomeMessageBannerStatusTypes;
-  chipText: string;
-  title: string;
-  description: HomeMessageDescriptionSegmentTypes[];
+interface HomeMessageBannerParamTypes {
+  boogleCount: number;
+  recordStatus: HomeDateRecordStatusTypes;
+  streak: number;
 }
 
 const getRecordStreakText = (streak: number) =>
   `${Math.max(streak, 1)}일 연속 기록 중`;
 
-export const getHomeMessageBannerContent = ({
-  streak,
-  boogleCount,
-  boogleRecords,
-}: HomeDataTypes): HomeMessageBannerContentTypes => {
-  const hasBoogleRecord = boogleRecords.length > 0;
+const getBoogleSignalCountText = (boogleCount: number) =>
+  `${Math.max(boogleCount, 1)}회`;
 
-  if (!hasBoogleRecord) {
+const getRecordStatusFromHomeData = ({
+  boogleRecords,
+  lifeRecord,
+}: HomeDataTypes): HomeDateRecordStatusTypes => {
+  const hasBoogleRecord = boogleRecords.length > 0;
+  const hasLifeRecord = Boolean(lifeRecord);
+
+  if (!hasBoogleRecord) return 'none';
+
+  const hasBowelRecord = boogleRecords.some(({ hasBowel }) => hasBowel);
+
+  if (!hasBowelRecord) return 'noBoogle';
+
+  return hasLifeRecord ? 'complete' : 'boogleOnly';
+};
+
+export const getHomeMessageBannerContentByStatus = ({
+  boogleCount,
+  recordStatus,
+  streak,
+}: HomeMessageBannerParamTypes): HomeMessageBannerContentTypes => {
+  if (recordStatus === 'complete' || recordStatus === 'boogleOnly') {
     return {
-      status: 'waiting',
-      chipText: '기록을 시작해요',
-      title: '오늘은 아직 조용하네요...',
+      status: 'sent',
+      chipText: getRecordStreakText(streak),
+      title: '오늘 부글 신호를 보냈어요',
       description: [
-        { text: '아래 버튼을 눌러 ' },
-        { text: '첫 기록', isBold: true },
-        { text: '을 남겨보세요!' },
+        { text: '부글 ' },
+        { text: getBoogleSignalCountText(boogleCount), isBold: true },
+        { text: ' 기록됨' },
       ],
     };
   }
 
-  const hasBowelRecord = boogleRecords.some(({ hasBowel }) => hasBowel);
-
-  if (!hasBowelRecord) {
+  if (recordStatus === 'noBoogle') {
     return {
       status: 'noBowel',
       chipText: getRecordStreakText(streak),
@@ -52,19 +63,29 @@ export const getHomeMessageBannerContent = ({
     };
   }
 
-  const boogleSignalCount =
-    boogleCount > 0
-      ? boogleCount
-      : boogleRecords.filter(({ hasBowel }) => hasBowel).length;
-
   return {
-    status: 'sent',
-    chipText: getRecordStreakText(streak),
-    title: '오늘 부글 신호를 보냈어요',
+    status: 'waiting',
+    chipText: '기록을 시작해요',
+    title: '오늘은 아직 조용하네요...',
     description: [
-      { text: '부글 ' },
-      { text: `${boogleSignalCount}회`, isBold: true },
-      { text: ' 기록됨' },
+      { text: '아래 버튼을 눌러 ' },
+      { text: '첫 기록', isBold: true },
+      { text: '을 남겨보세요!' },
     ],
   };
+};
+
+export const getHomeMessageBannerContent = (
+  homeData: HomeDataTypes,
+): HomeMessageBannerContentTypes => {
+  const boogleSignalCount =
+    homeData.boogleCount > 0
+      ? homeData.boogleCount
+      : homeData.boogleRecords.filter(({ hasBowel }) => hasBowel).length;
+
+  return getHomeMessageBannerContentByStatus({
+    boogleCount: boogleSignalCount,
+    recordStatus: getRecordStatusFromHomeData(homeData),
+    streak: homeData.streak,
+  });
 };

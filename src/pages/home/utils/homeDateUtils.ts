@@ -21,7 +21,8 @@ export const getHomeDayLabel = (dateValue: string) =>
 export const isHomeToday = (dateValue: string, todayDate: string) =>
   dateValue === todayDate;
 
-export const isHomeSaturday = (dateValue: string) => dayjs(dateValue).day() === 6;
+export const isHomeSaturday = (dateValue: string) =>
+  dayjs(dateValue).day() === 6;
 
 export const isHomeSunday = (dateValue: string) => dayjs(dateValue).day() === 0;
 
