@@ -48,7 +48,7 @@ const LifeRecordDetailSection = ({
       >
         <span className="label flex items-center gap-1">
           <Apple className="h-5 w-5" />
-          생활 기록 <p className="label-bold">세부 항목</p> 더보기
+          생활 기록 <span className="label-bold">세부 항목</span> 더보기
         </span>
         <ChevronDownIcon
           className={`h-4 w-4 shrink-0 text-gray-5 transition-transform ${
