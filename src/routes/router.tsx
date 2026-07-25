@@ -1,6 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom';
-import BoogleRecordFormPage from '../pages/boogleRecord/BoogleRecordFormPage';
-import LifeRecordFormPage from '../pages/lifeRecord/LifeRecordFormPage';
 import Record from '../pages/record/main/Main';
 import RecordEdit from '../pages/record/edit/Edit';
 import Notification from '@/pages/notification/Notification';
@@ -43,19 +41,19 @@ export const Router = createBrowserRouter([
       // TODO: 실제 부글/생활 기록 작성·수정 페이지 구현 후 임시 페이지 컴포넌트를 교체하면 됨.
       {
         path: 'boogle-record/new',
-        element: <BoogleRecordFormPage />,
+        element: <Record />, // 부글 기록 새로 기록 페이지로 수정 필요
       },
       {
         path: 'boogle-record/edit/:recordId',
-        element: <BoogleRecordFormPage />,
+        element: <RecordEdit />, // 부글 기록 편집 페이지로 수정 필요
       },
       {
         path: 'life-record/new',
-        element: <LifeRecordFormPage />,
+        element: <Record />, // 여기 생활 기록 새로 기록 페이지로 수정 필요
       },
       {
         path: 'life-record/edit/:recordId',
-        element: <LifeRecordFormPage />,
+        element: <RecordEdit />, // 여기 생활 기록 편집 페이지로 수정 필요
       },
       {
         path: 'report',
