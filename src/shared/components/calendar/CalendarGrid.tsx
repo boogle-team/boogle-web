@@ -1,4 +1,4 @@
-﻿import type { Dayjs } from 'dayjs';
+import type { Dayjs } from 'dayjs';
 import CalendarDateCell from './CalendarDateCell';
 import type {
   CalendarMarkConfigMapTypes,
@@ -13,6 +13,7 @@ interface CalendarGridPropTypes {
   recordMap: CalendarRecordMapTypes;
   selectedDate: string;
   todayDate?: string;
+  isFixedSixWeekHeight?: boolean;
   markConfig: CalendarMarkConfigMapTypes;
   onSelectDate: (date: string) => void;
 }
@@ -22,10 +23,12 @@ const CalendarGrid = ({
   recordMap,
   selectedDate,
   todayDate,
+  isFixedSixWeekHeight = false,
   markConfig,
   onSelectDate,
 }: CalendarGridPropTypes) => {
   const dateCells = generateMonthDates(currentDate, todayDate);
+  const firstDateColumnStart = currentDate.startOf('month').day() + 1;
 
   return (
     <div className="flex flex-col gap-1">
@@ -38,7 +41,7 @@ const CalendarGrid = ({
                 ? 'text-semantic-sunday'
                 : index === 6
                   ? 'text-semantic-saturday'
-                  : 'text-gray-5'
+                  : 'text-[#989EA7]'
             }`}
           >
             {label}
@@ -46,16 +49,26 @@ const CalendarGrid = ({
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-y-1">
-        {dateCells.map((cell) => (
-          <CalendarDateCell
+      <div
+        className={`grid grid-cols-7 gap-y-1 ${
+          isFixedSixWeekHeight ? 'min-h-[27.5rem]' : ''
+        }`}
+      >
+        {dateCells.map((cell, index) => (
+          <div
             key={cell.date}
-            cell={cell}
-            marks={recordMap[cell.date]?.marks ?? []}
-            markConfig={markConfig}
-            isSelected={cell.date === selectedDate}
-            onSelectDate={onSelectDate}
-          />
+            style={{
+              gridColumnStart: index === 0 ? firstDateColumnStart : undefined,
+            }}
+          >
+            <CalendarDateCell
+              cell={cell}
+              marks={recordMap[cell.date]?.marks ?? []}
+              markConfig={markConfig}
+              isSelected={cell.date === selectedDate}
+              onSelectDate={onSelectDate}
+            />
+          </div>
         ))}
       </div>
     </div>

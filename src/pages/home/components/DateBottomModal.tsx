@@ -97,6 +97,7 @@ const DateBottomModalSheet = ({
         recordMap={recordMap}
         selectedDate={selectedDate}
         todayDate={todayDate}
+        isFixedSixWeekHeight
         markConfig={markConfig}
         onSelectDate={handleDateSelect}
       />

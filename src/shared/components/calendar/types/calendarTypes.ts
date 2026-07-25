@@ -17,7 +17,7 @@ export type CalendarRecordMapTypes = Record<string, CalendarDayRecordTypes>;
 export interface CalendarDateCellTypes {
   date: string;
   day: number;
-  isCurrentMonth: boolean;
+  isFutureDate: boolean;
   isToday: boolean;
   isSunday: boolean;
   isSaturday: boolean;

@@ -30,11 +30,6 @@ const Calendar = () => {
 
   const handleSelectDate = (date: string) => {
     setSelectedDate(date);
-
-    const clickedDate = dayjs(date);
-    if (!clickedDate.isSame(currentDate, 'month')) {
-      setCurrentDate(clickedDate.startOf('month'));
-    }
   };
 
   return (
