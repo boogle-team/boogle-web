@@ -1,0 +1,70 @@
+﻿import Button from '@/shared/components/Button';
+import type {
+  ConditionProgressTypes,
+  MonthlyScoreTypes,
+  MonthlyTypeTypes,
+  PatternTypes,
+  ReportSummaryTypes,
+  WeeklyTrendTypes,
+} from '../types/reportTypes';
+import ConditionDistributionCard from './ConditionDistributionCard';
+import MonthlyConditionScoreCard from './MonthlyConditionScoreCard';
+import MonthlyTypeCard from './MonthlyTypeCard';
+import MonthlyWeeklyTrendCard from './MonthlyWeeklyTrendCard';
+import PatternCard from './PatternCard';
+import SummaryCards from './SummaryCards';
+
+interface MonthlyReportBodyPropTypes {
+  conditionProgress: ConditionProgressTypes[];
+  conditionScore: number;
+  monthlyType: MonthlyTypeTypes;
+  onPdfButtonClick: () => void;
+  patterns: PatternTypes[];
+  pdfErrorMessage?: string;
+  scores: MonthlyScoreTypes[];
+  summaries: ReportSummaryTypes[];
+  weeklyTrends: WeeklyTrendTypes[];
+}
+
+const MonthlyReportBody = ({
+  conditionProgress,
+  conditionScore,
+  monthlyType,
+  onPdfButtonClick,
+  patterns,
+  pdfErrorMessage,
+  scores,
+  summaries,
+  weeklyTrends,
+}: MonthlyReportBodyPropTypes) => (
+  <div className="mt-4 flex flex-col gap-8">
+    <MonthlyConditionScoreCard
+      conditionScore={conditionScore}
+      scores={scores}
+    />
+    <SummaryCards summaries={summaries} showDescription={false} />
+    <MonthlyWeeklyTrendCard weeklyTrends={weeklyTrends} />
+    <ConditionDistributionCard conditionProgress={conditionProgress} />
+    <MonthlyTypeCard monthlyType={monthlyType} />
+    <PatternCard patterns={patterns} title="이번 달 패턴" />
+    <div className="flex justify-center">
+      <Button
+        text="이번 달 리포트 PDF 저장"
+        size="lg"
+        variant="ghost"
+        onClick={onPdfButtonClick}
+        aria-label="이번 달 리포트 PDF 저장"
+      />
+    </div>
+    {pdfErrorMessage && (
+      <p
+        role="alert"
+        className="caption text-center tracking-[-0.015rem] text-semantic-danger"
+      >
+        {pdfErrorMessage}
+      </p>
+    )}
+  </div>
+);
+
+export default MonthlyReportBody;

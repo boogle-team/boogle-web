@@ -8,19 +8,44 @@ import Home from '../pages/home/Home';
 import LifeRecordFormPage from '../pages/lifeRecord/LifeRecordFormPage';
 import Login from '../pages/login/Login';
 import Report from '../pages/report/Report';
+import Record from '../pages/record/main/Main';
+import RecordEdit from '../pages/record/edit/Edit';
+import Notification from '@/pages/notification/Notification';
+import Settings from '@/pages/settings/Settings';
+import ProfileEdit from '../pages/settings/ProfileEdit';
+import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
+import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
+import LoginAccount from '@/pages/settings/LoginAccount';
+import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
+import SensitiveConsent from '@/pages/settings/SensitiveConsent';
+import Terms from '@/pages/settings/Terms';
+import DeleteAccount from '@/pages/settings/DeleteAccount';
 
 export const Router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    lazy: async () => {
+      const { default: MainLayout } = await import('../layout/MainLayout');
+
+      return { Component: MainLayout };
+    },
     children: [
       {
         index: true,
-        element: <Home />,
+        lazy: async () => {
+          const { default: Home } = await import('../pages/home/Home');
+
+          return { Component: Home };
+        },
       },
       {
         path: 'calendar',
-        element: <Calendar />,
+        lazy: async () => {
+          const { default: Calendar } =
+            await import('../pages/calendar/Calendar');
+
+          return { Component: Calendar };
+        },
       },
       // TODO: 실제 부글/생활 기록 작성·수정 페이지 구현 후 임시 페이지 컴포넌트를 교체하면 됨.
       {
@@ -41,16 +66,93 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'report',
-        element: <Report />,
+        lazy: async () => {
+          const { default: Report } = await import('../pages/report/Report');
+
+          return { Component: Report };
+        },
       },
       {
         path: 'guide',
-        element: <Guide />,
+        lazy: async () => {
+          const { default: Guide } = await import('../pages/guide/Guide');
+
+          return { Component: Guide };
+        },
       },
     ],
   },
   {
+    path: '/onboarding',
+    lazy: async () => {
+      const { default: Onboarding } =
+        await import('../pages/onboarding/Onboarding');
+
+      return { Component: Onboarding };
+    },
+  },
+  {
     path: '/login',
-    element: <Login />,
+    lazy: async () => {
+      const { default: Login } = await import('../pages/login/Login');
+
+      return { Component: Login };
+    },
+  },
+  {
+    path: '/onboarding/profile',
+    lazy: async () => {
+      const { default: Profile } = await import('../pages/onboarding/Profile');
+
+      return { Component: Profile };
+    },
+  },
+  {
+    path: '/record',
+    element: <Record />,
+  },
+  {
+    path: '/record/edit',
+    element: <RecordEdit />,
+  },
+  {
+    path: '/settings',
+    element: <Settings />,
+  },
+  {
+    path: '/notifications',
+    element: <Notification />,
+  },
+  {
+    path: '/settings/profile',
+    element: <ProfileEdit />,
+  },
+  {
+    path: '/settings/bowel-rhythm',
+    element: <BowelRhythmSetting />,
+  },
+  {
+    path: '/settings/baseline-info',
+    element: <BaselineInfoSetting />,
+  },
+  {
+    path: '/settings/login-account',
+    element: <LoginAccount />,
+  },
+  {
+    path: '/settings/sensitive-consent',
+    element: <SensitiveConsent />,
+  },
+  {
+    path: '/settings/privacy-policy',
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: '/settings/terms',
+    element: <Terms />,
+  },
+  {
+    path: '/settings/delete-account',
+    element: <DeleteAccount />,
   },
 ]);
