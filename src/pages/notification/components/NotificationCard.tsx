@@ -81,10 +81,13 @@ const NotificationCard = ({
       </span>
 
       {!notification.isRead && (
-        <span
-          aria-label="읽지 않은 알림"
-          className="absolute top-3 right-3 h-1.5 w-1.5 rounded-[99px] bg-semantic-danger"
-        />
+        <>
+          <span className="sr-only">읽지 않음</span>
+          <span
+            aria-hidden="true"
+            className="absolute top-3 right-3 h-1.5 w-1.5 rounded-[99px] bg-semantic-danger"
+          />
+        </>
       )}
     </button>
   );

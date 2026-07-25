@@ -18,9 +18,9 @@ const NotificationListSkeleton = () => {
       {[0, 1, 2].map((skeletonId) => (
         <div
           key={skeletonId}
-          className="flex animate-pulse gap-4 rounded-[12px] bg-beige-1 p-3"
+          className="flex animate-pulse gap-4 rounded-xl bg-beige-1 p-3"
         >
-          <div className="h-10 w-10 shrink-0 rounded-[12px] bg-beige-6" />
+          <div className="h-10 w-10 shrink-0 rounded-xl bg-beige-6" />
           <div className="flex-1 py-1">
             <div className="h-4 w-2/3 rounded bg-beige-6" />
             <div className="mt-2 h-3 w-full rounded bg-beige-6" />
@@ -44,7 +44,7 @@ const NotificationList = ({
 
   if (status === 'error') {
     return (
-      <div className="flex min-h-[20rem] flex-col items-center justify-center text-center">
+      <div className="flex min-h-80 flex-col items-center justify-center text-center">
         <strong className="label-bold text-gray-10">
           알림을 불러오지 못했어요
         </strong>
@@ -55,7 +55,7 @@ const NotificationList = ({
           <button
             type="button"
             onClick={onRetry}
-            className="label-semi mt-4 rounded-[8px] bg-orange-5 px-4 py-2 text-beige-1"
+            className="label-semi mt-4 rounded-lg bg-orange-5 px-4 py-2 text-beige-1"
           >
             다시 시도
           </button>
@@ -66,7 +66,7 @@ const NotificationList = ({
 
   if (notifications.length === 0) {
     return (
-      <div className="flex min-h-[20rem] flex-col items-center justify-center text-center">
+      <div className="flex min-h-80 flex-col items-center justify-center text-center">
         <strong className="label-bold text-gray-10">
           새로운 알림이 없어요
         </strong>

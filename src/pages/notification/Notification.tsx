@@ -3,19 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 import NotificationList from './components/NotificationList';
-import {
-  MOCK_NOTIFICATION_DATA,
-  NOTIFICATION_DESTINATION_MAP,
-} from './constants/notificationConstants';
-import { useNotificationReadState } from './hooks/useNotificationReadState';
+import { NOTIFICATION_DESTINATION_MAP } from './constants/notificationConstants';
+import { useNotifications } from './hooks/useNotifications';
 
 import type { NotificationItemTypes } from './types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
-  const { notifications, markNotificationAsRead } = useNotificationReadState(
-    MOCK_NOTIFICATION_DATA.notifications,
-  );
+  const { notifications, isLoading, isError, refetch, markNotificationAsRead } =
+    useNotifications();
 
   const handleBackButtonClick = () => {
     navigate('/');
@@ -38,7 +34,9 @@ const Notification = () => {
       <main className="flex-1 bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <NotificationList
           notifications={notifications}
+          status={isLoading ? 'loading' : isError ? 'error' : 'success'}
           onNotificationClick={handleNotificationClick}
+          onRetry={refetch}
         />
       </main>
     </div>
