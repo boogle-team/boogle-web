@@ -1,13 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-
-import MainLayout from '../layout/MainLayout';
 import BoogleRecordFormPage from '../pages/boogleRecord/BoogleRecordFormPage';
-import Calendar from '../pages/calendar/Calendar';
-import Guide from '../pages/guide/Guide';
-import Home from '../pages/home/Home';
 import LifeRecordFormPage from '../pages/lifeRecord/LifeRecordFormPage';
-import Login from '../pages/login/Login';
-import Report from '../pages/report/Report';
 import Record from '../pages/record/main/Main';
 import RecordEdit from '../pages/record/edit/Edit';
 import Notification from '@/pages/notification/Notification';
