@@ -1,5 +1,6 @@
 import StepperPlusIcon from '@/shared/assets/illustrations/record/stepper/stepperPlus.svg?react';
-import StepperSubtractIcon from '@/shared/assets/illustrations/record/stepper/stepperSubtract.svg?react';
+import StepperSubtractActiveIcon from '@/shared/assets/illustrations/record/stepper/stepperSubtractActive.svg?react';
+import StepperSubtractInActiveIcon from '@/shared/assets/illustrations/record/stepper/stepperSubtractInActive.svg?react';
 
 import {
   MAX_WATER_INTAKE,
@@ -15,6 +16,12 @@ interface WaterIntakeFieldPropTypes {
 }
 
 const WaterIntakeField = ({ value, onChange }: WaterIntakeFieldPropTypes) => {
+  // 1잔 이상일 때만 줄이기가 가능하므로 그때만 활성 아이콘을 쓴다.
+  const canDecrease = value > MIN_WATER_INTAKE;
+  const StepperSubtractIcon = canDecrease
+    ? StepperSubtractActiveIcon
+    : StepperSubtractInActiveIcon;
+
   const filledRatio =
     ((value - MIN_WATER_INTAKE) / (MAX_WATER_INTAKE - MIN_WATER_INTAKE)) * 100;
 
@@ -45,7 +52,7 @@ const WaterIntakeField = ({ value, onChange }: WaterIntakeFieldPropTypes) => {
           <button
             type="button"
             onClick={handleDecreaseClick}
-            disabled={value <= MIN_WATER_INTAKE}
+            disabled={!canDecrease}
             aria-label="물 섭취량 한 잔 줄이기"
             className="hover:not-disabled:cursor-pointer disabled:cursor-not-allowed"
           >
