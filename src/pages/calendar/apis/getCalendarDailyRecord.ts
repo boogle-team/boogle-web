@@ -1,4 +1,4 @@
-import type { CalendarDailyRecordResponseTypes } from '../types/calendarRecordTypes';
+import type { CalendarDailyRecordResponseTypes } from '@/shared/components/calendar/types/calendarRecordTypes';
 
 const RECORDED_DATE = '2026-06-17';
 
