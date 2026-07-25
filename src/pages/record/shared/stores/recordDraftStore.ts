@@ -2,7 +2,10 @@ import dayjs from 'dayjs';
 import { create } from 'zustand';
 
 import type { DetailRecordFormStateTypes } from '@/pages/record/detail/types/detailRecordTypes';
-import type { RecordFormStateTypes } from '@/pages/record/main/types/recordTypes';
+import type {
+  RecordFormStateTypes,
+  RecordTimeValueTypes,
+} from '@/pages/record/main/types/recordTypes';
 
 export const RECORD_DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -38,6 +41,7 @@ interface RecordDraftStoreTypes {
   detail: DetailRecordFormStateTypes;
   startDraft: (param: StartDraftParamTypes) => void;
   updateMain: (partialState: Partial<RecordFormStateTypes>) => void;
+  updateMainTime: (partialTime: Partial<RecordTimeValueTypes>) => void;
   updateDetail: (partialState: Partial<DetailRecordFormStateTypes>) => void;
   resetDraft: () => void;
 }
@@ -63,6 +67,14 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
 
     updateMain: (partialState) => {
       set((state) => ({ main: { ...state.main, ...partialState } }));
+    },
+
+    // time은 중첩 객체라 updateMain으로 넘기면 통째로 교체된다.
+    // 시/분/오전오후가 각각 따로 들어와도 서로 덮어쓰지 않도록 최신 state 기준으로 병합한다.
+    updateMainTime: (partialTime) => {
+      set((state) => ({
+        main: { ...state.main, time: { ...state.main.time, ...partialTime } },
+      }));
     },
 
     updateDetail: (partialState) => {
