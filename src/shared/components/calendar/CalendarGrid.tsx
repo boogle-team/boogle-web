@@ -1,7 +1,10 @@
-import type { Dayjs } from 'dayjs';
-import { generateMonthDates } from '../utils/generateMonthDates';
-import type { CalendarRecordMapTypes } from '../types/calendarTypes';
+﻿import type { Dayjs } from 'dayjs';
 import CalendarDateCell from './CalendarDateCell';
+import type {
+  CalendarMarkConfigMapTypes,
+  CalendarRecordMapTypes,
+} from './types/calendarTypes';
+import { generateMonthDates } from './utils/generateMonthDates';
 
 const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -9,6 +12,8 @@ interface CalendarGridPropTypes {
   currentDate: Dayjs;
   recordMap: CalendarRecordMapTypes;
   selectedDate: string;
+  todayDate?: string;
+  markConfig: CalendarMarkConfigMapTypes;
   onSelectDate: (date: string) => void;
 }
 
@@ -16,9 +21,11 @@ const CalendarGrid = ({
   currentDate,
   recordMap,
   selectedDate,
+  todayDate,
+  markConfig,
   onSelectDate,
 }: CalendarGridPropTypes) => {
-  const dateCells = generateMonthDates(currentDate);
+  const dateCells = generateMonthDates(currentDate, todayDate);
 
   return (
     <div className="flex flex-col gap-1">
@@ -31,7 +38,7 @@ const CalendarGrid = ({
                 ? 'text-semantic-sunday'
                 : index === 6
                   ? 'text-semantic-saturday'
-                  : 'text-[#989EA7]'
+                  : 'text-gray-5'
             }`}
           >
             {label}
@@ -45,6 +52,7 @@ const CalendarGrid = ({
             key={cell.date}
             cell={cell}
             marks={recordMap[cell.date]?.marks ?? []}
+            markConfig={markConfig}
             isSelected={cell.date === selectedDate}
             onSelectDate={onSelectDate}
           />

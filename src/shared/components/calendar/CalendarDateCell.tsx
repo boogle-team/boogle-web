@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
-import { CALENDAR_MARK_CONFIG } from '../constants/calendarMarkConfig';
 import type {
   CalendarDateCellTypes,
+  CalendarMarkConfigMapTypes,
   CalendarMarkTypes,
-} from '../types/calendarTypes';
+} from './types/calendarTypes';
 
 interface CalendarDateCellPropTypes {
   cell: CalendarDateCellTypes;
   marks: CalendarMarkTypes[];
+  markConfig: CalendarMarkConfigMapTypes;
   isSelected: boolean;
   onSelectDate: (date: string) => void;
 }
@@ -15,6 +16,7 @@ interface CalendarDateCellPropTypes {
 const CalendarDateCell = ({
   cell,
   marks,
+  markConfig,
   isSelected,
   onSelectDate,
 }: CalendarDateCellPropTypes) => {
@@ -49,12 +51,17 @@ const CalendarDateCell = ({
 
       <span className="flex h-1.5 items-center gap-1">
         {isCurrentMonth &&
-          marks.map((markType) => (
-            <span
-              key={markType}
-              className={`h-1.5 w-1.5 shrink-0 rounded-full ${CALENDAR_MARK_CONFIG[markType].dotClassName}`}
-            />
-          ))}
+          marks.map((markType) => {
+            const dotClassName = markConfig[markType]?.dotClassName;
+            if (!dotClassName) return null;
+
+            return (
+              <span
+                key={markType}
+                className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotClassName}`}
+              />
+            );
+          })}
       </span>
     </button>
   );

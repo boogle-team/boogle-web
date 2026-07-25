@@ -5,13 +5,14 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 
 export const generateMonthDates = (
   currentDate: Dayjs,
+  todayDate?: string,
 ): CalendarDateCellTypes[] => {
   const startOfMonth = currentDate.startOf('month');
   const endOfMonth = currentDate.endOf('month');
   const startOfGrid = startOfMonth.startOf('week');
   const endOfGrid = endOfMonth.endOf('week');
 
-  const today = dayjs();
+  const today = todayDate ? dayjs(todayDate) : dayjs();
   const totalDays = endOfGrid.diff(startOfGrid, 'day') + 1;
 
   return Array.from({ length: totalDays }, (_, index) => {

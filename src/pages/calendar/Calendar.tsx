@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
-import MonthNavigator from './components/MonthNavigator';
-import CalendarLegend from './components/CalendarLegend';
-import CalendarGrid from './components/CalendarGrid';
-import { getMockCalendarRecords } from './utils/mockCalendarRecords';
-import { DATE_FORMAT } from './utils/generateMonthDates';
+import {
+  CalendarGrid,
+  DATE_FORMAT,
+  MonthNavigator,
+} from '@/shared/components/calendar';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import CalendarLegend from './components/CalendarLegend';
+import { CALENDAR_MARK_CONFIG } from './constants/calendarMarkConfig';
+import { getMockCalendarRecords } from './utils/mockCalendarRecords';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(() =>
@@ -51,6 +54,7 @@ const Calendar = () => {
           currentDate={currentDate}
           recordMap={recordMap}
           selectedDate={selectedDate}
+          markConfig={CALENDAR_MARK_CONFIG}
           onSelectDate={handleSelectDate}
         />
       </div>

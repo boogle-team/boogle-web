@@ -13,3 +13,18 @@ export type {
 } from './tagSection/TagsSection';
 export { default as TooltipPopover } from './TooltipPopover';
 export type { TooltipPopoverPropTypes } from './TooltipPopover';
+export {
+  CalendarDateCell,
+  CalendarGrid,
+  DATE_FORMAT,
+  generateMonthDates,
+  MonthNavigator,
+} from './calendar';
+export type {
+  CalendarDateCellTypes,
+  CalendarDayRecordTypes,
+  CalendarMarkConfigMapTypes,
+  CalendarMarkConfigTypes,
+  CalendarMarkTypes,
+  CalendarRecordMapTypes,
+} from './calendar';

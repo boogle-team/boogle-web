@@ -1,4 +1,12 @@
-export type CalendarMarkTypes = 'boogle' | 'life' | 'noBowel';
+export type CalendarMarkTypes = string;
+
+export interface CalendarMarkConfigTypes {
+  dotClassName: string;
+}
+
+export type CalendarMarkConfigMapTypes = {
+  [markType: string]: CalendarMarkConfigTypes | undefined;
+};
 
 export interface CalendarDayRecordTypes {
   marks: CalendarMarkTypes[];
