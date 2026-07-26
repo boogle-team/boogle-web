@@ -14,8 +14,10 @@ import {
 } from '@/shared/components/dailyRecord';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
+import CalendarMonthlySummaryBar from '@/pages/calendar/components/CalendarMonthlySummaryBar';
 import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
 import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
+import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
 import { getMockCalendarRecords } from '@/pages/calendar/utils/mockCalendarRecords';
 
 const Calendar = () => {
@@ -36,6 +38,11 @@ const Calendar = () => {
   const recordMap = useMemo(
     () => getMockCalendarRecords(currentDate),
     [currentDate],
+  );
+
+  const monthlySummary = useMemo(
+    () => getCalendarMonthlySummary({ currentDate, todayDate, recordMap }),
+    [currentDate, recordMap, todayDate],
   );
 
   const boogleRecordView = useMemo(
@@ -108,6 +115,10 @@ const Calendar = () => {
             onSelectDate={handleDateCellClick}
           />
         </div>
+      </div>
+
+      <div className="px-layout pt-6">
+        <CalendarMonthlySummaryBar summary={monthlySummary} />
       </div>
 
       <section className="px-layout py-8">
