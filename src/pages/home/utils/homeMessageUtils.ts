@@ -1,5 +1,4 @@
 ﻿import type {
-  HomeDataTypes,
   HomeDateRecordStatusTypes,
   HomeMessageBannerContentTypes,
 } from '@/pages/home/types/homeTypes';
@@ -15,22 +14,6 @@ const getRecordStreakText = (streak: number) =>
 
 const getBoogleSignalCountText = (boogleCount: number) =>
   `${Math.max(boogleCount, 1)}회`;
-
-const getRecordStatusFromHomeData = ({
-  boogleRecords,
-  lifeRecord,
-}: HomeDataTypes): HomeDateRecordStatusTypes => {
-  const hasBoogleRecord = boogleRecords.length > 0;
-  const hasLifeRecord = Boolean(lifeRecord);
-
-  if (!hasBoogleRecord) return 'none';
-
-  const hasBowelRecord = boogleRecords.some(({ hasBowel }) => hasBowel);
-
-  if (!hasBowelRecord) return 'noBoogle';
-
-  return hasLifeRecord ? 'complete' : 'boogleOnly';
-};
 
 export const getHomeMessageBannerContentByStatus = ({
   boogleCount,
@@ -73,19 +56,4 @@ export const getHomeMessageBannerContentByStatus = ({
       { text: '을 남겨보세요!' },
     ],
   };
-};
-
-export const getHomeMessageBannerContent = (
-  homeData: HomeDataTypes,
-): HomeMessageBannerContentTypes => {
-  const boogleSignalCount =
-    homeData.boogleCount > 0
-      ? homeData.boogleCount
-      : homeData.boogleRecords.filter(({ hasBowel }) => hasBowel).length;
-
-  return getHomeMessageBannerContentByStatus({
-    boogleCount: boogleSignalCount,
-    recordStatus: getRecordStatusFromHomeData(homeData),
-    streak: homeData.streak,
-  });
 };

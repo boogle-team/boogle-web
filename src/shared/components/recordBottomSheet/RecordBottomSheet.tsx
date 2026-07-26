@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { FocusTrap } from 'focus-trap-react';
 import type { FunctionComponent, MouseEvent, SVGProps } from 'react';
-
+import useBodyScrollLock from '@/shared/hooks/useBodyScrollLock';
 import BoogleRecordIcon from '@/shared/assets/illustrations/record/bottomModalBoogleRecord.svg?react';
 import DailyRecordIcon from '@/shared/assets/illustrations/record/bottomModalDailyRecord.svg?react';
 
@@ -42,6 +42,7 @@ const RecordBottomSheet = ({
   onClose,
   onSelect,
 }: RecordBottomSheetPropTypes) => {
+  useBodyScrollLock(isOpen);
   const handleSheetClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
   };

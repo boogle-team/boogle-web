@@ -7,8 +7,7 @@ export const getCalendarRecordMapFromHomeStatus = (
 ): CalendarRecordMapTypes =>
   Object.entries(recordStatusByDate).reduce<CalendarRecordMapTypes>(
     (recordMap, [date, recordStatus]) => {
-      const marks = HOME_RECORD_STATUS_MARK_MAP[recordStatus];
-
+      const marks = HOME_RECORD_STATUS_MARK_MAP[recordStatus] ?? [];
       if (marks.length > 0) {
         recordMap[date] = { marks };
       }

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { FocusTrap } from 'focus-trap-react';
 import type { MouseEvent } from 'react';
 import Button from '@/shared/components/Button';
+import useBodyScrollLock from '@/shared/hooks/useBodyScrollLock';
 import {
   CalendarGrid,
   DATE_FORMAT,
@@ -121,6 +122,8 @@ const DateBottomModal = ({
   onClose,
   onSelectDate,
 }: DateBottomModalPropTypes) => {
+  useBodyScrollLock(isOpen);
+
   useEffect(() => {
     if (!isOpen) return;
 

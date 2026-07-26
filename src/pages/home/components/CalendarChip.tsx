@@ -19,7 +19,6 @@ interface CalendarChipPropTypes {
   isToday: boolean;
   onSelectDate?: (date: string) => void;
   setChipRef?: (element: HTMLElement | null) => void;
-  isInteractive?: boolean;
 }
 
 const RECORD_STATUS_ICON_MAP: Record<
@@ -56,7 +55,6 @@ const CalendarChip = ({
   isToday,
   onSelectDate,
   setChipRef,
-  isInteractive = true,
 }: CalendarChipPropTypes) => {
   const RecordStatusIcon = RECORD_STATUS_ICON_MAP[recordStatus];
   const dateNumber = dayjs(date).date();
@@ -110,14 +108,6 @@ const CalendarChip = ({
       </span>
     </>
   );
-
-  if (!isInteractive) {
-    return (
-      <div ref={setChipRef} className={wrapperClassName}>
-        {content}
-      </div>
-    );
-  }
 
   return (
     <button
