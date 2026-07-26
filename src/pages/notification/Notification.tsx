@@ -1,31 +1,45 @@
 import { useNavigate } from 'react-router-dom';
 
+import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+
+import NotificationList from './components/NotificationList';
+import { NOTIFICATION_DESTINATION_MAP } from './constants/notificationConstants';
+import { useNotifications } from './hooks/useNotifications';
+
+import type { NotificationItemTypes } from './types/notificationTypes';
+
 const Notification = () => {
   const navigate = useNavigate();
+  const { notifications, isLoading, isError, refetch, markNotificationAsRead } =
+    useNotifications();
 
-  const handleBackClick = () => {
-    navigate(-1);
+  const handleBackButtonClick = () => {
+    navigate('/');
+  };
+
+  const handleNotificationClick = (notification: NotificationItemTypes) => {
+    markNotificationAsRead(notification.id);
+    navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
   };
 
   return (
-    <main className="min-h-screen bg-[#F8F3F0] px-5">
-      <header className="relative flex h-16 items-center justify-center">
-        <button
-          type="button"
-          onClick={handleBackClick}
-          className="absolute left-0 text-2xl"
-          aria-label="뒤로가기"
-        >
-          &lt;
-        </button>
+    <div className="flex min-h-dvh flex-col bg-beige-5">
+      <DefaultTopNavigation
+        title="알림"
+        onBackButtonClick={handleBackButtonClick}
+        isBorderVisible={false}
+        className="mt-[3.06rem] bg-beige-5"
+      />
 
-        <h1 className="text-lg font-semibold">알림</h1>
-      </header>
-
-      <section className="mt-6 rounded-2xl bg-white p-5">
-        <p className="text-base font-semibold">알림 화면</p>
-      </section>
-    </main>
+      <main className="flex-1 bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+        <NotificationList
+          notifications={notifications}
+          status={isLoading ? 'loading' : isError ? 'error' : 'success'}
+          onNotificationClick={handleNotificationClick}
+          onRetry={refetch}
+        />
+      </main>
+    </div>
   );
 };
 
