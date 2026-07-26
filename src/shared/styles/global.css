@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "./theme.css";
+@import "pretendard/dist/web/variable/pretendardvariable.css";
+
+/* 앱 컨테이너 */
+.app {
+  /* 웹앱 너비 고정 */
+  width: 100%;
+  max-width: 430px;
+  min-width: 320px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+  /* 가로 넘침/자식 margin이 박스 밖으로 새는 것만 차단하고, 세로는 콘텐츠가 길어지면 스크롤되도록 허용한다. */
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-base);
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 */
+  word-break: keep-all; /* 한국어 단어 중간 안 잘림 */
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 포커스 스타일 - 웹 접근성 */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* 애니메이션 줄이기 선호 시 - 접근성 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
