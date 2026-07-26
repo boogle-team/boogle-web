@@ -1,9 +1,9 @@
 import { Moon, type LucideIcon } from 'lucide-react';
 
-import MonthlyHardStoolPatternIcon from '../assets/illustrations/MonthlyHardStoolPatternIcon.svg?react';
-import MonthlySleepPatternIcon from '../assets/illustrations/MonthlySleepPatternIcon.svg?react';
-import MonthlyStressPatternIcon from '../assets/illustrations/MonthlyStressPatternIcon.svg?react';
-import MonthlyWaterPatternIcon from '../assets/illustrations/MonthlyWaterPatternIcon.svg?react';
+import MonthlyHardStoolPatternIcon from '../assets/illustrations/monthlyHardStoolPatternIcon.svg?react';
+import MonthlySleepPatternIcon from '../assets/illustrations/monthlySleepPatternIcon.svg?react';
+import MonthlyStressPatternIcon from '../assets/illustrations/monthlyStressPatternIcon.svg?react';
+import MonthlyWaterPatternIcon from '../assets/illustrations/monthlyWaterPatternIcon.svg?react';
 import type { PatternTypes } from '../types/reportTypes';
 
 interface MonthlyPatternListCardPropTypes {

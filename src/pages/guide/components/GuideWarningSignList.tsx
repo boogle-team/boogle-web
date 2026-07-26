@@ -1,4 +1,4 @@
-import WarningNoticeIcon from '../assets/illustrations/WarningNoticeIcon.svg?react';
+import WarningNoticeIcon from '../assets/illustrations/warningNoticeIcon.svg?react';
 import type { GuideDetailTypes } from '../types/guideTypes';
 
 interface GuideWarningSignListPropTypes {

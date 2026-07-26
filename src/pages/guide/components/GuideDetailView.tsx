@@ -90,8 +90,6 @@ const GuideDetailView = ({
         )}
 
         <GuideRelatedGuideList relatedGuides={guideDetail.relatedGuides} />
-
-        <div className="mx-auto mt-14 h-1 w-[6.75rem] rounded-full bg-gray-10" />
       </div>
     </section>
   );

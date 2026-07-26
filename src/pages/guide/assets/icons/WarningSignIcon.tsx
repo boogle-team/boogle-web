@@ -1,3 +1,3 @@
-import WarningSignIcon from '../illustrations/WarningSignIcon.svg?react';
+import WarningSignIcon from '../illustrations/warningSignIcon.svg?react';
 
 export default WarningSignIcon;

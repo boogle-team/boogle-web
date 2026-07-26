@@ -1,6 +1,6 @@
-import MonthlyConstipationTypeIcon from '../assets/illustrations/MonthlyConstipationTypeIcon.svg?react';
-import MonthlyPendingTypeIcon from '../assets/illustrations/MonthlyPendingTypeIcon.svg?react';
-import MonthlyRegularTypeIcon from '../assets/illustrations/MonthlyRegularTypeIcon.svg?react';
+import MonthlyConstipationTypeIcon from '../assets/illustrations/monthlyConstipationTypeIcon.svg?react';
+import MonthlyPendingTypeIcon from '../assets/illustrations/monthlyPendingTypeIcon.svg?react';
+import MonthlyRegularTypeIcon from '../assets/illustrations/monthlyRegularTypeIcon.svg?react';
 import type { MonthlyTypeTypes } from '../types/reportTypes';
 
 interface MonthlyTypeCardPropTypes {

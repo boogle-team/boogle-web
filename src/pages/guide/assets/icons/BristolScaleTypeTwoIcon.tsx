@@ -1,3 +1,3 @@
-import BristolScaleTypeTwoIcon from '../illustrations/BristolScaleTypeTwoIcon.svg?react';
+import BristolScaleTypeTwoIcon from '../illustrations/bristolScaleTypeTwoIcon.svg?react';
 
 export default BristolScaleTypeTwoIcon;

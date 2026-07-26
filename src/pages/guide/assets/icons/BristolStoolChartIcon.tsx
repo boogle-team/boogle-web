@@ -1,3 +1,3 @@
-import BristolStoolChartIcon from '../illustrations/BristolStoolChartIcon.svg?react';
+import BristolStoolChartIcon from '../illustrations/bristolStoolChartIcon.svg?react';
 
 export default BristolStoolChartIcon;

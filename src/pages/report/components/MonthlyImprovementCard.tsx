@@ -1,4 +1,4 @@
-import MonthlyConditionImprovementIcon from '../assets/illustrations/MonthlyConditionImprovementIcon.svg?react';
+import MonthlyConditionImprovementIcon from '../assets/illustrations/monthlyConditionImprovementIcon.svg?react';
 import type { PatternTypes } from '../types/reportTypes';
 
 interface MonthlyImprovementCardPropTypes {

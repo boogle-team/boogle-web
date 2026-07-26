@@ -1,3 +1,3 @@
-import SleepConditionIcon from '../illustrations/SleepConditionIcon.svg?react';
+import SleepConditionIcon from '../illustrations/sleepConditionIcon.svg?react';
 
 export default SleepConditionIcon;
