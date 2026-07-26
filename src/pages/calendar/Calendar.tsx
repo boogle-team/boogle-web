@@ -20,12 +20,12 @@ import { getMockCalendarRecords } from '@/pages/calendar/utils/mockCalendarRecor
 
 const Calendar = () => {
   const navigate = useNavigate();
+  // TODO: 캘린더 조회 API에 서버 기준 날짜가 추가되면 그 값으로 교체한다.
+  const [todayDate] = useState(() => dayjs().format(DATE_FORMAT));
   const [currentDate, setCurrentDate] = useState(() =>
     dayjs().startOf('month'),
   );
-  const [selectedDate, setSelectedDate] = useState(() =>
-    dayjs().format(DATE_FORMAT),
-  );
+  const [selectedDate, setSelectedDate] = useState(todayDate);
 
   const {
     data: selectedDailyRecord,
@@ -103,6 +103,7 @@ const Calendar = () => {
             currentDate={currentDate}
             recordMap={recordMap}
             selectedDate={selectedDate}
+            todayDate={todayDate}
             markConfig={CALENDAR_MARK_CONFIG}
             onSelectDate={handleDateCellClick}
           />

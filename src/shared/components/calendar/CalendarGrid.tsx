@@ -12,7 +12,7 @@ interface CalendarGridPropTypes {
   currentDate: Dayjs;
   recordMap: CalendarRecordMapTypes;
   selectedDate: string;
-  todayDate?: string;
+  todayDate: string;
   isFixedSixWeekHeight?: boolean;
   markConfig: CalendarMarkConfigMapTypes;
   onSelectDate: (date: string) => void;
