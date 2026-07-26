@@ -40,8 +40,8 @@ const Calendar = () => {
   } = useCalendarDailyRecordQuery(selectedDate);
 
   const recordMap = useMemo(
-    () => getMockCalendarRecords(currentDate),
-    [currentDate],
+    () => getMockCalendarRecords(currentDate, todayDate),
+    [currentDate, todayDate],
   );
 
   const monthlySummary = useMemo(
@@ -151,6 +151,7 @@ const Calendar = () => {
           <div className="flex flex-col gap-7">
             <DailyBoogleRecordCard
               view={boogleRecordView}
+              shouldShowActionWhenRecorded={false}
               onCreateClick={handleBoogleRecordCreateButtonClick}
               onEditClick={handleBoogleRecordEditButtonClick}
             />
