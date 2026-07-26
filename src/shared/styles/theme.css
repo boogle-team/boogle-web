@@ -219,3 +219,13 @@
 @utility animate-complete-content {
   animation: complete-content-fade-up 500ms ease-out both;
 }
+
+/* 가로 스크롤은 유지하면서 스크롤바만 감춘다. */
+@utility scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* 구형 Edge/IE */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+}

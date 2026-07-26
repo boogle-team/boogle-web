@@ -41,6 +41,14 @@ export const PAIN_LEVEL_LABELS = [
   '매우 심해요',
 ];
 
+export const LIFE_RECORD_MODAL = {
+  title: '오늘의 생활 기록도 할까요?',
+  description:
+    '식단, 수분, 스트레스 등을 함께 기록하면\n더 정확한 분석이 가능해요',
+  cancelText: '다음에 할게요',
+  confirmText: '생활 기록 하기',
+} as const;
+
 export const HOURS = Array.from({ length: 12 }, (_, index) => index + 1);
 export const MINUTES = Array.from({ length: 60 }, (_, index) => index);
 export const MERIDIEMS: MeridiemTypes[] = ['AM', 'PM'];

@@ -1,6 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Record from '@/pages/record/main/Main';
-import RecordEdit from '@/pages/record/edit/Edit';
+import BoogleRecordFormPage from '../pages/boogleRecord/BoogleRecordFormPage';
+import LifeRecordFormPage from '../pages/lifeRecord/LifeRecordFormPage';
+import Record from '../pages/record/main/Main';
+import RecordEdit from '../pages/record/edit/Edit';
+import RecordDetail from '../pages/record/detail/Detail';
+import RecordLife from '../pages/record/life/Life';
+import RecordLifeDetail from '../pages/record/life/LifeDetail';
+import RecordLifeEdit from '../pages/record/life/LifeEdit';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
 import ProfileEdit from '@/pages/settings/ProfileEdit';
@@ -105,6 +111,22 @@ export const Router = createBrowserRouter([
   {
     path: '/record/edit',
     element: <RecordEdit />,
+  },
+  {
+    path: '/record/detail',
+    element: <RecordDetail />,
+  },
+  {
+    path: '/record/life',
+    element: <RecordLife />,
+  },
+  {
+    path: '/record/life/detail',
+    element: <RecordLifeDetail />,
+  },
+  {
+    path: '/record/life/edit',
+    element: <RecordLifeEdit />,
   },
   {
     path: '/settings',

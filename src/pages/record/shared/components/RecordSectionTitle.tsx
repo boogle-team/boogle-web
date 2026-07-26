@@ -1,12 +1,14 @@
-import { Info } from 'lucide-react';
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 
+import InfoIcon from '@/shared/assets/icons/infoIcon.svg?react';
 import BulletPointIcon from '@/shared/assets/illustrations/record/bulletPoint.svg?react';
 
 interface RecordSectionTitlePropTypes {
   title: string;
   isInfoVisible?: boolean;
   onInfoClick?: () => void;
+  /** 툴팁 꼬리를 안내 버튼 중앙에 맞추기 위해 위치를 측정할 때 사용한다. */
+  infoButtonRef?: RefObject<HTMLButtonElement | null>;
   rightContent?: ReactNode;
 }
 
@@ -14,6 +16,7 @@ const RecordSectionTitle = ({
   title,
   isInfoVisible = false,
   onInfoClick,
+  infoButtonRef,
   rightContent,
 }: RecordSectionTitlePropTypes) => {
   return (
@@ -24,12 +27,13 @@ const RecordSectionTitle = ({
 
         {isInfoVisible && (
           <button
+            ref={infoButtonRef}
             type="button"
             aria-label={`${title} 안내`}
             onClick={onInfoClick}
-            className="flex h-4 w-4 items-center justify-center text-gray-6"
+            className="flex h-4 w-4 items-center justify-center"
           >
-            <Info className="h-4 w-4" aria-hidden="true" />
+            <InfoIcon className="h-4 w-4 text-gray-5" aria-hidden="true" />
           </button>
         )}
       </div>
