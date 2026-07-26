@@ -15,6 +15,7 @@ import {
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
 import CalendarMonthlySummaryBar from '@/pages/calendar/components/CalendarMonthlySummaryBar';
+import SelectedDateHeader from '@/pages/calendar/components/SelectedDateHeader';
 import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
 import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
 import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
@@ -121,7 +122,9 @@ const Calendar = () => {
         <CalendarMonthlySummaryBar summary={monthlySummary} />
       </div>
 
-      <section className="px-layout py-8">
+      <section className="flex flex-col gap-3 px-layout py-8">
+        <SelectedDateHeader selectedDate={selectedDate} />
+
         {isLoading ? (
           <div className="rounded-xl bg-beige-1 px-4 py-6 text-center body-m-bold text-gray-8">
             기록을 불러오는 중이에요
