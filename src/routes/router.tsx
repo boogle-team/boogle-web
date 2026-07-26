@@ -4,6 +4,8 @@ import LifeRecordFormPage from '../pages/lifeRecord/LifeRecordFormPage';
 import Record from '../pages/record/main/Main';
 import RecordEdit from '../pages/record/edit/Edit';
 import RecordDetail from '../pages/record/detail/Detail';
+import RecordLife from '../pages/record/life/Life';
+import RecordLifeEdit from '../pages/record/life/LifeEdit';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
 import ProfileEdit from '../pages/settings/ProfileEdit';
@@ -112,6 +114,14 @@ export const Router = createBrowserRouter([
   {
     path: '/record/detail',
     element: <RecordDetail />,
+  },
+  {
+    path: '/record/life',
+    element: <RecordLife />,
+  },
+  {
+    path: '/record/life/edit',
+    element: <RecordLifeEdit />,
   },
   {
     path: '/settings',
