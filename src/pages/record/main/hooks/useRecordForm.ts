@@ -15,6 +15,7 @@ import type {
 export const useRecordForm = () => {
   const formState = useRecordDraftStore((state) => state.main);
   const updateMain = useRecordDraftStore((state) => state.updateMain);
+  const updateMainTime = useRecordDraftStore((state) => state.updateMainTime);
 
   const handleBowelStatusChange = (bowelStatus: BowelStatusTypes) => {
     // '없음'이면 하위 항목이 화면에서 사라지므로 값도 함께 되돌린다.
@@ -34,8 +35,9 @@ export const useRecordForm = () => {
   };
 
   // 시/분/오전오후 휠은 각각 독립적으로 바뀌므로 부분 업데이트를 받는다.
+  // 병합은 스토어가 최신 state 기준으로 처리한다.
   const handleTimeChange = (partialTime: Partial<RecordTimeValueTypes>) => {
-    updateMain({ time: { ...formState.time, ...partialTime } });
+    updateMainTime(partialTime);
   };
 
   const handleStoolTypeChange = (stoolType: StoolTypeId) => {
