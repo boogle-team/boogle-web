@@ -13,12 +13,15 @@ import {
   getLifeRecordView,
 } from '@/shared/components/dailyRecord';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import TagsSection from '@/shared/components/tagSection/TagsSection';
+import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
 import CalendarMonthlySummaryBar from '@/pages/calendar/components/CalendarMonthlySummaryBar';
 import SelectedDateHeader from '@/pages/calendar/components/SelectedDateHeader';
 import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
 import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
 import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
+import { getDailyAutoTags } from '@/pages/calendar/utils/getDailyAutoTags';
 import { getMockCalendarRecords } from '@/pages/calendar/utils/mockCalendarRecords';
 
 const Calendar = () => {
@@ -62,6 +65,15 @@ const Calendar = () => {
         record: selectedDailyRecord?.lifeRecord ?? null,
       }),
     [selectedDailyRecord?.lifeRecord, selectedDate],
+  );
+
+  const autoTagItems = useMemo(
+    () =>
+      getDailyAutoTags({
+        boogleRecords: selectedDailyRecord?.boogleRecords ?? [],
+        lifeRecord: selectedDailyRecord?.lifeRecord ?? null,
+      }).map((tagLabel) => ({ id: tagLabel, label: tagLabel })),
+    [selectedDailyRecord?.boogleRecords, selectedDailyRecord?.lifeRecord],
   );
 
   const handlePreviousMonthButtonClick = () =>
@@ -147,6 +159,13 @@ const Calendar = () => {
               shouldShowDetail
               onCreateClick={handleLifeRecordCreateButtonClick}
               onEditClick={handleLifeRecordEditButtonClick}
+            />
+
+            <TagsSection
+              icon={<Sparkle />}
+              title="이날의 태그"
+              description="AI가 메모에서 찾았어요!"
+              tags={autoTagItems}
             />
           </div>
         ) : null}
