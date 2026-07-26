@@ -1,6 +1,11 @@
 import type { RadioOptionCardOptionTypes } from '@/pages/record/shared/components/RadioOptionCard';
 import type { SeverityCardOptionTypes } from '@/pages/record/shared/components/SeverityCard';
-import AmountPlaceholderIcon from '@/shared/assets/illustrations/record/amount/amountDefault.svg?react';
+import AmountHighIcon from '@/shared/assets/illustrations/record/amount/amountHigh.svg?react';
+import AmountHighDefaultIcon from '@/shared/assets/illustrations/record/amount/amountHighDefault.svg?react';
+import AmountLowIcon from '@/shared/assets/illustrations/record/amount/amountLow.svg?react';
+import AmountLowDefaultIcon from '@/shared/assets/illustrations/record/amount/amountLowDefault.svg?react';
+import AmountMediumIcon from '@/shared/assets/illustrations/record/amount/amountMedium.svg?react';
+import AmountMediumDefaultIcon from '@/shared/assets/illustrations/record/amount/amountMediumDefault.svg?react';
 import DurationLongIcon from '@/shared/assets/illustrations/record/duration/durationLong.svg?react';
 import DurationMediumIcon from '@/shared/assets/illustrations/record/duration/durationMedium.svg?react';
 import DurationShortIcon from '@/shared/assets/illustrations/record/duration/durationShort.svg?react';
@@ -70,26 +75,24 @@ export const DURATION_OPTIONS: RadioOptionCardOptionTypes<DurationTypes>[] = [
   },
 ];
 
-// TODO: 적음/보통/많음 각각의 기본·선택 svg를 받으면 아래 아이콘을 교체한다.
-// 지금은 전부 amountDefault.svg라서 세 카드 모두 '적음'으로 보인다.
 export const AMOUNT_OPTIONS: AmountOptionTypes[] = [
   {
     value: 'small',
     label: '적음',
-    DefaultIcon: AmountPlaceholderIcon,
-    SelectedIcon: AmountPlaceholderIcon,
+    DefaultIcon: AmountLowDefaultIcon,
+    SelectedIcon: AmountLowIcon,
   },
   {
     value: 'medium',
     label: '보통',
-    DefaultIcon: AmountPlaceholderIcon,
-    SelectedIcon: AmountPlaceholderIcon,
+    DefaultIcon: AmountMediumDefaultIcon,
+    SelectedIcon: AmountMediumIcon,
   },
   {
     value: 'large',
     label: '많음',
-    DefaultIcon: AmountPlaceholderIcon,
-    SelectedIcon: AmountPlaceholderIcon,
+    DefaultIcon: AmountHighDefaultIcon,
+    SelectedIcon: AmountHighIcon,
   },
 ];
 

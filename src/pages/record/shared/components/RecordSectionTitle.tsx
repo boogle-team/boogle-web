@@ -1,5 +1,6 @@
 import type { ReactNode, RefObject } from 'react';
 
+import InfoIcon from '@/shared/assets/icons/infoIcon.svg?react';
 import BulletPointIcon from '@/shared/assets/illustrations/record/bulletPoint.svg?react';
 
 interface RecordSectionTitlePropTypes {
@@ -30,11 +31,9 @@ const RecordSectionTitle = ({
             type="button"
             aria-label={`${title} 안내`}
             onClick={onInfoClick}
-            className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-5 text-beige-1"
+            className="flex h-4 w-4 items-center justify-center"
           >
-            <span aria-hidden="true" className="caption-bold leading-none">
-              i
-            </span>
+            <InfoIcon className="h-4 w-4 text-gray-5" aria-hidden="true" />
           </button>
         )}
       </div>

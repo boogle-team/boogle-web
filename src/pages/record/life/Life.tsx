@@ -90,9 +90,9 @@ const Life = () => {
     // TODO: 선택한 태그를 저장된 기록에 반영 후 홈 복귀
   };
 
+  // 세부 기록도 같은 날짜의 초안이므로 날짜를 그대로 넘긴다.
   const handleDetailRecordLinkClick = () => {
-    // TODO: L-02(생활 세부 항목 기록) 라우트 연결
-    navigate('/record/life/detail');
+    navigate(`/record/life/detail?date=${recordDate}`);
   };
 
   return (

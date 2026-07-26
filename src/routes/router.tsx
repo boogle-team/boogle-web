@@ -5,6 +5,7 @@ import Record from '../pages/record/main/Main';
 import RecordEdit from '../pages/record/edit/Edit';
 import RecordDetail from '../pages/record/detail/Detail';
 import RecordLife from '../pages/record/life/Life';
+import RecordLifeDetail from '../pages/record/life/LifeDetail';
 import RecordLifeEdit from '../pages/record/life/LifeEdit';
 import Notification from '@/pages/notification/Notification';
 import Settings from '@/pages/settings/Settings';
@@ -118,6 +119,10 @@ export const Router = createBrowserRouter([
   {
     path: '/record/life',
     element: <RecordLife />,
+  },
+  {
+    path: '/record/life/detail',
+    element: <RecordLifeDetail />,
   },
   {
     path: '/record/life/edit',

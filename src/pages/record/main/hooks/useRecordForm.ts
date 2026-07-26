@@ -35,7 +35,8 @@ export const useRecordForm = () => {
   };
 
   // 시/분/오전오후 휠은 각각 독립적으로 바뀌므로 부분 업데이트를 받는다.
-  // 병합은 스토어가 최신 state 기준으로 처리한다.
+  // 병합은 store에 맡긴다. 렌더 시점 formState를 기준으로 병합하면
+  // 리렌더 전에 다른 휠 변경이 들어올 때 앞선 변경이 덮어써진다.
   const handleTimeChange = (partialTime: Partial<RecordTimeValueTypes>) => {
     updateMainTime(partialTime);
   };
