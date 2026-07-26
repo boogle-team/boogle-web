@@ -1,9 +1,9 @@
 import type { Dayjs } from 'dayjs';
-import type {
-  CalendarMarkTypes,
-  CalendarRecordMapTypes,
-} from '../types/calendarTypes';
-import { DATE_FORMAT } from './generateMonthDates';
+import {
+  DATE_FORMAT,
+  type CalendarMarkTypes,
+  type CalendarRecordMapTypes,
+} from '@/shared/components/calendar';
 
 // TODO: 실제 기록 API 연동 후 이 목데이터 생성 로직은 제거한다.
 const getMarksForDay = (day: number): CalendarMarkTypes[] => {

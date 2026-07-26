@@ -1,4 +1,4 @@
-import type { CalendarMarkTypes } from '../types/calendarTypes';
+import type { CalendarMarkTypes } from '@/shared/components/calendar';
 
 interface MarkConfigTypes {
   label: string;

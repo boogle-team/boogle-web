@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getHomeDashboard } from '../apis/getHomeDashboard';
+import { getHomeDashboard } from '@/pages/home/apis/getHomeDashboard';
 
 export const HOME_DASHBOARD_QUERY_KEY = 'homeDashboard';
 

@@ -35,6 +35,11 @@ const useBottomNavigation = () => {
     setIsModalOpen(false);
   };
 
+  const handleRecordSelectClick = (path: string) => {
+    setIsModalOpen(false);
+    navigate(path);
+  };
+
   return {
     pathname,
     isModalOpen,
@@ -43,6 +48,7 @@ const useBottomNavigation = () => {
     handleTabClick,
     handlePlusClick,
     handleModalClose,
+    handleRecordSelectClick,
   };
 };
 

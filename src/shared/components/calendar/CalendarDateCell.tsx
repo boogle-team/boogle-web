@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
-import { CALENDAR_MARK_CONFIG } from '../constants/calendarMarkConfig';
 import type {
   CalendarDateCellTypes,
+  CalendarMarkConfigMapTypes,
   CalendarMarkTypes,
-} from '../types/calendarTypes';
+} from '@/shared/components/calendar/types/calendarTypes';
 
 interface CalendarDateCellPropTypes {
   cell: CalendarDateCellTypes;
   marks: CalendarMarkTypes[];
+  markConfig: CalendarMarkConfigMapTypes;
   isSelected: boolean;
   onSelectDate: (date: string) => void;
 }
@@ -15,18 +16,23 @@ interface CalendarDateCellPropTypes {
 const CalendarDateCell = ({
   cell,
   marks,
+  markConfig,
   isSelected,
   onSelectDate,
 }: CalendarDateCellPropTypes) => {
-  const { date, day, isCurrentMonth, isToday, isSunday, isSaturday } = cell;
+  const { date, day, isFutureDate, isToday, isSunday, isSaturday } = cell;
+  const dateLabel = dayjs(date).format('YYYY년 M월 D일');
+  const handleDateCellClick = () => {
+    onSelectDate(date);
+  };
 
   let dayNumberClassName = 'text-gray-8';
-  if (isToday) {
+  if (isSelected) {
     dayNumberClassName = 'bg-orange-6 text-beige-1';
-  } else if (isSelected) {
+  } else if (isToday) {
     dayNumberClassName = 'border border-orange-6 text-orange-6';
-  } else if (!isCurrentMonth) {
-    dayNumberClassName = 'text-gray-5';
+  } else if (isFutureDate) {
+    dayNumberClassName = 'text-gray-6';
   } else if (isSunday) {
     dayNumberClassName = 'text-semantic-sunday';
   } else if (isSaturday) {
@@ -36,9 +42,9 @@ const CalendarDateCell = ({
   return (
     <button
       type="button"
-      aria-label={dayjs(date).format('YYYY년 M월 D일')}
+      aria-label={dateLabel}
       aria-pressed={isSelected}
-      onClick={() => onSelectDate(date)}
+      onClick={handleDateCellClick}
       className="flex flex-col items-center gap-2 py-2"
     >
       <span
@@ -48,13 +54,17 @@ const CalendarDateCell = ({
       </span>
 
       <span className="flex h-1.5 items-center gap-1">
-        {isCurrentMonth &&
-          marks.map((markType) => (
+        {marks.map((markType) => {
+          const dotClassName = markConfig[markType]?.dotClassName;
+          if (!dotClassName) return null;
+
+          return (
             <span
               key={markType}
-              className={`h-1.5 w-1.5 shrink-0 rounded-full ${CALENDAR_MARK_CONFIG[markType].dotClassName}`}
+              className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotClassName}`}
             />
-          ))}
+          );
+        })}
       </span>
     </button>
   );

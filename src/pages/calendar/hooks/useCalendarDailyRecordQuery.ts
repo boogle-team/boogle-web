@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getCalendarDailyRecord } from '../apis/getCalendarDailyRecord';
+import { getCalendarDailyRecord } from '@/pages/calendar/apis/getCalendarDailyRecord';
 
 export const CALENDAR_DAILY_RECORD_QUERY_KEY = 'calendarDailyRecord';
 

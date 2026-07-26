@@ -1,8 +1,21 @@
-import type { HomeDashboardResponseTypes } from '@/pages/home/types/homeDashboardTypes';
+﻿import type {
+  HomeRecordStatusMapTypes,
+  HomeResponseTypes,
+} from '@/pages/home/types/homeTypes';
 
-const RECORDED_DATE = '2026-05-12';
+const MOCK_HOME_RECORD_STATUS_BY_DATE: HomeRecordStatusMapTypes = {
+  '2026-05-10': 'none',
+  '2026-05-11': 'dailyOnly',
+  '2026-05-12': 'complete',
+  '2026-05-13': 'none',
+  '2026-05-14': 'none',
+  '2026-05-15': 'none',
+  '2026-05-16': 'none',
+  '2026-05-18': 'boogleOnly',
+  '2026-05-20': 'noBoogle',
+};
 
-const MOCK_HOME_DASHBOARD_RESPONSE: HomeDashboardResponseTypes = {
+export const MOCK_HOME_RESPONSE: HomeResponseTypes = {
   success: true,
   data: {
     user: {
@@ -13,14 +26,14 @@ const MOCK_HOME_DASHBOARD_RESPONSE: HomeDashboardResponseTypes = {
       joinedDays: 12,
     },
     today: {
-      date: RECORDED_DATE,
+      date: '2026-05-12',
       greeting: '오늘 부글 신호를 보냈어요!',
     },
     streak: 2,
     weekStrip: [
       { date: '2026-05-10', hasRecord: false },
       { date: '2026-05-11', hasRecord: true },
-      { date: RECORDED_DATE, hasRecord: true },
+      { date: '2026-05-12', hasRecord: true },
       { date: '2026-05-13', hasRecord: false },
       { date: '2026-05-14', hasRecord: false },
       { date: '2026-05-15', hasRecord: false },
@@ -53,10 +66,12 @@ const MOCK_HOME_DASHBOARD_RESPONSE: HomeDashboardResponseTypes = {
       sleep: 'B',
       stress: 'L',
       water: 'L',
+      waterIntake: 1,
       mealRegular: 'R',
+      autoTags: ['음주', '자극적', '야식'],
       foods: [
         { id: 7, name: '야식' },
-        { id: 1, name: '자극적' },
+        { id: 1, name: '자극적인 음식' },
       ],
     },
     weeklyPattern: {
@@ -64,25 +79,16 @@ const MOCK_HOME_DASHBOARD_RESPONSE: HomeDashboardResponseTypes = {
       label: '딱딱한 변 경향',
       description: '수분이 부족했던 날과 함께 나타났어요.',
     },
+    recordStatusByDate: MOCK_HOME_RECORD_STATUS_BY_DATE,
+    boogleCountByDate: {
+      '2026-05-12': 2,
+      '2026-05-18': 1,
+    },
+    streakByDate: {
+      '2026-05-12': 2,
+      '2026-05-18': 1,
+      '2026-05-20': 1,
+    },
   },
   message: '요청이 성공적으로 처리되었습니다.',
-};
-
-export const getHomeDashboard = async (date: string) => {
-  if (date === RECORDED_DATE) {
-    return MOCK_HOME_DASHBOARD_RESPONSE.data;
-  }
-
-  return {
-    ...MOCK_HOME_DASHBOARD_RESPONSE.data,
-    today: {
-      date,
-      greeting: '부글 신호를 기다리고 있어요...',
-    },
-    streak: 0,
-    boogleCount: 0,
-    boogleRecords: [],
-    lifeRecord: null,
-    weeklyPattern: null,
-  };
 };
