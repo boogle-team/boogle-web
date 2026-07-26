@@ -19,7 +19,15 @@ export interface BowelRhythmTypes {
 
 export interface PatternTypes {
   description: string;
-  icon: 'check' | 'warning' | 'danger';
+  icon:
+    | 'chart'
+    | 'check'
+    | 'danger'
+    | 'droplet'
+    | 'frown'
+    | 'moon'
+    | 'package'
+    | 'warning';
   title: string;
 }
 

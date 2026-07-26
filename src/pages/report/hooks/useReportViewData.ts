@@ -3,6 +3,7 @@ import {
   CONDITION_PROGRESS,
   DEFAULT_MONTHLY_CONDITION_SCORE,
   INSUFFICIENT_REPORT_BY_MODE,
+  MONTHLY_IMPROVEMENTS,
   MONTHLY_PATTERNS,
   MONTHLY_SCORES,
   MONTHLY_SUMMARIES,
@@ -25,6 +26,7 @@ export const useReportViewData = (selectedMode: ReportModeTypes) => {
   const monthlyReportViewData = {
     conditionProgress: CONDITION_PROGRESS,
     conditionScore: DEFAULT_MONTHLY_CONDITION_SCORE,
+    improvements: MONTHLY_IMPROVEMENTS,
     monthlyType: MONTHLY_TYPES[0],
     monthlyTypes: MONTHLY_TYPES,
     patterns: MONTHLY_PATTERNS,

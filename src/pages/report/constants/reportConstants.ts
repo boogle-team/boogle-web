@@ -126,14 +126,37 @@ export const WEEKLY_PATTERNS: PatternTypes[] = [
 
 export const MONTHLY_PATTERNS: PatternTypes[] = [
   {
-    description: '수분 부족 날과 함께 많이 나타났어요',
-    icon: 'danger',
-    title: '딱딱한 변 반복',
+    description: '수분이 부족했던 날, 딱딱한 변이 함께 나타난 날이 많았어요',
+    icon: 'droplet',
+    title: '부족과 딱딱한 변',
   },
   {
-    description: '딱딱한 변 비율이 지난달 40%→27%로 줄었어요',
-    icon: 'check',
-    title: '전월 대비 개선',
+    description: '스트레스가 높았던 날 복통이 자주 함께 있었어요',
+    icon: 'frown',
+    title: '스트레스성 복통',
+  },
+  {
+    description: '이번 달 10일 이상 수면이 부족했어요',
+    icon: 'moon',
+    title: '수면 부족 반복',
+  },
+  {
+    description: '이번 달 변 상태의 절반 이상이 딱딱했어요',
+    icon: 'package',
+    title: '딱딱한 변 경향',
+  },
+];
+
+export const MONTHLY_IMPROVEMENTS: PatternTypes[] = [
+  {
+    description: '지난달보다 컨디션 점수가 38점 → 46점으로 올랐어요',
+    icon: 'chart',
+    title: '부글 컨디션 점수 상승',
+  },
+  {
+    description: '스트레스와 복통이 함께 나타난 횟수가 지난달 12회에서 5회로 줄었어요',
+    icon: 'chart',
+    title: '스트레스성 복통 완화',
   },
 ];
 
