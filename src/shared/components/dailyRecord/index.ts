@@ -11,6 +11,7 @@ export type {
   LifeRecordTypes,
   LifeRecordViewTypes,
   RecordTagTypes,
+  StoolSimpleCodeTypes,
 } from './types/dailyRecordTypes';
 export {
   formatDateKey,

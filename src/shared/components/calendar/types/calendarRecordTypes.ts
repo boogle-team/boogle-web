@@ -14,10 +14,3 @@ export interface CalendarDailyRecordResponseTypes {
   data: CalendarDailyRecordTypes;
   message: string;
 }
-
-export interface CalendarMonthDayTypes {
-  date: string;
-  hasBoogleRecord: boolean;
-  hasLifeRecord: boolean;
-  hasNoBowelRecord: boolean;
-}

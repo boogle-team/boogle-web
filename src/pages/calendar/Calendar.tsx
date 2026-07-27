@@ -13,10 +13,12 @@ import {
   getLifeRecordView,
 } from '@/shared/components/dailyRecord';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import { getApiErrorMessage } from '@/shared/apis/apiError';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
 import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
 import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
-import { getMockCalendarRecords } from '@/pages/calendar/utils/mockCalendarRecords';
+import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
+import { toCalendarRecordMap } from '@/pages/calendar/utils/calendarRecordMapper';
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -29,13 +31,24 @@ const Calendar = () => {
 
   const {
     data: selectedDailyRecord,
+    error,
     isError,
     isLoading,
   } = useCalendarDailyRecordQuery(selectedDate);
 
+  const {
+    data: calendarMonth,
+    error: monthError,
+    isError: isMonthError,
+  } = useCalendarMonthQuery({
+    year: currentDate.year(),
+    // dayjs의 month()는 0부터 시작하므로 서버 규격(1~12)에 맞춘다.
+    month: currentDate.month() + 1,
+  });
+
   const recordMap = useMemo(
-    () => getMockCalendarRecords(currentDate),
-    [currentDate],
+    () => toCalendarRecordMap(calendarMonth?.days ?? []),
+    [calendarMonth?.days],
   );
 
   const boogleRecordView = useMemo(
@@ -107,6 +120,14 @@ const Calendar = () => {
             markConfig={CALENDAR_MARK_CONFIG}
             onSelectDate={handleDateCellClick}
           />
+
+          {isMonthError ? (
+            <p className="pt-4 text-center caption text-gray-8">
+              이번 달 기록 표시를 불러오지 못했어요
+              <br />
+              {getApiErrorMessage(monthError, '잠시 후 다시 시도해 주세요')}
+            </p>
+          ) : null}
         </div>
       </div>
 
@@ -117,8 +138,11 @@ const Calendar = () => {
           </div>
         ) : null}
         {isError ? (
-          <div className="rounded-xl bg-beige-1 px-4 py-6 text-center body-m-bold text-gray-8">
-            기록 정보를 불러오지 못했어요
+          <div className="rounded-xl bg-beige-1 px-4 py-6 text-center text-gray-8">
+            <p className="body-m-bold">기록 정보를 불러오지 못했어요</p>
+            <p className="pt-1 caption">
+              {getApiErrorMessage(error, '잠시 후 다시 시도해 주세요')}
+            </p>
           </div>
         ) : null}
         {!isLoading && !isError ? (

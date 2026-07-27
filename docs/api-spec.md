@@ -86,10 +86,69 @@
 
 ## 캘린더
 
-[]
+[월별 캘린더 조회]
+: 해당 월의 날짜별 기록 여부와 월간 요약을 조회
 
-- 엔드포인트:
-- http 메소드:
+- 엔드포인트: /api/v1/calendar?year={year}&month={month}
+- http 메소드: GET
+- Success Status: 200 okay
+- month는 1~12 (dayjs의 0-based month가 아님)
+
+응답 예시
+
+```json
+{
+  "success": true,
+  "data": {
+    "year": 2026,
+    "month": 6,
+    "days": [
+      {
+        "date": "2026-06-01",
+        "boogleStatus": "BOWEL",
+        "hasLifeRecord": true,
+        "stoolSimple": "M"
+      },
+      {
+        "date": "2026-06-02",
+        "boogleStatus": "NO_BOWEL",
+        "hasLifeRecord": false,
+        "stoolSimple": null
+      },
+      {
+        "date": "2026-06-03",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false,
+        "stoolSimple": null
+      }
+    ],
+    "summary": {
+      "recordedDays": 10,
+      "noBowelDays": 3,
+      "unrecordedDays": 17,
+      "stoolDistribution": {
+        "hard": { "count": 6, "percent": 30 },
+        "normal": { "count": 10, "percent": 50 },
+        "loose": { "count": 4, "percent": 20 }
+      }
+    }
+  },
+  "message": "요청이 성공적으로 처리되었습니다."
+}
+```
+
+- boogleStatus: `BOWEL` 배변 기록 있음 / `NO_BOWEL` 배변 없음으로 저장 / `NONE` 부글 기록 없음
+- days는 해당 월 전체 날짜를 포함한다 (기록 없는 날은 `NONE`)
+- 캘린더 점 마킹 규칙: `BOWEL` → 부글(주황), `hasLifeRecord` → 생활 기록(노랑), `NO_BOWEL` → 배변없음(연주황)
+- summary, stoolSimple은 타입만 정의되어 있고 현재 화면에서 사용하지 않음 (리포트/월간 요약 UI 대비)
+- 에러 응답은 [공통 에러 응답](#공통-에러-응답)을 따른다 (400은 year/month 누락·형식 오류·범위(1~12) 초과)
+
+[일별 기록 조회] (스펙 미확정 - 목데이터 사용 중)
+: 선택한 날짜의 부글 기록 목록과 생활 기록을 조회
+
+- 엔드포인트: 미정
+- http 메소드: GET
+- 프론트 기대 응답: `{ date, boogleRecords: BoogleRecord[], lifeRecord: LifeRecord | null }`
 
 ## 가이드
 
