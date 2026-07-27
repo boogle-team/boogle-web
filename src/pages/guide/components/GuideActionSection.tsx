@@ -2,19 +2,24 @@ import type { GuideFeedbackTypes } from '../types/guideApiTypes';
 import type { GuideActionTypes, GuideDetailTypes } from '../types/guideTypes';
 import ActionTitleIcon from '../assets/illustrations/actionTitleIcon.svg?react';
 import GuideFeedbackButtons from './GuideFeedbackButtons';
+import GuideFeedbackToast from './GuideFeedbackToast';
 
 interface GuideActionSectionPropTypes {
   feedbackStatus?: GuideFeedbackTypes | null;
   guideDetail: GuideDetailTypes;
   isFeedbackPending?: boolean;
+  isFeedbackToastVisible?: boolean;
   onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
+  onFeedbackSubmit?: () => void;
 }
 
 const GuideActionSection = ({
   feedbackStatus = null,
   guideDetail,
   isFeedbackPending = false,
+  isFeedbackToastVisible = false,
   onFeedbackClick,
+  onFeedbackSubmit,
 }: GuideActionSectionPropTypes) => {
   const guideActions = getGuideActions(guideDetail);
 
@@ -33,11 +38,18 @@ const GuideActionSection = ({
         ))}
       </div>
 
+      {isFeedbackToastVisible && (
+        <div className="mt-3">
+          <GuideFeedbackToast />
+        </div>
+      )}
+
       <GuideFeedbackButtons
         feedbackStatus={feedbackStatus}
         guideId={guideDetail.id}
         isFeedbackPending={isFeedbackPending}
         onFeedbackClick={onFeedbackClick}
+        onFeedbackSubmit={onFeedbackSubmit}
       />
     </section>
   );

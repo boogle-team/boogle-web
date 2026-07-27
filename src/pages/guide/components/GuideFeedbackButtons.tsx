@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 
 import Chip from '@/shared/components/Chip';
 import type { GuideFeedbackTypes } from '../types/guideApiTypes';
-import GuideFeedbackToast from './GuideFeedbackToast';
 
 interface GuideFeedbackButtonsPropTypes {
   feedbackStatus: GuideFeedbackTypes | null;
   guideId: string;
   isFeedbackPending: boolean;
   onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
+  onFeedbackSubmit?: () => void;
 }
 
 const GuideFeedbackButtons = ({
@@ -16,30 +16,19 @@ const GuideFeedbackButtons = ({
   guideId,
   isFeedbackPending,
   onFeedbackClick,
+  onFeedbackSubmit,
 }: GuideFeedbackButtonsPropTypes) => {
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(
     Boolean(feedbackStatus),
   );
-  const [isToastVisible, setIsToastVisible] = useState(false);
 
   useEffect(() => {
     setIsFeedbackSubmitted(Boolean(feedbackStatus));
-    setIsToastVisible(false);
   }, [feedbackStatus, guideId]);
-
-  useEffect(() => {
-    if (!isToastVisible) return;
-
-    const toastTimerId = window.setTimeout(() => {
-      setIsToastVisible(false);
-    }, 2500);
-
-    return () => window.clearTimeout(toastTimerId);
-  }, [isToastVisible]);
 
   const handleFeedbackClick = (feedback: GuideFeedbackTypes) => {
     setIsFeedbackSubmitted(true);
-    setIsToastVisible(true);
+    onFeedbackSubmit?.();
     onFeedbackClick?.(feedback);
   };
 
@@ -52,7 +41,7 @@ const GuideFeedbackButtons = ({
   };
 
   if (isFeedbackSubmitted) {
-    return isToastVisible && <GuideFeedbackToast />;
+    return null;
   }
 
   return (

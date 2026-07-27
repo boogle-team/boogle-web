@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
@@ -28,9 +29,28 @@ const GuideDetailView = ({
   const isWarningGuide = guideDetail.type === 'warning';
   const hasInfoSections = Boolean(guideDetail.infoSections);
   const hasSummaryCard = !isInfoGuide && !isWarningGuide;
+  const [isFeedbackToastVisible, setIsFeedbackToastVisible] = useState(false);
+
+  useEffect(() => {
+    setIsFeedbackToastVisible(false);
+  }, [guideDetail.id]);
+
+  useEffect(() => {
+    if (!isFeedbackToastVisible) return;
+
+    const toastTimerId = window.setTimeout(() => {
+      setIsFeedbackToastVisible(false);
+    }, 2500);
+
+    return () => window.clearTimeout(toastTimerId);
+  }, [isFeedbackToastVisible]);
 
   const handleBackClick = () => {
     navigate(-1);
+  };
+
+  const handleFeedbackSubmit = () => {
+    setIsFeedbackToastVisible(true);
   };
 
   return (
@@ -81,7 +101,9 @@ const GuideDetailView = ({
           feedbackStatus={guideDetail.feedbackStatus}
           guideDetail={guideDetail}
           isFeedbackPending={isFeedbackPending}
+          isFeedbackToastVisible={isFeedbackToastVisible}
           onFeedbackClick={onFeedbackClick}
+          onFeedbackSubmit={handleFeedbackSubmit}
         />
 
         {!isWarningGuide && <GuideSourceText guideDetail={guideDetail} />}
