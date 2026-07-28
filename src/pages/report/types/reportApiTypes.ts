@@ -32,7 +32,8 @@ export type ReportTrendTypes =
 export type StoolSimpleTypes = 'H' | 'M' | 'T';
 export type BowelDayOfWeekTypes =
   'FRI' | 'MON' | 'SAT' | 'SUN' | 'THU' | 'TUE' | 'WED';
-export type TimeSlotTypes = 'AFTERNOON' | 'DAWN' | 'EVENING' | 'MORNING';
+export type TimeSlotTypes =
+  'AFTERNOON' | 'DAWN' | 'EVENING' | 'MORNING' | 'NIGHT';
 export type PatternLevelTypes = 'GOOD' | 'INFO' | 'OK' | 'WARN';
 export type GuideCategoryTypes = 'H' | 'P' | 'W';
 export type GuideFeedbackStatusTypes = 'A' | 'G' | 'N' | null;

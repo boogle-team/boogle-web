@@ -10,7 +10,9 @@ import WeeklyReportBody from './components/WeeklyReportBody';
 import { useReportPdfDownload } from './hooks/useReportPdfDownload';
 import { useReportPeriod } from './hooks/useReportPeriod';
 import { useReportViewData } from './hooks/useReportViewData';
+import useWeeklyReportQuery from './hooks/useWeeklyReportQuery';
 import type { ReportModeTypes } from './types/reportTypes';
+import { getReportDateRange } from './utils/reportPeriodUtils';
 
 const Report = () => {
   const [searchParams] = useSearchParams();
@@ -23,6 +25,13 @@ const Report = () => {
     periodText,
     selectedMode,
   } = useReportPeriod();
+  const { startDate: reportStartDate } = getReportDateRange(
+    selectedMode,
+    currentPeriodDate,
+  );
+
+  useWeeklyReportQuery(isWeeklyReport ? reportStartDate : '');
+
   const { downloadReportPdf, pdfErrorMessage } = useReportPdfDownload();
   const { insufficientReport, monthlyReportViewData, weeklyReportViewData } =
     useReportViewData(selectedMode);
