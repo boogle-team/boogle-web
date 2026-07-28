@@ -1,7 +1,7 @@
-import NotificationCard from './NotificationCard';
-import { groupNotificationsByDate } from '../utils/notificationDate';
+import NotificationCard from '@/pages/notification/components/NotificationCard';
+import { groupNotificationsByDate } from '@/pages/notification/utils/notificationDate';
 
-import type { NotificationItemTypes } from '../types/notificationTypes';
+import type { NotificationItemTypes } from '@/pages/notification/types/notificationTypes';
 
 type NotificationListStatusTypes = 'loading' | 'success' | 'error';
 

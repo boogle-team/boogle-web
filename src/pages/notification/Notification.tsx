@@ -1,30 +1,26 @@
 import { useNavigate } from 'react-router-dom';
 
+import NotificationList from '@/pages/notification/components/NotificationList';
+import { NOTIFICATION_DESTINATION_MAP } from '@/pages/notification/constants/notificationConstants';
+import { useNotifications } from '@/pages/notification/hooks/useNotifications';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import NotificationList from './components/NotificationList';
-import { NOTIFICATION_DESTINATION_MAP } from './constants/notificationConstants';
-import { useNotifications } from './hooks/useNotifications';
-
-import type { NotificationItemTypes } from './types/notificationTypes';
+import type { NotificationItemTypes } from '@/pages/notification/types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
-  const {
-    notifications,
-    isLoading,
-    isError,
-    refetch,
-    markNotificationAsReadLocally,
-  } = useNotifications();
+  const { notifications, isLoading, isError, refetch, markNotificationAsRead } =
+    useNotifications();
 
   const handleBackButtonClick = () => {
     navigate('/');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {
-    // 읽음 처리 API가 제공되기 전까지 현재 화면의 캐시만 갱신합니다.
-    markNotificationAsReadLocally(notification.id);
+    if (!notification.isRead) {
+      markNotificationAsRead(notification.id);
+    }
+
     navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
   };
 

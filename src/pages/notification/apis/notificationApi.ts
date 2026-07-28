@@ -1,11 +1,16 @@
 import { api } from '@/shared/apis/axiosInstance';
 
-import { NOTIFICATION_API_ENDPOINT } from '../constants/notificationConstants';
+import {
+  getNotificationReadApiEndpoint,
+  NOTIFICATION_API_ENDPOINT,
+} from '@/pages/notification/constants/notificationConstants';
 
 import type {
   GetNotificationsDataTypes,
   GetNotificationsResponseTypes,
-} from '../types/notificationTypes';
+  PatchNotificationReadDataTypes,
+  PatchNotificationReadResponseTypes,
+} from '@/pages/notification/types/notificationTypes';
 
 export const NOTIFICATION_QUERY_KEY = ['notifications'] as const;
 
@@ -17,3 +22,13 @@ export const getNotifications =
 
     return data.data;
   };
+
+export const patchNotificationRead = async (
+  notificationId: number,
+): Promise<PatchNotificationReadDataTypes> => {
+  const { data } = await api.patch<PatchNotificationReadResponseTypes>(
+    getNotificationReadApiEndpoint(notificationId),
+  );
+
+  return data.data;
+};
