@@ -10,15 +10,21 @@ import type { NotificationItemTypes } from './types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
-  const { notifications, isLoading, isError, refetch, markNotificationAsRead } =
-    useNotifications();
+  const {
+    notifications,
+    isLoading,
+    isError,
+    refetch,
+    markNotificationAsReadLocally,
+  } = useNotifications();
 
   const handleBackButtonClick = () => {
     navigate('/');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {
-    markNotificationAsRead(notification.id);
+    // 읽음 처리 API가 제공되기 전까지 현재 화면의 캐시만 갱신합니다.
+    markNotificationAsReadLocally(notification.id);
     navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
   };
 

@@ -15,7 +15,7 @@ export const useNotifications = () => {
     queryFn: getNotifications,
   });
 
-  const markNotificationAsRead = (notificationId: number) => {
+  const markNotificationAsReadLocally = (notificationId: number) => {
     queryClient.setQueryData<GetNotificationsDataTypes>(
       NOTIFICATION_QUERY_KEY,
       (previous) => {
@@ -43,6 +43,6 @@ export const useNotifications = () => {
     isLoading,
     isError,
     refetch,
-    markNotificationAsRead,
+    markNotificationAsReadLocally,
   };
 };
