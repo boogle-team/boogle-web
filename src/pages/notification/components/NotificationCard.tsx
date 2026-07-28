@@ -10,6 +10,7 @@ import type {
   NotificationCategoryTypes,
   NotificationIconTypes,
   NotificationItemTypes,
+  NotificationTypeTypes,
 } from '../types/notificationTypes';
 import type { ComponentType, SVGProps } from 'react';
 
@@ -35,6 +36,14 @@ const DEFAULT_NOTIFICATION_ICON_MAP = {
   P: 'weeklyReport',
 } satisfies Record<NotificationCategoryTypes, NotificationIconTypes>;
 
+const NOTIFICATION_TYPE_ICON_MAP = {
+  WARNING: 'warning',
+  RECORD_REMINDER: 'record',
+  REPORT_READY: 'weeklyReport',
+  PDF_SAVED: 'monthlyReport',
+  STREAK: 'streak',
+} satisfies Record<NotificationTypeTypes, NotificationIconTypes>;
+
 const NotificationCard = ({
   notification,
   onClick,
@@ -42,7 +51,9 @@ const NotificationCard = ({
   const isWarning = notification.category === 'W';
   const iconType =
     notification.iconType ??
-    DEFAULT_NOTIFICATION_ICON_MAP[notification.category];
+    (notification.type
+      ? NOTIFICATION_TYPE_ICON_MAP[notification.type]
+      : DEFAULT_NOTIFICATION_ICON_MAP[notification.category]);
   const NotificationIcon = NOTIFICATION_ICON_MAP[iconType];
 
   return (

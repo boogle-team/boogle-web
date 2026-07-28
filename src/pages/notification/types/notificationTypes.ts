@@ -2,12 +2,20 @@ export type NotificationCategoryTypes = 'W' | 'R' | 'P';
 
 export type NotificationLinkToTypes = 'GUIDE_WARNING' | 'HOME' | 'REPORT';
 
+export type NotificationTypeTypes =
+  | 'WARNING'
+  | 'RECORD_REMINDER'
+  | 'REPORT_READY'
+  | 'PDF_SAVED'
+  | 'STREAK';
+
 export type NotificationIconTypes =
   'warning' | 'record' | 'weeklyReport' | 'monthlyReport' | 'streak';
 
 export interface NotificationApiItemTypes {
   id: number;
   category: NotificationCategoryTypes;
+  type: NotificationTypeTypes | null;
   title: string;
   content: string;
   linkTo: NotificationLinkToTypes;

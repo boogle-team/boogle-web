@@ -3,8 +3,10 @@ import CalendarPicker from '@/pages/home/components/CalendarPicker';
 import DateBottomModal from '@/pages/home/components/DateBottomModal';
 import HomeContentSection from '@/pages/home/components/HomeContentSection';
 import useHomeState from '@/pages/home/hooks/useHomeState';
+import { useNotifications } from '@/pages/notification/hooks/useNotifications';
 
 const Home = () => {
+  const { unreadCount } = useNotifications();
   const {
     isLoading,
     isError,
@@ -57,7 +59,7 @@ const Home = () => {
           variant="home"
           title={homeDateTitle}
           subTitle={homeDateSubTitle}
-          hasUnreadNotification
+          hasUnreadNotification={unreadCount > 0}
           onTitleClick={handleDateTitleClick}
           onNotificationButtonClick={handleNotificationButtonClick}
           onSettingButtonClick={handleSettingButtonClick}
