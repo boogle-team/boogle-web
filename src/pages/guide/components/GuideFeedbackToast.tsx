@@ -2,7 +2,7 @@ import FeedbackToastIcon from '../assets/illustrations/feedbackToastIcon.svg?rea
 
 const GuideFeedbackToast = () => (
   <div
-    className="flex w-full max-w-[22.375rem] flex-col items-start gap-2.5 rounded-xl bg-orange-1 px-4 py-3"
+    className="flex w-full flex-col items-start gap-2.5 rounded-xl bg-orange-1 px-4 py-3"
     role="status"
     aria-live="polite"
   >
