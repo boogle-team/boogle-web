@@ -1,3 +1,3 @@
-import PatternCheckIcon from '../illustrations/PatternCheckIcon.svg?react';
+import PatternCheckIcon from '../illustrations/patternCheckIcon.svg?react';
 
 export default PatternCheckIcon;

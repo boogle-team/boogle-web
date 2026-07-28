@@ -1,4 +1,4 @@
-import PersonalCategoryIcon from '../assets/illustrations/PersonalCategoryIcon.svg?react';
+import PersonalCategoryIcon from '../assets/illustrations/personalCategoryIcon.svg?react';
 import type { GuideDetailTypes } from '../types/guideTypes';
 
 interface GuideCategoryBadgePropTypes {

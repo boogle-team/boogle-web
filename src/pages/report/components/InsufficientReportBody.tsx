@@ -1,4 +1,4 @@
-import InsufficientReportIcon from '../assets/illustrations/InsufficientReportIcon.svg?react';
+import InsufficientReportIcon from '../assets/illustrations/insufficientReportIcon.svg?react';
 import type {
   InsufficientReportTypes,
   ReportModeTypes,

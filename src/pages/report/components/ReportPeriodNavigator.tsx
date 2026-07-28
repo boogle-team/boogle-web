@@ -1,4 +1,4 @@
-import PeriodChevronRightIcon from '../assets/illustrations/PeriodChevronRightIcon.svg?react';
+import PeriodChevronRightIcon from '../assets/illustrations/periodChevronRightIcon.svg?react';
 import type { ReportPeriodTextTypes } from '../types/reportTypes';
 
 interface ReportPeriodNavigatorPropTypes {

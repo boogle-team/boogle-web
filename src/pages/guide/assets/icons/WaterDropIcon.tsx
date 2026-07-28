@@ -1,3 +1,3 @@
-import WaterDropIcon from '../illustrations/WaterDropIcon.svg?react';
+import WaterDropIcon from '../illustrations/waterDropIcon.svg?react';
 
 export default WaterDropIcon;

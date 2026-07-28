@@ -1,3 +1,3 @@
-import NormalBowelCountIcon from '../illustrations/NormalBowelCountIcon.svg?react';
+import NormalBowelCountIcon from '../illustrations/normalBowelCountIcon.svg?react';
 
 export default NormalBowelCountIcon;

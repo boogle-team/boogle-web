@@ -1,3 +1,3 @@
-import StressGutIcon from '../illustrations/StressGutIcon.svg?react';
+import StressGutIcon from '../illustrations/stressGutIcon.svg?react';
 
 export default StressGutIcon;

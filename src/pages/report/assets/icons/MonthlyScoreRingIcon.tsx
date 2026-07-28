@@ -1,3 +1,3 @@
-import MonthlyScoreRingIcon from '../illustrations/MonthlyScoreRingIcon.svg?react';
+import MonthlyScoreRingIcon from '../illustrations/monthlyScoreRingIcon.svg?react';
 
 export default MonthlyScoreRingIcon;

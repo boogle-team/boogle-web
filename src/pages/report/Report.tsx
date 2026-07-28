@@ -7,14 +7,10 @@ import { MonthlyTypePreview } from './components/MonthlyTypeCard';
 import ReportModeTabs from './components/ReportModeTabs';
 import ReportPeriodNavigator from './components/ReportPeriodNavigator';
 import WeeklyReportBody from './components/WeeklyReportBody';
-import { useReportGuideFeedback } from './hooks/useReportGuideFeedback';
 import { useReportPdfDownload } from './hooks/useReportPdfDownload';
 import { useReportPeriod } from './hooks/useReportPeriod';
 import { useReportViewData } from './hooks/useReportViewData';
-import type {
-  ReportGuideFeedbackTypes,
-  ReportModeTypes,
-} from './types/reportTypes';
+import type { ReportModeTypes } from './types/reportTypes';
 
 const Report = () => {
   const [searchParams] = useSearchParams();
@@ -30,11 +26,6 @@ const Report = () => {
   const { downloadReportPdf, pdfErrorMessage } = useReportPdfDownload();
   const { insufficientReport, monthlyReportViewData, weeklyReportViewData } =
     useReportViewData(selectedMode);
-  const {
-    feedbackStatus: lifeGuideFeedbackStatus,
-    isFeedbackPending: isLifeGuideFeedbackPending,
-    submitGuideFeedback,
-  } = useReportGuideFeedback(weeklyReportViewData.lifeGuide);
   const isMonthlyTypePreview = searchParams.get('preview') === 'monthly-types';
   const isInsufficientReportPreview =
     searchParams.get('preview') === 'insufficient';
@@ -53,10 +44,6 @@ const Report = () => {
 
   const handlePdfButtonClick = () => {
     void downloadReportPdf(selectedMode, currentPeriodDate);
-  };
-
-  const handleLifeGuideFeedbackClick = (feedback: ReportGuideFeedbackTypes) => {
-    void submitGuideFeedback(feedback);
   };
 
   if (isMonthlyTypePreview) {
@@ -94,12 +81,7 @@ const Report = () => {
             selectedMode={selectedMode}
           />
         ) : isWeeklyReport ? (
-          <WeeklyReportBody
-            {...weeklyReportViewData}
-            lifeGuideFeedbackStatus={lifeGuideFeedbackStatus}
-            isLifeGuideFeedbackPending={isLifeGuideFeedbackPending}
-            onLifeGuideFeedbackClick={handleLifeGuideFeedbackClick}
-          />
+          <WeeklyReportBody {...weeklyReportViewData} />
         ) : (
           <MonthlyReportBody
             {...monthlyReportViewData}
