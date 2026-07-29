@@ -112,6 +112,7 @@ const Calendar = () => {
       <TopNavigation
         title="캘린더"
         isBackButtonVisible={false}
+        isBorderVisible={false}
         className="bg-beige-5"
       />
 
