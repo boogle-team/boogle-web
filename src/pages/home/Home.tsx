@@ -3,10 +3,10 @@ import CalendarPicker from '@/pages/home/components/CalendarPicker';
 import DateBottomModal from '@/pages/home/components/DateBottomModal';
 import HomeContentSection from '@/pages/home/components/HomeContentSection';
 import useHomeState from '@/pages/home/hooks/useHomeState';
-import { useNotifications } from '@/pages/notification/hooks/useNotifications';
+import { useNotificationsQuery } from '@/pages/notification/hooks/useNotificationsQuery';
 
 const Home = () => {
-  const { unreadCount } = useNotifications();
+  const { unreadCount } = useNotificationsQuery();
   const {
     isLoading,
     isError,

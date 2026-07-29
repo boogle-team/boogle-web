@@ -5,13 +5,6 @@ import type { NotificationItemTypes } from '@/pages/notification/types/notificat
 
 type NotificationListStatusTypes = 'loading' | 'success' | 'error';
 
-interface NotificationListPropTypes {
-  notifications: NotificationItemTypes[];
-  status?: NotificationListStatusTypes;
-  onNotificationClick: (notification: NotificationItemTypes) => void;
-  onRetry?: () => void;
-}
-
 const NotificationListSkeleton = () => {
   return (
     <div aria-label="알림을 불러오는 중" className="flex flex-col gap-2 pt-6">
@@ -31,6 +24,13 @@ const NotificationListSkeleton = () => {
     </div>
   );
 };
+
+interface NotificationListPropTypes {
+  notifications: NotificationItemTypes[];
+  status?: NotificationListStatusTypes;
+  onNotificationClick: (notification: NotificationItemTypes) => void;
+  onRetry?: () => void;
+}
 
 const NotificationList = ({
   notifications,

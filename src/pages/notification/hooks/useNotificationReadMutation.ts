@@ -1,20 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
-  getNotifications,
   NOTIFICATION_QUERY_KEY,
   patchNotificationRead,
 } from '@/pages/notification/apis/notificationApi';
 
 import type { GetNotificationsDataTypes } from '@/pages/notification/types/notificationTypes';
 
-export const useNotifications = () => {
+export const useNotificationReadMutation = () => {
   const queryClient = useQueryClient();
-
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: NOTIFICATION_QUERY_KEY,
-    queryFn: getNotifications,
-  });
 
   const { mutate: markNotificationAsRead } = useMutation({
     mutationFn: patchNotificationRead,
@@ -76,14 +70,12 @@ export const useNotifications = () => {
         },
       );
     },
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: NOTIFICATION_QUERY_KEY,
+      });
+    },
   });
 
-  return {
-    notifications: data?.notifications ?? [],
-    unreadCount: data?.unreadCount ?? 0,
-    isLoading,
-    isError,
-    refetch,
-    markNotificationAsRead,
-  };
+  return { markNotificationAsRead };
 };

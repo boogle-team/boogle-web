@@ -2,15 +2,17 @@ import { useNavigate } from 'react-router-dom';
 
 import NotificationList from '@/pages/notification/components/NotificationList';
 import { NOTIFICATION_DESTINATION_MAP } from '@/pages/notification/constants/notificationConstants';
-import { useNotifications } from '@/pages/notification/hooks/useNotifications';
+import { useNotificationReadMutation } from '@/pages/notification/hooks/useNotificationReadMutation';
+import { useNotificationsQuery } from '@/pages/notification/hooks/useNotificationsQuery';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 import type { NotificationItemTypes } from '@/pages/notification/types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
-  const { notifications, isLoading, isError, refetch, markNotificationAsRead } =
-    useNotifications();
+  const { notifications, isLoading, isError, refetch } =
+    useNotificationsQuery();
+  const { markNotificationAsRead } = useNotificationReadMutation();
 
   const handleBackButtonClick = () => {
     navigate('/');

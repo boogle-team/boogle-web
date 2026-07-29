@@ -14,11 +14,6 @@ import type {
 } from '@/pages/notification/types/notificationTypes';
 import type { ComponentType, SVGProps } from 'react';
 
-interface NotificationCardPropTypes {
-  notification: NotificationItemTypes;
-  onClick: () => void;
-}
-
 const NOTIFICATION_ICON_MAP = {
   warning: WarningNoticeIcon,
   record: ClockIcon,
@@ -43,6 +38,11 @@ const NOTIFICATION_TYPE_ICON_MAP = {
   PDF_SAVED: 'monthlyReport',
   STREAK: 'streak',
 } satisfies Record<NotificationTypeTypes, NotificationIconTypes>;
+
+interface NotificationCardPropTypes {
+  notification: NotificationItemTypes;
+  onClick: () => void;
+}
 
 const NotificationCard = ({
   notification,
