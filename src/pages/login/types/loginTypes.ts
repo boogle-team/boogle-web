@@ -10,6 +10,44 @@ export type AgeGroupValueTypes =
 
 export type GenderValueTypes = 'female' | 'male' | 'none';
 
+export type SocialLoginProviderTypes = 'kakao' | 'google';
+
+export type OAuthNextActionTypes = 'HOME' | 'ONBOARDING_REQUIRED';
+
+export interface OAuthUserTypes {
+  id: number;
+  email: string;
+  nickname: string;
+  profileImage: string | null;
+  profileImageSource: string;
+  gender: string | null;
+  ageGroup: number | null;
+  baselineType: string | null;
+  sensitiveInfoAgreed: boolean;
+}
+
+export interface OAuthExchangeRequestTypes {
+  oauthResultCode: string;
+}
+
+export interface OAuthExchangeDataTypes {
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+  refreshTokenExpiresIn: number;
+  isNewUser: boolean;
+  user: OAuthUserTypes;
+  nextAction: OAuthNextActionTypes;
+  onboardingCompleted: boolean;
+}
+
+export interface OAuthExchangeResponseTypes {
+  success: boolean;
+  data: OAuthExchangeDataTypes;
+  message: string;
+}
+
 // 프로필 입력 최종 수집 데이터
 export interface ProfileInputValueTypes {
   nickname: string;

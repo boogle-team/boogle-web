@@ -95,6 +95,15 @@ export const Router = createBrowserRouter([
     },
   },
   {
+    path: '/login/callback',
+    lazy: async () => {
+      const { default: OAuthCallback } =
+        await import('@/pages/login/OAuthCallback');
+
+      return { Component: OAuthCallback };
+    },
+  },
+  {
     path: '/onboarding/profile',
     lazy: async () => {
       const { default: Profile } = await import('@/pages/onboarding/Profile');

@@ -2,21 +2,20 @@ import type { ButtonHTMLAttributes } from 'react';
 
 import GoogleLogo from '@/shared/assets/icons/googleLogo.svg';
 import KakaoLogo from '@/shared/assets/icons/kakaoLogo.svg';
+import type { SocialLoginProviderTypes } from '@/pages/login/types/loginTypes';
 
 const SOCIAL_LOGIN_BUTTON_CONFIGS = {
   kakao: {
     logo: KakaoLogo,
-    label: '카카오로 로그인',
+    label: '\uCE74\uCE74\uC624\uB85C \uB85C\uADF8\uC778',
     className: 'bg-[#FEE500]',
   },
   google: {
     logo: GoogleLogo,
-    label: 'Google로 로그인',
+    label: 'Google\uB85C \uB85C\uADF8\uC778',
     className: 'bg-gray-1',
   },
 } as const;
-
-type SocialLoginProviderTypes = keyof typeof SOCIAL_LOGIN_BUTTON_CONFIGS;
 
 interface SocialLoginButtonPropTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
   provider: SocialLoginProviderTypes;

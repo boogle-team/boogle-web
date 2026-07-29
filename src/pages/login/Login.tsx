@@ -1,19 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-
+import { getOAuthLoginUrl } from '@/pages/login/apis/loginApis';
 import SocialLogin from '@/pages/login/SocialLogin';
+import type { SocialLoginProviderTypes } from '@/pages/login/types/loginTypes';
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  const handleSocialLogin = () => {
-    // TODO: 실제 소셜 로그인 연동 성공 후 온보딩 프로필 입력으로 이동.
-    navigate('/onboarding/profile');
+  const handleSocialLoginClick = (provider: SocialLoginProviderTypes) => {
+    window.location.assign(getOAuthLoginUrl(provider));
   };
 
   return (
     <SocialLogin
-      onKakaoLogin={handleSocialLogin}
-      onGoogleLogin={handleSocialLogin}
+      onKakaoLogin={() => handleSocialLoginClick('kakao')}
+      onGoogleLogin={() => handleSocialLoginClick('google')}
     />
   );
 };
