@@ -6,11 +6,8 @@ import DateCellOnlyBoogleRecord from '@/pages/home/assets/illustrations/dateCell
 import DateCellNoBoogleCharacter from '@/pages/home/assets/illustrations/dateCellNoBoogleCharacter.svg?react';
 import DateCellOnlyDailyRecord from '@/pages/home/assets/illustrations/dateCellOnlyDailyRecord.svg?react';
 import type { HomeDateRecordStatusTypes } from '@/pages/home/types/homeTypes';
-import {
-  getHomeDayLabel,
-  isHomeSaturday,
-  isHomeSunday,
-} from '@/pages/home/utils/homeDateUtils';
+import { isHomeSaturday, isHomeSunday } from '@/pages/home/utils/homeDateUtils';
+import { getWeekdayLabel } from '@/shared/utils/dateLabelUtils';
 
 interface CalendarChipPropTypes {
   date: string;
@@ -80,7 +77,7 @@ const CalendarChip = ({
           isToday,
         )} flex h-[1.5rem] min-w-[1.5rem] items-center justify-center rounded-full px-[0.375rem]`}
       >
-        {getHomeDayLabel(date)}
+        {getWeekdayLabel(date)}
       </span>
 
       <span
