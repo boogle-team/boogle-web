@@ -10,6 +10,7 @@ const MAX_QUERY_RETRY_COUNT = 1;
 const API_ERROR_MESSAGES: Record<string, string> = {
   BAD_REQUEST: '요청 정보가 올바르지 않아요',
   UNAUTHORIZED: '로그인이 필요해요',
+  TOKEN_REQUIRED: '로그인이 필요해요',
   INTERNAL_SERVER_ERROR: '서버에 문제가 생겼어요. 잠시 후 다시 시도해 주세요',
 };
 
