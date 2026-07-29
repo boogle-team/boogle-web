@@ -142,12 +142,70 @@
 - 캘린더 점 마킹 규칙: `BOWEL` → 부글(주황), `hasLifeRecord` → 생활 기록(노랑), `NO_BOWEL` → 배변없음(연주황)
 - summary, stoolSimple은 타입만 정의되어 있고 현재 화면에서 사용하지 않음 (리포트/월간 요약 UI 대비)
 
-[일별 기록 조회] (스펙 미확정 - 목데이터 사용 중)
+[일별 기록 조회]
 : 선택한 날짜의 부글 기록 목록과 생활 기록을 조회
 
-- 엔드포인트: 미정
+- 엔드포인트: /api/v1/calendar/daily?date={YYYY-MM-DD}
 - http 메소드: GET
-- 프론트 기대 응답: `{ date, boogleRecords: BoogleRecord[], lifeRecord: LifeRecord | null }`
+- Success Status: 200 okay
+
+응답 예시
+
+```json
+{
+  "success": true,
+  "data": {
+    "date": "2026-06-17",
+    "boogleRecords": [
+      {
+        "id": 100,
+        "regDate": "2026-06-17T08:30:00",
+        "hasBowel": true,
+        "stoolBristol": 4,
+        "stoolSimple": "M",
+        "bowelFeeling": "C",
+        "stomach": "N",
+        "distension": "N",
+        "remainingFeeling": "N",
+        "urgency": "N",
+        "takenTime": 2,
+        "amount": "N",
+        "color": "B",
+        "memo": "어제 회식에서 술을 많이 마셨어요.",
+        "autoTags": ["음주", "야식"],
+        "tags": [{ "id": 3, "name": "회식" }],
+        "updatedAt": null
+      }
+    ],
+    "lifeRecord": {
+      "id": 55,
+      "regDate": "2026-06-17T21:00:00",
+      "sleep": "N",
+      "stress": "L",
+      "water": "H",
+      "waterIntake": 3,
+      "mealRegular": "R",
+      "sleepTime": 2,
+      "exercise": "L",
+      "caffeine": "O",
+      "medicine": "L",
+      "outing": "N",
+      "hormone": "N",
+      "memo": null,
+      "autoTags": [],
+      "tags": [{ "id": 7, "name": "야식" }],
+      "foods": [{ "id": 2, "name": "기름진 음식" }],
+      "updatedAt": null
+    }
+  },
+  "message": "요청이 성공적으로 처리되었습니다."
+}
+```
+
+- boogleRecords는 하루 여러 건 가능, lifeRecord는 1건 또는 null
+- 코드값 라벨 매핑은 `src/shared/components/dailyRecord/constants/dailyRecordLabels.ts` 참고
+- 미래 날짜는 프론트에서 호출하지 않는다 (화면이 클라이언트에서 future 상태로 그려짐)
+- 부글 기록의 distension / remainingFeeling / urgency / takenTime / amount / color / memo / autoTags / tags는 응답에는 있으나 캘린더 요약 카드에서는 사용하지 않음 (상세 화면 대비)
 
 ## 가이드
 

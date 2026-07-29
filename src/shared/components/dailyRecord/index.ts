@@ -17,4 +17,5 @@ export {
   formatDateKey,
   getBoogleRecordView,
   getLifeRecordView,
+  isFutureDate,
 } from './utils/dailyRecordUtils';
