@@ -12,7 +12,7 @@ import {
   getBoogleRecordView,
   getLifeRecordView,
 } from '@/shared/components/dailyRecord';
-import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import TagsSection from '@/shared/components/tagSection/TagsSection';
 import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
@@ -106,28 +106,30 @@ const Calendar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-beige-6">
-      <div className="bg-beige-1">
-        <div className="h-12.25" />
+    <div className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem]">
+      <div className="h-12.25" />
 
-        <DefaultTopNavigation title="캘린더" isBackButtonVisible={false} />
+      <TopNavigation
+        title="캘린더"
+        isBackButtonVisible={false}
+        className="bg-beige-5"
+      />
 
-        <div className="px-4 pb-6">
-          <MonthNavigator
-            currentDate={currentDate}
-            onPrevMonth={handlePreviousMonthButtonClick}
-            onNextMonth={handleNextMonthButtonClick}
-          />
-          <CalendarLegend />
-          <CalendarGrid
-            currentDate={currentDate}
-            recordMap={recordMap}
-            selectedDate={selectedDate}
-            todayDate={todayDate}
-            markConfig={CALENDAR_MARK_CONFIG}
-            onSelectDate={handleDateCellClick}
-          />
-        </div>
+      <div className="px-4 pb-6">
+        <MonthNavigator
+          currentDate={currentDate}
+          onPrevMonth={handlePreviousMonthButtonClick}
+          onNextMonth={handleNextMonthButtonClick}
+        />
+        <CalendarLegend />
+        <CalendarGrid
+          currentDate={currentDate}
+          recordMap={recordMap}
+          selectedDate={selectedDate}
+          todayDate={todayDate}
+          markConfig={CALENDAR_MARK_CONFIG}
+          onSelectDate={handleDateCellClick}
+        />
       </div>
 
       <div className="px-layout pt-6">
