@@ -1,3 +1,3 @@
-import ClockIcon from '../illustrations/ClockIcon.svg?react';
+import ClockIcon from '../illustrations/clockIcon.svg?react';
 
 export default ClockIcon;

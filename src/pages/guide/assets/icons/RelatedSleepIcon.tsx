@@ -1,3 +1,3 @@
-import RelatedSleepIcon from '../illustrations/RelatedSleepIcon.svg?react';
+import RelatedSleepIcon from '../illustrations/relatedSleepIcon.svg?react';
 
 export default RelatedSleepIcon;

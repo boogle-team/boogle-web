@@ -12,12 +12,18 @@ import {
   getBoogleRecordView,
   getLifeRecordView,
 } from '@/shared/components/dailyRecord';
-import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import TagsSection from '@/shared/components/tagSection/TagsSection';
+import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
 import { getApiErrorMessage } from '@/shared/apis/apiError';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
+import CalendarMonthlySummaryBar from '@/pages/calendar/components/CalendarMonthlySummaryBar';
+import SelectedDateHeader from '@/pages/calendar/components/SelectedDateHeader';
 import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
 import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
 import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
+import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
+import { getDailyAutoTags } from '@/pages/calendar/utils/getDailyAutoTags';
 import { toCalendarRecordMap } from '@/pages/calendar/utils/calendarRecordMapper';
 
 const Calendar = () => {
@@ -51,6 +57,11 @@ const Calendar = () => {
     [calendarMonth?.days],
   );
 
+  const monthlySummary = useMemo(
+    () => getCalendarMonthlySummary({ currentDate, todayDate, recordMap }),
+    [currentDate, recordMap, todayDate],
+  );
+
   const boogleRecordView = useMemo(
     () =>
       getBoogleRecordView({
@@ -67,6 +78,15 @@ const Calendar = () => {
         record: selectedDailyRecord?.lifeRecord ?? null,
       }),
     [selectedDailyRecord?.lifeRecord, selectedDate],
+  );
+
+  const autoTagItems = useMemo(
+    () =>
+      getDailyAutoTags({
+        boogleRecords: selectedDailyRecord?.boogleRecords ?? [],
+        lifeRecord: selectedDailyRecord?.lifeRecord ?? null,
+      }).map((tagLabel) => ({ id: tagLabel, label: tagLabel })),
+    [selectedDailyRecord?.boogleRecords, selectedDailyRecord?.lifeRecord],
   );
 
   const handlePreviousMonthButtonClick = () =>
@@ -99,39 +119,48 @@ const Calendar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-beige-6">
-      <div className="bg-beige-1">
-        <div className="h-12.25" />
+    <div className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem]">
+      <div className="h-12.25" />
 
-        <DefaultTopNavigation title="캘린더" isBackButtonVisible={false} />
+      <TopNavigation
+        title="캘린더"
+        isBackButtonVisible={false}
+        isBorderVisible={false}
+        className="bg-beige-5"
+      />
 
-        <div className="px-4 pb-6">
-          <MonthNavigator
-            currentDate={currentDate}
-            onPrevMonth={handlePreviousMonthButtonClick}
-            onNextMonth={handleNextMonthButtonClick}
-          />
-          <CalendarLegend />
-          <CalendarGrid
-            currentDate={currentDate}
-            recordMap={recordMap}
-            selectedDate={selectedDate}
-            todayDate={todayDate}
-            markConfig={CALENDAR_MARK_CONFIG}
-            onSelectDate={handleDateCellClick}
-          />
+      <div className="px-4 pb-6">
+        <MonthNavigator
+          currentDate={currentDate}
+          onPrevMonth={handlePreviousMonthButtonClick}
+          onNextMonth={handleNextMonthButtonClick}
+        />
+        <CalendarLegend />
+        <CalendarGrid
+          currentDate={currentDate}
+          recordMap={recordMap}
+          selectedDate={selectedDate}
+          todayDate={todayDate}
+          markConfig={CALENDAR_MARK_CONFIG}
+          onSelectDate={handleDateCellClick}
+        />
 
-          {isMonthError ? (
-            <p className="pt-4 text-center caption text-gray-8">
-              이번 달 기록 표시를 불러오지 못했어요
-              <br />
-              {getApiErrorMessage(monthError, '잠시 후 다시 시도해 주세요')}
-            </p>
-          ) : null}
-        </div>
+        {isMonthError ? (
+          <p className="pt-4 text-center caption text-gray-8">
+            이번 달 기록 표시를 불러오지 못했어요
+            <br />
+            {getApiErrorMessage(monthError, '잠시 후 다시 시도해 주세요')}
+          </p>
+        ) : null}
       </div>
 
-      <section className="px-layout py-8">
+      <div className="px-layout pt-6">
+        <CalendarMonthlySummaryBar summary={monthlySummary} />
+      </div>
+
+      <section className="flex flex-col gap-3 px-layout py-8">
+        <SelectedDateHeader selectedDate={selectedDate} />
+
         {isLoading ? (
           <div className="rounded-xl bg-beige-1 px-4 py-6 text-center body-m-bold text-gray-8">
             기록을 불러오는 중이에요
@@ -149,6 +178,7 @@ const Calendar = () => {
           <div className="flex flex-col gap-7">
             <DailyBoogleRecordCard
               view={boogleRecordView}
+              shouldShowActionWhenRecorded={false}
               onCreateClick={handleBoogleRecordCreateButtonClick}
               onEditClick={handleBoogleRecordEditButtonClick}
             />
@@ -157,6 +187,13 @@ const Calendar = () => {
               shouldShowDetail
               onCreateClick={handleLifeRecordCreateButtonClick}
               onEditClick={handleLifeRecordEditButtonClick}
+            />
+
+            <TagsSection
+              icon={<Sparkle />}
+              title="이날의 태그"
+              description="AI가 메모에서 찾았어요!"
+              tags={autoTagItems}
             />
           </div>
         ) : null}

@@ -6,7 +6,7 @@ import {
 } from '../constants/guideMainItems';
 import GuideCard from './GuideCard';
 import GuideCardSection from './GuideCardSection';
-import InsufficientGuideIcon from '../assets/illustrations/InsufficientGuideIcon.svg?react';
+import InsufficientGuideIcon from '../assets/illustrations/insufficientGuideIcon.svg?react';
 
 interface GuideMainViewPropTypes {
   isInsufficient?: boolean;

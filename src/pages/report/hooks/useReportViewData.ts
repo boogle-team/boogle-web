@@ -3,6 +3,7 @@ import {
   CONDITION_PROGRESS,
   DEFAULT_MONTHLY_CONDITION_SCORE,
   INSUFFICIENT_REPORT_BY_MODE,
+  MONTHLY_IMPROVEMENTS,
   MONTHLY_PATTERNS,
   MONTHLY_SCORES,
   MONTHLY_SUMMARIES,
@@ -10,9 +11,9 @@ import {
   WEEKLY_LIFE_GUIDE,
   WEEKLY_PATTERNS,
   WEEKLY_SUMMARIES,
-  WEEKLY_TRENDS,
 } from '../constants/reportConstants';
 import type { ReportModeTypes } from '../types/reportTypes';
+import { mapMonthlyWeeklyTrends } from '../utils/reportViewDataMappers';
 
 export const useReportViewData = (selectedMode: ReportModeTypes) => {
   const weeklyReportViewData = {
@@ -25,12 +26,14 @@ export const useReportViewData = (selectedMode: ReportModeTypes) => {
   const monthlyReportViewData = {
     conditionProgress: CONDITION_PROGRESS,
     conditionScore: DEFAULT_MONTHLY_CONDITION_SCORE,
+    improvements: MONTHLY_IMPROVEMENTS,
     monthlyType: MONTHLY_TYPES[0],
     monthlyTypes: MONTHLY_TYPES,
     patterns: MONTHLY_PATTERNS,
     scores: MONTHLY_SCORES,
     summaries: MONTHLY_SUMMARIES,
-    weeklyTrends: WEEKLY_TRENDS,
+    // API 연결 시 monthlyReport.data.weeklyTrend를 인자로 넘기면 됩니다.
+    weeklyTrends: mapMonthlyWeeklyTrends(),
   };
 
   return {
