@@ -4,16 +4,9 @@ export type GuideFeedbackStatusTypes = GuideFeedbackTypes | null;
 export type GuidePeriodTypes = 'MONTHLY' | 'WEEKLY';
 export type GuideSectionDataStatusTypes =
   'AVAILABLE' | 'INSUFFICIENT' | 'NOT_FOUND';
-export type GuideMonthlyReportDataStatusTypes =
-  'ENOUGH' | 'INSUFFICIENT' | 'NOT_FOUND';
-export type GuideUserTypeCodeTypes = 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
 export type GuideSectionOrderTypes = 'HEALTH' | 'PATTERN' | 'WARNING';
-
-export interface GetGuidesRequestTypes {
-  includeFeedback?: boolean;
-  monthStartDate?: string;
-  weekStartDate?: string;
-}
+export type GuideErrorCodeTypes =
+  'GUIDE_FETCH_FAILED' | 'TOKEN_EXPIRED' | 'TOKEN_INVALID' | 'TOKEN_REQUIRED';
 
 export interface GetGuideDetailRequestTypes {
   guideContentId: number;
@@ -47,6 +40,12 @@ export interface ApiSuccessResponseTypes<TData> {
   success: true;
 }
 
+export interface ApiErrorResponseTypes {
+  code: GuideErrorCodeTypes;
+  message: string;
+  success: false;
+}
+
 export interface GuideMonthlyPeriodResponseTypes {
   monthEndDate?: string;
   monthStartDate?: string;
@@ -64,17 +63,6 @@ export interface GuideWeeklyPeriodResponseTypes {
 export type GuidePeriodResponseTypes =
   GuideMonthlyPeriodResponseTypes | GuideWeeklyPeriodResponseTypes;
 
-export interface GuideMonthlyReportResponseTypes {
-  completionScore: number | null;
-  conditionScore: number | null;
-  dataStatus: GuideMonthlyReportDataStatusTypes;
-  exists: boolean;
-  state: number | null;
-  stateLabel: string | null;
-  userType: GuideUserTypeCodeTypes | null;
-  userTypeLabel: string | null;
-}
-
 export interface GuideNoticeResponseTypes {
   code: string;
   message: string;
@@ -89,24 +77,33 @@ export interface GuideMatchedEvidenceResponseTypes {
 
 export interface GuideItemResponseTypes {
   category: GuideCategoryTypes;
-  feedbackStatus: GuideFeedbackStatusTypes;
-  guideContentId: number;
-  matchedEvidence?: GuideMatchedEvidenceResponseTypes | null;
-  matchedReason?: string | null;
-  ruleCode?: string | null;
+  guideId: number;
   summary: string;
   title: string;
+}
+
+export interface GuidePatternItemResponseTypes extends GuideItemResponseTypes {
+  category: 'P';
+  matchedRuleCodes: string[];
+}
+
+export interface GuideHealthItemResponseTypes extends GuideItemResponseTypes {
+  category: 'H';
+}
+
+export interface GuideWarningItemResponseTypes extends GuideItemResponseTypes {
+  category: 'W';
 }
 
 export interface GuidePatternSectionResponseTypes {
   category: 'P';
   categoryLabel: string;
   dataStatus: GuideSectionDataStatusTypes;
-  guides: GuideItemResponseTypes[];
+  guides: GuidePatternItemResponseTypes[];
   notice: GuideNoticeResponseTypes | null;
-  period?: GuidePeriodResponseTypes;
-  recordedDays?: number;
-  requiredDays?: number;
+  period: GuideWeeklyPeriodResponseTypes;
+  recordedDays: number;
+  requiredDays: number;
   sectionDescription: string;
   sectionTitle: string;
 }
@@ -114,7 +111,7 @@ export interface GuidePatternSectionResponseTypes {
 export interface GuideHealthSectionResponseTypes {
   category: 'H';
   categoryLabel: string;
-  guides: GuideItemResponseTypes[];
+  guides: GuideHealthItemResponseTypes[];
   sectionDescription: string;
   sectionTitle: string;
 }
@@ -129,20 +126,15 @@ export interface GuideDetectedFlagResponseTypes {
 export interface GuideWarningSectionResponseTypes {
   category: 'W';
   categoryLabel: string;
-  detectedFlags: GuideDetectedFlagResponseTypes[];
-  guides: GuideItemResponseTypes[];
-  highlighted: boolean;
-  period?: GuidePeriodResponseTypes;
+  guides: GuideWarningItemResponseTypes[];
   sectionDescription: string;
   sectionTitle: string;
 }
 
 export interface GuidesDataResponseTypes {
   healthGuideSection: GuideHealthSectionResponseTypes;
-  monthlyReport?: GuideMonthlyReportResponseTypes;
   patternGuideSection: GuidePatternSectionResponseTypes;
-  period?: GuidePeriodResponseTypes;
-  sectionOrder?: GuideSectionOrderTypes[];
+  sectionOrder: GuideSectionOrderTypes[];
   warningGuideSection: GuideWarningSectionResponseTypes;
 }
 

@@ -93,10 +93,19 @@
 
 ## 가이드
 
-[]
+[가이드 화면 조회]
+: 패턴 기반 / 장 건강 / 주의 신호 3개 섹션과 섹션 노출 순서를 조회
 
-- 엔드포인트:
-- http 메소드:
+- 엔드포인트: /api/v1/guides
+- http 메소드: GET
+- Success Status: 200 OK
+- 응답 data: `sectionOrder`, `patternGuideSection`, `healthGuideSection`, `warningGuideSection`
+- 패턴 섹션(P): 주간(`WEEKLY`) 기간, `dataStatus`(`AVAILABLE` / `INSUFFICIENT`), `recordedDays` / `requiredDays`, `notice`, `guides[].matchedRuleCodes`
+  - 주간 기록이 `requiredDays` 미만이면 `dataStatus`가 `INSUFFICIENT`, `guides`는 빈 배열, `notice.code`는 `GUIDE_WEEKLY_RECORD_NOT_ENOUGH`로 내려온다.
+- 주의 신호 섹션(W): 사용자 기록과 무관하게 활성 가이드 전체가 반환된다.
+- 읽기 전용 조회 API이며 guide_rules, guide_feedback은 조회하지 않는다. (응답에 피드백 상태 없음)
+- 주간 패턴은 R101과 동일한 detector 결과를 사용한다.
+- 에러 코드: 401 `TOKEN_REQUIRED` / `TOKEN_INVALID` / `TOKEN_EXPIRED`, 500 `GUIDE_FETCH_FAILED`
 
 ## 리포트
 

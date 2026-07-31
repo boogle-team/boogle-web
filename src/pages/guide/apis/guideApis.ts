@@ -2,7 +2,6 @@ import { api } from '@/shared/apis/axiosInstance';
 import type {
   DeleteGuideFeedbackResponseTypes,
   GetGuideDetailRequestTypes,
-  GetGuidesRequestTypes,
   GuideDetailResponseTypes,
   GuideFeedbackPathTypes,
   GuideFeedbackRequestTypes,
@@ -11,18 +10,8 @@ import type {
   PostGuideFeedbackResponseTypes,
 } from '../types/guideApiTypes';
 
-export const getGuides = async ({
-  includeFeedback = true,
-  monthStartDate,
-  weekStartDate,
-}: GetGuidesRequestTypes = {}) => {
-  const { data } = await api.get<GuidesResponseTypes>('/api/v1/guides', {
-    params: {
-      includeFeedback,
-      monthStartDate,
-      weekStartDate,
-    },
-  });
+export const getGuides = async () => {
+  const { data } = await api.get<GuidesResponseTypes>('/api/v1/guides');
 
   return data;
 };
