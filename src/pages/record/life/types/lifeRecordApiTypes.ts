@@ -46,6 +46,10 @@ export interface GetLifeRecordsRequestTypes {
   size?: number;
 }
 
+export interface PostExtractLifeRecordTagsRequestTypes {
+  text: string;
+}
+
 export interface LifeRecordApiSuccessResponseTypes<T> {
   success: true;
   data: T;
@@ -60,6 +64,18 @@ export interface LifeRecordMedicineResponseTypes {
 export interface LifeRecordFoodResponseTypes {
   id: number;
   name: string;
+}
+
+export interface LifeRecordExtractedTagTypes {
+  name: string;
+  confidence: number;
+}
+
+export interface PostExtractLifeRecordTagsResponseTypes {
+  originalText: string;
+  tags: LifeRecordExtractedTagTypes[];
+  tagNames: string[];
+  autoTags: string;
 }
 
 export interface PostLifeRecordResponseTypes {
