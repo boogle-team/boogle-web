@@ -17,20 +17,10 @@ export const getGuides = async () => {
 };
 
 export const getGuideDetail = async ({
-  guideContentId,
-  monthStartDate,
-  ruleCode,
-  weekStartDate,
+  guideId,
 }: GetGuideDetailRequestTypes) => {
   const { data } = await api.get<GuideDetailResponseTypes>(
-    `/api/v1/guides/${guideContentId}`,
-    {
-      params: {
-        monthStartDate,
-        ruleCode,
-        weekStartDate,
-      },
-    },
+    `/api/v1/guides/${guideId}`,
   );
 
   return data;

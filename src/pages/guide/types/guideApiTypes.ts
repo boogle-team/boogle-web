@@ -1,18 +1,24 @@
 export type GuideCategoryTypes = 'H' | 'P' | 'W';
 export type GuideFeedbackTypes = 'A' | 'G' | 'N';
 export type GuideFeedbackStatusTypes = GuideFeedbackTypes | null;
-export type GuidePeriodTypes = 'MONTHLY' | 'WEEKLY';
 export type GuideSectionDataStatusTypes =
   'AVAILABLE' | 'INSUFFICIENT' | 'NOT_FOUND';
+export type GuideRecordDataStatusTypes =
+  'ENOUGH' | 'INSUFFICIENT' | 'NOT_FOUND';
 export type GuideSectionOrderTypes = 'HEALTH' | 'PATTERN' | 'WARNING';
-export type GuideErrorCodeTypes =
-  'GUIDE_FETCH_FAILED' | 'TOKEN_EXPIRED' | 'TOKEN_INVALID' | 'TOKEN_REQUIRED';
+export type GuideTokenErrorCodeTypes =
+  'TOKEN_EXPIRED' | 'TOKEN_INVALID' | 'TOKEN_REQUIRED';
+export type GuidesErrorCodeTypes =
+  GuideTokenErrorCodeTypes | 'GUIDE_FETCH_FAILED';
+export type GuideDetailErrorCodeTypes =
+  | GuideTokenErrorCodeTypes
+  | 'GUIDE_CONTENT_INACTIVE'
+  | 'GUIDE_CONTENT_NOT_FOUND'
+  | 'GUIDE_DETAIL_FETCH_FAILED'
+  | 'GUIDE_INVALID_ID';
 
 export interface GetGuideDetailRequestTypes {
-  guideContentId: number;
-  monthStartDate?: string;
-  ruleCode?: string;
-  weekStartDate?: string;
+  guideId: number;
 }
 
 export interface GuideFeedbackRequestTypes {
@@ -40,18 +46,10 @@ export interface ApiSuccessResponseTypes<TData> {
   success: true;
 }
 
-export interface ApiErrorResponseTypes {
-  code: GuideErrorCodeTypes;
+export interface ApiErrorResponseTypes<TCode extends string = string> {
+  code: TCode;
   message: string;
   success: false;
-}
-
-export interface GuideMonthlyPeriodResponseTypes {
-  monthEndDate?: string;
-  monthStartDate?: string;
-  endDate?: string;
-  startDate?: string;
-  type: 'MONTHLY';
 }
 
 export interface GuideWeeklyPeriodResponseTypes {
@@ -60,19 +58,9 @@ export interface GuideWeeklyPeriodResponseTypes {
   type: 'WEEKLY';
 }
 
-export type GuidePeriodResponseTypes =
-  GuideMonthlyPeriodResponseTypes | GuideWeeklyPeriodResponseTypes;
-
 export interface GuideNoticeResponseTypes {
   code: string;
   message: string;
-}
-
-export interface GuideMatchedEvidenceResponseTypes {
-  condition: string;
-  count: number;
-  sourceField: string;
-  sourceTable: string;
 }
 
 export interface GuideItemResponseTypes {
@@ -116,13 +104,6 @@ export interface GuideHealthSectionResponseTypes {
   sectionTitle: string;
 }
 
-export interface GuideDetectedFlagResponseTypes {
-  detectedDate: string;
-  flagCode: string;
-  label: string;
-  sourceRecordId?: number;
-}
-
 export interface GuideWarningSectionResponseTypes {
   category: 'W';
   categoryLabel: string;
@@ -141,44 +122,68 @@ export interface GuidesDataResponseTypes {
 export type GuidesResponseTypes =
   ApiSuccessResponseTypes<GuidesDataResponseTypes>;
 
-export interface GuideDetailRuleResponseTypes {
-  condition: string;
-  ruleCode: string;
+export interface GuideDetailContentResponseTypes {
+  content: string;
+  contentId: number;
+  order: number;
+  subtitle: string | null;
 }
 
-export interface GuidePatternMatchedEvidenceResponseTypes extends GuideMatchedEvidenceResponseTypes {
+export interface GuideDetailAdviceResponseTypes {
+  adviceId: number;
+  content: string;
+  order: number;
+}
+
+export interface GuideRecommendedGuideResponseTypes {
+  guideId: number;
+  summary: string;
+  title: string;
+}
+
+export interface GuidePatternRecordStatusResponseTypes {
+  completionScore: number;
+  dataStatus: GuideRecordDataStatusTypes;
+  recordedDays: number;
+  requiredDays: number;
+}
+
+// TODO: level, unit, comparison의 전체 enum 값이 확인되면 유니언 타입으로 좁힌다.
+export interface GuidePatternEvidenceResponseTypes {
+  comparison: string;
+  key: string;
+  label: string;
+  threshold: number;
+  unit: string;
+  value: number;
+}
+
+export interface GuideMatchedPatternResponseTypes {
   description: string;
-  matched: boolean;
+  evidence: GuidePatternEvidenceResponseTypes[];
+  level: string;
+  ruleCode: string;
+  title: string;
 }
 
-export interface GuideWarningMatchedEvidenceResponseTypes {
-  detectedFlags: GuideDetectedFlagResponseTypes[];
+export interface GuidePatternReasonResponseTypes {
   matched: boolean;
-}
-
-export type GuideDetailMatchedEvidenceResponseTypes =
-  | GuidePatternMatchedEvidenceResponseTypes
-  | GuideWarningMatchedEvidenceResponseTypes
-  | null;
-
-export interface GuideRelatedRecordsResponseTypes {
-  highCaffeineDays?: number;
-  highStressDays?: number;
-  lowSleepDays?: number;
-  lowWaterDays?: number;
-  totalRecordedDays: number;
+  matchedPatterns: GuideMatchedPatternResponseTypes[];
+  matchedRuleCodes: string[];
+  period: GuideWeeklyPeriodResponseTypes;
+  recordStatus: GuidePatternRecordStatusResponseTypes;
 }
 
 export interface GuideDetailDataResponseTypes {
+  advices: GuideDetailAdviceResponseTypes[];
   category: GuideCategoryTypes;
   categoryLabel: string;
-  content: string;
-  feedbackStatus: GuideFeedbackStatusTypes;
-  guideContentId: number;
-  matchedEvidence: GuideDetailMatchedEvidenceResponseTypes;
-  period: GuidePeriodResponseTypes | null;
-  relatedRecords: GuideRelatedRecordsResponseTypes | null;
-  rule: GuideDetailRuleResponseTypes | null;
+  contents: GuideDetailContentResponseTypes[];
+  guideId: number;
+  patternReason: GuidePatternReasonResponseTypes | null;
+  recommendedGuides: GuideRecommendedGuideResponseTypes[];
+  source: string | null;
+  summary: string;
   title: string;
 }
 
