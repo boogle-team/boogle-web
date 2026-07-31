@@ -33,6 +33,13 @@ export interface PostLifeRecordRequestTypes {
   medicineIds?: number[];
 }
 
+export interface GetLifeRecordsRequestTypes {
+  startDate?: string;
+  endDate?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface LifeRecordApiSuccessResponseTypes<T> {
   success: true;
   data: T;
@@ -71,6 +78,27 @@ export interface PostLifeRecordResponseTypes {
   status: string;
   createdAt: string;
   updatedAt: string | null;
+}
+
+export interface LifeRecordListItemTypes {
+  id: number;
+  regDate: string;
+  sleep: LifeRecordSleepCodeTypes;
+  stress: LifeRecordStressCodeTypes;
+  water: LifeRecordWaterCodeTypes;
+  mealRegular: LifeRecordMealRegularCodeTypes;
+  memo: string | null;
+  tagNames: string[];
+  foods: LifeRecordFoodResponseTypes[];
+  status: string;
+}
+
+export interface GetLifeRecordsResponseTypes {
+  items: LifeRecordListItemTypes[];
+  page: number;
+  size: number;
+  totalCount: number;
+  hasNext: boolean;
 }
 
 export const SLEEP_CODE_BY_VALUE: Record<SleepTypes, LifeRecordSleepCodeTypes> =
