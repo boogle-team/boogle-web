@@ -33,6 +33,12 @@ export interface PostLifeRecordRequestTypes {
   medicineIds?: number[];
 }
 
+export type PatchLifeRecordRequestTypes = Partial<
+  Omit<PostLifeRecordRequestTypes, 'regDate' | 'foodIds'> & {
+    foodIds: number[];
+  }
+>;
+
 export interface GetLifeRecordsRequestTypes {
   startDate?: string;
   endDate?: string;
@@ -81,6 +87,27 @@ export interface PostLifeRecordResponseTypes {
 }
 
 export type LifeRecordDetailResponseTypes = PostLifeRecordResponseTypes;
+
+export interface PatchLifeRecordResponseTypes {
+  id: number;
+  regDate: string;
+  sleep: LifeRecordSleepCodeTypes;
+  stress: LifeRecordStressCodeTypes;
+  water: LifeRecordWaterCodeTypes;
+  waterIntake: number;
+  mealRegular: LifeRecordMealRegularCodeTypes;
+  sleepTime: number | null;
+  exercise: LifeRecordExerciseCodeTypes | null;
+  caffeine: LifeRecordCaffeineCodeTypes | null;
+  outing: LifeRecordOutingCodeTypes | null;
+  hormone: LifeRecordHormoneCodeTypes | null;
+  memo: string | null;
+  tagNames: string[];
+  medicines: LifeRecordMedicineResponseTypes[];
+  foods: LifeRecordFoodResponseTypes[];
+  status: string;
+  updatedAt: string;
+}
 
 export interface LifeRecordListItemTypes {
   id: number;
