@@ -1,3 +1,5 @@
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
+
 export type GuideCategoryTypes = 'H' | 'P' | 'W';
 export type GuideFeedbackTypes = 'A' | 'G' | 'N';
 export type GuideFeedbackStatusTypes = GuideFeedbackTypes | null;
@@ -39,12 +41,6 @@ export interface GuideFeedbackResponseDataTypes {
 
 export interface GuideFeedbackUpdateResponseDataTypes extends GuideFeedbackResponseDataTypes {
   updateAt: string;
-}
-
-export interface ApiSuccessResponseTypes<TData> {
-  data: TData;
-  message: string;
-  success: true;
 }
 
 export interface GuideMonthlyPeriodResponseTypes {
@@ -146,8 +142,7 @@ export interface GuidesDataResponseTypes {
   warningGuideSection: GuideWarningSectionResponseTypes;
 }
 
-export type GuidesResponseTypes =
-  ApiSuccessResponseTypes<GuidesDataResponseTypes>;
+export type GuidesResponseTypes = ApiResponseTypes<GuidesDataResponseTypes>;
 
 export interface GuideDetailRuleResponseTypes {
   condition: string;
@@ -191,9 +186,9 @@ export interface GuideDetailDataResponseTypes {
 }
 
 export type GuideDetailResponseTypes =
-  ApiSuccessResponseTypes<GuideDetailDataResponseTypes>;
+  ApiResponseTypes<GuideDetailDataResponseTypes>;
 export type PostGuideFeedbackResponseTypes =
-  ApiSuccessResponseTypes<GuideFeedbackResponseDataTypes>;
+  ApiResponseTypes<GuideFeedbackResponseDataTypes>;
 export type PatchGuideFeedbackResponseTypes =
-  ApiSuccessResponseTypes<GuideFeedbackUpdateResponseDataTypes>;
+  ApiResponseTypes<GuideFeedbackUpdateResponseDataTypes>;
 export type DeleteGuideFeedbackResponseTypes = unknown;
