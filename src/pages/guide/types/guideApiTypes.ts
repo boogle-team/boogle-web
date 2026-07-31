@@ -16,6 +16,25 @@ export type GuideDetailErrorCodeTypes =
   | 'GUIDE_CONTENT_NOT_FOUND'
   | 'GUIDE_DETAIL_FETCH_FAILED'
   | 'GUIDE_INVALID_ID';
+export type GuideFeedbackCommonErrorCodeTypes =
+  | GuideTokenErrorCodeTypes
+  | 'GUIDE_CONTENT_INACTIVE'
+  | 'GUIDE_CONTENT_NOT_FOUND'
+  | 'GUIDE_INVALID_ID';
+export type PostGuideFeedbackErrorCodeTypes =
+  | GuideFeedbackCommonErrorCodeTypes
+  | 'GUIDE_FEEDBACK_ALREADY_EXISTS'
+  | 'GUIDE_FEEDBACK_CREATE_FAILED'
+  | 'GUIDE_INVALID_FEEDBACK';
+export type PatchGuideFeedbackErrorCodeTypes =
+  | GuideFeedbackCommonErrorCodeTypes
+  | 'GUIDE_FEEDBACK_NOT_FOUND'
+  | 'GUIDE_FEEDBACK_UPDATE_FAILED'
+  | 'GUIDE_INVALID_FEEDBACK';
+export type DeleteGuideFeedbackErrorCodeTypes =
+  | GuideFeedbackCommonErrorCodeTypes
+  | 'GUIDE_FEEDBACK_DELETE_FAILED'
+  | 'GUIDE_FEEDBACK_NOT_FOUND';
 
 export interface GetGuideDetailRequestTypes {
   guideId: number;
@@ -26,18 +45,24 @@ export interface GuideFeedbackRequestTypes {
 }
 
 export interface GuideFeedbackPathTypes {
-  guideContentId: number;
+  guideId: number;
 }
 
 export interface GuideFeedbackResponseDataTypes {
   feedback: GuideFeedbackTypes;
-  guideContentId: number;
-  guideFeedbackId: number;
+  guideFeedbackId: string;
+  guideId: number;
   regDate: string;
 }
 
 export interface GuideFeedbackUpdateResponseDataTypes extends GuideFeedbackResponseDataTypes {
-  updateAt: string;
+  updatedAt: string;
+}
+
+export interface GuideFeedbackDeleteResponseDataTypes {
+  deleted: boolean;
+  guideFeedbackId: string;
+  guideId: number;
 }
 
 export interface ApiSuccessResponseTypes<TData> {
@@ -193,4 +218,5 @@ export type PostGuideFeedbackResponseTypes =
   ApiSuccessResponseTypes<GuideFeedbackResponseDataTypes>;
 export type PatchGuideFeedbackResponseTypes =
   ApiSuccessResponseTypes<GuideFeedbackUpdateResponseDataTypes>;
-export type DeleteGuideFeedbackResponseTypes = unknown;
+export type DeleteGuideFeedbackResponseTypes =
+  ApiSuccessResponseTypes<GuideFeedbackDeleteResponseDataTypes>;

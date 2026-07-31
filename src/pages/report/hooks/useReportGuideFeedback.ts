@@ -25,12 +25,12 @@ export const useReportGuideFeedback = (lifeGuide: LifeGuideTypes) => {
 
       if (feedbackStatus === 'A' || feedbackStatus === 'G') {
         await patchGuideFeedback(
-          { guideContentId: lifeGuide.guideContentId },
+          { guideId: lifeGuide.guideContentId },
           { feedback },
         );
       } else {
         await postGuideFeedback(
-          { guideContentId: lifeGuide.guideContentId },
+          { guideId: lifeGuide.guideContentId },
           { feedback },
         );
       }

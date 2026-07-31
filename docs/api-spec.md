@@ -122,6 +122,40 @@
 - guideId 범위: 장 건강 1~3, 패턴 기반 101~114, 주의 신호 1001
 - 에러 코드: 400 `GUIDE_INVALID_ID`, 401 `TOKEN_REQUIRED` / `TOKEN_INVALID` / `TOKEN_EXPIRED`, 404 `GUIDE_CONTENT_NOT_FOUND` / `GUIDE_CONTENT_INACTIVE`, 500 `GUIDE_DETAIL_FETCH_FAILED`
 
+[가이드 피드백 등록]
+: 가이드에 대한 사용자 피드백을 최초 1회 등록
+
+- 엔드포인트: /api/v1/guides/{guideId}/feedback
+- http 메소드: POST
+- Success Status: 201 Created
+- 요청 body: `{ "feedback": "G" }` (G: 도움이 됨, A: 이미 알고 있음, N: 잘 모르겠음)
+- 응답 data: `guideFeedbackId`(**string**), `guideId`, `feedback`, `regDate`
+- 동일 사용자·가이드의 재등록 및 수정은 PATCH를 사용한다. 중복 등록 시 409.
+- 에러 코드: 400 `GUIDE_INVALID_ID` / `GUIDE_INVALID_FEEDBACK`, 401 `TOKEN_REQUIRED` / `TOKEN_INVALID` / `TOKEN_EXPIRED`, 404 `GUIDE_CONTENT_NOT_FOUND` / `GUIDE_CONTENT_INACTIVE`, 409 `GUIDE_FEEDBACK_ALREADY_EXISTS`, 500 `GUIDE_FEEDBACK_CREATE_FAILED`
+
+[가이드 피드백 수정]
+: 이미 등록된 피드백의 값을 변경
+
+- 엔드포인트: /api/v1/guides/{guideId}/feedback
+- http 메소드: PATCH
+- Success Status: 200 OK
+- 요청 body: 등록과 동일 (`{ "feedback": "A" }`)
+- 응답 data: 등록 응답 + `updatedAt`
+- 에러 코드: 400 `GUIDE_INVALID_ID` / `GUIDE_INVALID_FEEDBACK`, 401 토큰 3종, 404 `GUIDE_CONTENT_NOT_FOUND` / `GUIDE_CONTENT_INACTIVE` / `GUIDE_FEEDBACK_NOT_FOUND`, 500 `GUIDE_FEEDBACK_UPDATE_FAILED`
+- 등록은 409(이미 존재), 수정은 404 `GUIDE_FEEDBACK_NOT_FOUND`(아직 없음)로 서로 대칭이다.
+
+[가이드 피드백 삭제]
+: 등록된 피드백을 삭제
+
+- 엔드포인트: /api/v1/guides/{guideId}/feedback
+- http 메소드: DELETE
+- Success Status: 200 OK (body 있음)
+- 응답 data: `guideFeedbackId`(string), `guideId`, `deleted`
+- 이미 삭제되었거나 등록되지 않은 피드백이면 404 `GUIDE_FEEDBACK_NOT_FOUND`
+- 에러 코드: 400 `GUIDE_INVALID_ID`, 401 토큰 3종, 404 `GUIDE_CONTENT_NOT_FOUND` / `GUIDE_CONTENT_INACTIVE` / `GUIDE_FEEDBACK_NOT_FOUND`, 500 `GUIDE_FEEDBACK_DELETE_FAILED`
+
+> `guideFeedbackId`는 JavaScript 정밀도 손실 방지를 위해 bigint → string으로 반환된다. 숫자로 변환해 쓰지 말 것.
+
 ## 리포트
 
 []

@@ -27,11 +27,11 @@ export const getGuideDetail = async ({
 };
 
 export const postGuideFeedback = async (
-  { guideContentId }: GuideFeedbackPathTypes,
+  { guideId }: GuideFeedbackPathTypes,
   requestBody: GuideFeedbackRequestTypes,
 ) => {
   const { data } = await api.post<PostGuideFeedbackResponseTypes>(
-    `/api/v1/guides/${guideContentId}/feedback`,
+    `/api/v1/guides/${guideId}/feedback`,
     requestBody,
   );
 
@@ -39,11 +39,11 @@ export const postGuideFeedback = async (
 };
 
 export const patchGuideFeedback = async (
-  { guideContentId }: GuideFeedbackPathTypes,
+  { guideId }: GuideFeedbackPathTypes,
   requestBody: GuideFeedbackRequestTypes,
 ) => {
   const { data } = await api.patch<PatchGuideFeedbackResponseTypes>(
-    `/api/v1/guides/${guideContentId}/feedback`,
+    `/api/v1/guides/${guideId}/feedback`,
     requestBody,
   );
 
@@ -51,10 +51,10 @@ export const patchGuideFeedback = async (
 };
 
 export const deleteGuideFeedback = async ({
-  guideContentId,
+  guideId,
 }: GuideFeedbackPathTypes) => {
   const { data } = await api.delete<DeleteGuideFeedbackResponseTypes>(
-    `/api/v1/guides/${guideContentId}/feedback`,
+    `/api/v1/guides/${guideId}/feedback`,
   );
 
   return data;
