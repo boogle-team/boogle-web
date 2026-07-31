@@ -80,6 +80,8 @@ export interface PostLifeRecordResponseTypes {
   updatedAt: string | null;
 }
 
+export type LifeRecordDetailResponseTypes = PostLifeRecordResponseTypes;
+
 export interface LifeRecordListItemTypes {
   id: number;
   regDate: string;
