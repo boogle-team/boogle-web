@@ -53,8 +53,7 @@ const Main = () => {
       return;
     }
 
-    resetDraft();
-    // TODO: 기록 완료 후 이동할 화면 연결
+    // TODO: 기록 완료 후 이동할 화면 연결 (resetDraft()도 이때 함께 호출)
   };
 
   const handleBackButtonClick = () => {
@@ -66,16 +65,18 @@ const Main = () => {
     navigate('/record/detail');
   };
 
+  // 초안 리셋은 화면을 벗어날 때만 한다. 페이지에 남은 채로 리셋하면
+  // store의 recordDate가 오늘로 돌아가 세부 기록 화면이 다른 날짜를 보게 된다.
   const handleLifeRecordCancel = () => {
     setIsLifeRecordModalOpen(false);
-    resetDraft();
-    // TODO: 기록 완료 후 이동할 화면 연결
+    // TODO: 기록 완료 후 이동할 화면 연결 (resetDraft()도 이때 함께 호출)
   };
 
+  // 생활 기록도 같은 날짜의 기록이므로 날짜를 그대로 넘긴다.
   const handleLifeRecordConfirm = () => {
     setIsLifeRecordModalOpen(false);
     resetDraft();
-    // TODO: 생활 기록 페이지 라우트 연결
+    navigate(`/record/life?date=${recordDate}`);
   };
 
   return (

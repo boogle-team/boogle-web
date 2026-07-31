@@ -11,6 +11,8 @@ import NoBoogleSignCharacter from '@/shared/assets/illustrations/dailyRecord/noB
 
 interface DailyBoogleRecordCardPropTypes {
   view: BoogleRecordViewTypes;
+  // 캘린더는 기록이 있으면 헤더 아이콘을 숨기고 행별 연필로만 수정한다.
+  shouldShowActionWhenRecorded?: boolean;
   onCreateClick: () => void;
   onEditClick?: (recordId: number) => void;
 }
@@ -27,24 +29,13 @@ const EMPTY_MESSAGE_MAP: Record<
 
 const DailyBoogleRecordCard = ({
   view,
+  shouldShowActionWhenRecorded = true,
   onCreateClick,
   onEditClick,
 }: DailyBoogleRecordCardPropTypes) => {
   const isFuture = view.status === 'future';
-  const canEdit = Boolean(onEditClick);
-
-  const getActionType = (): 'create' | 'edit' | 'none' => {
-    if (!canEdit) return 'create';
-    if (view.status === 'noBoogleSignal') return 'edit';
-    if (view.status === 'recorded') return 'none';
-    return 'create';
-  };
-
-  const actionType = getActionType();
-  const actionLabel =
-    actionType === 'edit' ? '부글 배변 없음 기록 수정' : '부글 기록 작성';
-  const statusText =
-    view.status === 'recorded' ? `${view.records.length}회` : undefined;
+  const isRecorded = view.status === 'recorded';
+  const statusText = isRecorded ? `${view.records.length}회` : undefined;
   const emptyCharacter =
     view.status === 'noBoogleSignal' ? (
       <NoBoogleSignCharacter className="h-[4.5rem] w-[4.5rem]" />
@@ -53,11 +44,6 @@ const DailyBoogleRecordCard = ({
     );
 
   const handleCardActionClick = () => {
-    if (view.status === 'noBoogleSignal' && onEditClick) {
-      onEditClick(view.record.id);
-      return;
-    }
-
     onCreateClick();
   };
 
@@ -65,8 +51,10 @@ const DailyBoogleRecordCard = ({
     <DailyRecordCardShell
       title="부글 기록"
       statusText={statusText}
-      actionLabel={actionLabel}
-      actionType={actionType}
+      actionLabel="부글 기록 작성"
+      actionType={
+        isRecorded && !shouldShowActionWhenRecorded ? 'none' : 'create'
+      }
       isActionDisabled={isFuture}
       onActionClick={handleCardActionClick}
     >

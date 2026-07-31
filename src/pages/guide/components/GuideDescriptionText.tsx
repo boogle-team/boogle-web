@@ -36,7 +36,7 @@ interface GuideSourceTextPropTypes {
 }
 
 export const GuideSourceText = ({
-  className = 'caption mt-9 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7',
+  className = 'caption mt-6 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7',
   guideDetail,
 }: GuideSourceTextPropTypes) => (
   <p className={className}>

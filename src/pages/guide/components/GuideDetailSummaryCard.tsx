@@ -1,5 +1,5 @@
 import type { GuideDetailTypes } from '../types/guideTypes';
-import NoticeIcon from '../assets/illustrations/NoticeIcon.svg?react';
+import NoticeIcon from '../assets/illustrations/noticeIcon.svg?react';
 
 interface GuideDetailSummaryCardPropTypes {
   guideDetail: GuideDetailTypes;

@@ -2,22 +2,21 @@
 import type {
   ConditionProgressTypes,
   MonthlyScoreTypes,
-  MonthlyTypeTypes,
   PatternTypes,
   ReportSummaryTypes,
   WeeklyTrendTypes,
 } from '../types/reportTypes';
 import ConditionDistributionCard from './ConditionDistributionCard';
 import MonthlyConditionScoreCard from './MonthlyConditionScoreCard';
-import MonthlyTypeCard from './MonthlyTypeCard';
+import MonthlyImprovementCard from './MonthlyImprovementCard';
+import MonthlyPatternListCard from './MonthlyPatternListCard';
 import MonthlyWeeklyTrendCard from './MonthlyWeeklyTrendCard';
-import PatternCard from './PatternCard';
 import SummaryCards from './SummaryCards';
 
 interface MonthlyReportBodyPropTypes {
   conditionProgress: ConditionProgressTypes[];
   conditionScore: number;
-  monthlyType: MonthlyTypeTypes;
+  improvements: PatternTypes[];
   onPdfButtonClick: () => void;
   patterns: PatternTypes[];
   pdfErrorMessage?: string;
@@ -29,7 +28,7 @@ interface MonthlyReportBodyPropTypes {
 const MonthlyReportBody = ({
   conditionProgress,
   conditionScore,
-  monthlyType,
+  improvements,
   onPdfButtonClick,
   patterns,
   pdfErrorMessage,
@@ -45,8 +44,8 @@ const MonthlyReportBody = ({
     <SummaryCards summaries={summaries} showDescription={false} />
     <MonthlyWeeklyTrendCard weeklyTrends={weeklyTrends} />
     <ConditionDistributionCard conditionProgress={conditionProgress} />
-    <MonthlyTypeCard monthlyType={monthlyType} />
-    <PatternCard patterns={patterns} title="이번 달 패턴" />
+    <MonthlyPatternListCard patterns={patterns} />
+    <MonthlyImprovementCard improvements={improvements} />
     <div className="flex justify-center">
       <Button
         text="이번 달 리포트 PDF 저장"

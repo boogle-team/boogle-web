@@ -1,6 +1,6 @@
 import type { GuideDetailTypes } from '../types/guideTypes';
-import InfoNoticeIcon from '../assets/illustrations/InfoNoticeIcon.svg?react';
-import WaterNoticeIcon from '../assets/illustrations/WaterNoticeIcon.svg?react';
+import InfoNoticeIcon from '../assets/illustrations/infoNoticeIcon.svg?react';
+import WaterNoticeIcon from '../assets/illustrations/waterNoticeIcon.svg?react';
 import BristolScalePreview from './BristolScalePreview';
 
 interface GuideInfoSectionCardPropTypes {

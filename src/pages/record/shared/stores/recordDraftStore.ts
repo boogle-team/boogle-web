@@ -69,9 +69,8 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
       set((state) => ({ main: { ...state.main, ...partialState } }));
     },
 
-    // 시/분/오전오후 휠은 각각 독립적으로 바뀐다.
-    // 같은 렌더 흐름에서 여러 휠의 onChange가 연달아 들어와도 서로 덮어쓰지 않도록
-    // 호출 시점의 스냅샷이 아니라 항상 최신 state 기준으로 병합한다.
+    // time은 중첩 객체라 updateMain으로 넘기면 통째로 교체된다.
+    // 시/분/오전오후가 각각 따로 들어와도 서로 덮어쓰지 않도록 최신 state 기준으로 병합한다.
     updateMainTime: (partialTime) => {
       set((state) => ({
         main: { ...state.main, time: { ...state.main.time, ...partialTime } },

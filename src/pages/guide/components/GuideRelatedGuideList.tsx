@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import RelatedBristolIcon from '../assets/icons/RelatedBristolIcon';
 import RelatedSleepIcon from '../assets/icons/RelatedSleepIcon';
-import RelatedGuideChevronRightIcon from '../assets/illustrations/RelatedGuideChevronRightIcon.svg?react';
+import RelatedGuideChevronRightIcon from '../assets/illustrations/relatedGuideChevronRightIcon.svg?react';
 import type { GuideRelatedTypes } from '../types/guideTypes';
 import { getGuideDetailPath } from '../utils/guideRouteUtils';
 
