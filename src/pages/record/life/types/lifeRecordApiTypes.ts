@@ -50,6 +50,10 @@ export interface GetTodayLifeRecordTagsRequestTypes {
   date?: string;
 }
 
+export interface GetFoodsRequestTypes {
+  keyword?: string;
+}
+
 export interface PostExtractLifeRecordTagsRequestTypes {
   text: string;
 }
@@ -84,6 +88,10 @@ export interface PostExtractLifeRecordTagsResponseTypes {
 
 export interface GetTodayLifeRecordTagsResponseTypes {
   tagNames: string[];
+}
+
+export interface GetFoodsResponseTypes {
+  items: LifeRecordFoodResponseTypes[];
 }
 
 export interface PostLifeRecordResponseTypes {
