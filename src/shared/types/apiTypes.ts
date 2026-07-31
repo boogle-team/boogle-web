@@ -6,7 +6,7 @@ export type ApiErrorCodeTypes = LiteralUnionTypes<
 >;
 
 export interface ApiResponseTypes<T> {
-  success: boolean;
+  success: true;
   data: T;
   message: string;
 }

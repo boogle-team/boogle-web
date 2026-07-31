@@ -2,6 +2,7 @@ import type {
   BoogleRecordTypes,
   LifeRecordTypes,
 } from '@/shared/components/dailyRecord';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 interface HomeUserTypes {
   id: number;
@@ -38,8 +39,4 @@ export interface HomeDashboardTypes {
   weeklyPattern: WeeklyPatternTypes | null;
 }
 
-export interface HomeDashboardResponseTypes {
-  success: boolean;
-  data: HomeDashboardTypes;
-  message: string;
-}
+export type HomeDashboardResponseTypes = ApiResponseTypes<HomeDashboardTypes>;

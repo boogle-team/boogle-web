@@ -1,4 +1,5 @@
 import type { StoolSimpleCodeTypes } from '@/shared/components/dailyRecord';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 // BOWEL: 배변 기록 있음 / NO_BOWEL: 배변 없음으로 저장 / NONE: 부글 기록 자체가 없음
 export type BoogleStatusTypes = 'BOWEL' | 'NO_BOWEL' | 'NONE';
@@ -35,11 +36,7 @@ export interface CalendarMonthTypes {
   summary: CalendarMonthSummaryTypes;
 }
 
-export interface CalendarMonthResponseTypes {
-  success: boolean;
-  data: CalendarMonthTypes;
-  message: string;
-}
+export type CalendarMonthResponseTypes = ApiResponseTypes<CalendarMonthTypes>;
 
 export interface CalendarMonthParamTypes {
   year: number;

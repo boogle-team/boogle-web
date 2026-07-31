@@ -2,6 +2,7 @@ import type {
   BoogleRecordTypes,
   LifeRecordTypes,
 } from '@/shared/components/dailyRecord';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 export interface CalendarDailyRecordTypes {
   date: string;
@@ -9,8 +10,5 @@ export interface CalendarDailyRecordTypes {
   lifeRecord: LifeRecordTypes | null;
 }
 
-export interface CalendarDailyRecordResponseTypes {
-  success: boolean;
-  data: CalendarDailyRecordTypes;
-  message: string;
-}
+export type CalendarDailyRecordResponseTypes =
+  ApiResponseTypes<CalendarDailyRecordTypes>;
