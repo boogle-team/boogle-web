@@ -46,6 +46,10 @@ export interface GetLifeRecordsRequestTypes {
   size?: number;
 }
 
+export interface GetTodayLifeRecordTagsRequestTypes {
+  date?: string;
+}
+
 export interface PostExtractLifeRecordTagsRequestTypes {
   text: string;
 }
@@ -76,6 +80,10 @@ export interface PostExtractLifeRecordTagsResponseTypes {
   tags: LifeRecordExtractedTagTypes[];
   tagNames: string[];
   autoTags: string;
+}
+
+export interface GetTodayLifeRecordTagsResponseTypes {
+  tagNames: string[];
 }
 
 export interface PostLifeRecordResponseTypes {
