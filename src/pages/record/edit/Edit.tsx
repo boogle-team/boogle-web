@@ -1,12 +1,16 @@
 import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import { useDeleteBoogleRecordMutation } from '@/pages/record/hooks/useDeleteBoogleRecordMutation';
+import { useBoogleRecordQuery } from '@/pages/record/hooks/useBoogleRecordQuery';
+import { useUpdateBoogleRecordMutation } from '@/pages/record/hooks/useUpdateBoogleRecordMutation';
 import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButtons';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
-import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
+import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
+import { mapBoogleRecordResponseToDraft } from '@/pages/record/utils/boogleRecordResponseMapper';
 
 import BowelStatusField from '../main/components/BowelStatusField';
 import DetailRecordLink from '../main/components/DetailRecordLink';
@@ -19,17 +23,42 @@ import { formatRecordDate } from '../main/utils/formatRecordDate';
 
 const Edit = () => {
   const navigate = useNavigate();
+  const { recordId: recordIdParam } = useParams<{ recordId: string }>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const recordDate = useRecordDraftDate();
+  const recordId = Number(recordIdParam);
+  const isRecordIdValid = Number.isInteger(recordId) && recordId > 0;
+  const {
+    data: boogleRecord,
+    isLoading: isBoogleRecordLoading,
+    isError: isBoogleRecordError,
+  } = useBoogleRecordQuery(isRecordIdValid ? recordId : undefined);
+  const {
+    mutate: deleteBoogleRecord,
+    isPending: isDeletingRecord,
+    isError: isDeleteRecordError,
+  } = useDeleteBoogleRecordMutation();
+  const {
+    mutate: updateBoogleRecord,
+    isPending: isUpdatingRecord,
+    isError: isUpdateRecordError,
+  } = useUpdateBoogleRecordMutation();
+
+  const recordDate = useRecordDraftStore((state) => state.recordDate);
+  const detailFormState = useRecordDraftStore((state) => state.detail);
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
 
-  // 새 기록 작성 초안과 섞이지 않도록 수정 전용 키로 시작한다.
-  // TODO: 라우트에 기록 id가 생기면 `edit-${recordId}` 키와 조회한 값으로 초안을 채운다.
   useLayoutEffect(() => {
-    startDraft({ draftKey: 'edit', recordDate });
-  }, [startDraft, recordDate]);
+    if (!boogleRecord) return;
+
+    const draft = mapBoogleRecordResponseToDraft(boogleRecord);
+
+    startDraft({
+      draftKey: `edit-${boogleRecord.id}`,
+      ...draft,
+    });
+  }, [boogleRecord, startDraft]);
 
   const {
     formState,
@@ -48,13 +77,27 @@ const Edit = () => {
 
   const handleCancel = () => {
     resetDraft();
-    navigate(-1);
+    navigate('/');
   };
 
   const handleSave = () => {
-    if (!isSubmittable) return;
-    // TODO: 부글 기록 수정 API 연동 (메인 + 세부 항목을 함께 제출)
-    resetDraft();
+    if (!isSubmittable || !isRecordIdValid || isUpdatingRecord) return;
+
+    const request = mapBoogleRecordRequest({
+      recordDate,
+      main: formState,
+      detail: detailFormState,
+    });
+
+    updateBoogleRecord(
+      { recordId, request },
+      {
+        onSuccess: () => {
+          resetDraft();
+          navigate('/');
+        },
+      },
+    );
   };
 
   const handleDetailRecordLinkClick = () => {
@@ -70,9 +113,36 @@ const Edit = () => {
   };
 
   const handleDeleteConfirm = () => {
-    // TODO: 부글 기록 삭제 API 연동
-    setIsDeleteModalOpen(false);
+    if (!isRecordIdValid || isDeletingRecord) return;
+
+    deleteBoogleRecord(recordId, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+        resetDraft();
+        navigate('/');
+      },
+    });
   };
+
+  if (!isRecordIdValid || isBoogleRecordError) {
+    return (
+      <RecordPageLayout title="부글 기록하기">
+        <p className="body-m-bold py-12 text-center text-gray-8">
+          기록을 불러오지 못했어요.
+        </p>
+      </RecordPageLayout>
+    );
+  }
+
+  if (isBoogleRecordLoading || !boogleRecord) {
+    return (
+      <RecordPageLayout title="부글 기록하기">
+        <p className="body-m py-12 text-center text-gray-7">
+          기록을 불러오는 중입니다.
+        </p>
+      </RecordPageLayout>
+    );
+  }
 
   return (
     <RecordPageLayout
@@ -80,9 +150,25 @@ const Edit = () => {
       subTitle={formatRecordDate(dayjs(recordDate).toDate())}
       contentClassName="gap-12"
       onBackButtonClick={handleBackButtonClick}
-      isDeleteButtonVisible
+      isDeleteButtonVisible={isRecordIdValid}
       onDeleteButtonClick={handleDeleteButtonClick}
-      footer={<CancelSaveButtons onCancel={handleCancel} onSave={handleSave} />}
+      footer={
+        <div className="flex flex-col gap-2">
+          {isUpdateRecordError && (
+            <p
+              role="alert"
+              className="caption text-center text-semantic-danger"
+            >
+              기록을 수정하지 못했어요. 다시 시도해주세요.
+            </p>
+          )}
+          <CancelSaveButtons
+            saveLabel={isUpdatingRecord ? '저장 중...' : '저장하기'}
+            onCancel={handleCancel}
+            onSave={handleSave}
+          />
+        </div>
+      }
     >
       <BowelStatusField
         value={formState.bowelStatus}
@@ -118,8 +204,13 @@ const Edit = () => {
       <ConfirmModal
         isOpen={isDeleteModalOpen}
         title="기록을 삭제할까요?"
+        description={
+          isDeleteRecordError
+            ? '기록을 삭제하지 못했어요. 다시 시도해주세요.'
+            : undefined
+        }
         cancelText="취소"
-        confirmText="삭제"
+        confirmText={isDeletingRecord ? '삭제 중...' : '삭제'}
         confirmVariant="destructive"
         onCancel={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
