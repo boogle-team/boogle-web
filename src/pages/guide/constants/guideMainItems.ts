@@ -1,9 +1,9 @@
-import BristolStoolChartIcon from '../assets/icons/BristolStoolChartIcon';
-import NormalBowelCountIcon from '../assets/icons/NormalBowelCountIcon';
-import SleepConditionIcon from '../assets/icons/SleepConditionIcon';
-import StressGutIcon from '../assets/icons/StressGutIcon';
-import WarningSignIcon from '../assets/icons/WarningSignIcon';
-import WaterDropIcon from '../assets/icons/WaterDropIcon';
+import BristolStoolChartIcon from '@/shared/assets/illustrations/guide/BristolStoolChartIcon';
+import NormalBowelCountIcon from '@/shared/assets/illustrations/guide/NormalBowelCountIcon';
+import SleepConditionIcon from '@/shared/assets/illustrations/guide/SleepConditionIcon';
+import StressGutIcon from '@/shared/assets/illustrations/guide/StressGutIcon';
+import WarningSignIcon from '@/shared/assets/illustrations/guide/WarningSignIcon';
+import WaterDropIcon from '@/shared/assets/illustrations/guide/WaterDropIcon';
 import type { GuideMainItemTypes } from '../types/guideMainTypes';
 
 export const PERSONAL_GUIDES: GuideMainItemTypes[] = [
