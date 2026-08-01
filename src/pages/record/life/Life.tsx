@@ -15,11 +15,10 @@ import {
   MAX_TAG_COUNT,
 } from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { usePostExtractLifeRecordTags } from './hooks/usePostExtractLifeRecordTags';
 import { usePostLifeRecord } from './hooks/usePostLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
-
-const MOCK_RECOMMENDED_TAGS = ['야식', '매운 음식', '카페인'];
 
 const DEFAULT_LIFE_RECORD_ERROR_MESSAGE =
   '생활 기록 저장에 실패했어요. 잠시 후 다시 시도해 주세요.';
@@ -48,11 +47,14 @@ const Life = () => {
   }, [startLifeRecord, recordDate]);
 
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+  const [recommendedTags, setRecommendedTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const form = useLifeRecordForm();
   const { formState, isSubmittable } = form;
+  const { mutate: extractLifeRecordTags, isPending: isExtractingTags } =
+    usePostExtractLifeRecordTags();
   const { mutate: postLifeRecord, isPending: isPostingLifeRecord } =
     usePostLifeRecord();
 
@@ -79,13 +81,31 @@ const Life = () => {
   };
 
   const handleSubmit = () => {
-    if (!isSubmittable || isPostingLifeRecord) return;
+    if (!isSubmittable || isPostingLifeRecord || isExtractingTags) return;
 
-    if (formState.memo.trim()) {
-      setIsTagModalOpen(true);
+    const trimmedMemo = formState.memo.trim();
+
+    if (trimmedMemo) {
+      extractLifeRecordTags(
+        { text: trimmedMemo },
+        {
+          onSuccess: ({ tagNames }) => {
+            setRecommendedTags(tagNames);
+            setSelectedTags(tagNames.slice(0, MAX_TAG_COUNT));
+            setIsTagModalOpen(true);
+          },
+          onError: () => {
+            setRecommendedTags([]);
+            setSelectedTags([]);
+            setIsTagModalOpen(true);
+          },
+        },
+      );
       return;
     }
 
+    setRecommendedTags([]);
+    setSelectedTags([]);
     saveLifeRecord();
   };
 
@@ -141,7 +161,7 @@ const Life = () => {
         <Button
           text="완료"
           onClick={handleSubmit}
-          disabled={!isSubmittable || isPostingLifeRecord}
+          disabled={!isSubmittable || isPostingLifeRecord || isExtractingTags}
         />
       }
     >
@@ -162,7 +182,7 @@ const Life = () => {
       <TagSettingModal
         isOpen={isTagModalOpen}
         memo={formState.memo}
-        recommendedTags={MOCK_RECOMMENDED_TAGS}
+        recommendedTags={recommendedTags}
         selectedTags={selectedTags}
         onToggleTag={handleTagToggle}
         onAddTag={handleTagAdd}

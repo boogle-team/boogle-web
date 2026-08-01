@@ -1,5 +1,7 @@
 import type { FunctionComponent, SVGProps } from 'react';
 
+import type { LifeDetailRecordFormStateTypes } from './lifeDetailRecordTypes';
+
 export type SleepTypes = 'insufficient' | 'normal' | 'sufficient';
 
 export type StressTypes = 'low' | 'normal' | 'high';
@@ -30,4 +32,5 @@ export interface LifeRecordFormStateTypes {
   hydration: HydrationTypes | null;
   foods: FoodTypes[];
   memo: string;
+  detailRecord: LifeDetailRecordFormStateTypes | null;
 }

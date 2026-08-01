@@ -1,10 +1,15 @@
-import type {
-  PostLifeRecordRequestTypes,
-} from '../types/lifeRecordApiTypes';
+import type { LifeDetailRecordFormStateTypes } from '../types/lifeDetailRecordTypes';
+import type { PostLifeRecordRequestTypes } from '../types/lifeRecordApiTypes';
 import {
+  CAFFEINE_CODE_BY_VALUE,
+  EXERCISE_CODE_BY_VALUE,
   FOOD_ID_BY_VALUE,
+  HORMONE_CODE_BY_VALUE,
   MEAL_REGULAR_CODE_BY_VALUE,
+  MEDICINE_ID_BY_VALUE,
+  OUTING_CODE_BY_VALUE,
   SLEEP_CODE_BY_VALUE,
+  SLEEP_TIME_BY_VALUE,
   STRESS_CODE_BY_VALUE,
   WATER_CODE_BY_VALUE,
   WATER_INTAKE_BY_VALUE,
@@ -17,18 +22,64 @@ interface CreateLifeRecordPayloadParamTypes {
   tagNames?: string[];
 }
 
+type CompleteLifeDetailRecordTypes = LifeDetailRecordFormStateTypes & {
+  caffeine: NonNullable<LifeDetailRecordFormStateTypes['caffeine']>;
+  exercise: NonNullable<LifeDetailRecordFormStateTypes['exercise']>;
+  menstruation: NonNullable<LifeDetailRecordFormStateTypes['menstruation']>;
+  outing: NonNullable<LifeDetailRecordFormStateTypes['outing']>;
+  sleepDuration: NonNullable<LifeDetailRecordFormStateTypes['sleepDuration']>;
+};
+
+const isCompleteDetailRecord = (
+  detailRecord: LifeDetailRecordFormStateTypes | null,
+): detailRecord is CompleteLifeDetailRecordTypes => {
+  if (!detailRecord) return false;
+
+  const {
+    caffeine,
+    exercise,
+    medicines,
+    menstruation,
+    outing,
+    sleepDuration,
+  } = detailRecord;
+
+  return (
+    sleepDuration !== null &&
+    exercise !== null &&
+    caffeine !== null &&
+    medicines.length > 0 &&
+    outing !== null &&
+    menstruation !== null
+  );
+};
+
 export const createLifeRecordPayload = ({
   formState,
   recordDate,
   tagNames = [],
 }: CreateLifeRecordPayloadParamTypes): PostLifeRecordRequestTypes | null => {
-  const { foods, hydration, mealRegularity, memo, sleep, stress } = formState;
+  const { detailRecord, foods, hydration, mealRegularity, memo, sleep, stress } =
+    formState;
 
   if (!sleep || !stress || !hydration || !mealRegularity || foods.length === 0) {
     return null;
   }
 
   const trimmedMemo = memo.trim();
+  const detailPayload = isCompleteDetailRecord(detailRecord)
+    ? {
+        caffeine: CAFFEINE_CODE_BY_VALUE[detailRecord.caffeine],
+        exercise: EXERCISE_CODE_BY_VALUE[detailRecord.exercise],
+        hormone: HORMONE_CODE_BY_VALUE[detailRecord.menstruation],
+        medicineIds: detailRecord.medicines.map(
+          (medicine) => MEDICINE_ID_BY_VALUE[medicine],
+        ),
+        outing: OUTING_CODE_BY_VALUE[detailRecord.outing],
+        sleepTime: SLEEP_TIME_BY_VALUE[detailRecord.sleepDuration],
+        waterIntake: detailRecord.waterIntake,
+      }
+    : {};
 
   return {
     regDate: recordDate,
@@ -40,5 +91,6 @@ export const createLifeRecordPayload = ({
     memo: trimmedMemo || undefined,
     tagNames,
     foodIds: foods.map((food) => FOOD_ID_BY_VALUE[food]),
+    ...detailPayload,
   };
 };

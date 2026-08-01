@@ -1,4 +1,12 @@
 import type {
+  CaffeineTypes,
+  ExerciseTypes,
+  MedicineTypes,
+  MenstruationTypes,
+  OutingTypes,
+  SleepDurationTypes,
+} from './lifeDetailRecordTypes';
+import type {
   FoodTypes,
   HydrationTypes,
   MealRegularityTypes,
@@ -217,4 +225,140 @@ export const FOOD_ID_BY_VALUE: Record<FoodTypes, number> = {
   greasy: 4,
   dairy: 5,
   vegetable: 6,
+};
+
+export const SLEEP_TIME_BY_VALUE: Record<SleepDurationTypes, number> = {
+  lessThan5Hours: 1,
+  from5To7Hours: 2,
+  moreThan7Hours: 3,
+};
+
+export const EXERCISE_CODE_BY_VALUE: Record<
+  ExerciseTypes,
+  LifeRecordExerciseCodeTypes
+> = {
+  none: 'N',
+  light: 'L',
+  enough: 'H',
+};
+
+export const CAFFEINE_CODE_BY_VALUE: Record<
+  CaffeineTypes,
+  LifeRecordCaffeineCodeTypes
+> = {
+  none: 'N',
+  oneCup: 'O',
+  twoCupsOrMore: 'M',
+};
+
+export const MEDICINE_ID_BY_VALUE: Record<MedicineTypes, number> = {
+  cold: 1,
+  antibiotic: 2,
+  probiotic: 3,
+  iron: 4,
+  laxative: 5,
+  none: 6,
+};
+
+export const OUTING_CODE_BY_VALUE: Record<
+  OutingTypes,
+  LifeRecordOutingCodeTypes
+> = {
+  usual: 'N',
+  frequent: 'L',
+  traveling: 'T',
+};
+
+export const HORMONE_CODE_BY_VALUE: Record<
+  MenstruationTypes,
+  LifeRecordHormoneCodeTypes
+> = {
+  none: 'N',
+  menstruating: 'M',
+  hormonalChange: 'E',
+};
+
+export const SLEEP_VALUE_BY_CODE: Record<LifeRecordSleepCodeTypes, SleepTypes> =
+  {
+    B: 'insufficient',
+    N: 'normal',
+    G: 'sufficient',
+  };
+
+export const STRESS_VALUE_BY_CODE: Record<
+  LifeRecordStressCodeTypes,
+  StressTypes
+> = {
+  L: 'low',
+  N: 'normal',
+  H: 'high',
+};
+
+export const WATER_VALUE_BY_CODE: Record<
+  LifeRecordWaterCodeTypes,
+  HydrationTypes
+> = {
+  L: 'insufficient',
+  N: 'normal',
+  H: 'sufficient',
+};
+
+export const MEAL_REGULAR_VALUE_BY_CODE: Record<
+  LifeRecordMealRegularCodeTypes,
+  MealRegularityTypes
+> = {
+  R: 'regular',
+  N: 'normal',
+  I: 'irregular',
+};
+
+export const FOOD_VALUE_BY_ID = Object.fromEntries(
+  Object.entries(FOOD_ID_BY_VALUE).map(([food, id]) => [id, food]),
+) as Record<number, FoodTypes>;
+
+export const SLEEP_TIME_VALUE_BY_NUMBER = Object.fromEntries(
+  Object.entries(SLEEP_TIME_BY_VALUE).map(([sleepTime, value]) => [
+    value,
+    sleepTime,
+  ]),
+) as Record<number, SleepDurationTypes>;
+
+export const EXERCISE_VALUE_BY_CODE: Record<
+  LifeRecordExerciseCodeTypes,
+  ExerciseTypes
+> = {
+  N: 'none',
+  L: 'light',
+  H: 'enough',
+};
+
+export const CAFFEINE_VALUE_BY_CODE: Record<
+  LifeRecordCaffeineCodeTypes,
+  CaffeineTypes
+> = {
+  N: 'none',
+  O: 'oneCup',
+  M: 'twoCupsOrMore',
+};
+
+export const MEDICINE_VALUE_BY_ID = Object.fromEntries(
+  Object.entries(MEDICINE_ID_BY_VALUE).map(([medicine, id]) => [id, medicine]),
+) as Record<number, MedicineTypes>;
+
+export const OUTING_VALUE_BY_CODE: Record<
+  LifeRecordOutingCodeTypes,
+  OutingTypes
+> = {
+  N: 'usual',
+  L: 'frequent',
+  T: 'traveling',
+};
+
+export const HORMONE_VALUE_BY_CODE: Record<
+  LifeRecordHormoneCodeTypes,
+  MenstruationTypes
+> = {
+  N: 'none',
+  M: 'menstruating',
+  E: 'hormonalChange',
 };

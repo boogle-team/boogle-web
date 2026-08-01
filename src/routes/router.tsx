@@ -1,29 +1,27 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Record from '../pages/record/main/Main';
-import RecordEdit from '../pages/record/edit/Edit';
-import RecordDetail from '../pages/record/detail/Detail';
-import RecordLife from '../pages/record/life/Life';
-import RecordLifeDetail from '../pages/record/life/LifeDetail';
-import RecordLifeEdit from '../pages/record/life/LifeEdit';
+
+import MainLayout from '@/layout/MainLayout';
 import Notification from '@/pages/notification/Notification';
-import Settings from '@/pages/settings/Settings';
-import ProfileEdit from '@/pages/settings/ProfileEdit';
+import RecordDetail from '@/pages/record/detail/Detail';
+import RecordEdit from '@/pages/record/edit/Edit';
+import RecordLife from '@/pages/record/life/Life';
+import RecordLifeDetail from '@/pages/record/life/LifeDetail';
+import RecordLifeEdit from '@/pages/record/life/LifeEdit';
+import Record from '@/pages/record/main/Main';
 import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
 import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
+import DeleteAccount from '@/pages/settings/DeleteAccount';
 import LoginAccount from '@/pages/settings/LoginAccount';
 import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
+import ProfileEdit from '@/pages/settings/ProfileEdit';
 import SensitiveConsent from '@/pages/settings/SensitiveConsent';
+import Settings from '@/pages/settings/Settings';
 import Terms from '@/pages/settings/Terms';
-import DeleteAccount from '@/pages/settings/DeleteAccount';
 
 export const Router = createBrowserRouter([
   {
     path: '/',
-    lazy: async () => {
-      const { default: MainLayout } = await import('@/layout/MainLayout');
-
-      return { Component: MainLayout };
-    },
+    element: <MainLayout />,
     children: [
       {
         index: true,
@@ -42,22 +40,21 @@ export const Router = createBrowserRouter([
           return { Component: Calendar };
         },
       },
-      // TODO: 실제 부글/생활 기록 작성·수정 페이지 구현 후 임시 페이지 컴포넌트를 교체하면 됨.
       {
         path: 'boogle-record/new',
-        element: <Record />, // 부글 기록 새로 기록 페이지로 수정 필요
+        element: <Record />,
       },
       {
         path: 'boogle-record/edit/:recordId',
-        element: <RecordEdit />, // 부글 기록 편집 페이지로 수정 필요
+        element: <RecordEdit />,
       },
       {
         path: 'life-record/new',
-        element: <Record />, // 여기 생활 기록 새로 기록 페이지로 수정 필요
+        element: <RecordLife />,
       },
       {
         path: 'life-record/edit/:recordId',
-        element: <RecordEdit />, // 여기 생활 기록 편집 페이지로 수정 필요
+        element: <RecordLifeEdit />,
       },
       {
         path: 'report',
