@@ -106,15 +106,18 @@ const useCalendarState = (): UseCalendarStateReturnTypes => {
     [selectedDailyRecord?.boogleRecords, selectedDailyRecord?.lifeRecord],
   );
 
-  const handlePreviousMonthButtonClick = () =>
-    setCurrentDate((previousDate) =>
-      previousDate.subtract(1, 'month').startOf('month'),
-    );
+  const moveToMonth = (nextMonth: Dayjs) => {
+    setCurrentDate(nextMonth);
+    setSelectedDate(nextMonth.format(DATE_FORMAT));
+  };
 
-  const handleNextMonthButtonClick = () =>
-    setCurrentDate((previousDate) =>
-      previousDate.add(1, 'month').startOf('month'),
-    );
+  const handlePreviousMonthButtonClick = () => {
+    moveToMonth(currentDate.subtract(1, 'month').startOf('month'));
+  };
+
+  const handleNextMonthButtonClick = () => {
+    moveToMonth(currentDate.add(1, 'month').startOf('month'));
+  };
 
   const handleDateCellClick = (date: string) => {
     setSelectedDate(date);
