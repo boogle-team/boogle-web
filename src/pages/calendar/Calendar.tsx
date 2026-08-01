@@ -1,16 +1,7 @@
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
-import {
-  CalendarGrid,
-  DATE_FORMAT,
-  MonthNavigator,
-} from '@/shared/components/calendar';
+import { CalendarGrid, MonthNavigator } from '@/shared/components/calendar';
 import {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,
-  getBoogleRecordView,
-  getLifeRecordView,
 } from '@/shared/components/dailyRecord';
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import TagsSection from '@/shared/components/tagSection/TagsSection';
@@ -19,104 +10,32 @@ import { getApiErrorMessage } from '@/shared/apis/apiError';
 import CalendarLegend from '@/pages/calendar/components/CalendarLegend';
 import CalendarMonthlySummaryBar from '@/pages/calendar/components/CalendarMonthlySummaryBar';
 import SelectedDateHeader from '@/pages/calendar/components/SelectedDateHeader';
-import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
-import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
-import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
-import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
-import { getDailyAutoTags } from '@/pages/calendar/utils/getDailyAutoTags';
-import { toCalendarRecordMap } from '@/pages/calendar/utils/calendarRecordMapper';
+import useCalendarState from '@/pages/calendar/hooks/useCalendarState';
 
 const Calendar = () => {
-  const navigate = useNavigate();
-  // TODO: 캘린더 조회 API에 서버 기준 날짜가 추가되면 그 값으로 교체한다.
-  const [todayDate] = useState(() => dayjs().format(DATE_FORMAT));
-  const [currentDate, setCurrentDate] = useState(() =>
-    dayjs().startOf('month'),
-  );
-  const [selectedDate, setSelectedDate] = useState(todayDate);
-
   const {
-    data: selectedDailyRecord,
-    error,
-    isError,
+    currentDate,
+    todayDate,
+    selectedDate,
+    recordMap,
+    markConfig,
+    monthlySummary,
+    boogleRecordView,
+    lifeRecordView,
+    autoTagItems,
     isLoading,
-  } = useCalendarDailyRecordQuery(selectedDate);
-
-  const {
-    data: calendarMonth,
-    error: monthError,
-    isError: isMonthError,
-  } = useCalendarMonthQuery({
-    year: currentDate.year(),
-    // dayjs의 month()는 0부터 시작하므로 서버 규격(1~12)에 맞춘다.
-    month: currentDate.month() + 1,
-  });
-
-  const recordMap = useMemo(
-    () => toCalendarRecordMap(calendarMonth?.days ?? []),
-    [calendarMonth?.days],
-  );
-
-  const monthlySummary = useMemo(
-    () => getCalendarMonthlySummary({ currentDate, todayDate, recordMap }),
-    [currentDate, recordMap, todayDate],
-  );
-
-  const boogleRecordView = useMemo(
-    () =>
-      getBoogleRecordView({
-        selectedDate,
-        records: selectedDailyRecord?.boogleRecords ?? [],
-      }),
-    [selectedDailyRecord?.boogleRecords, selectedDate],
-  );
-
-  const lifeRecordView = useMemo(
-    () =>
-      getLifeRecordView({
-        selectedDate,
-        record: selectedDailyRecord?.lifeRecord ?? null,
-      }),
-    [selectedDailyRecord?.lifeRecord, selectedDate],
-  );
-
-  const autoTagItems = useMemo(
-    () =>
-      getDailyAutoTags({
-        boogleRecords: selectedDailyRecord?.boogleRecords ?? [],
-        lifeRecord: selectedDailyRecord?.lifeRecord ?? null,
-      }).map((tagLabel) => ({ id: tagLabel, label: tagLabel })),
-    [selectedDailyRecord?.boogleRecords, selectedDailyRecord?.lifeRecord],
-  );
-
-  const handlePreviousMonthButtonClick = () =>
-    setCurrentDate((previousDate) =>
-      previousDate.subtract(1, 'month').startOf('month'),
-    );
-  const handleNextMonthButtonClick = () =>
-    setCurrentDate((previousDate) =>
-      previousDate.add(1, 'month').startOf('month'),
-    );
-
-  const handleDateCellClick = (date: string) => {
-    setSelectedDate(date);
-  };
-
-  const handleBoogleRecordCreateButtonClick = () => {
-    navigate(`/boogle-record/new?date=${selectedDate}`);
-  };
-
-  const handleBoogleRecordEditButtonClick = (recordId: number) => {
-    navigate(`/boogle-record/edit/${recordId}`);
-  };
-
-  const handleLifeRecordCreateButtonClick = () => {
-    navigate(`/life-record/new?date=${selectedDate}`);
-  };
-
-  const handleLifeRecordEditButtonClick = (recordId: number) => {
-    navigate(`/life-record/edit/${recordId}`);
-  };
+    isError,
+    error,
+    isMonthError,
+    monthError,
+    handlePreviousMonthButtonClick,
+    handleNextMonthButtonClick,
+    handleDateCellClick,
+    handleBoogleRecordCreateButtonClick,
+    handleBoogleRecordEditButtonClick,
+    handleLifeRecordCreateButtonClick,
+    handleLifeRecordEditButtonClick,
+  } = useCalendarState();
 
   return (
     <div className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem]">
@@ -141,7 +60,7 @@ const Calendar = () => {
           recordMap={recordMap}
           selectedDate={selectedDate}
           todayDate={todayDate}
-          markConfig={CALENDAR_MARK_CONFIG}
+          markConfig={markConfig}
           onSelectDate={handleDateCellClick}
         />
 
