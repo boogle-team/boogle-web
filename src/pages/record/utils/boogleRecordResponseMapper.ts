@@ -55,8 +55,8 @@ interface BoogleRecordDraftTypes {
   detail: DetailRecordFormStateTypes;
 }
 
-const isStoolTypeId = (value: number): value is StoolTypeId =>
-  Number.isInteger(value) && value >= 1 && value <= 7;
+const isStoolTypeId = (value: number | null): value is StoolTypeId =>
+  value !== null && Number.isInteger(value) && value >= 1 && value <= 7;
 
 const mapBowelMovementTime = (
   bowelMovementAt: string | null,
@@ -85,7 +85,8 @@ const mapBowelMovementTime = (
   };
 };
 
-const mapTakenTime = (takenTime: number): DurationTypes => {
+const mapTakenTime = (takenTime: number | null): DurationTypes | null => {
+  if (takenTime === null) return null;
   if (takenTime <= 5) return 'short';
   if (takenTime < 15) return 'medium';
   return 'long';
@@ -113,16 +114,27 @@ export const mapBoogleRecordResponseToDraft = (
       stoolType: isStoolTypeId(record.stoolBristol)
         ? record.stoolBristol
         : null,
-      feeling: BOWEL_FEELING[record.bowelFeeling],
-      painLevel: Math.min(Math.max(record.stomach, 0), 4),
+      feeling: record.bowelFeeling
+        ? BOWEL_FEELING[record.bowelFeeling]
+        : INITIAL_MAIN_RECORD_STATE.feeling,
+      painLevel:
+        record.stomach === null
+          ? INITIAL_MAIN_RECORD_STATE.painLevel
+          : Math.min(Math.max(record.stomach, 0), 4),
     },
     detail: {
-      bloating: DETAIL_SEVERITY[record.distension],
-      tenesmus: DETAIL_SEVERITY[record.remainingFeeling],
-      urgency: DETAIL_SEVERITY[record.urgency],
+      bloating: record.distension
+        ? DETAIL_SEVERITY[record.distension]
+        : INITIAL_DETAIL_RECORD_STATE.bloating,
+      tenesmus: record.remainingFeeling
+        ? DETAIL_SEVERITY[record.remainingFeeling]
+        : INITIAL_DETAIL_RECORD_STATE.tenesmus,
+      urgency: record.urgency
+        ? DETAIL_SEVERITY[record.urgency]
+        : INITIAL_DETAIL_RECORD_STATE.urgency,
       duration: mapTakenTime(record.takenTime),
-      amount: AMOUNT[record.amount],
-      stoolColor: STOOL_COLOR[record.color],
+      amount: record.amount ? AMOUNT[record.amount] : null,
+      stoolColor: record.color ? STOOL_COLOR[record.color] : null,
     },
   };
 };

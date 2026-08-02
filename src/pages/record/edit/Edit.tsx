@@ -166,6 +166,8 @@ const Edit = () => {
             saveLabel={isUpdatingRecord ? '저장 중...' : '저장하기'}
             onCancel={handleCancel}
             onSave={handleSave}
+            cancelDisabled={isUpdatingRecord}
+            saveDisabled={!isSubmittable || isUpdatingRecord}
           />
         </div>
       }

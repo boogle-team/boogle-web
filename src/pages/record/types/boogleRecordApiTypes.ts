@@ -26,16 +26,16 @@ export interface BoogleRecordResponseDataTypes {
   regDate: string;
   bowelMovementAt: string | null;
   hasBowel: boolean;
-  stoolBristol: number;
-  stoolSimple: StoolSimpleCodeTypes;
-  bowelFeeling: BowelFeelingCodeTypes;
-  stomach: number;
-  distension: BoogleRecordSeverityCodeTypes;
-  remainingFeeling: BoogleRecordSeverityCodeTypes;
-  urgency: BoogleRecordSeverityCodeTypes;
-  takenTime: number;
-  amount: BoogleRecordAmountCodeTypes;
-  color: StoolColorCodeTypes;
+  stoolBristol: number | null;
+  stoolSimple: StoolSimpleCodeTypes | null;
+  bowelFeeling: BowelFeelingCodeTypes | null;
+  stomach: number | null;
+  distension: BoogleRecordSeverityCodeTypes | null;
+  remainingFeeling: BoogleRecordSeverityCodeTypes | null;
+  urgency: BoogleRecordSeverityCodeTypes | null;
+  takenTime: number | null;
+  amount: BoogleRecordAmountCodeTypes | null;
+  color: StoolColorCodeTypes | null;
   status: BoogleRecordStatusCodeTypes;
   updatedAt: string | null;
 }

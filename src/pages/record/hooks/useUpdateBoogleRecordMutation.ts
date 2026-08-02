@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchBoogleRecord } from '../apis/boogleRecordApis';
+import { getBoogleRecordQueryKey } from './useBoogleRecordQuery';
 
 import type { PatchBoogleRecordRequestTypes } from '../types/boogleRecordApiTypes';
 
@@ -16,7 +17,7 @@ export const useUpdateBoogleRecordMutation = () => {
     mutationFn: ({ recordId, request }: UpdateBoogleRecordMutationParamTypes) =>
       patchBoogleRecord(recordId, request),
     onSuccess: (record) => {
-      queryClient.setQueryData(['boogleRecord', record.id], record);
+      queryClient.setQueryData(getBoogleRecordQueryKey(record.id), record);
       void queryClient.invalidateQueries({ queryKey: ['home'] });
       void queryClient.invalidateQueries({
         queryKey: ['calendarDailyRecord'],

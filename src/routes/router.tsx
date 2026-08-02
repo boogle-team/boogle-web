@@ -42,22 +42,21 @@ export const Router = createBrowserRouter([
           return { Component: Calendar };
         },
       },
-      // TODO: 실제 부글/생활 기록 작성·수정 페이지 구현 후 임시 페이지 컴포넌트를 교체하면 됨.
       {
         path: 'boogle-record/new',
-        element: <Record />, // 부글 기록 새로 기록 페이지로 수정 필요
+        element: <Record />,
       },
       {
         path: 'boogle-record/edit/:recordId',
-        element: <RecordEdit />, // 부글 기록 편집 페이지로 수정 필요
+        element: <RecordEdit />,
       },
       {
         path: 'life-record/new',
-        element: <Record />, // 여기 생활 기록 새로 기록 페이지로 수정 필요
+        element: <RecordLife />,
       },
       {
         path: 'life-record/edit/:recordId',
-        element: <RecordEdit />, // 여기 생활 기록 편집 페이지로 수정 필요
+        element: <RecordLifeEdit />,
       },
       {
         path: 'report',

@@ -1,4 +1,10 @@
-import type { DetailRecordFormStateTypes } from '@/pages/record/detail/types/detailRecordTypes';
+import type {
+  AmountTypes,
+  DetailRecordFormStateTypes,
+  DurationTypes,
+  SeverityTypes,
+  StoolColorTypes,
+} from '@/pages/record/detail/types/detailRecordTypes';
 import type {
   FeelingTypes,
   RecordFormStateTypes,
@@ -21,19 +27,19 @@ const DETAIL_SEVERITY_CODE = {
   none: 'N',
   mild: 'M',
   severe: 'L',
-} as const;
+} as const satisfies Record<SeverityTypes, 'N' | 'M' | 'L'>;
 
 const TAKEN_TIME = {
   short: 5,
   medium: 10,
   long: 15,
-} as const;
+} as const satisfies Record<DurationTypes, number>;
 
 const AMOUNT_CODE = {
   small: 'S',
   medium: 'N',
   large: 'M',
-} as const satisfies Record<string, BoogleRecordAmountCodeTypes>;
+} as const satisfies Record<AmountTypes, BoogleRecordAmountCodeTypes>;
 
 const STOOL_COLOR_CODE = {
   brown: 'B',
@@ -41,7 +47,7 @@ const STOOL_COLOR_CODE = {
   black: 'N',
   red: 'R',
   grayWhite: 'G',
-} as const satisfies Record<string, StoolColorCodeTypes>;
+} as const satisfies Record<StoolColorTypes, StoolColorCodeTypes>;
 
 interface MapBoogleRecordRequestParamTypes {
   recordDate: string;
