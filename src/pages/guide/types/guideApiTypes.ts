@@ -97,6 +97,7 @@ export interface GuideItemResponseTypes {
 
 export interface GuidePatternItemResponseTypes extends GuideItemResponseTypes {
   category: 'P';
+  feedbackStatus: GuideFeedbackStatusTypes;
   matchedRuleCodes: string[];
 }
 
