@@ -1,4 +1,3 @@
-import { isAxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,17 +18,7 @@ import { usePostExtractLifeRecordTags } from './hooks/usePostExtractLifeRecordTa
 import { usePostLifeRecord } from './hooks/usePostLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
-
-const DEFAULT_LIFE_RECORD_ERROR_MESSAGE =
-  '생활 기록 저장에 실패했어요. 잠시 후 다시 시도해 주세요.';
-
-const getLifeRecordErrorMessage = (error: unknown) => {
-  if (isAxiosError<{ message?: string }>(error)) {
-    return error.response?.data.message ?? DEFAULT_LIFE_RECORD_ERROR_MESSAGE;
-  }
-
-  return DEFAULT_LIFE_RECORD_ERROR_MESSAGE;
-};
+import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
 
 const Life = () => {
   const navigate = useNavigate();

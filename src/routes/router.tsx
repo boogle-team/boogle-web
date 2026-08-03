@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import MainLayout from '@/layout/MainLayout';
 import Notification from '@/pages/notification/Notification';
 import RecordDetail from '@/pages/record/detail/Detail';
 import RecordEdit from '@/pages/record/edit/Edit';
@@ -21,7 +20,11 @@ import Terms from '@/pages/settings/Terms';
 export const Router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    lazy: async () => {
+      const { default: MainLayout } = await import('@/layout/MainLayout');
+
+      return { Component: MainLayout };
+    },
     children: [
       {
         index: true,

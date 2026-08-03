@@ -2,16 +2,12 @@ import { useMemo } from 'react';
 
 import { FOOD_OPTIONS } from '../constants/lifeRecordConstants';
 import { useFoods } from '../hooks/useFoods';
-import { FOOD_ID_BY_VALUE } from '../types/lifeRecordApiTypes';
+import { FOOD_VALUE_BY_ID } from '../types/lifeRecordApiTypes';
 import type { FoodTypes } from '../types/lifeRecordTypes';
 import FoodChip from './FoodChip';
 import LifeSectionTitle from './LifeSectionTitle';
 
 const FIELD_TITLE = '오늘 먹은 것';
-
-const FOOD_VALUE_BY_ID = Object.fromEntries(
-  Object.entries(FOOD_ID_BY_VALUE).map(([food, id]) => [id, food]),
-) as Record<number, FoodTypes>;
 
 interface FoodFieldPropTypes {
   value: FoodTypes[];
@@ -21,21 +17,35 @@ interface FoodFieldPropTypes {
 const FoodField = ({ value, onToggle }: FoodFieldPropTypes) => {
   const { data: foodsData } = useFoods();
   const foodOptions = useMemo(() => {
-    if (!foodsData?.items) return FOOD_OPTIONS;
-
     const optionByValue = new Map(
       FOOD_OPTIONS.map((foodOption) => [foodOption.value, foodOption]),
     );
 
-    return foodsData.items
-      .map(({ id }) => FOOD_VALUE_BY_ID[id])
-      .filter((food): food is FoodTypes => Boolean(food))
+    const serverOptions = foodsData?.items
+      ? foodsData.items
+          .map(({ id }) => FOOD_VALUE_BY_ID[id])
+          .filter((food): food is FoodTypes => Boolean(food))
+          .map((food) => optionByValue.get(food))
+          .filter((foodOption): foodOption is (typeof FOOD_OPTIONS)[number] =>
+            Boolean(foodOption),
+          )
+      : FOOD_OPTIONS;
+
+    const selectedOptions = value
       .map((food) => optionByValue.get(food))
-      .filter(
-        (foodOption): foodOption is (typeof FOOD_OPTIONS)[number] =>
-          Boolean(foodOption),
+      .filter((foodOption): foodOption is (typeof FOOD_OPTIONS)[number] =>
+        Boolean(foodOption),
       );
-  }, [foodsData]);
+
+    const optionValueSet = new Set(serverOptions.map(({ value }) => value));
+
+    return [
+      ...serverOptions,
+      ...selectedOptions.filter(
+        (foodOption) => !optionValueSet.has(foodOption.value),
+      ),
+    ];
+  }, [foodsData, value]);
 
   return (
     <section className="flex flex-col gap-[0.62rem]">

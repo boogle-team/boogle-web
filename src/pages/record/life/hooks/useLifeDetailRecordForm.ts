@@ -15,15 +15,16 @@ import type {
   SleepDurationTypes,
 } from '../types/lifeDetailRecordTypes';
 
-export const INITIAL_LIFE_DETAIL_RECORD_STATE: LifeDetailRecordFormStateTypes = {
-  sleepDuration: null,
-  exercise: null,
-  caffeine: null,
-  waterIntake: MIN_WATER_INTAKE,
-  medicines: [],
-  outing: null,
-  menstruation: null,
-};
+export const INITIAL_LIFE_DETAIL_RECORD_STATE: LifeDetailRecordFormStateTypes =
+  {
+    sleepDuration: null,
+    exercise: null,
+    caffeine: null,
+    waterIntake: MIN_WATER_INTAKE,
+    medicines: [],
+    outing: null,
+    menstruation: null,
+  };
 
 interface UseLifeDetailRecordFormParamTypes {
   /** 미동의 사용자에게는 생리·호르몬 변화가 노출되지 않아 필수 검사에서도 빠진다. */

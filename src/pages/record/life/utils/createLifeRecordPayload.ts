@@ -18,6 +18,7 @@ import type { LifeRecordFormStateTypes } from '../types/lifeRecordTypes';
 
 interface CreateLifeRecordPayloadParamTypes {
   formState: LifeRecordFormStateTypes;
+  isSensitiveInfoConsented?: boolean;
   recordDate: string;
   tagNames?: string[];
 }
@@ -25,24 +26,18 @@ interface CreateLifeRecordPayloadParamTypes {
 type CompleteLifeDetailRecordTypes = LifeDetailRecordFormStateTypes & {
   caffeine: NonNullable<LifeDetailRecordFormStateTypes['caffeine']>;
   exercise: NonNullable<LifeDetailRecordFormStateTypes['exercise']>;
-  menstruation: NonNullable<LifeDetailRecordFormStateTypes['menstruation']>;
   outing: NonNullable<LifeDetailRecordFormStateTypes['outing']>;
   sleepDuration: NonNullable<LifeDetailRecordFormStateTypes['sleepDuration']>;
 };
 
 const isCompleteDetailRecord = (
   detailRecord: LifeDetailRecordFormStateTypes | null,
+  isSensitiveInfoConsented: boolean,
 ): detailRecord is CompleteLifeDetailRecordTypes => {
   if (!detailRecord) return false;
 
-  const {
-    caffeine,
-    exercise,
-    medicines,
-    menstruation,
-    outing,
-    sleepDuration,
-  } = detailRecord;
+  const { caffeine, exercise, medicines, menstruation, outing, sleepDuration } =
+    detailRecord;
 
   return (
     sleepDuration !== null &&
@@ -50,28 +45,48 @@ const isCompleteDetailRecord = (
     caffeine !== null &&
     medicines.length > 0 &&
     outing !== null &&
-    menstruation !== null
+    (!isSensitiveInfoConsented || menstruation !== null)
   );
 };
 
 export const createLifeRecordPayload = ({
   formState,
+  isSensitiveInfoConsented = true,
   recordDate,
   tagNames = [],
 }: CreateLifeRecordPayloadParamTypes): PostLifeRecordRequestTypes | null => {
-  const { detailRecord, foods, hydration, mealRegularity, memo, sleep, stress } =
-    formState;
+  const {
+    detailRecord,
+    foods,
+    hydration,
+    mealRegularity,
+    memo,
+    sleep,
+    stress,
+  } = formState;
 
-  if (!sleep || !stress || !hydration || !mealRegularity || foods.length === 0) {
+  if (
+    !sleep ||
+    !stress ||
+    !hydration ||
+    !mealRegularity ||
+    foods.length === 0
+  ) {
     return null;
   }
 
   const trimmedMemo = memo.trim();
-  const detailPayload = isCompleteDetailRecord(detailRecord)
+  const detailPayload = isCompleteDetailRecord(
+    detailRecord,
+    isSensitiveInfoConsented,
+  )
     ? {
         caffeine: CAFFEINE_CODE_BY_VALUE[detailRecord.caffeine],
         exercise: EXERCISE_CODE_BY_VALUE[detailRecord.exercise],
-        hormone: HORMONE_CODE_BY_VALUE[detailRecord.menstruation],
+        hormone:
+          detailRecord.menstruation !== null
+            ? HORMONE_CODE_BY_VALUE[detailRecord.menstruation]
+            : null,
         medicineIds: detailRecord.medicines.map(
           (medicine) => MEDICINE_ID_BY_VALUE[medicine],
         ),

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
@@ -27,9 +27,13 @@ import {
   STRESS_VALUE_BY_CODE,
   WATER_VALUE_BY_CODE,
 } from './types/lifeRecordApiTypes';
-import type { LifeRecordDetailResponseTypes } from './types/lifeRecordApiTypes';
+import type {
+  LifeRecordDetailResponseTypes,
+  PatchLifeRecordRequestTypes,
+} from './types/lifeRecordApiTypes';
 import type { LifeRecordFormStateTypes } from './types/lifeRecordTypes';
 import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
+import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
 
 const toLifeRecordFormState = (
   lifeRecord: LifeRecordDetailResponseTypes,
@@ -62,7 +66,9 @@ const toLifeRecordFormState = (
       medicines: lifeRecord.medicines
         .map(({ id }) => MEDICINE_VALUE_BY_ID[id])
         .filter(
-          (medicine): medicine is NonNullable<
+          (
+            medicine,
+          ): medicine is NonNullable<
             LifeRecordFormStateTypes['detailRecord']
           >['medicines'][number] => Boolean(medicine),
         ),
@@ -83,6 +89,8 @@ const LifeEdit = () => {
   const { recordId } = useParams();
   const [searchParams] = useSearchParams();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const hydratedLifeRecordIdRef = useRef<number | undefined>(undefined);
 
   const recordDate = useRecordDraftDate();
   const rawLifeId = Number(searchParams.get('lifeId') ?? recordId);
@@ -90,6 +98,7 @@ const LifeEdit = () => {
     Number.isFinite(rawLifeId) && rawLifeId > 0 ? rawLifeId : undefined;
 
   const { data: lifeRecord } = useLifeRecord(lifeId);
+  const editRecordDate = lifeRecord?.regDate ?? recordDate;
   const { mutate: patchLifeRecord, isPending: isPatchingLifeRecord } =
     usePatchLifeRecord();
   const { mutate: deleteLifeRecord, isPending: isDeletingLifeRecord } =
@@ -109,9 +118,16 @@ const LifeEdit = () => {
   }, [lifeId, recordDate, startLifeRecord]);
 
   useEffect(() => {
-    if (!lifeRecord) return;
+    hydratedLifeRecordIdRef.current = undefined;
+  }, [lifeId]);
+
+  useEffect(() => {
+    if (!lifeRecord || hydratedLifeRecordIdRef.current === lifeRecord.id) {
+      return;
+    }
 
     updateLifeRecord(toLifeRecordFormState(lifeRecord));
+    hydratedLifeRecordIdRef.current = lifeRecord.id;
   }, [lifeRecord, updateLifeRecord]);
 
   const form = useLifeRecordForm();
@@ -132,26 +148,34 @@ const LifeEdit = () => {
 
     const payload = createLifeRecordPayload({
       formState,
-      recordDate,
+      recordDate: editRecordDate,
     });
 
     if (!payload) return;
 
-    const { regDate: _regDate, tagNames: _tagNames, ...requestBody } = payload;
+    const { regDate, tagNames, ...requestBody } = payload;
+    void regDate;
+    void tagNames;
+    const patchRequestBody: PatchLifeRecordRequestTypes = requestBody;
+
+    setErrorMessage('');
 
     patchLifeRecord(
-      { lifeId, requestBody },
+      { lifeId, requestBody: patchRequestBody },
       {
         onSuccess: () => {
           resetLifeRecord();
           navigate(-1);
+        },
+        onError: (error) => {
+          setErrorMessage(getLifeRecordErrorMessage(error));
         },
       },
     );
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate(`/record/life/detail?date=${recordDate}`);
+    navigate(`/record/life/detail?date=${editRecordDate}`);
   };
 
   const handleDeleteButtonClick = () => {
@@ -171,13 +195,16 @@ const LifeEdit = () => {
         resetLifeRecord();
         navigate(-1);
       },
+      onError: (error) => {
+        setErrorMessage(getLifeRecordErrorMessage(error));
+      },
     });
   };
 
   return (
     <RecordPageLayout
       title="생활 기록하기"
-      subTitle={formatRecordDate(dayjs(recordDate).toDate())}
+      subTitle={formatRecordDate(dayjs(editRecordDate).toDate())}
       contentClassName="gap-12"
       onBackButtonClick={handleBackButtonClick}
       isDeleteButtonVisible
@@ -188,6 +215,15 @@ const LifeEdit = () => {
         form={form}
         onDetailRecordLinkClick={handleDetailRecordLinkClick}
       />
+
+      {errorMessage && (
+        <p
+          className="caption rounded-xl bg-orange-1 px-4 py-3 text-orange-6"
+          role="alert"
+        >
+          {errorMessage}
+        </p>
+      )}
 
       <ConfirmModal
         isOpen={isDeleteModalOpen}

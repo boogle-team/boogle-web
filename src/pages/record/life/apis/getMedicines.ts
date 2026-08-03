@@ -6,9 +6,7 @@ import type {
   LifeRecordApiSuccessResponseTypes,
 } from '../types/lifeRecordApiTypes';
 
-export const getMedicines = async (
-  params: GetMedicinesRequestTypes = {},
-) => {
+export const getMedicines = async (params: GetMedicinesRequestTypes = {}) => {
   const { data } = await api.get<
     LifeRecordApiSuccessResponseTypes<GetMedicinesResponseTypes>
   >('/api/v1/medicines', { params });

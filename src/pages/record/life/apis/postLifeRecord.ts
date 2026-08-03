@@ -11,10 +11,7 @@ export const postLifeRecord = async (
 ) => {
   const { data } = await api.post<
     LifeRecordApiSuccessResponseTypes<PostLifeRecordResponseTypes>
-  >(
-    '/api/v1/life-records',
-    requestBody,
-  );
+  >('/api/v1/life-records', requestBody);
 
   return data.data;
 };
