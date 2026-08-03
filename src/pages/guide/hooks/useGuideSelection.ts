@@ -11,6 +11,8 @@ const GUIDE_MAIN_ITEMS = [...PERSONAL_GUIDES, ...HEALTH_GUIDES, WARNING_GUIDE];
 
 export const useGuideSelection = () => {
   const [searchParams] = useSearchParams();
+  // guideId는 API 기반 상세, guideContentId/id는 상수 기반 상세 경로다.
+  const selectedGuideApiId = Number(searchParams.get('guideId')) || null;
   const selectedGuideContentId =
     Number(searchParams.get('guideContentId')) || null;
   const routeIdByContentId = GUIDE_MAIN_ITEMS.find(
@@ -24,6 +26,7 @@ export const useGuideSelection = () => {
   return {
     guideDetail,
     isInsufficient,
+    selectedGuideApiId,
     selectedGuideContentId,
     selectedGuideId,
     selectedRuleCode,
