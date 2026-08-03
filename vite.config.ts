@@ -8,6 +8,14 @@ import svgr from 'vite-plugin-svgr';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    // Google 로고는 luminance mask와 브랜드 색상을 그대로 유지한다.
+    svgr({
+      include: '**/icons/googleLogo.svg?react',
+      svgrOptions: {
+        icon: true,
+      },
+    }),
+
     // Preserve the original colors of multicolor notification icons.
     svgr({
       include: '**/icons/notificationPageIcons/**/*.svg?react',
@@ -20,7 +28,10 @@ export default defineConfig({
     // 모든 색을 currentColor로 치환해서 className으로 색 조절 가능
     svgr({
       include: '**/icons/**/*.svg?react',
-      exclude: '**/icons/notificationPageIcons/**/*.svg?react',
+      exclude: [
+        '**/icons/googleLogo.svg?react',
+        '**/icons/notificationPageIcons/**/*.svg?react',
+      ],
       svgrOptions: {
         icon: true,
         plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
