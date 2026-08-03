@@ -16,6 +16,7 @@ interface RetriableAxiosRequestConfigTypes extends InternalAxiosRequestConfig {
 const AUTH_START_PATH = '/onboarding';
 const LOGIN_PATH = '/login';
 const LOGIN_CALLBACK_PATH = '/login/callback';
+const OAUTH_CALLBACK_PATH = '/oauth/callback';
 const ONBOARDING_PROFILE_PATH = '/onboarding/profile';
 const BEARER_TOKEN_TYPE = 'Bearer';
 const API_TIMEOUT = 10000;
@@ -31,6 +32,7 @@ const isAuthFlowPage = () =>
   window.location.pathname === AUTH_START_PATH ||
   window.location.pathname === LOGIN_PATH ||
   window.location.pathname === LOGIN_CALLBACK_PATH ||
+  window.location.pathname === OAUTH_CALLBACK_PATH ||
   window.location.pathname === ONBOARDING_PROFILE_PATH;
 
 const redirectToAuthStart = () => {

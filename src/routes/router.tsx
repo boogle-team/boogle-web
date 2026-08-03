@@ -25,7 +25,8 @@ export const Router = createBrowserRouter([
       {
         index: true,
         lazy: async () => {
-          const { default: AppEntry } = await import('@/pages/appEntry/AppEntry');
+          const { default: AppEntry } =
+            await import('@/pages/appEntry/AppEntry');
 
           return { Component: AppEntry };
         },
@@ -35,7 +36,8 @@ export const Router = createBrowserRouter([
         children: [
           {
             lazy: async () => {
-              const { default: MainLayout } = await import('@/layout/MainLayout');
+              const { default: MainLayout } =
+                await import('@/layout/MainLayout');
 
               return { Component: MainLayout };
             },
@@ -60,7 +62,8 @@ export const Router = createBrowserRouter([
               {
                 path: 'report',
                 lazy: async () => {
-                  const { default: Report } = await import('@/pages/report/Report');
+                  const { default: Report } =
+                    await import('@/pages/report/Report');
 
                   return { Component: Report };
                 },
@@ -68,7 +71,8 @@ export const Router = createBrowserRouter([
               {
                 path: 'guide',
                 lazy: async () => {
-                  const { default: Guide } = await import('@/pages/guide/Guide');
+                  const { default: Guide } =
+                    await import('@/pages/guide/Guide');
 
                   return { Component: Guide };
                 },
@@ -104,9 +108,19 @@ export const Router = createBrowserRouter([
         },
       },
       {
+        path: 'oauth/callback',
+        lazy: async () => {
+          const { default: OAuthCallback } =
+            await import('@/pages/login/OAuthCallback');
+
+          return { Component: OAuthCallback };
+        },
+      },
+      {
         path: 'onboarding/profile',
         lazy: async () => {
-          const { default: Profile } = await import('@/pages/onboarding/Profile');
+          const { default: Profile } =
+            await import('@/pages/onboarding/Profile');
 
           return { Component: Profile };
         },
