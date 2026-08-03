@@ -14,6 +14,14 @@ export type SocialLoginProviderTypes = 'kakao' | 'google';
 
 export type OAuthNextActionTypes = 'HOME' | 'ONBOARDING_REQUIRED';
 
+export interface AuthTokenDataTypes {
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+  refreshTokenExpiresIn: number;
+}
+
 export interface OAuthUserTypes {
   id: number;
   email: string;
@@ -30,12 +38,11 @@ export interface OAuthExchangeRequestTypes {
   oauthResultCode: string;
 }
 
-export interface OAuthExchangeDataTypes {
-  accessToken: string;
+export interface AuthRefreshRequestTypes {
   refreshToken: string;
-  tokenType: string;
-  expiresIn: number;
-  refreshTokenExpiresIn: number;
+}
+
+export interface OAuthExchangeDataTypes extends AuthTokenDataTypes {
   isNewUser: boolean;
   user: OAuthUserTypes;
   nextAction: OAuthNextActionTypes;
@@ -45,6 +52,12 @@ export interface OAuthExchangeDataTypes {
 export interface OAuthExchangeResponseTypes {
   success: boolean;
   data: OAuthExchangeDataTypes;
+  message: string;
+}
+
+export interface AuthRefreshResponseTypes {
+  success: boolean;
+  data: AuthTokenDataTypes;
   message: string;
 }
 
