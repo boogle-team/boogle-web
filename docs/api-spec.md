@@ -470,6 +470,22 @@
 - request body: *required `{
 "refreshToken": "refresh-token-value"
 }`
+- response
+
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "new-access-token-value",
+    "refreshToken": "new-refresh-token-value",
+    "tokenType": "Bearer",
+    "expiresIn": 3600,
+    "refreshTokenExpiresIn": 1209600
+  },
+  "message": "토큰이 재발급되었습니다."
+}
+```
+
 - code 200: 토큰 재발급 성공
 - code 400: refreshToken 누락
 - code 401: 유효하지 않거나 만료된 refreshToken
