@@ -16,10 +16,12 @@ export type GuideDetailErrorCodeTypes =
   | 'GUIDE_CONTENT_NOT_FOUND'
   | 'GUIDE_DETAIL_FETCH_FAILED'
   | 'GUIDE_INVALID_ID';
+// 피드백은 패턴 기반(P) 가이드에만 허용되며, 주 단위로 관리된다.
 export type GuideFeedbackCommonErrorCodeTypes =
   | GuideTokenErrorCodeTypes
   | 'GUIDE_CONTENT_INACTIVE'
   | 'GUIDE_CONTENT_NOT_FOUND'
+  | 'GUIDE_FEEDBACK_NOT_ALLOWED'
   | 'GUIDE_INVALID_ID';
 export type PostGuideFeedbackErrorCodeTypes =
   | GuideFeedbackCommonErrorCodeTypes
