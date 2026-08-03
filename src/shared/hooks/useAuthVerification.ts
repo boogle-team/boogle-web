@@ -13,7 +13,7 @@ import {
   isUserAuthError,
 } from '@/shared/utils/authErrorUtils';
 
-type AuthVerificationStatusTypes =
+export type AuthVerificationStatusTypes =
   | 'checking'
   | 'authenticated'
   | 'unauthenticated'

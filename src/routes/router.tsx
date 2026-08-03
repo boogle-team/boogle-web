@@ -17,6 +17,13 @@ import SensitiveConsent from '@/pages/settings/SensitiveConsent';
 import Terms from '@/pages/settings/Terms';
 import DeleteAccount from '@/pages/settings/DeleteAccount';
 import ProfileSettingsProvider from '@/pages/settings/contexts/ProfileSettingsProvider';
+import {
+  loadAppEntryRoute,
+  loadHomeRoute,
+  loadMainLayoutRoute,
+  loadOnboardingProfileRoute,
+  loadOnboardingRoute,
+} from '@/routes/lazyRouteLoaders';
 import ProtectedRoute from '@/routes/ProtectedRoute';
 
 export const Router = createBrowserRouter([
@@ -25,31 +32,17 @@ export const Router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: async () => {
-          const { default: AppEntry } =
-            await import('@/pages/appEntry/AppEntry');
-
-          return { Component: AppEntry };
-        },
+        lazy: loadAppEntryRoute,
       },
       {
         element: <ProtectedRoute />,
         children: [
           {
-            lazy: async () => {
-              const { default: MainLayout } =
-                await import('@/layout/MainLayout');
-
-              return { Component: MainLayout };
-            },
+            lazy: loadMainLayoutRoute,
             children: [
               {
                 path: 'home',
-                lazy: async () => {
-                  const { default: Home } = await import('@/pages/home/Home');
-
-                  return { Component: Home };
-                },
+                lazy: loadHomeRoute,
               },
               {
                 path: 'calendar',
@@ -84,12 +77,7 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'onboarding',
-        lazy: async () => {
-          const { default: Onboarding } =
-            await import('@/pages/onboarding/Onboarding');
-
-          return { Component: Onboarding };
-        },
+        lazy: loadOnboardingRoute,
       },
       {
         path: 'login',
@@ -119,12 +107,7 @@ export const Router = createBrowserRouter([
       },
       {
         path: 'onboarding/profile',
-        lazy: async () => {
-          const { default: Profile } =
-            await import('@/pages/onboarding/Profile');
-
-          return { Component: Profile };
-        },
+        lazy: loadOnboardingProfileRoute,
       },
     ],
   },
