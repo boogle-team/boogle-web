@@ -7,12 +7,12 @@ import type { SocialLoginProviderTypes } from '@/pages/login/types/loginTypes';
 const SOCIAL_LOGIN_BUTTON_CONFIGS = {
   kakao: {
     logo: KakaoLogo,
-    label: '\uCE74\uCE74\uC624\uB85C \uB85C\uADF8\uC778',
+    label: '카카오로 로그인',
     className: 'bg-[#FEE500]',
   },
   google: {
     logo: GoogleLogo,
-    label: 'Google\uB85C \uB85C\uADF8\uC778',
+    label: 'Google로 로그인',
     className: 'bg-gray-1',
   },
 } as const;
