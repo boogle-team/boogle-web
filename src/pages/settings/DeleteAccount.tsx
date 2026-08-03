@@ -1,48 +1,52 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import {
+  DELETE_CONFIRMATION_TEXT,
+  DELETE_REASON_OPTIONS,
+} from '@/pages/settings/constants/settingsConstants';
+import useDeleteAccount from '@/pages/settings/hooks/useDeleteAccount';
 import CheckIcon from '@/shared/assets/icons/checkIcon.svg?react';
 import ReportBellIcon from '@/shared/assets/icons/reportbellIcon.svg?react';
 import Button from '@/shared/components/Button';
 import InputText from '@/shared/components/InputText';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-const DELETE_REASONS = [
-  '기록이 번거로워요',
-  '필요한 정보가 없어요',
-  '다른 앱을 써요',
-  '기타',
-] as const;
-
-type DeleteReasonTypes = (typeof DELETE_REASONS)[number];
-
-const DELETE_CONFIRMATION_TEXT = '탈퇴합니다';
-
 const DeleteAccount = () => {
   const navigate = useNavigate();
-  const [selectedReason, setSelectedReason] =
-    useState<DeleteReasonTypes | null>(null);
-  const [confirmationText, setConfirmationText] = useState('');
-
-  const canDeleteAccount = confirmationText === DELETE_CONFIRMATION_TEXT;
+  const {
+    selectedReason,
+    reasonDetail,
+    confirmationText,
+    errorMessage,
+    isOtherReasonDetailMissing,
+    canDeleteAccount,
+    isDeleting,
+    selectReason,
+    updateReasonDetail,
+    updateConfirmationText,
+    deleteAccount,
+  } = useDeleteAccount();
 
   const handleBackClick = () => {
     navigate('/settings');
   };
 
-  const handleReasonClick = (reason: DeleteReasonTypes) => {
-    setSelectedReason((prevReason) => (prevReason === reason ? null : reason));
+  const handleReasonClick = (
+    reason: (typeof DELETE_REASON_OPTIONS)[number]['value'],
+  ) => {
+    selectReason(reason);
   };
 
   const handleKeepAccountClick = () => {
     navigate('/settings');
   };
 
-  const handleDeleteAccountClick = () => {
-    if (!canDeleteAccount) return;
+  const handleDeleteAccountClick = async () => {
+    const isDeleted = await deleteAccount();
 
-    // TODO: 회원탈퇴 API 연결 후 인증 정보 제거
-    navigate('/login', { replace: true });
+    if (isDeleted) {
+      navigate('/login', { replace: true });
+    }
   };
 
   return (
@@ -114,26 +118,38 @@ const DeleteAccount = () => {
           </h2>
 
           <div className="grid grid-cols-2 gap-2">
-            {DELETE_REASONS.map((reason) => {
-              const isSelected = selectedReason === reason;
+            {DELETE_REASON_OPTIONS.map((reasonOption) => {
+              const isSelected = selectedReason === reasonOption.value;
 
               return (
                 <button
-                  key={reason}
+                  key={reasonOption.value}
                   type="button"
                   aria-pressed={isSelected}
-                  onClick={() => handleReasonClick(reason)}
+                  onClick={() => handleReasonClick(reasonOption.value)}
                   className={`label-semi min-h-12 rounded-xl border bg-beige-1 px-3 transition-colors ${
                     isSelected
                       ? 'border-orange-5 text-orange-7 bg-orange-1'
                       : 'border-gray-5 text-gray-7 bg-beige-1'
                   }`}
                 >
-                  {reason}
+                  {reasonOption.label}
                 </button>
               );
             })}
           </div>
+
+          {selectedReason === 'OTHER' && (
+            <div className="mt-3">
+              <InputText
+                value={reasonDetail}
+                onChange={updateReasonDetail}
+                placeholder="탈퇴 사유를 입력해주세요"
+                isError={isOtherReasonDetailMissing}
+                errorMessage="기타 사유를 입력해주세요"
+              />
+            </div>
+          )}
         </section>
 
         <section className="mt-8">
@@ -147,10 +163,16 @@ const DeleteAccount = () => {
 
           <InputText
             value={confirmationText}
-            onChange={setConfirmationText}
+            onChange={updateConfirmationText}
             placeholder={DELETE_CONFIRMATION_TEXT}
           />
         </section>
+
+        {errorMessage && (
+          <p role="alert" className="caption mt-4 px-2 text-semantic-danger">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="mt-auto flex flex-col gap-2 pt-12">
           <Button
@@ -159,7 +181,7 @@ const DeleteAccount = () => {
             onClick={handleKeepAccountClick}
           />
           <Button
-            text="탈퇴하기"
+            text={isDeleting ? '탈퇴 처리 중...' : '탈퇴하기'}
             variant="destructive"
             disabled={!canDeleteAccount}
             onClick={handleDeleteAccountClick}

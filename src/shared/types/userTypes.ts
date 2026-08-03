@@ -1,26 +1,26 @@
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
+
 export type UserGenderTypes = 'F' | 'M' | 'N';
 
 export type UserAgeGroupTypes = 10 | 20 | 30 | 40;
 
 export type UserBaselineTypeTypes = 'R' | 'C' | 'L' | 'U';
 
+export type UserProfileImageSourceTypes = 'SOCIAL' | 'CUSTOM';
+
 export interface UserOnboardingTypes {
   id: number;
   nickname: string;
   profileImage: string | null;
-  profileImageSource: string;
-  gender: string | null;
-  ageGroup: number | null;
-  baselineType: string | null;
+  profileImageSource: UserProfileImageSourceTypes;
+  gender: UserGenderTypes | null;
+  ageGroup: UserAgeGroupTypes | null;
+  baselineType: UserBaselineTypeTypes | null;
   sensitiveInfoAgreed: boolean;
   onboardingCompleted: boolean;
 }
 
-export interface UserOnboardingResponseTypes {
-  success: boolean;
-  data: UserOnboardingTypes;
-  message: string;
-}
+export type UserOnboardingResponseTypes = ApiResponseTypes<UserOnboardingTypes>;
 
 export interface SaveUserOnboardingRequestTypes {
   nickname: string;

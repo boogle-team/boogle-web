@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import Record from '../pages/record/main/Main';
-import RecordEdit from '../pages/record/edit/Edit';
-import RecordDetail from '../pages/record/detail/Detail';
-import RecordLife from '../pages/record/life/Life';
-import RecordLifeDetail from '../pages/record/life/LifeDetail';
-import RecordLifeEdit from '../pages/record/life/LifeEdit';
 import Notification from '@/pages/notification/Notification';
+import RecordDetail from '@/pages/record/detail/Detail';
+import RecordEdit from '@/pages/record/edit/Edit';
+import RecordLife from '@/pages/record/life/Life';
+import RecordLifeDetail from '@/pages/record/life/LifeDetail';
+import RecordLifeEdit from '@/pages/record/life/LifeEdit';
+import Record from '@/pages/record/main/Main';
 import Settings from '@/pages/settings/Settings';
 import ProfileEdit from '@/pages/settings/ProfileEdit';
 import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
@@ -16,6 +16,7 @@ import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
 import SensitiveConsent from '@/pages/settings/SensitiveConsent';
 import Terms from '@/pages/settings/Terms';
 import DeleteAccount from '@/pages/settings/DeleteAccount';
+import ProfileSettingsProvider from '@/pages/settings/contexts/ProfileSettingsProvider';
 import ProtectedRoute from '@/routes/ProtectedRoute';
 
 export const Router = createBrowserRouter([
@@ -160,16 +161,21 @@ export const Router = createBrowserRouter([
     element: <Notification />,
   },
   {
-    path: '/settings/profile',
-    element: <ProfileEdit />,
-  },
-  {
-    path: '/settings/bowel-rhythm',
-    element: <BowelRhythmSetting />,
-  },
-  {
-    path: '/settings/baseline-info',
-    element: <BaselineInfoSetting />,
+    element: <ProfileSettingsProvider />,
+    children: [
+      {
+        path: '/settings/profile',
+        element: <ProfileEdit />,
+      },
+      {
+        path: '/settings/bowel-rhythm',
+        element: <BowelRhythmSetting />,
+      },
+      {
+        path: '/settings/baseline-info',
+        element: <BaselineInfoSetting />,
+      },
+    ],
   },
   {
     path: '/settings/login-account',

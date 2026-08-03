@@ -1,12 +1,14 @@
 interface ToggleSwitchPropTypes {
   isEnabled: boolean;
   ariaLabel: string;
+  isDisabled?: boolean;
   onClick: () => void;
 }
 
 const ToggleSwitch = ({
   isEnabled,
   ariaLabel,
+  isDisabled = false,
   onClick,
 }: ToggleSwitchPropTypes) => {
   return (
@@ -15,8 +17,9 @@ const ToggleSwitch = ({
       role="switch"
       aria-label={ariaLabel}
       aria-checked={isEnabled}
+      disabled={isDisabled}
       onClick={onClick}
-      className={`relative inline-flex h-5.5 w-10.5 items-center rounded-[99px] p-0.5 transition-colors duration-200 ${
+      className={`relative inline-flex h-5.5 w-10.5 items-center rounded-[99px] p-0.5 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 ${
         isEnabled ? 'bg-orange-5' : 'bg-gray-4'
       }`}
     >

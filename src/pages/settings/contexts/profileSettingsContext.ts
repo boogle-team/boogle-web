@@ -1,20 +1,13 @@
 import { createContext } from 'react';
 
-import type {
-  AgeGroupTypes,
-  BaselineTypeTypes,
-  GenderTypes,
-  MemberProfileTypes,
-} from '../types/settingsTypes';
-
 export interface ProfileSettingsContextValueTypes {
-  memberProfile: MemberProfileTypes;
-  nicknameDraft: string;
+  nicknameDraft: string | undefined;
+  profileImageFile: File | null;
+  profileImagePreview: string | null;
   updateNicknameDraft: (nickname: string) => void;
-  resetNicknameDraft: () => void;
-  saveNickname: (nickname: string) => void;
-  saveBaselineInfo: (ageGroup: AgeGroupTypes, gender: GenderTypes) => void;
-  saveBaselineType: (baselineType: BaselineTypeTypes) => void;
+  selectProfileImage: (imageFile: File) => void;
+  clearProfileImage: () => void;
+  resetProfileDraft: () => void;
 }
 
 const ProfileSettingsContext =

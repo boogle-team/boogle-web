@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 
+import SettingsBottomAction from '@/pages/settings/components/SettingsBottomAction';
+import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import UnsavedChangesToast from '@/pages/settings/components/UnsavedChangesToast';
+import useBowelRhythmSettings from '@/pages/settings/hooks/useBowelRhythmSettings';
+import useUnsavedChangesToast from '@/pages/settings/hooks/useUnsavedChangesToast';
 import Button from '@/shared/components/Button';
 import Chip from '@/shared/components/Chip';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import SettingsBottomAction from './components/SettingsBottomAction';
-import UnsavedChangesToast from './components/UnsavedChangesToast';
-import useBowelRhythmSettings from './hooks/useBowelRhythmSettings';
-import useUnsavedChangesToast from './hooks/useUnsavedChangesToast';
-
-import type { BaselineTypeTypes } from './types/settingsTypes';
+import type { BaselineTypeTypes } from '@/pages/settings/types/settingsTypes';
 
 const BOWEL_RHYTHM_OPTIONS: {
   label: string;
@@ -35,8 +35,18 @@ const BOWEL_RHYTHM_OPTIONS: {
 
 const BowelRhythmSetting = () => {
   const navigate = useNavigate();
-  const { selectedBaselineType, isModified, selectBaselineType, saveSettings } =
-    useBowelRhythmSettings();
+  const {
+    selectedBaselineType,
+    isModified,
+    isReady,
+    isLoading,
+    isError,
+    isSaving,
+    errorMessage,
+    selectBaselineType,
+    saveSettings,
+    refetch,
+  } = useBowelRhythmSettings();
   const { isToastVisible, dismissToast, handleBackAttempt } =
     useUnsavedChangesToast();
 
@@ -49,10 +59,26 @@ const BowelRhythmSetting = () => {
     handleBackAttempt(isModified, () => navigate('/settings/profile'));
   };
 
-  const handleSaveClick = () => {
-    saveSettings();
-    navigate('/settings/profile');
+  const handleSaveClick = async () => {
+    const isSaved = await saveSettings();
+
+    if (isSaved) {
+      navigate('/settings/profile');
+    }
   };
+
+  if (isLoading || isError || !isReady) {
+    return (
+      <SettingsQueryStatePage
+        title="기준선 정보"
+        isLoading={isLoading}
+        loadingMessage="배변 리듬을 불러오고 있어요."
+        errorMessage="배변 리듬을 불러오지 못했어요."
+        onBackButtonClick={handleBackClick}
+        onRetryClick={() => void refetch()}
+      />
+    );
+  }
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
@@ -93,7 +119,17 @@ const BowelRhythmSetting = () => {
         </div>
 
         <SettingsBottomAction>
-          <Button text="저장하기" variant="primary" onClick={handleSaveClick} />
+          {errorMessage && (
+            <p role="alert" className="caption mb-2 text-semantic-danger">
+              {errorMessage}
+            </p>
+          )}
+          <Button
+            text={isSaving ? '저장 중...' : '저장하기'}
+            variant="primary"
+            disabled={!selectedBaselineType || isLoading || isSaving}
+            onClick={handleSaveClick}
+          />
         </SettingsBottomAction>
       </main>
 

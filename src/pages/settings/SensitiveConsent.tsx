@@ -1,20 +1,30 @@
 import { useNavigate } from 'react-router-dom';
 
+import SettingsBottomAction from '@/pages/settings/components/SettingsBottomAction';
+import SettingsNotice from '@/pages/settings/components/SettingsNotice';
+import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import ToggleSwitch from '@/pages/settings/components/ToggleSwitch';
+import UnsavedChangesToast from '@/pages/settings/components/UnsavedChangesToast';
+import useSensitiveConsent from '@/pages/settings/hooks/useSensitiveConsent';
+import useUnsavedChangesToast from '@/pages/settings/hooks/useUnsavedChangesToast';
 import InfoFlagIcon from '@/shared/assets/icons/infoFlagIcon.svg?react';
 import Button from '@/shared/components/Button';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import SettingsBottomAction from './components/SettingsBottomAction';
-import SettingsNotice from './components/SettingsNotice';
-import ToggleSwitch from './components/ToggleSwitch';
-import UnsavedChangesToast from './components/UnsavedChangesToast';
-import useSensitiveConsent from './hooks/useSensitiveConsent';
-import useUnsavedChangesToast from './hooks/useUnsavedChangesToast';
-
 const SensitiveConsent = () => {
   const navigate = useNavigate();
-  const { sensInfo, isModified, toggleConsent, saveConsent } =
-    useSensitiveConsent();
+  const {
+    sensitiveConsent,
+    isAgreed,
+    isModified,
+    isLoading,
+    isError,
+    isSaving,
+    errorMessage,
+    toggleConsent,
+    saveConsent,
+    refetch,
+  } = useSensitiveConsent();
   const { isToastVisible, dismissToast, handleBackAttempt } =
     useUnsavedChangesToast();
 
@@ -27,10 +37,33 @@ const SensitiveConsent = () => {
     dismissToast();
   };
 
-  const handleSaveClick = () => {
-    saveConsent();
-    dismissToast();
+  const handleSaveClick = async () => {
+    const isSaved = await saveConsent();
+
+    if (isSaved) {
+      dismissToast();
+    }
   };
+
+  const consentDate = sensitiveConsent?.agreed
+    ? sensitiveConsent.agreedAt
+    : sensitiveConsent?.withdrawnAt;
+  const formattedConsentDate = consentDate
+    ? consentDate.split('T')[0].replaceAll('-', '.')
+    : null;
+
+  if (isLoading || isError || !sensitiveConsent) {
+    return (
+      <SettingsQueryStatePage
+        title="민감정보 수집 동의 관리"
+        isLoading={isLoading}
+        loadingMessage="동의 정보를 불러오고 있어요."
+        errorMessage="동의 정보를 불러오지 못했어요."
+        onBackButtonClick={handleBackClick}
+        onRetryClick={() => void refetch()}
+      />
+    );
+  }
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-beige-2">
@@ -69,13 +102,15 @@ const SensitiveConsent = () => {
                   생리 기록 세부 항목에 관련 키트가 표시돼요
                 </p>
                 <p className="caption mt-1 text-orange-6">
-                  동의함 · 2026.06.20
+                  {isAgreed ? '동의함' : '동의하지 않음'}
+                  {formattedConsentDate && ` · ${formattedConsentDate}`}
                 </p>
               </div>
 
               <ToggleSwitch
                 ariaLabel="생리·호르몬 데이터 수집 동의"
-                isEnabled={sensInfo === 'T'}
+                isEnabled={isAgreed}
+                isDisabled={isSaving}
                 onClick={handleConsentToggleClick}
               />
             </div>
@@ -100,7 +135,17 @@ const SensitiveConsent = () => {
         </section>
 
         <SettingsBottomAction>
-          <Button text="저장하기" variant="primary" onClick={handleSaveClick} />
+          {errorMessage && (
+            <p role="alert" className="caption mb-2 text-semantic-danger">
+              {errorMessage}
+            </p>
+          )}
+          <Button
+            text={isSaving ? '저장 중...' : '저장하기'}
+            variant="primary"
+            disabled={!sensitiveConsent || !isModified || isSaving}
+            onClick={handleSaveClick}
+          />
         </SettingsBottomAction>
       </main>
 

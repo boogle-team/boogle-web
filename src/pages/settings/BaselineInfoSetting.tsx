@@ -1,19 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 
+import SettingsBottomAction from '@/pages/settings/components/SettingsBottomAction';
+import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import UnsavedChangesToast from '@/pages/settings/components/UnsavedChangesToast';
+import {
+  AGE_GROUP_OPTIONS,
+  GENDER_OPTIONS,
+} from '@/pages/settings/constants/settingsConstants';
+import useBaselineInfoSettings from '@/pages/settings/hooks/useBaselineInfoSettings';
+import useUnsavedChangesToast from '@/pages/settings/hooks/useUnsavedChangesToast';
 import Button from '@/shared/components/Button';
 import Chip from '@/shared/components/Chip';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import SettingsBottomAction from './components/SettingsBottomAction';
-import UnsavedChangesToast from './components/UnsavedChangesToast';
-import {
-  AGE_GROUP_OPTIONS,
-  GENDER_OPTIONS,
-} from './constants/settingsConstants';
-import useBaselineInfoSettings from './hooks/useBaselineInfoSettings';
-import useUnsavedChangesToast from './hooks/useUnsavedChangesToast';
-
-import type { AgeGroupTypes, GenderTypes } from './types/settingsTypes';
+import type {
+  AgeGroupTypes,
+  GenderTypes,
+} from '@/pages/settings/types/settingsTypes';
 
 const BaselineInfoSetting = () => {
   const navigate = useNavigate();
@@ -21,9 +24,15 @@ const BaselineInfoSetting = () => {
     selectedAgeGroup,
     selectedGender,
     isModified,
+    isReady,
+    isLoading,
+    isError,
+    isSaving,
+    errorMessage,
     selectAgeGroup,
     selectGender,
     saveSettings,
+    refetch,
   } = useBaselineInfoSettings();
   const { isToastVisible, dismissToast, handleBackAttempt } =
     useUnsavedChangesToast();
@@ -42,10 +51,26 @@ const BaselineInfoSetting = () => {
     dismissToast();
   };
 
-  const handleSaveClick = () => {
-    saveSettings();
-    navigate('/settings/profile');
+  const handleSaveClick = async () => {
+    const isSaved = await saveSettings();
+
+    if (isSaved) {
+      navigate('/settings/profile');
+    }
   };
+
+  if (isLoading || isError || !isReady) {
+    return (
+      <SettingsQueryStatePage
+        title="기준선 정보"
+        isLoading={isLoading}
+        loadingMessage="기준선 정보를 불러오고 있어요."
+        errorMessage="기준선 정보를 불러오지 못했어요."
+        onBackButtonClick={handleBackClick}
+        onRetryClick={() => void refetch()}
+      />
+    );
+  }
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
@@ -112,7 +137,19 @@ const BaselineInfoSetting = () => {
         </section>
 
         <SettingsBottomAction>
-          <Button text="저장하기" variant="primary" onClick={handleSaveClick} />
+          {errorMessage && (
+            <p role="alert" className="caption mb-2 text-semantic-danger">
+              {errorMessage}
+            </p>
+          )}
+          <Button
+            text={isSaving ? '저장 중...' : '저장하기'}
+            variant="primary"
+            disabled={
+              !selectedAgeGroup || !selectedGender || isLoading || isSaving
+            }
+            onClick={handleSaveClick}
+          />
         </SettingsBottomAction>
       </main>
 

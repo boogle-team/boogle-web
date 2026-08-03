@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ProfileCard from './components/ProfileCard';
-import SettingsNotice from './components/SettingsNotice';
-import SettingsRow from './components/SettingsRow';
-import SettingsSection from './components/SettingsSection';
-import ToggleSwitch from './components/ToggleSwitch';
-import { APP_VERSION, PROVIDER_LABEL_MAP } from './constants/settingsConstants';
-import useAlarmSettings from './hooks/useAlarmSettings';
-import useProfileSettings from './hooks/useProfileSettings';
+import ProfileCard from '@/pages/settings/components/ProfileCard';
+import SettingsNotice from '@/pages/settings/components/SettingsNotice';
+import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import SettingsRow from '@/pages/settings/components/SettingsRow';
+import SettingsSection from '@/pages/settings/components/SettingsSection';
+import ToggleSwitch from '@/pages/settings/components/ToggleSwitch';
+import {
+  APP_VERSION,
+  PROVIDER_LABEL_MAP,
+} from '@/pages/settings/constants/settingsConstants';
+import useAlarmSettings from '@/pages/settings/hooks/useAlarmSettings';
+import { useUserQuery } from '@/pages/settings/hooks/useSettingsQueries';
 
-import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 
 import BellIcon from '@/shared/assets/icons/settingBellIcon.svg?react';
 import ErrorIcon from '@/shared/assets/icons/settingErrorIcon.svg?react';
@@ -21,24 +25,9 @@ import PersonIcon from '@/shared/assets/icons/settingPersonIcon.svg?react';
 import ReportIcon from '@/shared/assets/icons/settingReportIcon.svg?react';
 import ShieldIcon from '@/shared/assets/icons/settingShieldIcon.svg?react';
 
-import type { MemberTypes, SocialAccountTypes } from './types/settingsTypes';
-
-const MOCK_MEMBER: MemberTypes = {
-  nickname: '이연수',
-  profileImage: null,
-  gender: 'F',
-  baselineType: 'R',
-  regDate: '2026-07-08T00:00:00+09:00',
-};
-
-const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
-  provider: 'K',
-  maskedEmail: 'boogle****@kakao.com',
-};
-
 const Settings = () => {
   const navigate = useNavigate();
-  const { memberProfile } = useProfileSettings();
+  const { data: member, isLoading, isError, refetch } = useUserQuery();
   const { memberAlarm, toggleAlarm } = useAlarmSettings();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
@@ -84,14 +73,29 @@ const Settings = () => {
     navigate('/settings/delete-account');
   };
 
-  const member = {
-    ...MOCK_MEMBER,
-    nickname: memberProfile.nickname,
-    gender: memberProfile.gender,
-    baselineType: memberProfile.baselineType,
-  };
-  const isSensitiveConsentMenuVisible = member.gender !== 'M';
-  const providerLabel = PROVIDER_LABEL_MAP[MOCK_SOCIAL_ACCOUNT.provider];
+  const isSensitiveConsentMenuVisible =
+    member?.gender === 'F' || member?.gender === 'N';
+  const primarySocialAccount = member?.socialAccounts[0];
+  const providerLabel = primarySocialAccount
+    ? PROVIDER_LABEL_MAP[primarySocialAccount.provider]
+    : '연결 정보 없음';
+
+  if (isLoading || isError || !member) {
+    return (
+      <SettingsQueryStatePage
+        title="설정"
+        isLoading={isLoading}
+        loadingMessage="내 정보를 불러오고 있어요."
+        errorMessage="내 정보를 불러오지 못했어요."
+        onBackButtonClick={handleBackClick}
+        onRetryClick={() => void refetch()}
+        topNavigationClassName="mt-[3.06rem] bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
+        containerClassName="bg-beige-5"
+        mainClassName="bg-beige-5"
+        isBorderVisible={false}
+      />
+    );
+  }
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-5">
