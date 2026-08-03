@@ -8,15 +8,18 @@ import NicknameStep from './components/steps/NicknameStep';
 import useProfileInput from './hooks/useProfileInput';
 import type { ProfileInputValueTypes } from './types/loginTypes';
 
-// 프로필 입력 3스텝 플로우. 완료 시 onComplete(수집 데이터) 호출.
 interface ProfileInputPagePropTypes {
   onComplete: (value: ProfileInputValueTypes) => void;
   onBackToSocial: () => void;
+  isSubmitting?: boolean;
+  errorMessage?: string | null;
 }
 
 const ProfileInputPage = ({
   onComplete,
   onBackToSocial,
+  isSubmitting = false,
+  errorMessage = null,
 }: ProfileInputPagePropTypes) => {
   const {
     step,
@@ -43,7 +46,13 @@ const ProfileInputPage = ({
   } = useProfileInput({ onComplete, onBackToSocial });
 
   if (isCompleted) {
-    return <ProfileComplete onGoHome={handleGoHomeButtonClick} />;
+    return (
+      <ProfileComplete
+        onGoHome={handleGoHomeButtonClick}
+        isSubmitting={isSubmitting}
+        errorMessage={errorMessage}
+      />
+    );
   }
 
   if (isMenstrualCycleStepVisible) {
