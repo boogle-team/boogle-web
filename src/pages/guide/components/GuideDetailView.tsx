@@ -106,9 +106,12 @@ const GuideDetailView = ({
           onFeedbackSubmit={handleFeedbackSubmit}
         />
 
-        {!isWarningGuide && <GuideSourceText guideDetail={guideDetail} />}
         {isWarningGuide && (
           <GuideWarningNoticeSection guideDetail={guideDetail} />
+        )}
+        {/* 주의 신호는 notice 블록이 출처까지 함께 그리므로 그때만 생략한다. */}
+        {!(isWarningGuide && guideDetail.notice) && (
+          <GuideSourceText guideDetail={guideDetail} />
         )}
 
         <GuideRelatedGuideList relatedGuides={guideDetail.relatedGuides} />
