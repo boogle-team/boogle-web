@@ -116,10 +116,11 @@
 - Success Status: 200 OK
 - 응답 data: `guideId`, `category`, `categoryLabel`, `title`, `summary`, `source`, `contents[]`, `advices[]`, `recommendedGuides[]`, `patternReason`
 - `source`는 항상 포함되며 DB 값이 없으면 `null`
-- `patternReason`은 P 가이드에만 값이 있고 H / W는 `null`
+- `patternReason`과 `feedbackStatus`는 P 가이드에만 포함된다. H / W는 `patternReason`이 `null`이고 `feedbackStatus` 필드 자체가 없다.
+- `feedbackStatus`: `G` / `A` / `N` / `null`
   - `period`(주간), `recordStatus`(`dataStatus` `ENOUGH` 등, `recordedDays`, `requiredDays`, `completionScore`), `matched`, `matchedRuleCodes`, `matchedPatterns[]`(`evidence[]` 포함)
 - W 가이드는 DB의 정적 본문, 조언, 출처를 반환한다.
-- guide_rules, guide_feedback은 조회하지 않는다. (응답에 `feedbackStatus` 없음)
+- guide_rules는 조회하지 않는다.
 - guideId 범위: 장 건강 1~3, 패턴 기반 101~114, 주의 신호 1001
 - 에러 코드: 400 `GUIDE_INVALID_ID`, 401 `TOKEN_REQUIRED` / `TOKEN_INVALID` / `TOKEN_EXPIRED`, 404 `GUIDE_CONTENT_NOT_FOUND` / `GUIDE_CONTENT_INACTIVE`, 500 `GUIDE_DETAIL_FETCH_FAILED`
 

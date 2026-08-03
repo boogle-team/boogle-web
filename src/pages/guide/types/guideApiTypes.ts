@@ -205,6 +205,8 @@ export interface GuideDetailDataResponseTypes {
   category: GuideCategoryTypes;
   categoryLabel: string;
   contents: GuideDetailContentResponseTypes[];
+  // feedbackStatus와 patternReason은 P 가이드에만 내려온다.
+  feedbackStatus?: GuideFeedbackStatusTypes;
   guideId: number;
   patternReason: GuidePatternReasonResponseTypes | null;
   recommendedGuides: GuideRecommendedGuideResponseTypes[];
