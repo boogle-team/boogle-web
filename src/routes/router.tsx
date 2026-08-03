@@ -132,6 +132,22 @@ export const Router = createBrowserRouter([
             element: <RecordLifeEdit />,
           },
           {
+            path: 'boogle-record/new',
+            element: <Record />,
+          },
+          {
+            path: 'boogle-record/edit/:recordId',
+            element: <RecordEdit />,
+          },
+          {
+            path: 'life-record/new',
+            element: <RecordLife />,
+          },
+          {
+            path: 'life-record/edit/:recordId',
+            element: <RecordLifeEdit />,
+          },
+          {
             path: 'settings',
             element: <Settings />,
           },
