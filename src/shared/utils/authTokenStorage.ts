@@ -9,7 +9,10 @@ export const getAccessToken = () =>
 export const getRefreshToken = () =>
   localStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
 
-export const saveAuthTokens = ({ accessToken, refreshToken }: AuthTokenDataTypes) => {
+export const saveAuthTokens = ({
+  accessToken,
+  refreshToken,
+}: AuthTokenDataTypes) => {
   localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
   localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
 };
