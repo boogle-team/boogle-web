@@ -235,8 +235,7 @@ export const MONTHLY_TYPES: MonthlyTypeTypes[] = [
 
 export const WEEKLY_LIFE_GUIDE: LifeGuideTypes = {
   description: '하루 물 6~8잔을 목표로 해보세요. 딱딱한 변이 개선될 수 있어요.',
-  feedbackStatus: null,
-  guideContentId: 1,
+  guideId: 101,
   title: '수분 섭취와 딱딱한 변',
 };
 
