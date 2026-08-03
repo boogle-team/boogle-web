@@ -1,16 +1,22 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 import { postAuthRefresh } from '@/pages/login/apis/loginApis';
-import type { AuthTokenDataTypes } from '@/pages/login/types/loginTypes';
+import {
+  clearAuthTokens,
+  getAccessToken,
+  getRefreshToken,
+  saveAuthTokens,
+} from '@/shared/utils/authTokenStorage';
+import { isRefreshTokenAuthError } from '@/shared/utils/authErrorUtils';
 
 interface RetriableAxiosRequestConfigTypes extends InternalAxiosRequestConfig {
   isRetried?: boolean;
 }
 
-const ACCESS_TOKEN_STORAGE_KEY = 'accessToken';
-const REFRESH_TOKEN_STORAGE_KEY = 'refreshToken';
+const AUTH_START_PATH = '/onboarding';
 const LOGIN_PATH = '/login';
 const LOGIN_CALLBACK_PATH = '/login/callback';
+const ONBOARDING_PROFILE_PATH = '/onboarding/profile';
 const BEARER_TOKEN_TYPE = 'Bearer';
 const API_TIMEOUT = 10000;
 
@@ -21,29 +27,21 @@ export const api = axios.create({
   timeout: API_TIMEOUT,
 });
 
-const clearAuthTokens = () => {
-  localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-};
-
-const isLoginPage = () =>
+const isAuthFlowPage = () =>
+  window.location.pathname === AUTH_START_PATH ||
   window.location.pathname === LOGIN_PATH ||
-  window.location.pathname === LOGIN_CALLBACK_PATH;
+  window.location.pathname === LOGIN_CALLBACK_PATH ||
+  window.location.pathname === ONBOARDING_PROFILE_PATH;
 
-const redirectToLogin = () => {
-  if (!isLoginPage()) {
-    window.location.replace(LOGIN_PATH);
+const redirectToAuthStart = () => {
+  if (!isAuthFlowPage()) {
+    window.location.replace(AUTH_START_PATH);
   }
-};
-
-const saveAuthTokens = ({ accessToken, refreshToken }: AuthTokenDataTypes) => {
-  localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-  localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
 };
 
 const handleAuthExpired = () => {
   clearAuthTokens();
-  redirectToLogin();
+  redirectToAuthStart();
 };
 
 const getRefreshedAccessToken = () => {
@@ -51,7 +49,7 @@ const getRefreshedAccessToken = () => {
     return refreshTokenPromise;
   }
 
-  const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
+  const refreshToken = getRefreshToken();
 
   if (!refreshToken) {
     handleAuthExpired();
@@ -66,7 +64,9 @@ const getRefreshedAccessToken = () => {
       return data.accessToken;
     })
     .catch((error: unknown) => {
-      handleAuthExpired();
+      if (isRefreshTokenAuthError(error)) {
+        handleAuthExpired();
+      }
 
       return Promise.reject(error);
     })
@@ -76,9 +76,9 @@ const getRefreshedAccessToken = () => {
 
   return refreshTokenPromise;
 };
-// 요청 인터센터 설정: 요청 시 토큰을 헤더에 추가
+
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+  const token = getAccessToken();
 
   if (token) {
     config.headers.Authorization = `${BEARER_TOKEN_TYPE} ${token}`;
@@ -87,7 +87,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// 응답 인터셉터 설정: API 응답이 401이면 refresh token으로 access token 재발급을 시도하고, 성공하면 원래 실패했던 요청을 다시 보냄.
 api.interceptors.response.use(
   (res) => res,
   async (error: AxiosError) => {
@@ -111,8 +110,8 @@ api.interceptors.response.use(
       originalRequest.headers.Authorization = `${BEARER_TOKEN_TYPE} ${accessToken}`;
 
       return api(originalRequest);
-    } catch {
-      return Promise.reject(error);
+    } catch (refreshError) {
+      return Promise.reject(refreshError);
     }
   },
 );
