@@ -9,6 +9,7 @@ import CheckIcon from '@/shared/assets/icons/checkIcon.svg?react';
 import ReportBellIcon from '@/shared/assets/icons/reportbellIcon.svg?react';
 import Button from '@/shared/components/Button';
 import InputText from '@/shared/components/InputText';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
 const DeleteAccount = () => {
@@ -188,6 +189,8 @@ const DeleteAccount = () => {
           />
         </div>
       </main>
+
+      {isDeleting && <LoadingSpinner hasBackdrop message="회원탈퇴 중..." />}
     </div>
   );
 };

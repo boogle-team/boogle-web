@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 import { getApiErrorMessage } from '@/shared/apis/apiError';
 import { saveAuthTokens } from '@/shared/utils/authTokenStorage';
 import useOAuthExchangeMutation from '@/pages/login/hooks/useOAuthExchangeMutation';
@@ -42,7 +43,6 @@ const OAuthCallback = () => {
   const [callbackErrorMessage, setCallbackErrorMessage] = useState<
     string | null
   >(null);
-  const [isExchangePending, setIsExchangePending] = useState(false);
   const { mutateAsync } = useOAuthExchangeMutation();
 
   const oauthResultCode = searchParams.get('oauthResultCode');
@@ -62,7 +62,6 @@ const OAuthCallback = () => {
         return;
       }
 
-      setIsExchangePending(true);
       setCallbackErrorMessage(null);
 
       try {
@@ -94,10 +93,6 @@ const OAuthCallback = () => {
         setCallbackErrorMessage(
           getApiErrorMessage(error, OAUTH_CALLBACK_ERROR_MESSAGE),
         );
-      } finally {
-        if (isMounted) {
-          setIsExchangePending(false);
-        }
       }
     });
 
@@ -114,12 +109,8 @@ const OAuthCallback = () => {
 
   if (!isInvalidCallback && !callbackErrorMessage) {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center bg-beige-5 px-layout text-center">
-        <p className="body-lg text-gray-10">
-          {isExchangePending
-            ? '로그인 처리 중입니다.'
-            : '로그인 정보를 확인하고 있습니다.'}
-        </p>
+      <div className="min-h-dvh bg-beige-5">
+        <LoadingSpinner message="로그인 처리 중입니다..." />
       </div>
     );
   }
