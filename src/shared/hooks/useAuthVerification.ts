@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { postAuthRefresh } from '@/pages/login/apis/loginApis';
-import { getUserOnboarding } from '@/shared/apis/userApis';
+import { getUserOnboarding } from '@/shared/apis/getUserOnboarding';
 import {
   clearAuthTokens,
   getAccessToken,
@@ -73,7 +73,7 @@ const useAuthVerification = ({
   }, [shouldRefreshOnStart]);
 
   useEffect(() => {
-    void verifyAuthStatus();
+    void Promise.resolve().then(verifyAuthStatus);
   }, [verifyAuthStatus]);
 
   return {
