@@ -42,6 +42,11 @@ export interface AuthRefreshRequestTypes {
   refreshToken: string;
 }
 
+export interface AuthLogoutRequestTypes {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface OAuthExchangeDataTypes extends AuthTokenDataTypes {
   isNewUser: boolean;
   user: OAuthUserTypes;

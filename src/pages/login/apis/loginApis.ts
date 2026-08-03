@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type {
+  AuthLogoutRequestTypes,
   AuthRefreshRequestTypes,
   AuthRefreshResponseTypes,
   OAuthExchangeRequestTypes,
@@ -9,6 +10,7 @@ import type {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
 const AUTH_API_TIMEOUT = 10000;
+const BEARER_TOKEN_TYPE = 'Bearer';
 
 const authApi = axios.create({
   baseURL: API_BASE_URL,
@@ -41,4 +43,19 @@ export const postAuthRefresh = async ({
   );
 
   return data;
+};
+
+export const postAuthLogout = async ({
+  accessToken,
+  refreshToken,
+}: AuthLogoutRequestTypes) => {
+  await authApi.post(
+    '/api/v1/auth/logout',
+    { refreshToken },
+    {
+      headers: {
+        Authorization: `${BEARER_TOKEN_TYPE} ${accessToken}`,
+      },
+    },
+  );
 };

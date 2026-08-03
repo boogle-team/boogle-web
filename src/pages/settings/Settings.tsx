@@ -12,9 +12,11 @@ import {
   PROVIDER_LABEL_MAP,
 } from '@/pages/settings/constants/settingsConstants';
 import useAlarmSettings from '@/pages/settings/hooks/useAlarmSettings';
+import useLogout from '@/pages/settings/hooks/useLogout';
 import { useUserQuery } from '@/pages/settings/hooks/useSettingsQueries';
 
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 
 import BellIcon from '@/shared/assets/icons/settingBellIcon.svg?react';
@@ -29,6 +31,8 @@ const Settings = () => {
   const navigate = useNavigate();
   const { data: member, isLoading, isError, refetch } = useUserQuery();
   const { memberAlarm, toggleAlarm } = useAlarmSettings();
+  const { logoutErrorMessage, isLoggingOut, clearLogoutError, logout } =
+    useLogout();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const handleBackClick = () => {
@@ -56,6 +60,7 @@ const Settings = () => {
   };
 
   const handleLogoutClick = () => {
+    clearLogoutError();
     setIsLogoutModalOpen(true);
   };
 
@@ -64,9 +69,8 @@ const Settings = () => {
   };
 
   const handleLogoutConfirm = () => {
-    // TODO: 로그아웃 API 연결 후 인증 정보 제거
     setIsLogoutModalOpen(false);
-    navigate('/login', { replace: true });
+    void logout();
   };
 
   const handleDeleteAccountClick = () => {
@@ -191,6 +195,12 @@ const Settings = () => {
           <SettingsRow title="로그아웃" onClick={handleLogoutClick} />
         </SettingsSection>
 
+        {logoutErrorMessage && (
+          <p role="alert" className="caption mt-2 px-2 text-semantic-danger">
+            {logoutErrorMessage}
+          </p>
+        )}
+
         <div className="mt-2 overflow-hidden rounded-2xl bg-white">
           <SettingsRow
             title="회원탈퇴"
@@ -213,6 +223,8 @@ const Settings = () => {
         onCancel={handleLogoutModalClose}
         onConfirm={handleLogoutConfirm}
       />
+
+      {isLoggingOut && <LoadingSpinner hasBackdrop message="로그아웃 중..." />}
     </div>
   );
 };
