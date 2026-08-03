@@ -197,4 +197,13 @@ export const Router = createBrowserRouter([
     path: '/settings/delete-account',
     element: <DeleteAccount />,
   },
+  {
+    path: '*',
+    lazy: async () => {
+      const { default: NotFound } =
+        await import('@/shared/components/NotFound');
+
+      return { Component: NotFound };
+    },
+  },
 ]);
