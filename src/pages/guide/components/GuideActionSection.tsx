@@ -10,7 +10,6 @@ interface GuideActionSectionPropTypes {
   isFeedbackPending?: boolean;
   isFeedbackToastVisible?: boolean;
   onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
-  onFeedbackSubmit?: () => void;
 }
 
 const GuideActionSection = ({
@@ -19,24 +18,32 @@ const GuideActionSection = ({
   isFeedbackPending = false,
   isFeedbackToastVisible = false,
   onFeedbackClick,
-  onFeedbackSubmit,
 }: GuideActionSectionPropTypes) => {
   const guideActions = getGuideActions(guideDetail);
+  // 피드백은 패턴 기반(P) 가이드에만 허용된다. (GUIDE_FEEDBACK_NOT_ALLOWED)
+  const isFeedbackAllowed = guideDetail.type === 'personal';
 
-  if (guideActions.length === 0) {
+  if (guideActions.length === 0 && !isFeedbackAllowed) {
     return null;
   }
 
   return (
     <section className="mt-8 border-t border-beige-7 pt-7">
-      <h3 className="body-m-bold tracking-[-0.02rem] text-gray-8">
-        이렇게 해보세요
-      </h3>
-      <div className="mt-2 flex flex-col gap-2">
-        {guideActions.map((guideAction) => (
-          <GuideActionCard key={guideAction.title} guideAction={guideAction} />
-        ))}
-      </div>
+      {guideActions.length > 0 && (
+        <>
+          <h3 className="body-m-bold tracking-[-0.02rem] text-gray-8">
+            이렇게 해보세요
+          </h3>
+          <div className="mt-2 flex flex-col gap-2">
+            {guideActions.map((guideAction) => (
+              <GuideActionCard
+                key={guideAction.title}
+                guideAction={guideAction}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {isFeedbackToastVisible && (
         <div className="mt-3">
@@ -44,13 +51,13 @@ const GuideActionSection = ({
         </div>
       )}
 
-      <GuideFeedbackButtons
-        feedbackStatus={feedbackStatus}
-        guideId={guideDetail.id}
-        isFeedbackPending={isFeedbackPending}
-        onFeedbackClick={onFeedbackClick}
-        onFeedbackSubmit={onFeedbackSubmit}
-      />
+      {isFeedbackAllowed && (
+        <GuideFeedbackButtons
+          feedbackStatus={feedbackStatus}
+          isFeedbackPending={isFeedbackPending}
+          onFeedbackClick={onFeedbackClick}
+        />
+      )}
     </section>
   );
 };

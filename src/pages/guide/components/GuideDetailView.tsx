@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import useGuideFeedback from '../hooks/useGuideFeedback';
 import type { GuideFeedbackTypes } from '../types/guideApiTypes';
 import type { GuideDetailTypes } from '../types/guideTypes';
 import GuideActionSection from './GuideActionSection';
@@ -15,25 +16,20 @@ import GuideWarningSignList from './GuideWarningSignList';
 
 interface GuideDetailViewPropTypes {
   guideDetail: GuideDetailTypes;
-  isFeedbackPending?: boolean;
-  onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
 }
 
-const GuideDetailView = ({
-  guideDetail,
-  isFeedbackPending = false,
-  onFeedbackClick,
-}: GuideDetailViewPropTypes) => {
+const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
   const navigate = useNavigate();
+  const { feedbackStatus, isFeedbackPending, submitGuideFeedback } =
+    useGuideFeedback(
+      Number(guideDetail.id),
+      guideDetail.feedbackStatus ?? null,
+    );
   const isInfoGuide = guideDetail.type === 'info';
   const isWarningGuide = guideDetail.type === 'warning';
   const hasInfoSections = Boolean(guideDetail.infoSections);
   const hasSummaryCard = !isInfoGuide && !isWarningGuide;
   const [isFeedbackToastVisible, setIsFeedbackToastVisible] = useState(false);
-
-  useEffect(() => {
-    setIsFeedbackToastVisible(false);
-  }, [guideDetail.id]);
 
   useEffect(() => {
     if (!isFeedbackToastVisible) return;
@@ -49,8 +45,13 @@ const GuideDetailView = ({
     navigate(-1);
   };
 
-  const handleFeedbackSubmit = () => {
-    setIsFeedbackToastVisible(true);
+  // 등록에 성공했을 때만 감사 토스트를 노출한다.
+  const handleFeedbackClick = async (feedback: GuideFeedbackTypes) => {
+    const isSubmitted = await submitGuideFeedback(feedback);
+
+    if (isSubmitted) {
+      setIsFeedbackToastVisible(true);
+    }
   };
 
   return (
@@ -98,12 +99,11 @@ const GuideDetailView = ({
         </section>
 
         <GuideActionSection
-          feedbackStatus={guideDetail.feedbackStatus}
+          feedbackStatus={feedbackStatus}
           guideDetail={guideDetail}
           isFeedbackPending={isFeedbackPending}
           isFeedbackToastVisible={isFeedbackToastVisible}
-          onFeedbackClick={onFeedbackClick}
-          onFeedbackSubmit={handleFeedbackSubmit}
+          onFeedbackClick={handleFeedbackClick}
         />
 
         {isWarningGuide && (

@@ -19,6 +19,7 @@ const Guide = () => {
 
   return (
     <GuideDetailView
+      key={selectedGuideId}
       guideDetail={getGuideDetailFromResponse(guideDetailData)}
     />
   );

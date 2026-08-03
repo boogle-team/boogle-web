@@ -154,7 +154,8 @@ export const MONTHLY_IMPROVEMENTS: PatternTypes[] = [
     title: '부글 컨디션 점수 상승',
   },
   {
-    description: '스트레스와 복통이 함께 나타난 횟수가 지난달 12회에서 5회로 줄었어요',
+    description:
+      '스트레스와 복통이 함께 나타난 횟수가 지난달 12회에서 5회로 줄었어요',
     icon: 'chart',
     title: '스트레스성 복통 완화',
   },

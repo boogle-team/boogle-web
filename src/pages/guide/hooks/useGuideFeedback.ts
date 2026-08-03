@@ -1,27 +1,28 @@
 import { useState } from 'react';
 
+import type {
+  GuideFeedbackStatusTypes,
+  GuideFeedbackTypes,
+} from '@/pages/guide/types/guideApiTypes';
 import {
   registerGuideFeedback,
   updateGuideFeedback,
 } from '@/pages/guide/utils/guideFeedbackUtils';
-import type {
-  LifeGuideTypes,
-  ReportGuideFeedbackStatusTypes,
-  ReportGuideFeedbackTypes,
-} from '../types/reportTypes';
 
-export const useReportGuideFeedback = (lifeGuide: LifeGuideTypes) => {
-  const [feedbackStatus, setFeedbackStatus] =
-    useState<ReportGuideFeedbackStatusTypes>(lifeGuide.feedbackStatus ?? null);
+const useGuideFeedback = (
+  guideId: number,
+  initialFeedbackStatus: GuideFeedbackStatusTypes,
+) => {
+  const [feedbackStatus, setFeedbackStatus] = useState(initialFeedbackStatus);
   const [isFeedbackPending, setIsFeedbackPending] = useState(false);
   const [isFeedbackError, setIsFeedbackError] = useState(false);
 
-  const submitGuideFeedback = async (feedback: ReportGuideFeedbackTypes) => {
+  // 토스트 노출 여부를 호출부가 판단할 수 있도록 성공 여부를 반환한다.
+  const submitGuideFeedback = async (feedback: GuideFeedbackTypes) => {
     if (isFeedbackPending) {
-      return;
+      return false;
     }
 
-    const { guideContentId } = lifeGuide;
     const hasFeedback = feedbackStatus !== null;
 
     try {
@@ -29,14 +30,18 @@ export const useReportGuideFeedback = (lifeGuide: LifeGuideTypes) => {
       setIsFeedbackError(false);
 
       if (hasFeedback) {
-        await updateGuideFeedback(guideContentId, feedback);
+        await updateGuideFeedback(guideId, feedback);
       } else {
-        await registerGuideFeedback(guideContentId, feedback);
+        await registerGuideFeedback(guideId, feedback);
       }
 
       setFeedbackStatus(feedback);
+
+      return true;
     } catch {
       setIsFeedbackError(true);
+
+      return false;
     } finally {
       setIsFeedbackPending(false);
     }
@@ -49,3 +54,5 @@ export const useReportGuideFeedback = (lifeGuide: LifeGuideTypes) => {
     submitGuideFeedback,
   };
 };
+
+export default useGuideFeedback;
