@@ -5,28 +5,23 @@ import { useGuideSelection } from './hooks/useGuideSelection';
 import { getGuideDetailFromResponse } from './utils/guideDetailAdapter';
 
 const Guide = () => {
-  const { guideDetail, isInsufficient, selectedGuideApiId } =
-    useGuideSelection();
+  const { isInsufficient, selectedGuideId } = useGuideSelection();
   const { guideDetailData, isError, isLoading } =
-    useGuideDetailQuery(selectedGuideApiId);
+    useGuideDetailQuery(selectedGuideId);
 
-  if (selectedGuideApiId) {
-    if (isLoading || isError || !guideDetailData) {
-      return <GuideDetailStatus isError={isError} />;
-    }
-
-    return (
-      <GuideDetailView
-        guideDetail={getGuideDetailFromResponse(guideDetailData)}
-      />
-    );
+  if (!selectedGuideId) {
+    return <GuideMainView isInsufficient={isInsufficient} />;
   }
 
-  if (guideDetail) {
-    return <GuideDetailView guideDetail={guideDetail} />;
+  if (isLoading || isError || !guideDetailData) {
+    return <GuideDetailStatus isError={isError} />;
   }
 
-  return <GuideMainView isInsufficient={isInsufficient} />;
+  return (
+    <GuideDetailView
+      guideDetail={getGuideDetailFromResponse(guideDetailData)}
+    />
+  );
 };
 
 interface GuideDetailStatusPropTypes {

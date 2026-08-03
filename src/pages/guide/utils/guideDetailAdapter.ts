@@ -90,8 +90,7 @@ export const getGuideDetailFromResponse = (
 
   const relatedGuides: GuideRelatedTypes[] = recommendedGuides.map(
     ({ guideId: recommendedGuideId, title: recommendedTitle }) => ({
-      guideContentId: recommendedGuideId,
-      icon: 'stress',
+      guideId: recommendedGuideId,
       title: recommendedTitle,
     }),
   );

@@ -39,10 +39,7 @@ interface RelatedGuideCardPropTypes {
 
 const RelatedGuideCard = ({ relatedGuide }: RelatedGuideCardPropTypes) => (
   <Link
-    to={getGuideDetailPath({
-      guideContentId: relatedGuide.guideContentId,
-      routeId: relatedGuide.id,
-    })}
+    to={getGuideDetailPath({ guideId: relatedGuide.guideId })}
     className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
   >
     <span className="flex items-center gap-2">

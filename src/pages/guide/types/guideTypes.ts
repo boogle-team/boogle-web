@@ -9,9 +9,8 @@ export interface GuideMetricTypes {
 }
 
 export interface GuideRelatedTypes {
-  guideContentId?: number;
-  icon: 'sleep' | 'stool' | 'stress';
-  id?: string;
+  guideId: number;
+  icon?: 'sleep' | 'stool' | 'stress';
   title: string;
 }
 

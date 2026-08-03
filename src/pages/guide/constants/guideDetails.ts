@@ -1,48 +1,36 @@
 import type { GuideDetailTypes, GuideRelatedTypes } from '../types/guideTypes';
 
+const NORMAL_BOWEL_COUNT_GUIDE: GuideRelatedTypes = {
+  guideId: 1,
+  icon: 'stool',
+  title: '정상 배변 횟수는?',
+};
+
+const BRISTOL_SCALE_GUIDE: GuideRelatedTypes = {
+  guideId: 2,
+  icon: 'stool',
+  title: '브리스톨 변 형태 척도란?',
+};
+
+const STRESS_GUT_GUIDE: GuideRelatedTypes = {
+  guideId: 3,
+  icon: 'stress',
+  title: '스트레스와 장의 관계',
+};
+
 const DEFAULT_RELATED_GUIDES: GuideRelatedTypes[] = [
-  {
-    guideContentId: 11,
-    icon: 'stool',
-    id: 'bristol-stool-chart',
-    title: '브리스톨 변 형태 척도란?',
-  },
-  {
-    guideContentId: 12,
-    icon: 'stress',
-    id: 'stress-and-gut',
-    title: '스트레스와 장의 관계',
-  },
+  BRISTOL_SCALE_GUIDE,
+  STRESS_GUT_GUIDE,
 ];
 
 const BRISTOL_RELATED_GUIDES: GuideRelatedTypes[] = [
-  {
-    guideContentId: 10,
-    icon: 'stool',
-    id: 'normal-bowel-count',
-    title: '정상 배변 횟수는?',
-  },
-  {
-    guideContentId: 12,
-    icon: 'stress',
-    id: 'stress-and-gut',
-    title: '스트레스와 장의 관계',
-  },
+  NORMAL_BOWEL_COUNT_GUIDE,
+  STRESS_GUT_GUIDE,
 ];
 
 const STRESS_RELATED_GUIDES: GuideRelatedTypes[] = [
-  {
-    guideContentId: 10,
-    icon: 'stool',
-    id: 'normal-bowel-count',
-    title: '정상 배변 횟수는?',
-  },
-  {
-    guideContentId: 11,
-    icon: 'stool',
-    id: 'bristol-stool-chart',
-    title: '브리스톨 변 형태 척도란?',
-  },
+  NORMAL_BOWEL_COUNT_GUIDE,
+  BRISTOL_SCALE_GUIDE,
 ];
 
 export const GUIDE_DETAILS: GuideDetailTypes[] = [
