@@ -43,7 +43,7 @@ const Settings = () => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const handleBackClick = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const handleProfileEditClick = () => {

@@ -14,7 +14,7 @@ const Notification = () => {
     useNotifications();
 
   const handleBackButtonClick = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {

@@ -13,7 +13,7 @@ const Profile = () => {
   const handleProfileComplete = (value: ProfileInputValueTypes) => {
     // TODO: 수집한 프로필 데이터를 서버에 저장한 뒤 홈으로 이동.
     void value;
-    navigate('/');
+    navigate('/home');
   };
 
   return (

@@ -21,7 +21,7 @@ interface NavItemTypes {
 const NAV_ITEMS: NavItemTypes[] = [
   {
     label: '홈',
-    path: '/',
+    path: '/home',
     Icon: Home,
   },
   {

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
+import { saveAuthTokens } from '@/shared/utils/authTokenStorage';
 import useOAuthExchangeMutation from '@/pages/login/hooks/useOAuthExchangeMutation';
 
 const OAuthCallback = () => {
@@ -30,8 +31,7 @@ const OAuthCallback = () => {
       { oauthResultCode },
       {
         onSuccess: ({ data }) => {
-          localStorage.setItem('accessToken', data.accessToken);
-          localStorage.setItem('refreshToken', data.refreshToken);
+          saveAuthTokens(data);
 
           if (
             data.nextAction === 'ONBOARDING_REQUIRED' ||
@@ -41,7 +41,7 @@ const OAuthCallback = () => {
             return;
           }
 
-          navigate('/', { replace: true });
+          navigate('/home', { replace: true });
         },
       },
     );

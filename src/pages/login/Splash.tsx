@@ -6,26 +6,39 @@ import {
 import Lottie from 'lottie-react';
 import logoAnimation from '@/shared/assets/lottie/logoAnimation.json';
 
-// 스플래시 화면: 주황 배경 + 로고. 일정 시간 후 onFinish 호출.
 interface SplashPropTypes {
+  shouldFinish: boolean;
   onFinish: () => void;
 }
 
-const Splash = ({ onFinish }: SplashPropTypes) => {
+const Splash = ({ shouldFinish, onFinish }: SplashPropTypes) => {
+  const [isMinimumDurationElapsed, setIsMinimumDurationElapsed] =
+    useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    const fadeOutTimerId = window.setTimeout(() => {
-      setIsFadingOut(true);
-    }, SPLASH_DURATION - SPLASH_FADE_OUT_DURATION);
-
-    const finishTimerId = window.setTimeout(onFinish, SPLASH_DURATION);
+    const minimumDurationTimerId = window.setTimeout(() => {
+      setIsMinimumDurationElapsed(true);
+    }, SPLASH_DURATION);
 
     return () => {
-      window.clearTimeout(fadeOutTimerId);
+      window.clearTimeout(minimumDurationTimerId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!shouldFinish || !isMinimumDurationElapsed) {
+      return;
+    }
+
+    setIsFadingOut(true);
+
+    const finishTimerId = window.setTimeout(onFinish, SPLASH_FADE_OUT_DURATION);
+
+    return () => {
       window.clearTimeout(finishTimerId);
     };
-  }, [onFinish]);
+  }, [isMinimumDurationElapsed, onFinish, shouldFinish]);
 
   return (
     <div
