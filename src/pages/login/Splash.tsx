@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import Lottie from 'lottie-react';
+
 import {
   SPLASH_DURATION,
   SPLASH_FADE_OUT_DURATION,
-} from './constants/loginConstants';
-import Lottie from 'lottie-react';
+} from '@/pages/login/constants/loginConstants';
 import logoAnimation from '@/shared/assets/lottie/logoAnimation.json';
 
 interface SplashPropTypes {
@@ -14,7 +15,7 @@ interface SplashPropTypes {
 const Splash = ({ shouldFinish, onFinish }: SplashPropTypes) => {
   const [isMinimumDurationElapsed, setIsMinimumDurationElapsed] =
     useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
+  const isFadingOut = shouldFinish && isMinimumDurationElapsed;
 
   useEffect(() => {
     const minimumDurationTimerId = window.setTimeout(() => {
@@ -27,18 +28,16 @@ const Splash = ({ shouldFinish, onFinish }: SplashPropTypes) => {
   }, []);
 
   useEffect(() => {
-    if (!shouldFinish || !isMinimumDurationElapsed) {
+    if (!isFadingOut) {
       return;
     }
-
-    setIsFadingOut(true);
 
     const finishTimerId = window.setTimeout(onFinish, SPLASH_FADE_OUT_DURATION);
 
     return () => {
       window.clearTimeout(finishTimerId);
     };
-  }, [isMinimumDurationElapsed, onFinish, shouldFinish]);
+  }, [isFadingOut, onFinish]);
 
   return (
     <div

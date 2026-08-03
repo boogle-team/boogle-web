@@ -27,6 +27,13 @@ const useLogout = () => {
     setLogoutErrorMessage(null);
   };
 
+  const completeLocalLogout = async () => {
+    await queryClient.cancelQueries();
+    clearAuthTokens();
+    queryClient.clear();
+    navigate('/login', { replace: true });
+  };
+
   const logout = async () => {
     if (isLoggingOut) {
       return;
@@ -35,26 +42,24 @@ const useLogout = () => {
     const accessToken = getAccessToken();
     const refreshToken = getRefreshToken();
 
-    if (!accessToken || !refreshToken) {
-      setLogoutErrorMessage(LOGOUT_ERROR_MESSAGE);
-      return;
-    }
-
     setLogoutErrorMessage(null);
     setIsLoggingOut(true);
 
+    if (!accessToken || !refreshToken) {
+      await completeLocalLogout();
+      return;
+    }
+
     try {
       await logoutMutation.mutateAsync({ accessToken, refreshToken });
-      await queryClient.cancelQueries();
-      await navigate('/login', { replace: true });
-      clearAuthTokens();
-      queryClient.clear();
+      await completeLocalLogout();
     } catch (error) {
-      setLogoutErrorMessage(
-        isUserAuthError(error)
-          ? LOGOUT_ERROR_MESSAGE
-          : getApiErrorMessage(error, LOGOUT_ERROR_MESSAGE),
-      );
+      if (isUserAuthError(error)) {
+        await completeLocalLogout();
+        return;
+      }
+
+      setLogoutErrorMessage(getApiErrorMessage(error, LOGOUT_ERROR_MESSAGE));
       setIsLoggingOut(false);
     }
   };

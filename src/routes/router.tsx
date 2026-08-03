@@ -35,6 +35,40 @@ export const Router = createBrowserRouter([
         lazy: loadAppEntryRoute,
       },
       {
+        path: 'onboarding',
+        lazy: loadOnboardingRoute,
+      },
+      {
+        path: 'login',
+        lazy: async () => {
+          const { default: Login } = await import('@/pages/login/Login');
+
+          return { Component: Login };
+        },
+      },
+      {
+        path: 'login/callback',
+        lazy: async () => {
+          const { default: OAuthCallback } =
+            await import('@/pages/login/OAuthCallback');
+
+          return { Component: OAuthCallback };
+        },
+      },
+      {
+        path: 'oauth/callback',
+        lazy: async () => {
+          const { default: OAuthCallback } =
+            await import('@/pages/login/OAuthCallback');
+
+          return { Component: OAuthCallback };
+        },
+      },
+      {
+        path: 'onboarding/profile',
+        lazy: loadOnboardingProfileRoute,
+      },
+      {
         element: <ProtectedRoute />,
         children: [
           {
@@ -73,120 +107,86 @@ export const Router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: 'record',
+            element: <Record />,
+          },
+          {
+            path: 'record/edit',
+            element: <RecordEdit />,
+          },
+          {
+            path: 'record/detail',
+            element: <RecordDetail />,
+          },
+          {
+            path: 'record/life',
+            element: <RecordLife />,
+          },
+          {
+            path: 'record/life/detail',
+            element: <RecordLifeDetail />,
+          },
+          {
+            path: 'record/life/edit',
+            element: <RecordLifeEdit />,
+          },
+          {
+            path: 'settings',
+            element: <Settings />,
+          },
+          {
+            path: 'notifications',
+            element: <Notification />,
+          },
+          {
+            element: <ProfileSettingsProvider />,
+            children: [
+              {
+                path: 'settings/profile',
+                element: <ProfileEdit />,
+              },
+              {
+                path: 'settings/bowel-rhythm',
+                element: <BowelRhythmSetting />,
+              },
+              {
+                path: 'settings/baseline-info',
+                element: <BaselineInfoSetting />,
+              },
+            ],
+          },
+          {
+            path: 'settings/login-account',
+            element: <LoginAccount />,
+          },
+          {
+            path: 'settings/sensitive-consent',
+            element: <SensitiveConsent />,
+          },
+          {
+            path: 'settings/privacy-policy',
+            element: <PrivacyPolicy />,
+          },
+          {
+            path: 'settings/terms',
+            element: <Terms />,
+          },
+          {
+            path: 'settings/delete-account',
+            element: <DeleteAccount />,
+          },
         ],
       },
       {
-        path: 'onboarding',
-        lazy: loadOnboardingRoute,
-      },
-      {
-        path: 'login',
+        path: '*',
         lazy: async () => {
-          const { default: Login } = await import('@/pages/login/Login');
+          const { default: NotFound } =
+            await import('@/shared/components/NotFound');
 
-          return { Component: Login };
+          return { Component: NotFound };
         },
-      },
-      {
-        path: 'login/callback',
-        lazy: async () => {
-          const { default: OAuthCallback } =
-            await import('@/pages/login/OAuthCallback');
-
-          return { Component: OAuthCallback };
-        },
-      },
-      {
-        path: 'oauth/callback',
-        lazy: async () => {
-          const { default: OAuthCallback } =
-            await import('@/pages/login/OAuthCallback');
-
-          return { Component: OAuthCallback };
-        },
-      },
-      {
-        path: 'onboarding/profile',
-        lazy: loadOnboardingProfileRoute,
       },
     ],
-  },
-  {
-    path: '/record',
-    element: <Record />,
-  },
-  {
-    path: '/record/edit',
-    element: <RecordEdit />,
-  },
-  {
-    path: '/record/detail',
-    element: <RecordDetail />,
-  },
-  {
-    path: '/record/life',
-    element: <RecordLife />,
-  },
-  {
-    path: '/record/life/detail',
-    element: <RecordLifeDetail />,
-  },
-  {
-    path: '/record/life/edit',
-    element: <RecordLifeEdit />,
-  },
-  {
-    path: '/settings',
-    element: <Settings />,
-  },
-  {
-    path: '/notifications',
-    element: <Notification />,
-  },
-  {
-    element: <ProfileSettingsProvider />,
-    children: [
-      {
-        path: '/settings/profile',
-        element: <ProfileEdit />,
-      },
-      {
-        path: '/settings/bowel-rhythm',
-        element: <BowelRhythmSetting />,
-      },
-      {
-        path: '/settings/baseline-info',
-        element: <BaselineInfoSetting />,
-      },
-    ],
-  },
-  {
-    path: '/settings/login-account',
-    element: <LoginAccount />,
-  },
-  {
-    path: '/settings/sensitive-consent',
-    element: <SensitiveConsent />,
-  },
-  {
-    path: '/settings/privacy-policy',
-    element: <PrivacyPolicy />,
-  },
-  {
-    path: '/settings/terms',
-    element: <Terms />,
-  },
-  {
-    path: '/settings/delete-account',
-    element: <DeleteAccount />,
-  },
-  {
-    path: '*',
-    lazy: async () => {
-      const { default: NotFound } =
-        await import('@/shared/components/NotFound');
-
-      return { Component: NotFound };
-    },
   },
 ]);
