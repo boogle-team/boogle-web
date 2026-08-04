@@ -8,7 +8,6 @@ import type { HomeSelectedDateContentTypes } from '@/pages/home/types/homeTypes'
 import { isHomeToday } from '@/pages/home/utils/homeDateUtils';
 import HomeMessageBanner from '@/pages/home/components/HomeMessageBanner';
 import WeeklyPatternSection from '@/pages/home/components/WeeklyPatternSection';
-import { getApiErrorMessage } from '@/shared/apis/apiError';
 
 interface HomeContentSectionPropTypes {
   selectedDateContent: HomeSelectedDateContentTypes;
@@ -16,7 +15,7 @@ interface HomeContentSectionPropTypes {
   todayDate: string;
   isDailyRecordLoading: boolean;
   isDailyRecordError: boolean;
-  dailyRecordError: unknown;
+  dailyRecordErrorMessage: string;
   onBoogleRecordCreateClick: () => void;
   onBoogleRecordEditClick: (recordId: number) => void;
   onLifeRecordCreateClick: () => void;
@@ -30,7 +29,7 @@ const HomeContentSection = ({
   todayDate,
   isDailyRecordLoading,
   isDailyRecordError,
-  dailyRecordError,
+  dailyRecordErrorMessage,
   onBoogleRecordCreateClick,
   onBoogleRecordEditClick,
   onLifeRecordCreateClick,
@@ -70,12 +69,7 @@ const HomeContentSection = ({
         {isDailyRecordError ? (
           <div className="rounded-xl bg-beige-1 px-4 py-6 text-center text-gray-8">
             <p className="body-m-bold">기록 정보를 불러오지 못했어요</p>
-            <p className="pt-1 caption">
-              {getApiErrorMessage(
-                dailyRecordError,
-                '잠시 후 다시 시도해 주세요',
-              )}
-            </p>
+            <p className="pt-1 caption">{dailyRecordErrorMessage}</p>
           </div>
         ) : null}
         {shouldShowDailyRecordContent ? (

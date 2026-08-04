@@ -13,6 +13,7 @@ import {
 interface UseCalendarPickerParamTypes {
   selectedDate: string;
   onSelectDate: (date: string) => void;
+  onRecordSummaryRangeRequest: (baseDate: string) => void;
 }
 
 interface PendingPrependScrollTypes {
@@ -22,13 +23,13 @@ interface PendingPrependScrollTypes {
 
 const PICKER_SIDE_DATE_COUNT = 30;
 const PICKER_DATE_BATCH_COUNT = 30;
-export const HOME_RECORD_SUMMARY_RANGE = 30;
 const SENTINEL_ROOT_MARGIN = '0px 240px 0px 240px';
 const SENTINEL_THRESHOLD = 0;
 
 const useCalendarPicker = ({
   selectedDate,
   onSelectDate,
+  onRecordSummaryRangeRequest,
 }: UseCalendarPickerParamTypes) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const leftSentinelRef = useRef<HTMLSpanElement>(null);
@@ -46,26 +47,11 @@ const useCalendarPicker = ({
     null,
   );
   const isAppendPendingRef = useRef(false);
-  const registeredSummaryBaseDatesRef = useRef(new Set([selectedDate]));
   const [isScrollReady, setIsScrollReady] = useState(false);
-  const [recordSummaryBaseDates, setRecordSummaryBaseDates] = useState([
-    selectedDate,
-  ]);
   const [pickerDates, setPickerDates] = useState(() =>
     generateHomePickerDates(selectedDate, PICKER_SIDE_DATE_COUNT),
   );
   const pickerDatesRef = useRef(pickerDates);
-
-  const registerSummaryBaseDate = useCallback((baseDate: string) => {
-    if (registeredSummaryBaseDatesRef.current.has(baseDate)) return false;
-
-    registeredSummaryBaseDatesRef.current.add(baseDate);
-    setRecordSummaryBaseDates((currentBaseDates) => [
-      ...currentBaseDates,
-      baseDate,
-    ]);
-    return true;
-  }, []);
 
   const handlePrependDates = useCallback(() => {
     if (!isScrollReadyRef.current || isLeftRangeLockedRef.current) return;
@@ -76,11 +62,7 @@ const useCalendarPicker = ({
     if (!scrollContainer || !firstDate) return;
 
     isLeftRangeLockedRef.current = true;
-
-    if (!registerSummaryBaseDate(firstDate)) {
-      isLeftRangeLockedRef.current = false;
-      return;
-    }
+    onRecordSummaryRangeRequest(firstDate);
 
     const prependedDates = generateHomePickerDateBatch(
       firstDate,
@@ -101,7 +83,7 @@ const useCalendarPicker = ({
     const nextPickerDates = [...prependedDates, ...currentDates];
     pickerDatesRef.current = nextPickerDates;
     setPickerDates(nextPickerDates);
-  }, [registerSummaryBaseDate]);
+  }, [onRecordSummaryRangeRequest]);
 
   const handleAppendDates = useCallback(() => {
     if (!isScrollReadyRef.current || isRightRangeLockedRef.current) return;
@@ -111,11 +93,7 @@ const useCalendarPicker = ({
     if (!lastDate) return;
 
     isRightRangeLockedRef.current = true;
-
-    if (!registerSummaryBaseDate(lastDate)) {
-      isRightRangeLockedRef.current = false;
-      return;
-    }
+    onRecordSummaryRangeRequest(lastDate);
 
     const appendedDates = generateHomePickerDateBatch(
       lastDate,
@@ -132,7 +110,7 @@ const useCalendarPicker = ({
     const nextPickerDates = [...currentDates, ...appendedDates];
     pickerDatesRef.current = nextPickerDates;
     setPickerDates(nextPickerDates);
-  }, [registerSummaryBaseDate]);
+  }, [onRecordSummaryRangeRequest]);
 
   const scrollToDate = useCallback(
     (date: string, behavior: ScrollBehavior = 'auto') => {
@@ -245,13 +223,15 @@ const useCalendarPicker = ({
   }, [selectedDate]);
 
   useEffect(() => {
+    onRecordSummaryRangeRequest(initialSelectedDateRef.current);
+
     initialAlignFrameRef.current = window.requestAnimationFrame(() => {
       scrollToDate(initialSelectedDateRef.current);
       isScrollReadyRef.current = true;
       setIsScrollReady(true);
       initialAlignFrameRef.current = null;
     });
-  }, [scrollToDate]);
+  }, [onRecordSummaryRangeRequest, scrollToDate]);
 
   useEffect(() => {
     if (!isScrollReady) return;
@@ -311,7 +291,6 @@ const useCalendarPicker = ({
 
   return {
     pickerDates,
-    recordSummaryBaseDates,
     scrollContainerRef,
     leftSentinelRef,
     rightSentinelRef,

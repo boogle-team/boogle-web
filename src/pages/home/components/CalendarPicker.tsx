@@ -1,9 +1,5 @@
-import { useMemo } from 'react';
 import CalendarChip from '@/pages/home/components/CalendarChip';
-import useCalendarPicker, {
-  HOME_RECORD_SUMMARY_RANGE,
-} from '@/pages/home/hooks/useCalendarPicker';
-import useHomeRecordSummaryQueries from '@/pages/home/hooks/useHomeRecordSummaryQueries';
+import useCalendarPicker from '@/pages/home/hooks/useCalendarPicker';
 import { DEFAULT_HOME_RECORD_STATUS } from '@/pages/home/constants/homeCalendarConfig';
 import type {
   HomeDateRecordStatusTypes,
@@ -11,28 +7,35 @@ import type {
 } from '@/pages/home/types/homeTypes';
 import { isHomeToday } from '@/pages/home/utils/homeDateUtils';
 
-interface CalendarPickerPropTypes {
-  selectedDate: string;
-  todayDate: string;
-  recordStatusByDate: HomeRecordStatusMapTypes;
-  onSelectDate: (date: string) => void;
-}
-
 const getRecordStatus = (
   date: string,
   recordStatusByDate: HomeRecordStatusMapTypes,
 ): HomeDateRecordStatusTypes =>
   recordStatusByDate[date] ?? DEFAULT_HOME_RECORD_STATUS;
 
+interface CalendarPickerPropTypes {
+  selectedDate: string;
+  todayDate: string;
+  recordStatusByDate: HomeRecordStatusMapTypes;
+  isRecordSummaryError: boolean;
+  recordSummaryErrorMessage: string;
+  onSelectDate: (date: string) => void;
+  onRecordSummaryRangeRequest: (baseDate: string) => void;
+  onRecordSummaryRetryClick: () => void;
+}
+
 const CalendarPicker = ({
   selectedDate,
   todayDate,
   recordStatusByDate,
+  isRecordSummaryError,
+  recordSummaryErrorMessage,
   onSelectDate,
+  onRecordSummaryRangeRequest,
+  onRecordSummaryRetryClick,
 }: CalendarPickerPropTypes) => {
   const {
     pickerDates,
-    recordSummaryBaseDates,
     scrollContainerRef,
     leftSentinelRef,
     rightSentinelRef,
@@ -42,21 +45,11 @@ const CalendarPicker = ({
   } = useCalendarPicker({
     selectedDate,
     onSelectDate,
+    onRecordSummaryRangeRequest,
   });
-  const summaryRecordStatusByDate = useHomeRecordSummaryQueries(
-    recordSummaryBaseDates,
-    HOME_RECORD_SUMMARY_RANGE,
-  );
-  const mergedRecordStatusByDate = useMemo(
-    () => ({
-      ...recordStatusByDate,
-      ...summaryRecordStatusByDate,
-    }),
-    [recordStatusByDate, summaryRecordStatusByDate],
-  );
 
   return (
-    <section className="relative h-[9.625rem] bg-beige-1 pt-[1.13rem]">
+    <section className="relative min-h-[9.625rem] bg-beige-1 pt-[1.13rem]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute top-[3.005rem] left-1/2 z-0 h-[5.5625rem] w-[4rem] -translate-x-1/2 rounded-full border border-orange-3 bg-yellow-2"
@@ -76,7 +69,7 @@ const CalendarPicker = ({
           <CalendarChip
             key={date}
             date={date}
-            recordStatus={getRecordStatus(date, mergedRecordStatusByDate)}
+            recordStatus={getRecordStatus(date, recordStatusByDate)}
             isSelected={date === selectedDate}
             isToday={isHomeToday(date, todayDate)}
             onSelectDate={handleChipClick}
@@ -89,6 +82,21 @@ const CalendarPicker = ({
           className="w-px shrink-0 self-stretch"
         />
       </div>
+      {isRecordSummaryError ? (
+        <div
+          role="alert"
+          className="mx-layout mt-2 flex items-center justify-between gap-3 rounded-lg bg-orange-1 px-3 py-2 text-gray-8"
+        >
+          <p className="caption">{recordSummaryErrorMessage}</p>
+          <button
+            type="button"
+            onClick={onRecordSummaryRetryClick}
+            className="shrink-0 rounded-lg bg-orange-5 px-3 py-2 label-semi text-beige-1"
+          >
+            다시 시도
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 };

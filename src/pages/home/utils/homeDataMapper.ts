@@ -14,6 +14,31 @@ import type {
   HomeViewModelTypes,
 } from '@/pages/home/types/homeTypes';
 
+interface GetBoogleCountBySelectedDateParamTypes {
+  homeData: HomeDataTypes;
+  recordStatus: HomeDateRecordStatusTypes;
+  selectedDate: string;
+}
+
+interface GetStreakBySelectedDateParamTypes {
+  homeData: HomeDataTypes;
+  selectedDate: string;
+}
+
+interface GetSelectedDateContentParamTypes {
+  dailyRecord?: DailyRecordTypes;
+  homeData: HomeDataTypes;
+  recordStatusByDate: HomeRecordStatusMapTypes;
+  selectedDate: string;
+}
+
+interface GetHomeViewModelParamTypes {
+  dailyRecord?: DailyRecordTypes;
+  homeData: HomeDataTypes;
+  selectedDate: string;
+  summaryRecordStatusByDate: HomeRecordStatusMapTypes;
+}
+
 const getFallbackRecordStatusByDate = ({
   boogleRecords,
   lifeRecord,
@@ -50,11 +75,7 @@ const getBoogleCountBySelectedDate = ({
   homeData,
   recordStatus,
   selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  recordStatus: HomeDateRecordStatusTypes;
-  selectedDate: string;
-}) => {
+}: GetBoogleCountBySelectedDateParamTypes) => {
   if (selectedDate === homeData.today.date) {
     return homeData.boogleCount > 0
       ? homeData.boogleCount
@@ -67,10 +88,7 @@ const getBoogleCountBySelectedDate = ({
 const getStreakBySelectedDate = ({
   homeData,
   selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}) => {
+}: GetStreakBySelectedDateParamTypes) => {
   if (selectedDate === homeData.today.date) return homeData.streak;
 
   return 1;
@@ -81,12 +99,7 @@ const getSelectedDateContent = ({
   homeData,
   recordStatusByDate,
   selectedDate,
-}: {
-  dailyRecord?: DailyRecordTypes;
-  homeData: HomeDataTypes;
-  recordStatusByDate: HomeRecordStatusMapTypes;
-  selectedDate: string;
-}): HomeSelectedDateContentTypes => {
+}: GetSelectedDateContentParamTypes): HomeSelectedDateContentTypes => {
   const recordStatus =
     recordStatusByDate[selectedDate] ?? DEFAULT_HOME_RECORD_STATUS;
   const selectedDateBoogleRecords = dailyRecord?.boogleRecords ?? [];
@@ -125,12 +138,12 @@ export const getHomeViewModel = ({
   dailyRecord,
   homeData,
   selectedDate,
-}: {
-  dailyRecord?: DailyRecordTypes;
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}): HomeViewModelTypes => {
-  const recordStatusByDate = getFallbackRecordStatusByDate(homeData);
+  summaryRecordStatusByDate,
+}: GetHomeViewModelParamTypes): HomeViewModelTypes => {
+  const recordStatusByDate = {
+    ...getFallbackRecordStatusByDate(homeData),
+    ...summaryRecordStatusByDate,
+  };
 
   return {
     todayDate: homeData.today.date,
