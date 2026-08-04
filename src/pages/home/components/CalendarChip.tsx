@@ -5,6 +5,7 @@ import DateCellRecordCompleteCharacter from '@/pages/home/assets/illustrations/d
 import DateCellOnlyBoogleRecord from '@/pages/home/assets/illustrations/dateCellOnlyBoogleRecord.svg?react';
 import DateCellNoBoogleCharacter from '@/pages/home/assets/illustrations/dateCellNoBoogleCharacter.svg?react';
 import DateCellOnlyDailyRecord from '@/pages/home/assets/illustrations/dateCellOnlyDailyRecord.svg?react';
+import DateCellDailyRecordWithNoBowel from '@/pages/home/assets/illustrations/dateCellDailyRecordWithNoBowel.svg?react';
 import type { HomeDateRecordStatusTypes } from '@/pages/home/types/homeTypes';
 import { isHomeSaturday, isHomeSunday } from '@/pages/home/utils/homeDateUtils';
 import { getWeekdayLabel } from '@/shared/utils/dateLabelUtils';
@@ -27,6 +28,7 @@ const RECORD_STATUS_ICON_MAP: Record<
   boogleOnly: DateCellOnlyBoogleRecord,
   noBoogle: DateCellNoBoogleCharacter,
   dailyOnly: DateCellOnlyDailyRecord,
+  noBoogleWithDaily: DateCellDailyRecordWithNoBowel,
 };
 
 const getDayLabelClassName = (date: string, isToday: boolean) => {

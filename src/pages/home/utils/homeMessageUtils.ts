@@ -33,7 +33,7 @@ export const getHomeMessageBannerContentByStatus = ({
     };
   }
 
-  if (recordStatus === 'noBoogle') {
+  if (recordStatus === 'noBoogle' || recordStatus === 'noBoogleWithDaily') {
     return {
       status: 'noBowel',
       chipText: getRecordStreakText(streak),

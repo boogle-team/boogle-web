@@ -13,7 +13,7 @@ const getHomeRecordStatus = ({
   }
 
   if (boogleStatus === 'NO_BOWEL') {
-    return hasLifeRecord ? 'dailyOnly' : 'noBoogle';
+    return hasLifeRecord ? 'noBoogleWithDaily' : 'noBoogle';
   }
 
   return hasLifeRecord ? 'dailyOnly' : 'none';

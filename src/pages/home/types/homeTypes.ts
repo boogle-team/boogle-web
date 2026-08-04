@@ -8,7 +8,12 @@ import type {
 import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 export type HomeDateRecordStatusTypes =
-  'none' | 'complete' | 'boogleOnly' | 'noBoogle' | 'dailyOnly';
+  | 'none'
+  | 'complete'
+  | 'boogleOnly'
+  | 'noBoogle'
+  | 'dailyOnly'
+  | 'noBoogleWithDaily';
 
 export type HomeRecordStatusMapTypes = Record<
   string,

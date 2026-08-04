@@ -24,4 +24,5 @@ export const HOME_RECORD_STATUS_MARK_MAP: Record<
   boogleOnly: ['boogle'],
   dailyOnly: ['life'],
   noBoogle: ['noBowel'],
+  noBoogleWithDaily: ['noBowel', 'life'],
 };
