@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HOME_DATE_MODAL_MARK_CONFIG } from '@/pages/home/constants/homeCalendarConfig';
 import useHomeQuery from '@/pages/home/hooks/useHomeQuery';
+import { useHomeSelectedDateStore } from '@/pages/home/stores/homeSelectedDateStore';
 import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 import type { HomeViewModelTypes } from '@/pages/home/types/homeTypes';
 import { getCalendarRecordMapFromHomeStatus } from '@/pages/home/utils/homeCalendarUtils';
@@ -45,7 +46,10 @@ interface UseHomeStateReturnTypes {
 const useHomeState = (): UseHomeStateReturnTypes => {
   const navigate = useNavigate();
   const { homeData, isError, isLoading } = useHomeQuery();
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const selectedDate = useHomeSelectedDateStore((state) => state.selectedDate);
+  const setSelectedDate = useHomeSelectedDateStore(
+    (state) => state.setSelectedDate,
+  );
   const [pickerBaseDate, setPickerBaseDate] = useState<string | null>(null);
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
 
