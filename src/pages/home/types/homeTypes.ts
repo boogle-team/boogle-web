@@ -15,8 +15,6 @@ export type HomeRecordStatusMapTypes = Record<
   HomeDateRecordStatusTypes
 >;
 
-export type HomeDateMetricMapTypes = Record<string, number>;
-
 export type HomeMessageBannerStatusTypes = 'waiting' | 'sent' | 'noBowel';
 
 export interface HomeMessageDescriptionSegmentTypes {
@@ -34,8 +32,8 @@ export interface HomeMessageBannerContentTypes {
 export interface HomeUserTypes {
   id: number;
   nickname: string;
-  userType: string;
-  userTypeLabel: string;
+  userType: string | null;
+  userTypeLabel: string | null;
   joinedDays: number;
 }
 
@@ -68,9 +66,6 @@ export interface HomeDataTypes {
   boogleRecords: HomeBoogleRecordTypes[];
   lifeRecord: HomeLifeRecordTypes | null;
   weeklyPattern: HomeWeeklyPatternTypes | null;
-  recordStatusByDate?: HomeRecordStatusMapTypes;
-  boogleCountByDate?: HomeDateMetricMapTypes;
-  streakByDate?: HomeDateMetricMapTypes;
 }
 
 export type HomeResponseTypes = ApiResponseTypes<HomeDataTypes>;

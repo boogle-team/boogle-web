@@ -89,9 +89,6 @@ const getBoogleCountBySelectedDate = ({
   recordStatus: HomeDateRecordStatusTypes;
   selectedDate: string;
 }) => {
-  const mappedBoogleCount = homeData.boogleCountByDate?.[selectedDate];
-  if (mappedBoogleCount !== undefined) return mappedBoogleCount;
-
   if (selectedDate === homeData.today.date) {
     return homeData.boogleCount > 0
       ? homeData.boogleCount
@@ -108,9 +105,6 @@ const getStreakBySelectedDate = ({
   homeData: HomeDataTypes;
   selectedDate: string;
 }) => {
-  const mappedStreak = homeData.streakByDate?.[selectedDate];
-  if (mappedStreak !== undefined) return mappedStreak;
-
   if (selectedDate === homeData.today.date) return homeData.streak;
 
   return 1;
@@ -169,8 +163,7 @@ export const getHomeViewModel = ({
   homeData: HomeDataTypes;
   selectedDate: string;
 }): HomeViewModelTypes => {
-  const recordStatusByDate =
-    homeData.recordStatusByDate ?? getFallbackRecordStatusByDate(homeData);
+  const recordStatusByDate = getFallbackRecordStatusByDate(homeData);
 
   return {
     todayDate: homeData.today.date,
