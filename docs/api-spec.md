@@ -6,6 +6,387 @@
 - 엔드포인트: /api/v1/home
 - http 메소드: GET
 - Success Status: 200 okay
+- response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 10,
+      "nickname": "ㄹㅊㄹㅊ",
+      "userType": null,
+      "userTypeLabel": null,
+      "joinedDays": 1
+    },
+    "today": {
+      "date": "2026-08-04",
+      "greeting": "오늘의 첫 기록을 남겨보세요"
+    },
+    "streak": 0,
+    "weekStrip": [
+      {
+        "date": "2026-08-02",
+        "hasRecord": false
+      },
+      {
+        "date": "2026-08-03",
+        "hasRecord": false
+      },
+      {
+        "date": "2026-08-04",
+        "hasRecord": false
+      },
+      {
+        "date": "2026-08-05",
+        "hasRecord": false
+      },
+      {
+        "date": "2026-08-06",
+        "hasRecord": false
+      },
+      {
+        "date": "2026-08-07",
+        "hasRecord": false
+      },
+      {
+        "date": "2026-08-08",
+        "hasRecord": false
+      }
+    ],
+    "boogleCount": 0,
+    "boogleRecords": [],
+    "lifeRecord": null,
+    "weeklyPattern": null
+  },
+  "message": "요청이 성공적으로 처리되었습니다."
+}
+```
+
+[홈 날짜별 상태 요약]
+: 홈 캘린더 스트립/날짜 모달용 날짜별 상태 요약 (baseDate ±30일)
+
+- 엔드포인트: /api/v1/home/summary
+- http 메소드: GET
+- Success Status: 200 okay
+- response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "baseDate": "2026-08-04",
+    "days": [
+      {
+        "date": "2026-07-05",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-06",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-07",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-08",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-09",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-10",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-11",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-12",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-13",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-14",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-15",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-16",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-17",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-18",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-19",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-20",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-21",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-22",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-23",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-24",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-25",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-26",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-27",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-28",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-29",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-30",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-07-31",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-01",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-02",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-03",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-04",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-05",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-06",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-07",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-08",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-09",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-10",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-11",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-12",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-13",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-14",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-15",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-16",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-17",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-18",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-19",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-20",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-21",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-22",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-23",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-24",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-25",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-26",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-27",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-28",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-29",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-30",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-08-31",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-09-01",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-09-02",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      },
+      {
+        "date": "2026-09-03",
+        "boogleStatus": "NONE",
+        "hasLifeRecord": false
+      }
+    ]
+  },
+  "message": "요청이 성공적으로 처리되었습니다."
+}
+```
 
 ## 회원가입, 로그인
 
