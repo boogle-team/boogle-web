@@ -1,23 +1,23 @@
 import type { ComponentType, SVGProps } from 'react';
 
-import AbdominalBloatingIcon from '@/shared/assets/illustrations/guide/abdominalBloatingIcon.svg?react';
-import BowelAmountIcon from '@/shared/assets/illustrations/guide/bowelAmountIcon.svg?react';
-import BowelMovementTimeIcon from '@/shared/assets/illustrations/guide/bowelMovementTimeIcon.svg?react';
-import BristolStoolChartIcon from '@/shared/assets/illustrations/guide/bristolStoolChartIcon.svg?react';
-import CaffeineRelationIcon from '@/shared/assets/illustrations/guide/caffeineRelationIcon.svg?react';
-import FoodRelationIcon from '@/shared/assets/illustrations/guide/foodRelationIcon.svg?react';
-import HormoneRelationIcon from '@/shared/assets/illustrations/guide/hormoneRelationIcon.svg?react';
-import LooseStoolIcon from '@/shared/assets/illustrations/guide/looseStoolIcon.svg?react';
-import NoBowelMovementIcon from '@/shared/assets/illustrations/guide/noBowelMovementIcon.svg?react';
-import NormalBowelCountIcon from '@/shared/assets/illustrations/guide/normalBowelCountIcon.svg?react';
-import SleepConditionIcon from '@/shared/assets/illustrations/guide/sleepConditionIcon.svg?react';
-import StressGutIcon from '@/shared/assets/illustrations/guide/stressGutIcon.svg?react';
-import IrregularityMealIcon from '@/shared/assets/illustrations/guide/irregularityMealIcon.svg?react';
-import TenesmusFrequentlyIcon from '@/shared/assets/illustrations/guide/tenesmusFrequentlyIcon.svg?react';
-import UrgencyFeelingIcon from '@/shared/assets/illustrations/guide/urgencyFeelingIcon.svg?react';
-import WarningSignIcon from '@/shared/assets/illustrations/guide/warningSignIcon.svg?react';
-import WaterDropIcon from '@/shared/assets/illustrations/guide/waterDropIcon.svg?react';
-import WorkoutRelationIcon from '@/shared/assets/illustrations/guide/workoutRelationIcon.svg?react';
+import AbdominalBloatingIcon from '../assets/illustrations/abdominalBloatingIcon.svg?react';
+import BowelAmountIcon from '../assets/illustrations/bowelAmountIcon.svg?react';
+import BowelMovementTimeIcon from '../assets/illustrations/bowelMovementTimeIcon.svg?react';
+import BristolStoolChartIcon from '../assets/illustrations/bristolStoolChartIcon.svg?react';
+import CaffeineRelationIcon from '../assets/illustrations/caffeineRelationIcon.svg?react';
+import FoodRelationIcon from '../assets/illustrations/foodRelationIcon.svg?react';
+import HormoneRelationIcon from '../assets/illustrations/hormoneRelationIcon.svg?react';
+import LooseStoolIcon from '../assets/illustrations/looseStoolIcon.svg?react';
+import NoBowelMovementIcon from '../assets/illustrations/noBowelMovementIcon.svg?react';
+import NormalBowelCountIcon from '../assets/illustrations/normalBowelCountIcon.svg?react';
+import SleepConditionIcon from '../assets/illustrations/sleepConditionIcon.svg?react';
+import StressGutIcon from '../assets/illustrations/stressGutIcon.svg?react';
+import IrregularityMealIcon from '../assets/illustrations/irregularityMealIcon.svg?react';
+import TenesmusFrequentlyIcon from '../assets/illustrations/tenesmusFrequentlyIcon.svg?react';
+import UrgencyFeelingIcon from '../assets/illustrations/urgencyFeelingIcon.svg?react';
+import WarningSignIcon from '../assets/illustrations/warningSignIcon.svg?react';
+import WaterDropIcon from '../assets/illustrations/waterDropIcon.svg?react';
+import WorkoutRelationIcon from '../assets/illustrations/workoutRelationIcon.svg?react';
 
 type GuideIconTypes = ComponentType<SVGProps<SVGSVGElement>>;
 

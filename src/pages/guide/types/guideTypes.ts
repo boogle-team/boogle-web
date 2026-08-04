@@ -10,7 +10,6 @@ export interface GuideMetricTypes {
 
 export interface GuideRelatedTypes {
   guideId: number;
-  icon?: 'sleep' | 'stool' | 'stress';
   title: string;
 }
 

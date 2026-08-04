@@ -1,10 +1,10 @@
-import BristolScaleTypeFiveIcon from '../assets/illustrations/bristolScaleTypeFiveIcon.svg?react';
-import BristolScaleTypeFourIcon from '../assets/illustrations/bristolScaleTypeFourIcon.svg?react';
-import BristolScaleTypeOneIcon from '../assets/illustrations/bristolScaleTypeOneIcon.svg?react';
-import BristolScaleTypeSevenIcon from '../assets/illustrations/bristolScaleTypeSevenIcon.svg?react';
-import BristolScaleTypeSixIcon from '../assets/illustrations/bristolScaleTypeSixIcon.svg?react';
-import BristolScaleTypeThreeIcon from '../assets/illustrations/bristolScaleTypeThreeIcon.svg?react';
-import BristolScaleTypeTwoIcon from '../assets/illustrations/bristolScaleTypeTwoIcon.svg?react';
+import BristolScaleTypeFiveIcon from '../assets/illustrations/bristolScale/bristolScaleTypeFiveIcon.svg?react';
+import BristolScaleTypeFourIcon from '../assets/illustrations/bristolScale/bristolScaleTypeFourIcon.svg?react';
+import BristolScaleTypeOneIcon from '../assets/illustrations/bristolScale/bristolScaleTypeOneIcon.svg?react';
+import BristolScaleTypeSevenIcon from '../assets/illustrations/bristolScale/bristolScaleTypeSevenIcon.svg?react';
+import BristolScaleTypeSixIcon from '../assets/illustrations/bristolScale/bristolScaleTypeSixIcon.svg?react';
+import BristolScaleTypeThreeIcon from '../assets/illustrations/bristolScale/bristolScaleTypeThreeIcon.svg?react';
+import BristolScaleTypeTwoIcon from '../assets/illustrations/bristolScale/bristolScaleTypeTwoIcon.svg?react';
 
 const BRISTOL_SCALE_ICONS = [
   BristolScaleTypeOneIcon,

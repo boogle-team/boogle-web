@@ -1,4 +1,4 @@
-import FeedbackToastIcon from '../assets/illustrations/feedbackToastIcon.svg?react';
+import FeedbackToastIcon from '../assets/illustrations/feedbackToast/feedbackToastIcon.svg?react';
 
 const GuideFeedbackToast = () => (
   <div

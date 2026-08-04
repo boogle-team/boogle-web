@@ -2,19 +2,16 @@ import type { GuideDetailTypes, GuideRelatedTypes } from '../types/guideTypes';
 
 const NORMAL_BOWEL_COUNT_GUIDE: GuideRelatedTypes = {
   guideId: 1,
-  icon: 'stool',
   title: '정상 배변 횟수는?',
 };
 
 const BRISTOL_SCALE_GUIDE: GuideRelatedTypes = {
   guideId: 2,
-  icon: 'stool',
   title: '브리스톨 변 형태 척도란?',
 };
 
 const STRESS_GUT_GUIDE: GuideRelatedTypes = {
   guideId: 3,
-  icon: 'stress',
   title: '스트레스와 장의 관계',
 };
 
