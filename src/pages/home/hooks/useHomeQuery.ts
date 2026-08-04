@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getHome } from '@/pages/home/apis/homeApis';
-
-const HOME_QUERY_KEY = ['home'];
+import { HOME_QUERY_KEY } from '@/pages/home/constants/homeQueryKeys';
 
 const useHomeQuery = () => {
   const { data, isError, isLoading } = useQuery({

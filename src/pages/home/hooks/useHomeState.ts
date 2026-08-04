@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HOME_DATE_MODAL_MARK_CONFIG } from '@/pages/home/constants/homeCalendarConfig';
 import useHomeQuery from '@/pages/home/hooks/useHomeQuery';
+import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 import type { HomeViewModelTypes } from '@/pages/home/types/homeTypes';
 import { getCalendarRecordMapFromHomeStatus } from '@/pages/home/utils/homeCalendarUtils';
 import { getHomeViewModel } from '@/pages/home/utils/homeDataMapper';
@@ -17,6 +18,9 @@ import type {
 interface UseHomeStateReturnTypes {
   isLoading: boolean;
   isError: boolean;
+  isDailyRecordLoading: boolean;
+  isDailyRecordError: boolean;
+  dailyRecordError: unknown;
   selectedDateValue: string;
   homeViewModel: HomeViewModelTypes | null;
   dateModalRecordMap: CalendarRecordMapTypes;
@@ -48,15 +52,22 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   const selectedDateValue = homeData
     ? (selectedDate ?? homeData.today.date)
     : '';
+  const {
+    data: selectedDailyRecord,
+    error: dailyRecordError,
+    isError: isDailyRecordError,
+    isLoading: isDailyRecordLoading,
+  } = useDailyRecordQuery(selectedDateValue);
 
   const homeViewModel = useMemo(() => {
     if (!homeData || !selectedDateValue) return null;
 
     return getHomeViewModel({
+      dailyRecord: selectedDailyRecord,
       homeData,
       selectedDate: selectedDateValue,
     });
-  }, [homeData, selectedDateValue]);
+  }, [homeData, selectedDailyRecord, selectedDateValue]);
 
   const dateModalRecordMap = useMemo(() => {
     if (!homeViewModel) return {};
@@ -121,6 +132,9 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   return {
     isLoading,
     isError,
+    isDailyRecordLoading,
+    isDailyRecordError,
+    dailyRecordError,
     selectedDateValue,
     homeViewModel,
     dateModalRecordMap,

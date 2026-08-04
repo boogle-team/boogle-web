@@ -1,6 +1,8 @@
 import {
   getBoogleRecordView,
+  getDailyAutoTags,
   getLifeRecordView,
+  type DailyRecordTypes,
 } from '@/shared/components/dailyRecord';
 import { DEFAULT_HOME_RECORD_STATUS } from '@/pages/home/constants/homeCalendarConfig';
 import { getHomeMessageBannerContentByStatus } from '@/pages/home/utils/homeMessageUtils';
@@ -44,42 +46,6 @@ const getFallbackRecordStatusByDate = ({
   return recordStatusByDate;
 };
 
-const isSameRecordDate = ({
-  recordDate,
-  selectedDate,
-}: {
-  recordDate: string;
-  selectedDate: string;
-}) => recordDate.startsWith(selectedDate);
-
-const getBoogleRecordsBySelectedDate = ({
-  homeData,
-  selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}) =>
-  homeData.boogleRecords.filter(({ regDate }) =>
-    isSameRecordDate({ recordDate: regDate, selectedDate }),
-  );
-
-const getLifeRecordBySelectedDate = ({
-  homeData,
-  selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}) => {
-  if (!homeData.lifeRecord) return null;
-
-  return isSameRecordDate({
-    recordDate: homeData.lifeRecord.regDate,
-    selectedDate,
-  })
-    ? homeData.lifeRecord
-    : null;
-};
-
 const getBoogleCountBySelectedDate = ({
   homeData,
   recordStatus,
@@ -111,24 +77,20 @@ const getStreakBySelectedDate = ({
 };
 
 const getSelectedDateContent = ({
+  dailyRecord,
   homeData,
   recordStatusByDate,
   selectedDate,
 }: {
+  dailyRecord?: DailyRecordTypes;
   homeData: HomeDataTypes;
   recordStatusByDate: HomeRecordStatusMapTypes;
   selectedDate: string;
 }): HomeSelectedDateContentTypes => {
   const recordStatus =
     recordStatusByDate[selectedDate] ?? DEFAULT_HOME_RECORD_STATUS;
-  const selectedDateBoogleRecords = getBoogleRecordsBySelectedDate({
-    homeData,
-    selectedDate,
-  });
-  const selectedDateLifeRecord = getLifeRecordBySelectedDate({
-    homeData,
-    selectedDate,
-  });
+  const selectedDateBoogleRecords = dailyRecord?.boogleRecords ?? [];
+  const selectedDateLifeRecord = dailyRecord?.lifeRecord ?? null;
 
   return {
     messageBannerContent: getHomeMessageBannerContentByStatus({
@@ -151,15 +113,20 @@ const getSelectedDateContent = ({
       selectedDate,
       record: selectedDateLifeRecord,
     }),
-    autoTags: selectedDateLifeRecord?.autoTags ?? [],
+    autoTags: getDailyAutoTags({
+      boogleRecords: selectedDateBoogleRecords,
+      lifeRecord: selectedDateLifeRecord,
+    }),
     weeklyPattern: homeData.weeklyPattern ?? null,
   };
 };
 
 export const getHomeViewModel = ({
+  dailyRecord,
   homeData,
   selectedDate,
 }: {
+  dailyRecord?: DailyRecordTypes;
   homeData: HomeDataTypes;
   selectedDate: string;
 }): HomeViewModelTypes => {
@@ -169,6 +136,7 @@ export const getHomeViewModel = ({
     todayDate: homeData.today.date,
     recordStatusByDate,
     selectedDateContent: getSelectedDateContent({
+      dailyRecord,
       homeData,
       recordStatusByDate,
       selectedDate,

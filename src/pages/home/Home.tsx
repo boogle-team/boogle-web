@@ -8,6 +8,9 @@ const Home = () => {
   const {
     isLoading,
     isError,
+    isDailyRecordLoading,
+    isDailyRecordError,
+    dailyRecordError,
     selectedDateValue,
     homeViewModel,
     dateModalRecordMap,
@@ -75,6 +78,9 @@ const Home = () => {
         selectedDateContent={homeViewModel.selectedDateContent}
         selectedDate={selectedDateValue}
         todayDate={homeViewModel.todayDate}
+        isDailyRecordLoading={isDailyRecordLoading}
+        isDailyRecordError={isDailyRecordError}
+        dailyRecordError={dailyRecordError}
         onBoogleRecordCreateClick={handleBoogleRecordCreateButtonClick}
         onBoogleRecordEditClick={handleBoogleRecordEditButtonClick}
         onLifeRecordCreateClick={handleLifeRecordCreateButtonClick}
