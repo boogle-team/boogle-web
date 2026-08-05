@@ -35,11 +35,8 @@ export interface PatchNotificationReadDataTypes {
   unreadCount: number;
 }
 
-export interface PatchNotificationReadResponseTypes {
-  success: boolean;
-  data: PatchNotificationReadDataTypes;
-  message: string;
-}
+export type PatchNotificationReadResponseTypes =
+  ApiResponseTypes<PatchNotificationReadDataTypes>;
 
 export interface NotificationDateGroupTypes {
   dateLabel: string;
