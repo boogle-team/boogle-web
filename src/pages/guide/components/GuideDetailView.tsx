@@ -9,6 +9,7 @@ import GuideActionSection from './GuideActionSection';
 import GuideCategoryBadge from './GuideCategoryBadge';
 import GuideDescriptionText, { GuideSourceText } from './GuideDescriptionText';
 import GuideDetailSummaryCard from './GuideDetailSummaryCard';
+import GuideFeedbackToast from './GuideFeedbackToast';
 import GuideInfoSectionCard from './GuideInfoSectionCard';
 import GuideRelatedGuideList from './GuideRelatedGuideList';
 import GuideWarningNoticeSection from './GuideWarningNoticeSection';
@@ -18,6 +19,8 @@ interface GuideDetailViewPropTypes {
   guideDetail: GuideDetailTypes;
 }
 
+const FEEDBACK_TOAST_DURATION = 2500;
+
 const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
   const navigate = useNavigate();
   const { feedbackStatus, isFeedbackPending, submitGuideFeedback } =
@@ -25,6 +28,8 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
       Number(guideDetail.id),
       guideDetail.feedbackStatus ?? null,
     );
+  const [isFeedbackErrorToastVisible, setIsFeedbackErrorToastVisible] =
+    useState(false);
   const isInfoGuide = guideDetail.type === 'info';
   const isWarningGuide = guideDetail.type === 'warning';
   const hasInfoSections = Boolean(guideDetail.infoSections);
@@ -36,22 +41,36 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
 
     const toastTimerId = window.setTimeout(() => {
       setIsFeedbackToastVisible(false);
-    }, 2500);
+    }, FEEDBACK_TOAST_DURATION);
 
     return () => window.clearTimeout(toastTimerId);
   }, [isFeedbackToastVisible]);
+
+  useEffect(() => {
+    if (!isFeedbackErrorToastVisible) return;
+
+    const errorToastTimerId = window.setTimeout(() => {
+      setIsFeedbackErrorToastVisible(false);
+    }, FEEDBACK_TOAST_DURATION);
+
+    return () => window.clearTimeout(errorToastTimerId);
+  }, [isFeedbackErrorToastVisible]);
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  // 등록에 성공했을 때만 감사 토스트를 노출한다.
+  // 성공하면 감사 토스트를, 실패하면 재시도 안내 토스트를 노출한다.
   const handleFeedbackClick = async (feedback: GuideFeedbackTypes) => {
     const isSubmitted = await submitGuideFeedback(feedback);
 
     if (isSubmitted) {
       setIsFeedbackToastVisible(true);
+
+      return;
     }
+
+    setIsFeedbackErrorToastVisible(true);
   };
 
   return (
@@ -116,6 +135,12 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
 
         <GuideRelatedGuideList relatedGuides={guideDetail.relatedGuides} />
       </div>
+
+      {isFeedbackErrorToastVisible && (
+        <div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] z-50 mx-auto flex max-w-[430px] justify-center px-layout">
+          <GuideFeedbackToast variant="error" />
+        </div>
+      )}
     </section>
   );
 };
