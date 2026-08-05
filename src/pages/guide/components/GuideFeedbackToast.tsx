@@ -1,5 +1,4 @@
-import { TriangleAlert } from 'lucide-react';
-
+import FeedbackErrorToastIcon from '../assets/illustrations/feedbackToast/feedbackErrorToastIcon.svg?react';
 import FeedbackToastIcon from '../assets/illustrations/feedbackToast/feedbackToastIcon.svg?react';
 
 type GuideFeedbackToastVariantTypes = 'error' | 'success';
@@ -27,7 +26,10 @@ const GuideFeedbackToast = ({
         }`}
       >
         {isError ? (
-          <TriangleAlert aria-hidden="true" className="h-5 w-5 shrink-0" />
+          <FeedbackErrorToastIcon
+            aria-hidden="true"
+            className="h-5 w-5 shrink-0"
+          />
         ) : (
           <FeedbackToastIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
         )}
