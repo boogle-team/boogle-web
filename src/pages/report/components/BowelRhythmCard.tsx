@@ -4,9 +4,13 @@ import type { BowelRhythmTypes } from '../types/reportTypes';
 
 interface BowelRhythmCardPropTypes {
   bowelRhythms: BowelRhythmTypes[];
+  frequentTimeSlotLabel: string | null;
 }
 
-const BowelRhythmCard = ({ bowelRhythms }: BowelRhythmCardPropTypes) => (
+const BowelRhythmCard = ({
+  bowelRhythms,
+  frequentTimeSlotLabel,
+}: BowelRhythmCardPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
     <h2 className="body-m text-gray-9">배변 리듬</h2>
     <div className="mt-4 grid grid-cols-7 text-center">
@@ -29,18 +33,20 @@ const BowelRhythmCard = ({ bowelRhythms }: BowelRhythmCardPropTypes) => (
         </div>
       ))}
     </div>
-    <div className="mt-4 flex items-center gap-2 rounded-md bg-orange-1 px-3 py-2">
-      <span className="flex h-5 w-5 items-center justify-center">
-        <ClockIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
-      </span>
-      <p className="caption whitespace-nowrap tracking-[-0.015rem] text-gray-8">
-        최근 2주{' '}
-        <strong className="caption-bold tracking-[-0.015rem] text-semantic-danger">
-          오전 8~10시
-        </strong>
-        에 가장 많았어요
-      </p>
-    </div>
+    {frequentTimeSlotLabel && (
+      <div className="mt-4 flex items-center gap-2 rounded-md bg-orange-1 px-3 py-2">
+        <span className="flex h-5 w-5 items-center justify-center">
+          <ClockIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
+        </span>
+        <p className="caption tracking-[-0.015rem] text-gray-8">
+          이번 주{' '}
+          <strong className="caption-bold tracking-[-0.015rem] text-semantic-danger">
+            {frequentTimeSlotLabel}
+          </strong>
+          에 가장 많았어요
+        </p>
+      </div>
+    )}
   </section>
 );
 

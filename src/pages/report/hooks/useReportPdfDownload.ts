@@ -1,40 +1,40 @@
 import { useState } from 'react';
 
 import { postReportPdf } from '../apis/reportApis';
-import type { ReportModeTypes } from '../types/reportTypes';
 import { getReportDateRange } from '../utils/reportPeriodUtils';
 
 export const useReportPdfDownload = () => {
   const [pdfErrorMessage, setPdfErrorMessage] = useState('');
+  const [isPdfDownloading, setIsPdfDownloading] = useState(false);
 
-  const downloadReportPdf = async (
-    selectedMode: ReportModeTypes,
-    currentPeriodDate: Date,
-  ) => {
-    const { endDate, startDate } = getReportDateRange(
-      selectedMode,
+  const downloadReportPdf = async (currentPeriodDate: Date) => {
+    if (isPdfDownloading) return;
+
+    const { startDate: monthStartDate } = getReportDateRange(
+      'monthly',
       currentPeriodDate,
     );
 
     try {
       setPdfErrorMessage('');
+      setIsPdfDownloading(true);
 
       const reportPdf = await postReportPdf({
-        endDate,
-        includeDailyRecords: true,
-        startDate,
+        monthStartDate,
       });
       const pdfUrl = URL.createObjectURL(reportPdf);
       const downloadLink = document.createElement('a');
 
       downloadLink.href = pdfUrl;
-      downloadLink.download = `boogle-report-${startDate}-${endDate}.pdf`;
+      downloadLink.download = `boogle-report-${monthStartDate.slice(0, 7)}.pdf`;
       downloadLink.click();
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
     } catch {
       setPdfErrorMessage('PDF 저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+    } finally {
+      setIsPdfDownloading(false);
     }
   };
 
-  return { downloadReportPdf, pdfErrorMessage };
+  return { downloadReportPdf, isPdfDownloading, pdfErrorMessage };
 };

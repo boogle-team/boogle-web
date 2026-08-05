@@ -2,15 +2,20 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getWeeklyReport } from '../apis/reportApis';
 
-export const WEEKLY_REPORT_QUERY_KEY = 'weeklyReport';
+export const WEEKLY_REPORT_QUERY_KEY = ['reports', 'weekly'] as const;
+
+export const getWeeklyReportQueryKey = (weekStartDate: string) => [
+  ...WEEKLY_REPORT_QUERY_KEY,
+  weekStartDate,
+];
 
 const useWeeklyReportQuery = (weekStartDate: string) => {
   const { data, isError, isLoading, refetch } = useQuery({
-    queryKey: [WEEKLY_REPORT_QUERY_KEY, weekStartDate],
+    queryKey: getWeeklyReportQueryKey(weekStartDate),
     queryFn: () =>
       getWeeklyReport({
         weekStartDate,
-        includeGuide: false,
+        includeGuide: true,
       }),
     enabled: Boolean(weekStartDate),
   });

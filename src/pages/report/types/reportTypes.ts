@@ -17,6 +17,15 @@ export interface BowelRhythmTypes {
   status: 'normal' | 'warning' | 'danger' | 'empty';
 }
 
+export interface WeeklyReportViewDataTypes {
+  bowelRhythms: BowelRhythmTypes[];
+  conditionProgress: ConditionProgressTypes[];
+  frequentTimeSlotLabel: string | null;
+  lifeGuide: LifeGuideTypes | null;
+  patterns: PatternTypes[];
+  summaries: ReportSummaryTypes[];
+}
+
 export interface PatternTypes {
   description: string;
   icon:
@@ -36,6 +45,18 @@ export interface MonthlyScoreTypes {
   value: number;
 }
 
+export interface MonthlyReportViewDataTypes {
+  conditionProgress: ConditionProgressTypes[];
+  conditionScore: number;
+  improvements: PatternTypes[];
+  isPdfDownloadAvailable: boolean;
+  monthlyType: MonthlyTypeTypes;
+  patterns: PatternTypes[];
+  scores: MonthlyScoreTypes[];
+  summaries: ReportSummaryTypes[];
+  weeklyTrends: WeeklyTrendTypes[];
+}
+
 export interface WeeklyTrendTypes {
   count: number;
   week: string;
@@ -43,7 +64,7 @@ export interface WeeklyTrendTypes {
 
 export interface MonthlyTypeTypes {
   description: string;
-  symbol: 'R' | 'C' | 'L' | 'I' | '?';
+  symbol: 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
   title: string;
 }
 

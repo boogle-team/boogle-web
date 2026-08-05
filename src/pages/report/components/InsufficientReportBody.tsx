@@ -62,12 +62,9 @@ const InsufficientReportBody = ({
         <p className="micro mt-3 max-w-[14.5rem] whitespace-pre-line text-gray-7">
           {description}
         </p>
-        <button
-          type="button"
-          className="caption-bold mt-5 rounded-full border border-orange-6 bg-orange-1 px-5 py-2 text-orange-6"
-        >
+        <p className="caption-bold mt-5 rounded-full border border-orange-6 bg-orange-1 px-5 py-2 text-orange-6">
           앞으로 {remainingCount}일만 더!
-        </button>
+        </p>
       </section>
     </div>
   );
