@@ -161,6 +161,7 @@ export interface GuideDetailAdviceResponseTypes {
   adviceId: number;
   content: string;
   order: number;
+  subtitle: string | null;
 }
 
 export interface GuideRecommendedGuideResponseTypes {

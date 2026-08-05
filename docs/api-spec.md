@@ -119,6 +119,10 @@
 - `patternReason`과 `feedbackStatus`는 P 가이드에만 포함된다. H / W는 `patternReason`이 `null`이고 `feedbackStatus` 필드 자체가 없다.
 - `feedbackStatus`: `G` / `A` / `N` / `null`
   - `period`(주간), `recordStatus`(`dataStatus` `ENOUGH` 등, `recordedDays`, `requiredDays`, `completionScore`), `matched`, `matchedRuleCodes`, `matchedPatterns[]`(`evidence[]` 포함)
+- `contents[]` / `advices[]`는 모두 `subtitle`(nullable) + `content` 구조다.
+  - H / P: `contents`는 번호 섹션(소제목 + 본문), `advices`는 "이렇게 해보세요" 카드(제목 + 설명)
+  - W: `contents[i]`와 `advices[i]`가 **같은 순서로 짝지어져** 증상 카드 한 장을 이룬다. `contents`가 증상 제목·설명, `advices`가 권장 문구·부연 설명
+  - `advices[].subtitle`이 `null`이면 `content`가 제목(W에서는 권장 문구) 역할을 한다.
 - W 가이드는 DB의 정적 본문, 조언, 출처를 반환한다.
 - guide_rules는 조회하지 않는다.
 - guideId 범위: 장 건강 1~3, 패턴 기반 101~114, 주의 신호 1001
