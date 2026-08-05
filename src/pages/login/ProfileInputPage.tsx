@@ -26,11 +26,13 @@ const ProfileInputPage = ({
     isCompleted,
     nickname,
     profileImagePreviewUrl,
+    profileImageErrorMessage,
     bowelRhythm,
     ageGroup,
     gender,
     isMenstrualCycleStepVisible,
     isNicknameValid,
+    isProfileImageValid,
     isAgeGenderValid,
     setNickname,
     setBowelRhythm,
@@ -93,7 +95,7 @@ const ProfileInputPage = ({
           <Button
             text="다음"
             onClick={handleNextButtonClick}
-            disabled={!isNicknameValid}
+            disabled={!isNicknameValid || !isProfileImageValid}
           />
         }
       >
@@ -101,6 +103,7 @@ const ProfileInputPage = ({
           nickname={nickname}
           onNicknameChange={setNickname}
           profileImageUrl={profileImagePreviewUrl}
+          profileImageErrorMessage={profileImageErrorMessage}
           onProfileImageChange={handleProfileImageChange}
         />
       </StepLayout>

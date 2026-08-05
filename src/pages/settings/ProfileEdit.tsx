@@ -5,6 +5,7 @@ import ProfileInfoRow from '@/pages/settings/components/ProfileInfoRow';
 import SettingsBottomAction from '@/pages/settings/components/SettingsBottomAction';
 import SettingsNotice from '@/pages/settings/components/SettingsNotice';
 import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import UnsavedChangesToast from '@/pages/settings/components/UnsavedChangesToast';
 import {
   AGE_GROUP_LABEL_MAP,
   BASELINE_TYPE_DETAIL_LABEL_MAP,
@@ -12,11 +13,13 @@ import {
   NICKNAME_MAX_LENGTH,
 } from '@/pages/settings/constants/settingsConstants';
 import useProfileSettings from '@/pages/settings/hooks/useProfileSettings';
+import useUnsavedChangesToast from '@/pages/settings/hooks/useUnsavedChangesToast';
 import Camera from '@/shared/assets/icons/camera.svg?react';
 import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 import Button from '@/shared/components/Button';
 import InputText from '@/shared/components/InputText';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import { PROFILE_IMAGE_ACCEPT_TYPES } from '@/shared/constants/profileImageConstants';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -24,7 +27,10 @@ const ProfileEdit = () => {
     memberProfile,
     nicknameDraft,
     profileImagePreview,
+    profileImageErrorMessage,
     errorMessage,
+    isProfileImageValid,
+    isModified,
     isLoading,
     isError,
     isSaving,
@@ -34,11 +40,15 @@ const ProfileEdit = () => {
     saveProfile,
     refetch,
   } = useProfileSettings();
+  const { isToastVisible, dismissToast, handleBackAttempt } =
+    useUnsavedChangesToast();
   const profileImageInputRef = useRef<HTMLInputElement>(null);
 
   const handleBackClick = () => {
-    resetProfileDraft();
-    navigate('/settings');
+    handleBackAttempt(isModified, () => {
+      resetProfileDraft();
+      navigate('/settings');
+    });
   };
 
   const handleBowelRhythmClick = () => {
@@ -65,17 +75,30 @@ const ProfileEdit = () => {
 
     if (imageFile) {
       selectProfileImage(imageFile);
+      dismissToast();
     }
 
     event.target.value = '';
   };
 
+  const handleNicknameChange = (nickname: string) => {
+    updateNicknameDraft(nickname);
+    dismissToast();
+  };
+
   const handleSaveClick = async () => {
     const trimmedNickname = nicknameDraft.trim();
 
-    if (!trimmedNickname || isNicknameTooLong || isSaving) {
+    if (
+      !trimmedNickname ||
+      isNicknameTooLong ||
+      !isProfileImageValid ||
+      isSaving
+    ) {
       return;
     }
+
+    dismissToast();
 
     try {
       await saveProfile();
@@ -122,7 +145,7 @@ const ProfileEdit = () => {
       />
 
       <main className="flex-1 bg-beige-1 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex flex-col items-center gap-2">
           <div className="relative">
             <div className="flex h-30 w-30 items-center justify-center overflow-hidden rounded-full bg-orange-3">
               {profileImage ? (
@@ -147,11 +170,19 @@ const ProfileEdit = () => {
             <input
               ref={profileImageInputRef}
               type="file"
-              accept="image/jpeg,image/png,image/webp"
+              accept={PROFILE_IMAGE_ACCEPT_TYPES}
               className="hidden"
               onChange={handleProfileImageChange}
             />
           </div>
+          {profileImageErrorMessage && (
+            <p
+              role="alert"
+              className="caption text-center text-semantic-danger"
+            >
+              {profileImageErrorMessage}
+            </p>
+          )}
         </div>
         <div className="px-4">
           <div className="mt-8">
@@ -159,7 +190,7 @@ const ProfileEdit = () => {
 
             <InputText
               value={nicknameDraft}
-              onChange={updateNicknameDraft}
+              onChange={handleNicknameChange}
               placeholder="닉네임을 입력해주세요"
               maxCount={NICKNAME_MAX_LENGTH}
               isError={isNicknameTooLong}
@@ -217,6 +248,7 @@ const ProfileEdit = () => {
                 !memberProfile ||
                 isNicknameEmpty ||
                 isNicknameTooLong ||
+                !isProfileImageValid ||
                 isSaving
               }
               onClick={handleSaveClick}
@@ -224,6 +256,8 @@ const ProfileEdit = () => {
           </SettingsBottomAction>
         </div>
       </main>
+
+      <UnsavedChangesToast isVisible={isToastVisible} />
     </div>
   );
 };

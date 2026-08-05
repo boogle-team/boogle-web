@@ -4,17 +4,11 @@ import ProfileSettingsContext from '@/pages/settings/contexts/profileSettingsCon
 import { usePatchUserMutation } from '@/pages/settings/hooks/useSettingsMutations';
 import { useUserOnboardingSettingsQuery } from '@/pages/settings/hooks/useSettingsQueries';
 import { getApiErrorMessage } from '@/shared/apis/apiError';
+import { PROFILE_IMAGE_ERROR_MESSAGE } from '@/shared/constants/profileImageConstants';
+import { isValidProfileImage } from '@/shared/utils/profileImageValidation';
 
 const PROFILE_SAVE_ERROR_MESSAGE =
   '프로필을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.';
-const PROFILE_IMAGE_ERROR_MESSAGE =
-  'JPEG, PNG, WebP 형식의 50MB 이하 이미지를 선택해 주세요.';
-const PROFILE_IMAGE_MAX_SIZE = 50 * 1024 * 1024;
-const SUPPORTED_PROFILE_IMAGE_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-]);
 
 const useProfileSettings = () => {
   const profileDraftContext = useContext(ProfileSettingsContext);
@@ -26,6 +20,9 @@ const useProfileSettings = () => {
   } = useUserOnboardingSettingsQuery();
   const patchUserMutation = usePatchUserMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [profileImageErrorMessage, setProfileImageErrorMessage] = useState<
+    string | null
+  >(null);
 
   if (!profileDraftContext) {
     throw new Error(
@@ -39,10 +36,16 @@ const useProfileSettings = () => {
     profileImagePreview,
     updateNicknameDraft: updateProfileNicknameDraft,
     selectProfileImage: selectProfileDraftImage,
-    clearProfileImage,
     resetProfileDraft: resetProfileDraftContext,
   } = profileDraftContext;
   const nicknameDraft = nicknameDraftState ?? memberProfile?.nickname ?? '';
+  const isProfileImageValid = profileImageErrorMessage === null;
+  const isNicknameModified =
+    nicknameDraftState !== undefined &&
+    nicknameDraftState !== memberProfile?.nickname;
+  const isModified = Boolean(
+    memberProfile && (isNicknameModified || profileImageFile),
+  );
 
   const updateNicknameDraft = (nickname: string) => {
     updateProfileNicknameDraft(nickname);
@@ -50,21 +53,20 @@ const useProfileSettings = () => {
   };
 
   const selectProfileImage = (imageFile: File) => {
-    const isSupportedType = SUPPORTED_PROFILE_IMAGE_TYPES.has(imageFile.type);
-    const isSupportedSize = imageFile.size <= PROFILE_IMAGE_MAX_SIZE;
-
-    if (!isSupportedType || !isSupportedSize) {
-      clearProfileImage();
-      setErrorMessage(PROFILE_IMAGE_ERROR_MESSAGE);
+    if (!isValidProfileImage(imageFile)) {
+      setProfileImageErrorMessage(PROFILE_IMAGE_ERROR_MESSAGE);
+      setErrorMessage(null);
       return;
     }
 
     selectProfileDraftImage(imageFile);
+    setProfileImageErrorMessage(null);
     setErrorMessage(null);
   };
 
   const resetProfileDraft = () => {
     resetProfileDraftContext();
+    setProfileImageErrorMessage(null);
     setErrorMessage(null);
   };
 
@@ -88,7 +90,10 @@ const useProfileSettings = () => {
     memberProfile,
     nicknameDraft,
     profileImagePreview,
+    profileImageErrorMessage,
     errorMessage,
+    isProfileImageValid,
+    isModified,
     isLoading,
     isError,
     isSaving: patchUserMutation.isPending,

@@ -1,16 +1,15 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
-import { postAuthRefresh } from '@/pages/login/apis/loginApis';
+import { refreshAuthSession } from '@/shared/apis/authRefresh';
 import {
   clearAuthTokens,
   getAccessToken,
   getRefreshToken,
-  saveAuthTokens,
 } from '@/shared/utils/authTokenStorage';
-import { isRefreshTokenAuthError } from '@/shared/utils/authErrorUtils';
 
 interface RetriableAxiosRequestConfigTypes extends InternalAxiosRequestConfig {
   isRetried?: boolean;
+  refreshTokenForRetry?: string | null;
 }
 
 const AUTH_START_PATH = '/onboarding';
@@ -20,8 +19,6 @@ const OAUTH_CALLBACK_PATH = '/oauth/callback';
 const ONBOARDING_PROFILE_PATH = '/onboarding/profile';
 const BEARER_TOKEN_TYPE = 'Bearer';
 const API_TIMEOUT = 10000;
-
-let refreshTokenPromise: Promise<string> | null = null;
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -46,40 +43,33 @@ const handleAuthExpired = () => {
   redirectToAuthStart();
 };
 
-const getRefreshedAccessToken = () => {
-  if (refreshTokenPromise) {
-    return refreshTokenPromise;
-  }
-
+const isRequestUsingCurrentAuthSession = (
+  requestConfig: RetriableAxiosRequestConfigTypes,
+) => {
+  const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
 
-  if (!refreshToken) {
-    handleAuthExpired();
-
-    return Promise.reject(new Error('refreshToken is missing.'));
-  }
-
-  refreshTokenPromise = postAuthRefresh({ refreshToken })
-    .then(({ data }) => {
-      saveAuthTokens(data);
-
-      return data.accessToken;
-    })
-    .catch((error: unknown) => {
-      if (isRefreshTokenAuthError(error)) {
-        handleAuthExpired();
-      }
-
-      return Promise.reject(error);
-    })
-    .finally(() => {
-      refreshTokenPromise = null;
-    });
-
-  return refreshTokenPromise;
+  return (
+    Boolean(accessToken) &&
+    requestConfig.headers.Authorization ===
+      `${BEARER_TOKEN_TYPE} ${accessToken}` &&
+    requestConfig.refreshTokenForRetry === refreshToken
+  );
 };
 
 api.interceptors.request.use((config) => {
+  const retriableConfig = config as RetriableAxiosRequestConfigTypes;
+
+  if (retriableConfig.isRetried) {
+    if (!isRequestUsingCurrentAuthSession(retriableConfig)) {
+      return Promise.reject(
+        new Error('Auth session changed before retrying request.'),
+      );
+    }
+
+    return config;
+  }
+
   const token = getAccessToken();
 
   if (token) {
@@ -100,7 +90,23 @@ api.interceptors.response.use(
     }
 
     if (originalRequest.isRetried) {
-      handleAuthExpired();
+      if (isRequestUsingCurrentAuthSession(originalRequest)) {
+        handleAuthExpired();
+      }
+
+      return Promise.reject(error);
+    }
+
+    const currentAccessToken = getAccessToken();
+    const requestAuthorization = originalRequest.headers.Authorization;
+    const currentAuthorization = currentAccessToken
+      ? `${BEARER_TOKEN_TYPE} ${currentAccessToken}`
+      : undefined;
+
+    if (requestAuthorization !== currentAuthorization) {
+      if (!getRefreshToken()) {
+        handleAuthExpired();
+      }
 
       return Promise.reject(error);
     }
@@ -108,11 +114,24 @@ api.interceptors.response.use(
     originalRequest.isRetried = true;
 
     try {
-      const accessToken = await getRefreshedAccessToken();
+      const accessToken = await refreshAuthSession();
+      const currentRefreshToken = getRefreshToken();
+
+      if (getAccessToken() !== accessToken || !currentRefreshToken) {
+        return Promise.reject(
+          new Error('Auth session changed before retrying request.'),
+        );
+      }
+
       originalRequest.headers.Authorization = `${BEARER_TOKEN_TYPE} ${accessToken}`;
+      originalRequest.refreshTokenForRetry = currentRefreshToken;
 
       return api(originalRequest);
     } catch (refreshError) {
+      if (!getRefreshToken()) {
+        handleAuthExpired();
+      }
+
       return Promise.reject(refreshError);
     }
   },
