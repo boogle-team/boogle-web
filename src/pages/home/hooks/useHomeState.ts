@@ -4,11 +4,11 @@ import { HOME_DATE_MODAL_MARK_CONFIG } from '@/pages/home/constants/homeCalendar
 import useHomeQuery from '@/pages/home/hooks/useHomeQuery';
 import type { HomeViewModelTypes } from '@/pages/home/types/homeTypes';
 import { getCalendarRecordMapFromHomeStatus } from '@/pages/home/utils/homeCalendarUtils';
-import {
-  getHomeDateSubTitle,
-  getHomeDateTitle,
-} from '@/pages/home/utils/homeDateUtils';
 import { getHomeViewModel } from '@/pages/home/utils/homeDataMapper';
+import {
+  getFullWeekdayLabel,
+  getMonthDayLabel,
+} from '@/shared/utils/dateLabelUtils';
 import type {
   CalendarMarkConfigMapTypes,
   CalendarRecordMapTypes,
@@ -67,10 +67,10 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   const calendarPickerKey = pickerBaseDate ?? homeViewModel?.todayDate ?? '';
 
   const homeDateTitle = selectedDateValue
-    ? getHomeDateTitle(selectedDateValue)
+    ? getMonthDayLabel(selectedDateValue)
     : '';
   const homeDateSubTitle = selectedDateValue
-    ? getHomeDateSubTitle(selectedDateValue)
+    ? getFullWeekdayLabel(selectedDateValue)
     : '';
 
   const handleDateTitleClick = () => {

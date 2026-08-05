@@ -1,3 +1,5 @@
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
+
 export type NotificationCategoryTypes = 'W' | 'R' | 'P';
 
 export type NotificationLinkToTypes = 'GUIDE_WARNING' | 'HOME' | 'REPORT';
@@ -24,11 +26,8 @@ export interface GetNotificationsDataTypes {
   notifications: NotificationItemTypes[];
 }
 
-export interface GetNotificationsResponseTypes {
-  success: boolean;
-  data: GetNotificationsDataTypes;
-  message: string;
-}
+export type GetNotificationsResponseTypes =
+  ApiResponseTypes<GetNotificationsDataTypes>;
 
 export interface PatchNotificationReadDataTypes {
   id: number;

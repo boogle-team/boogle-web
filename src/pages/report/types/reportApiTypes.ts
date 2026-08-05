@@ -1,3 +1,5 @@
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
+
 export interface GetWeeklyReportRequestTypes {
   includeGuide?: boolean;
   weekStartDate?: string;
@@ -35,12 +37,6 @@ export type PatternLevelTypes = 'GOOD' | 'INFO' | 'OK' | 'WARN';
 export type GuideCategoryTypes = 'H' | 'P' | 'W';
 export type GuideFeedbackStatusTypes = 'A' | 'G' | 'N' | null;
 export type MonthlyUserTypeCodeTypes = 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
-
-export interface ApiSuccessResponseTypes<TData> {
-  data: TData;
-  message: string;
-  success: true;
-}
 
 export interface ReportPeriodResponseTypes {
   endDate: string;
@@ -190,7 +186,7 @@ export interface WeeklyReportDataResponseTypes {
 }
 
 export type WeeklyReportResponseTypes =
-  ApiSuccessResponseTypes<WeeklyReportDataResponseTypes>;
+  ApiResponseTypes<WeeklyReportDataResponseTypes>;
 
 export interface MonthlyReportDataResponseTypes {
   changeSummary: MonthlyReportChangeSummaryResponseTypes | null;
@@ -210,5 +206,5 @@ export interface MonthlyReportDataResponseTypes {
 }
 
 export type MonthlyReportResponseTypes =
-  ApiSuccessResponseTypes<MonthlyReportDataResponseTypes>;
+  ApiResponseTypes<MonthlyReportDataResponseTypes>;
 export type ReportPdfResponseTypes = Blob;
