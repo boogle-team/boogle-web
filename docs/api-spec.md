@@ -104,21 +104,21 @@
   - 주간 기록이 `requiredDays` 미만이면 `dataStatus`가 `INSUFFICIENT`, `guides`는 빈 배열, `notice.code`는 `GUIDE_WEEKLY_RECORD_NOT_ENOUGH`로 내려온다.
   - `feedbackStatus`(`G` / `A` / `N` / `null`)는 **P 가이드에만** 포함된다. H / W 아이템에는 없다.
 - 주의 신호 섹션(W): 사용자 기록과 무관하게 활성 가이드 전체가 반환된다.
-- guide_rules는 조회하지 않는다. 상세 조회(G102)에는 여전히 `feedbackStatus`가 없다.
+- guide_rules는 조회하지 않는다.
 - 주간 패턴은 R101과 동일한 detector 결과를 사용한다.
 - 에러 코드: 401 `TOKEN_REQUIRED` / `TOKEN_INVALID` / `TOKEN_EXPIRED`, 500 `GUIDE_FETCH_FAILED`
 
 [가이드 상세 조회]
 : 가이드 본문, 조언, 추천 가이드, 패턴 근거를 조회
 
-- 엔드포인트: /api/v1/guides/{guideContentId}
+- 엔드포인트: /api/v1/guides/{guideId}
 - http 메소드: GET
 - Success Status: 200 OK
 - 응답 data: `guideId`, `category`, `categoryLabel`, `title`, `summary`, `source`, `contents[]`, `advices[]`, `recommendedGuides[]`, `patternReason`
 - `source`는 항상 포함되며 DB 값이 없으면 `null`
 - `patternReason`과 `feedbackStatus`는 P 가이드에만 포함된다. H / W는 `patternReason`이 `null`이고 `feedbackStatus` 필드 자체가 없다.
-- `feedbackStatus`: `G` / `A` / `N` / `null`
-  - `period`(주간), `recordStatus`(`dataStatus` `ENOUGH` 등, `recordedDays`, `requiredDays`, `completionScore`), `matched`, `matchedRuleCodes`, `matchedPatterns[]`(`evidence[]` 포함)
+  - `patternReason`: `period`(주간), `recordStatus`(`dataStatus` `ENOUGH` 등, `recordedDays`, `requiredDays`, `completionScore`), `matched`, `matchedRuleCodes`, `matchedPatterns[]`(`evidence[]` 포함)
+  - `feedbackStatus`: `G` / `A` / `N` / `null`
 - `contents[]` / `advices[]`는 모두 `subtitle`(nullable) + `content` 구조다.
   - H / P: `contents`는 번호 섹션(소제목 + 본문), `advices`는 "이렇게 해보세요" 카드(제목 + 설명)
   - W: `contents[i]`와 `advices[i]`가 **같은 순서로 짝지어져** 증상 카드 한 장을 이룬다. `contents`가 증상 제목·설명, `advices`가 권장 문구·부연 설명
