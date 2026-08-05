@@ -12,6 +12,7 @@ import useProfileSettings from './hooks/useProfileSettings';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import { usePushTokenCleanup } from '@/shared/hooks/usePushTokenCleanup';
 
 import BellIcon from '@/shared/assets/icons/settingBellIcon.svg?react';
 import ErrorIcon from '@/shared/assets/icons/settingErrorIcon.svg?react';
@@ -39,8 +40,15 @@ const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
 const Settings = () => {
   const navigate = useNavigate();
   const { memberProfile } = useProfileSettings();
-  const { memberAlarm, toggleAlarm } = useAlarmSettings();
+  const {
+    memberAlarm,
+    toggleAlarm,
+    isAlarmSettingDisabled,
+    alarmNoticeMessage,
+  } = useAlarmSettings();
+  const { cleanupPushToken } = usePushTokenCleanup();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isLogoutPending, setIsLogoutPending] = useState(false);
 
   const handleBackClick = () => {
     navigate('/');
@@ -71,13 +79,30 @@ const Settings = () => {
   };
 
   const handleLogoutModalClose = () => {
+    if (isLogoutPending) {
+      return;
+    }
+
     setIsLogoutModalOpen(false);
   };
 
-  const handleLogoutConfirm = () => {
-    // TODO: 로그아웃 API 연결 후 인증 정보 제거
-    setIsLogoutModalOpen(false);
-    navigate('/login', { replace: true });
+  const handleLogoutConfirm = async () => {
+    if (isLogoutPending) {
+      return;
+    }
+
+    setIsLogoutPending(true);
+
+    try {
+      await cleanupPushToken();
+    } finally {
+      // TODO: 로그인 API 병합 후 서버 로그아웃 호출을 함께 연결합니다.
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      setIsLogoutModalOpen(false);
+      setIsLogoutPending(false);
+      navigate('/login', { replace: true });
+    }
   };
 
   const handleDeleteAccountClick = () => {
@@ -136,7 +161,8 @@ const Settings = () => {
             <ToggleSwitch
               ariaLabel="기록 알림 설정"
               isEnabled={memberAlarm.recordAlarm === 'Y'}
-              onClick={() => toggleAlarm('recordAlarm')}
+              isDisabled={isAlarmSettingDisabled}
+              onClick={() => void toggleAlarm('recordAlarm')}
             />
           </SettingsRow>
 
@@ -148,7 +174,8 @@ const Settings = () => {
             <ToggleSwitch
               ariaLabel="주간 리포트 알림 설정"
               isEnabled={memberAlarm.reportAlarm === 'Y'}
-              onClick={() => toggleAlarm('reportAlarm')}
+              isDisabled={isAlarmSettingDisabled}
+              onClick={() => void toggleAlarm('reportAlarm')}
             />
           </SettingsRow>
 
@@ -159,13 +186,15 @@ const Settings = () => {
             <ToggleSwitch
               ariaLabel="주의 신호 알림 설정"
               isEnabled={memberAlarm.warnAlarm === 'Y'}
-              onClick={() => toggleAlarm('warnAlarm')}
+              isDisabled={isAlarmSettingDisabled}
+              onClick={() => void toggleAlarm('warnAlarm')}
             />
           </SettingsRow>
         </SettingsSection>
 
         <SettingsNotice className="mt-2 px-2">
-          토글을 꺼도 위험 신호 발생 시 앱 내 안내는 항상 표시돼요
+          {alarmNoticeMessage ??
+            '토글을 꺼도 위험 신호 발생 시 앱 내 안내는 항상 표시돼요'}
         </SettingsNotice>
 
         <SettingsSection title="데이터">
@@ -205,9 +234,10 @@ const Settings = () => {
         title="로그아웃 할까요?"
         description="다시 로그인하면 기록은 그대로 남아있어요"
         cancelText="다음에 할게요"
-        confirmText="로그아웃 하기"
+        confirmText={isLogoutPending ? '로그아웃 중...' : '로그아웃 하기'}
+        isConfirmDisabled={isLogoutPending}
         onCancel={handleLogoutModalClose}
-        onConfirm={handleLogoutConfirm}
+        onConfirm={() => void handleLogoutConfirm()}
       />
     </div>
   );

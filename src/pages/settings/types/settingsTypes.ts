@@ -35,3 +35,14 @@ export interface MemberAlarmTypes {
   reportAlarm: YnTypes;
   warnAlarm: YnTypes;
 }
+
+export interface NotificationSettingsResponseTypes {
+  success: boolean;
+  data: MemberAlarmTypes;
+  message: string;
+}
+
+export interface PatchNotificationSettingVariablesTypes {
+  alarmKey: keyof MemberAlarmTypes;
+  alarmValue: YnTypes;
+}

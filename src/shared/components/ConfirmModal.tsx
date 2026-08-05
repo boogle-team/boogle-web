@@ -14,6 +14,7 @@ interface ConfirmModalPropTypes {
   confirmText: string;
   cancelVariant?: ButtonPropTypes['variant'];
   confirmVariant?: ButtonPropTypes['variant'];
+  isConfirmDisabled?: boolean;
   onCancel?: () => void;
   onConfirm: () => void;
 }
@@ -28,6 +29,7 @@ const ConfirmModal = ({
   // Modal 사용 시 variant 변경 가능
   cancelVariant = 'neutral',
   confirmVariant = 'primary',
+  isConfirmDisabled = false,
   onCancel,
   onConfirm,
 }: ConfirmModalPropTypes) => {
@@ -96,6 +98,7 @@ const ConfirmModal = ({
             <Button
               text={confirmText}
               onClick={onConfirm}
+              disabled={isConfirmDisabled}
               variant={confirmVariant}
               size="sm"
               className="flex-1"
