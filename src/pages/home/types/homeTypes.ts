@@ -5,6 +5,7 @@ import type {
   LifeRecordTypes,
   LifeRecordViewTypes,
 } from '@/shared/components/dailyRecord';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 export type HomeDateRecordStatusTypes =
   'none' | 'complete' | 'boogleOnly' | 'noBoogle' | 'dailyOnly';
@@ -72,11 +73,7 @@ export interface HomeDataTypes {
   streakByDate?: HomeDateMetricMapTypes;
 }
 
-export interface HomeResponseTypes {
-  success: boolean;
-  data: HomeDataTypes;
-  message: string;
-}
+export type HomeResponseTypes = ApiResponseTypes<HomeDataTypes>;
 
 export interface HomeSelectedDateContentTypes {
   messageBannerContent: HomeMessageBannerContentTypes;
