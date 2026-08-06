@@ -449,9 +449,88 @@
 }
 ```
 
+409 response body:
+
+```json
+{
+  "success": false,
+  "code": "SOCIAL_ACCOUNT_LINK_REQUIRED",
+  "data": {
+    "accountLinkToken": "account-link-token-value",
+    "existingProvider": "google",
+    "requestedProvider": "kakao",
+    "maskedEmail": "m****r@example.com",
+    "expiresAt": "2026-08-07T12:00:00Z"
+  },
+  "message": "동일 이메일로 가입된 계정이 있습니다. 소셜 계정 연동이 필요합니다."
+}
+```
+
 - code 400: OAuth 결과 코드 누락
 - code 401: 유효하지 않거나 만료된 결과 코드 또는 미검증 이메일
 - code 403: 탈퇴한 회원
+- code 409 `SOCIAL_ACCOUNT_LINK_REQUIRED`: 동일 이메일의 다른 소셜 계정 연동 필요
+
+[동일 이메일 소셜 계정 연동]
+: 동일 이메일 기존 회원에게 새로운 소셜 계정을 연결하고 로그인 토큰 발급
+
+- 엔드포인트:/api/v1/auth/oauth/link
+- http 메소드:POST
+- request body:
+
+```json
+{
+  "accountLinkToken": "account-link-token-value"
+}
+```
+
+200 response body:
+
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "access-token-value",
+    "refreshToken": "refresh-token-value",
+    "tokenType": "Bearer",
+    "expiresIn": 3600,
+    "refreshTokenExpiresIn": 1209600,
+    "isNewUser": false,
+    "nextAction": "HOME",
+    "onboardingCompleted": true,
+    "user": {
+      "id": 1,
+      "email": "member@example.com",
+      "nickname": "부글이",
+      "profileImage": null,
+      "profileImageSource": null,
+      "gender": "N",
+      "ageGroup": 20,
+      "baselineType": "R",
+      "sensitiveInfoAgreed": false
+    }
+  },
+  "message": "소셜 계정이 연동되었습니다."
+}
+```
+
+error response body:
+
+```json
+{
+  "success": false,
+  "code": "AUTH_INVALID_ACCOUNT_LINK_TOKEN",
+  "message": "유효하지 않거나 이미 사용된 계정 연동 토큰입니다."
+}
+```
+
+- code 200: 계정 연동 및 로그인 성공
+- code 400 `AUTH_ACCOUNT_LINK_TOKEN_REQUIRED`: accountLinkToken은 필수입니다.
+- code 401 `AUTH_INVALID_ACCOUNT_LINK_TOKEN`: 유효하지 않거나 이미 사용된 계정 연동 토큰입니다.
+- code 401 `AUTH_ACCOUNT_LINK_TOKEN_EXPIRED`: 계정 연동 요청이 만료되었습니다. 소셜 로그인을 다시 진행해주세요.
+- code 403 `AUTH_WITHDRAWN_USER`: 탈퇴한 사용자는 로그인할 수 없습니다.
+- code 409 `SOCIAL_LOGIN_FAILED`: 소셜 계정을 연동할 수 없습니다.
+- code 500 `SOCIAL_LOGIN_FAILED`: 소셜 계정 연동 중 오류가 발생했습니다.
 
 [로그아웃]
 
