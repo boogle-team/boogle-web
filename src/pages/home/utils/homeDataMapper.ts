@@ -53,16 +53,15 @@ const getFallbackRecordStatusByDate = ({
     {},
   );
 
-  const hasBoogleRecord = boogleRecords.length > 0;
+  const hasBowelRecord = boogleRecords.some(({ hasBowel }) => hasBowel);
+  const hasNoBowelRecord = boogleRecords.some(({ hasBowel }) => !hasBowel);
   const hasLifeRecord = Boolean(lifeRecord);
 
-  if (hasBoogleRecord && hasLifeRecord) {
-    recordStatusByDate[today.date] = 'complete';
-  } else if (hasBoogleRecord) {
-    recordStatusByDate[today.date] = boogleRecords.some(
-      ({ hasBowel }) => hasBowel,
-    )
-      ? 'boogleOnly'
+  if (hasBowelRecord) {
+    recordStatusByDate[today.date] = hasLifeRecord ? 'complete' : 'boogleOnly';
+  } else if (hasNoBowelRecord) {
+    recordStatusByDate[today.date] = hasLifeRecord
+      ? 'noBoogleWithDaily'
       : 'noBoogle';
   } else if (hasLifeRecord) {
     recordStatusByDate[today.date] = 'dailyOnly';
