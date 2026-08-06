@@ -68,6 +68,10 @@
 
 - 엔드포인트: /api/v1/home/summary
 - http 메소드: GET
+- 요청 파라미터 (query)
+  - `baseDate`: 조회 기준일 (`YYYY-MM-DD`)
+  - `range`: 기준일 전후 조회 일수 (number, 프론트는 항상 `30`을 함께 전송)
+- 응답 범위: `baseDate` 기준 전후 `range`일 (기본 ±30일)
 - Success Status: 200 okay
 - response:
 
