@@ -69,14 +69,11 @@ export interface MonthlyTypeTypes {
   title: string;
 }
 
-export type ReportGuideFeedbackTypes = 'A' | 'G';
-export type ReportGuideFeedbackStatusTypes =
-  ReportGuideFeedbackTypes | 'N' | null;
-
+// 주간 리포트의 생활 가이드는 가이드 탭의 패턴 기반(P) 가이드와 동일한 가이드다.
+// 피드백은 가이드 상세에서만 받으므로 여기에는 피드백 상태를 두지 않는다.
 export interface LifeGuideTypes {
   description: string;
-  feedbackStatus?: ReportGuideFeedbackStatusTypes;
-  guideContentId: number;
+  guideId: number;
   title: string;
 }
 

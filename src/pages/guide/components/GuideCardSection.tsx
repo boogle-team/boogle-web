@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 
-import type { GuideMainItemTypes } from '../types/guideMainTypes';
+import type { GuideItemResponseTypes } from '../types/guideApiTypes';
 import GuideCard from './GuideCard';
 
 interface GuideCardSectionPropTypes {
   children?: ReactNode;
-  guideItems?: GuideMainItemTypes[];
+  guideItems?: GuideItemResponseTypes[];
   isWarning?: boolean;
   title: string;
 }
@@ -22,7 +22,7 @@ const GuideCardSection = ({
       {children ??
         guideItems.map((guideItem) => (
           <GuideCard
-            key={guideItem.guideContentId}
+            key={guideItem.guideId}
             guideItem={guideItem}
             isWarning={isWarning}
           />

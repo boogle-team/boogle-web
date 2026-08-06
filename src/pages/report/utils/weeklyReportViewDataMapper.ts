@@ -113,8 +113,7 @@ export const mapWeeklyReportViewData = (
     lifeGuide: firstGuide
       ? {
           description: firstGuide.content,
-          feedbackStatus: firstGuide.feedbackStatus,
-          guideContentId: firstGuide.guideContentId,
+          guideId: firstGuide.guideContentId,
           title: firstGuide.title,
         }
       : null,

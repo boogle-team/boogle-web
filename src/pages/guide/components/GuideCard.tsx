@@ -1,47 +1,32 @@
+import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { GuideMainItemTypes } from '../types/guideMainTypes';
+import { getGuideIcon } from '../constants/guideIcons';
+import type { GuideItemResponseTypes } from '../types/guideApiTypes';
 import { getGuideDetailPath } from '../utils/guideRouteUtils';
 
 interface GuideCardPropTypes {
-  guideItem: GuideMainItemTypes;
+  guideItem: GuideItemResponseTypes;
   isWarning?: boolean;
 }
 
-const FULL_SIZE_ICON_IDS = [
-  'water-and-hard-stool',
-  'normal-bowel-count',
-  'sleep-and-gut',
-  'bristol-stool-chart',
-  'stress-and-gut',
-  'warning-signs',
-];
-
 const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
-  const {
-    guideContentId,
-    iconBackgroundColor,
-    iconColor,
-    routeId,
-    Icon,
-    summary,
-    title,
-  } = guideItem;
-  const hasFullIcon = FULL_SIZE_ICON_IDS.includes(routeId);
-  const iconClassName = hasFullIcon ? 'h-10 w-10' : 'h-5 w-5';
-  const detailPath = getGuideDetailPath({ guideContentId, routeId });
+  const { guideId, summary, title } = guideItem;
+  // 아이콘 SVG가 배경을 포함한 40x40 일러스트라 별도 배경 클래스를 씌우지 않는다.
+  const guideIcon = getGuideIcon(guideId);
 
   return (
     <Link
-      to={detailPath}
+      to={getGuideDetailPath({ guideId })}
       className="flex min-h-[4.5rem] items-start gap-4 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
     >
-      <span
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-          hasFullIcon ? '' : `${iconBackgroundColor} ${iconColor}`
-        }`}
-      >
-        <Icon aria-hidden="true" className={iconClassName} />
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+        {guideIcon
+          ? createElement(guideIcon, {
+              'aria-hidden': true,
+              className: 'h-10 w-10',
+            })
+          : null}
       </span>
       <span className="min-w-0 flex-1">
         <strong
