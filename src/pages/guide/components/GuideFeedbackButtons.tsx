@@ -20,7 +20,8 @@ const GuideFeedbackButtons = ({
     onFeedbackClick?.('A');
   };
 
-  // 등록에 실패하면 feedbackStatus가 그대로여서 버튼이 다시 노출된다.
+  // 피드백은 주 1회만 받으므로 이번 주 응답이 있으면 칩을 감춘다.
+  // 다음 주에는 서버 feedbackStatus가 비워져 다시 노출되고, 등록에 실패하면 그대로 남는다.
   if (feedbackStatus) {
     return null;
   }

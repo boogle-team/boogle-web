@@ -6,10 +6,7 @@ import type {
   GuideFeedbackStatusTypes,
   GuideFeedbackTypes,
 } from '@/pages/guide/types/guideApiTypes';
-import {
-  registerGuideFeedback,
-  updateGuideFeedback,
-} from '@/pages/guide/utils/guideFeedbackUtils';
+import { registerGuideFeedback } from '@/pages/guide/utils/guideFeedbackUtils';
 
 const useGuideFeedback = (
   guideId: number,
@@ -26,17 +23,11 @@ const useGuideFeedback = (
       return false;
     }
 
-    const hasFeedback = feedbackStatus !== null;
-
     try {
       setIsFeedbackPending(true);
       setIsFeedbackError(false);
 
-      if (hasFeedback) {
-        await updateGuideFeedback(guideId, feedback);
-      } else {
-        await registerGuideFeedback(guideId, feedback);
-      }
+      await registerGuideFeedback(guideId, feedback);
 
       setFeedbackStatus(feedback);
 

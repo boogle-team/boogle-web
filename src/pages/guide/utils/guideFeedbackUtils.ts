@@ -5,8 +5,8 @@ import {
 import type { GuideFeedbackTypes } from '@/pages/guide/types/guideApiTypes';
 import { getApiErrorCode } from '@/shared/utils/apiErrorUtils';
 
-// 피드백은 주 단위로 관리돼 클라이언트 상태만으로는 등록/수정을 확정할 수 없다.
-// 등록은 409, 수정은 404로 서로 대칭이라 응답 코드를 보고 반대쪽으로 재시도한다.
+// 피드백은 주 단위로 한 번만 받으므로 UI는 이번 주 응답 전에만 칩을 노출한다.
+// 다만 캐시가 오래됐거나 다른 기기에서 이미 등록했으면 409가 돌아오므로 수정으로 이어 붙인다.
 export const registerGuideFeedback = async (
   guideId: number,
   feedback: GuideFeedbackTypes,
@@ -19,20 +19,5 @@ export const registerGuideFeedback = async (
     }
 
     await patchGuideFeedback({ guideId }, { feedback });
-  }
-};
-
-export const updateGuideFeedback = async (
-  guideId: number,
-  feedback: GuideFeedbackTypes,
-) => {
-  try {
-    await patchGuideFeedback({ guideId }, { feedback });
-  } catch (error) {
-    if (getApiErrorCode(error) !== 'GUIDE_FEEDBACK_NOT_FOUND') {
-      throw error;
-    }
-
-    await postGuideFeedback({ guideId }, { feedback });
   }
 };
