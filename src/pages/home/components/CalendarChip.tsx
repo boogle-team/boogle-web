@@ -13,6 +13,8 @@ import { getWeekdayLabel } from '@/shared/utils/dateLabelUtils';
 interface CalendarChipPropTypes {
   date: string;
   recordStatus: HomeDateRecordStatusTypes;
+  /** 기록 요약 조회 중이라 상태가 아직 확정되지 않은 날짜 */
+  isStatusPending?: boolean;
   isSelected: boolean;
   isToday: boolean;
   onSelectDate?: (date: string) => void;
@@ -50,6 +52,7 @@ const getDayLabelClassName = (date: string, isToday: boolean) => {
 const CalendarChip = ({
   date,
   recordStatus,
+  isStatusPending = false,
   isSelected,
   isToday,
   onSelectDate,
@@ -99,10 +102,17 @@ const CalendarChip = ({
           <span className="caption relative z-20 text-gray-9">
             {dateNumber}
           </span>
-          <RecordStatusIcon
-            aria-hidden="true"
-            className={`${statusIconClassName} relative z-20 overflow-visible`}
-          />
+          {isStatusPending ? (
+            <span
+              aria-hidden="true"
+              className={`${statusIconClassName} relative z-20`}
+            />
+          ) : (
+            <RecordStatusIcon
+              aria-hidden="true"
+              className={`${statusIconClassName} relative z-20 overflow-visible`}
+            />
+          )}
         </span>
       </span>
     </>

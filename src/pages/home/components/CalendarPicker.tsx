@@ -17,6 +17,7 @@ interface CalendarPickerPropTypes {
   selectedDate: string;
   todayDate: string;
   recordStatusByDate: HomeRecordStatusMapTypes;
+  isRecordSummaryLoading: boolean;
   isRecordSummaryError: boolean;
   recordSummaryErrorMessage: string;
   onSelectDate: (date: string) => void;
@@ -28,6 +29,7 @@ const CalendarPicker = ({
   selectedDate,
   todayDate,
   recordStatusByDate,
+  isRecordSummaryLoading,
   isRecordSummaryError,
   recordSummaryErrorMessage,
   onSelectDate,
@@ -70,6 +72,9 @@ const CalendarPicker = ({
             key={date}
             date={date}
             recordStatus={getRecordStatus(date, recordStatusByDate)}
+            isStatusPending={
+              isRecordSummaryLoading && !recordStatusByDate[date]
+            }
             isSelected={date === selectedDate}
             isToday={isHomeToday(date, todayDate)}
             onSelectDate={handleChipClick}
