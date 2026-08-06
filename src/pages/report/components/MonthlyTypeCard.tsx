@@ -35,26 +35,6 @@ const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
   </section>
 );
 
-interface MonthlyTypePreviewPropTypes {
-  monthlyTypes: MonthlyTypeTypes[];
-}
-
-export const MonthlyTypePreview = ({
-  monthlyTypes,
-}: MonthlyTypePreviewPropTypes) => (
-  <section className="min-h-screen bg-beige-5 px-layout py-6 text-gray-10">
-    <h1 className="title">월간 유형 6종</h1>
-    <div className="mt-5 flex flex-col gap-4">
-      {monthlyTypes.map((monthlyType) => (
-        <MonthlyTypeCardItem
-          key={monthlyType.title}
-          monthlyType={monthlyType}
-        />
-      ))}
-    </div>
-  </section>
-);
-
 interface MonthlyTypeIconPropTypes {
   symbol: MonthlyTypeTypes['symbol'];
 }
@@ -77,7 +57,7 @@ const MonthlyTypeIcon = ({ symbol }: MonthlyTypeIconPropTypes) => {
     );
   }
 
-  if (symbol === '?') {
+  if (symbol === 'N') {
     return (
       <MonthlyPendingTypeIcon aria-hidden="true" className={iconClassName} />
     );

@@ -291,10 +291,79 @@
 
 ## 알림
 
-[]
+[알림 목록 조회]
+: 사용자의 알림 목록과 읽지 않은 알림 수를 조회
 
-- 엔드포인트:
-- http 메소드:
+- 엔드포인트: /api/v1/notifications
+- http 메소드: GET
+- Success Status: 200 okay
+
+응답 예시
+
+```json
+{
+  "success": true,
+  "data": {
+    "unreadCount": 2,
+    "notifications": [
+      {
+        "id": 101,
+        "category": "W",
+        "type": "WARNING",
+        "title": "주의 신호가 감지되었어요",
+        "content": "기록을 확인하고 가이드를 살펴보세요.",
+        "linkTo": "GUIDE_WARNING",
+        "regDate": "2026-08-06T09:30:00+09:00",
+        "isRead": false
+      }
+    ]
+  },
+  "message": "요청이 성공적으로 처리되었습니다."
+}
+```
+
+- `category`: `W` 주의 알림 / `R` 기록 알림 / `P` 리포트 알림
+- `type`: `WARNING` / `RECORD_REMINDER` / `REPORT_READY` / `PDF_SAVED` / `STREAK` / `null`
+- `linkTo`: `GUIDE_WARNING` 주의 신호 가이드 / `HOME` 홈 / `REPORT` 리포트
+- `unreadCount`는 알림 화면뿐 아니라 홈 상단 알림 뱃지 표시에도 사용한다.
+- 프론트는 서버 응답 순서와 관계없이 `regDate` 내림차순으로 다시 정렬한다.
+- 알 수 없는 `type` 값은 `category`에 맞는 기본 아이콘으로 표시하고, 알 수 없는 `linkTo` 값은 홈으로 이동한다.
+- 현재 응답 구조에는 페이지네이션 필드가 없으므로 전체 알림 목록을 한 번에 받는 것으로 처리한다.
+
+[알림 읽음 처리]
+: 선택한 알림을 읽음 상태로 변경하고 갱신된 읽지 않은 알림 수를 조회
+
+- 엔드포인트: /api/v1/notifications/{notificationId}/read
+- http 메소드: PATCH
+- Success Status: 200 okay
+
+응답 예시
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 101,
+    "isRead": true,
+    "unreadCount": 1
+  },
+  "message": "요청이 성공적으로 처리되었습니다."
+}
+```
+
+- 프론트는 읽지 않은 알림을 누른 경우에만 읽음 처리 API를 호출한다.
+- 읽음 처리는 낙관적 업데이트를 적용하고 요청 실패 시 이전 캐시로 롤백한다.
+- 성공 응답의 `id`, `isRead`, `unreadCount`를 알림 캐시에 반영하므로 서버는 갱신된 `unreadCount`를 내려줘야 한다.
+- 처리 완료 후 알림 목록을 다시 조회해 서버 상태와 동기화한다.
+
+백엔드 확인 필요
+
+- `regDate` 타임존 및 ISO 8601 형식 보장 여부
+- `type` 전체 enum 목록과 `null`이 되는 조건
+- 페이지네이션 도입 여부
+- 이미 읽은 알림에 읽음 처리 API를 다시 호출했을 때의 동작
+- 존재하지 않는 `notificationId` 요청의 상태 코드
+- 인증 실패 시 오류 코드가 `UNAUTHORIZED`인지 `TOKEN_REQUIRED`인지 여부
 
 ## 생활기록
 

@@ -11,7 +11,9 @@ const MonthlyWeeklyTrendCard = ({
 
   return (
     <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-      <h2 className="body-m text-gray-9">주간 배변 추이 (4주)</h2>
+      <h2 className="body-m text-gray-9">
+        주간 배변 추이 ({weeklyTrends.length}주)
+      </h2>
       <div className="mt-3 flex flex-col gap-3">
         {weeklyTrends.map(({ count, week }) => (
           <div

@@ -2,6 +2,7 @@
 
 export interface ReportSummaryTypes {
   description: string;
+  isHighlighted?: boolean;
   label: string;
   value: string;
 }
@@ -15,6 +16,15 @@ export interface ConditionProgressTypes {
 export interface BowelRhythmTypes {
   day: string;
   status: 'normal' | 'warning' | 'danger' | 'empty';
+}
+
+export interface WeeklyReportViewDataTypes {
+  bowelRhythms: BowelRhythmTypes[];
+  conditionProgress: ConditionProgressTypes[];
+  frequentTimeSlotLabel: string | null;
+  lifeGuide: LifeGuideTypes | null;
+  patterns: PatternTypes[];
+  summaries: ReportSummaryTypes[];
 }
 
 export interface PatternTypes {
@@ -36,6 +46,18 @@ export interface MonthlyScoreTypes {
   value: number;
 }
 
+export interface MonthlyReportViewDataTypes {
+  conditionProgress: ConditionProgressTypes[];
+  conditionScore: number;
+  improvements: PatternTypes[];
+  isPdfDownloadAvailable: boolean;
+  monthlyType: MonthlyTypeTypes | null;
+  patterns: PatternTypes[];
+  scores: MonthlyScoreTypes[];
+  summaries: ReportSummaryTypes[];
+  weeklyTrends: WeeklyTrendTypes[];
+}
+
 export interface WeeklyTrendTypes {
   count: number;
   week: string;
@@ -43,7 +65,7 @@ export interface WeeklyTrendTypes {
 
 export interface MonthlyTypeTypes {
   description: string;
-  symbol: 'R' | 'C' | 'L' | 'I' | '?';
+  symbol: 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
   title: string;
 }
 
@@ -60,7 +82,6 @@ export interface InsufficientReportTypes {
   description: string;
   minimumRequiredCount: number;
   requiredCount: number;
-  trackerLabel: string;
 }
 
 export interface ReportPeriodTextTypes {
