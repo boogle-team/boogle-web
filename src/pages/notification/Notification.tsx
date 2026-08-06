@@ -23,7 +23,7 @@ const Notification = () => {
       markNotificationAsRead(notification.id);
     }
 
-    navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
+    navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo] ?? '/');
   };
 
   return (
@@ -35,7 +35,7 @@ const Notification = () => {
         className="mt-[3.06rem] bg-beige-5"
       />
 
-      <main className="flex-1 bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <NotificationList
           notifications={notifications}
           status={isLoading ? 'loading' : isError ? 'error' : 'success'}

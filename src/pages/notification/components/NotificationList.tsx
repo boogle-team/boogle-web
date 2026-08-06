@@ -67,7 +67,7 @@ const NotificationList = ({
 
   if (notifications.length === 0) {
     return (
-      <div className="flex min-h-[calc(100dvh-6.625rem)] -translate-y-8 flex-col items-center justify-center text-center">
+      <div className="flex flex-1 flex-col items-center justify-center pb-8 text-center">
         <NotificationEmptyState
           aria-hidden="true"
           className="h-[7.5rem] w-[7.5rem] shrink-0"

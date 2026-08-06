@@ -49,9 +49,9 @@ const NotificationCard = ({
   onClick,
 }: NotificationCardPropTypes) => {
   const isWarning = notification.category === 'W';
-  const iconType = notification.type
-    ? NOTIFICATION_TYPE_ICON_MAP[notification.type]
-    : DEFAULT_NOTIFICATION_ICON_MAP[notification.category];
+  const iconType =
+    (notification.type && NOTIFICATION_TYPE_ICON_MAP[notification.type]) ??
+    DEFAULT_NOTIFICATION_ICON_MAP[notification.category];
   const NotificationIcon = NOTIFICATION_ICON_MAP[iconType];
 
   return (
