@@ -11,7 +11,6 @@ const Home = () => {
     isDailyRecordLoading,
     isDailyRecordError,
     dailyRecordErrorMessage,
-    isRecordSummaryLoading,
     isRecordSummaryError,
     recordSummaryErrorMessage,
     selectedDateValue,
@@ -75,7 +74,6 @@ const Home = () => {
           selectedDate={selectedDateValue}
           todayDate={homeViewModel.todayDate}
           recordStatusByDate={homeViewModel.recordStatusByDate}
-          isRecordSummaryLoading={isRecordSummaryLoading}
           isRecordSummaryError={isRecordSummaryError}
           recordSummaryErrorMessage={recordSummaryErrorMessage}
           onSelectDate={handleCalendarDateSelect}

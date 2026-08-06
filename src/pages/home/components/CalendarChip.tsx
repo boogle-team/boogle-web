@@ -13,7 +13,7 @@ import { getWeekdayLabel } from '@/shared/utils/dateLabelUtils';
 interface CalendarChipPropTypes {
   date: string;
   recordStatus: HomeDateRecordStatusTypes;
-  /** 기록 요약 조회 중이라 상태가 아직 확정되지 않은 날짜 */
+  /** 기록 요약이 아직 확정되지 않은 날짜 (조회 중·실패·조회 범위 밖) */
   isStatusPending?: boolean;
   isSelected: boolean;
   isToday: boolean;

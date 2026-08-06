@@ -28,7 +28,6 @@ interface UseHomeStateReturnTypes {
   isDailyRecordLoading: boolean;
   isDailyRecordError: boolean;
   dailyRecordErrorMessage: string;
-  isRecordSummaryLoading: boolean;
   isRecordSummaryError: boolean;
   recordSummaryErrorMessage: string;
   selectedDateValue: string;
@@ -79,7 +78,6 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   } = useDailyRecordQuery(selectedDateValue);
   const {
     recordStatusByDate: summaryRecordStatusByDate,
-    isLoading: isRecordSummaryLoading,
     isError: isRecordSummaryError,
     error: recordSummaryError,
     refetchRecordSummaries,
@@ -201,7 +199,6 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     isDailyRecordLoading,
     isDailyRecordError,
     dailyRecordErrorMessage,
-    isRecordSummaryLoading,
     isRecordSummaryError,
     recordSummaryErrorMessage,
     selectedDateValue,

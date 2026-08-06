@@ -29,7 +29,6 @@ const useHomeRecordSummaryQueries = (baseDates: string[], range: number) => {
     [summaryQueries],
   );
   const failedSummaryQuery = summaryQueries.find(({ isError }) => isError);
-  const isLoading = summaryQueries.some(({ isLoading }) => isLoading);
   const refetchRecordSummaries = useCallback(async () => {
     const failedSummaryQueries = summaryQueries.filter(
       ({ isError }) => isError,
@@ -40,7 +39,6 @@ const useHomeRecordSummaryQueries = (baseDates: string[], range: number) => {
 
   return {
     recordStatusByDate,
-    isLoading,
     isError: Boolean(failedSummaryQuery),
     error: failedSummaryQuery?.error ?? null,
     refetchRecordSummaries,

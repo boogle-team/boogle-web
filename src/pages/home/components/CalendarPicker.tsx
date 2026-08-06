@@ -13,11 +13,20 @@ const getRecordStatus = (
 ): HomeDateRecordStatusTypes =>
   recordStatusByDate[date] ?? DEFAULT_HOME_RECORD_STATUS;
 
+/**
+ * 상태가 아직 확정되지 않은 날짜인지 판별한다.
+ * 요약 조회 중·실패·조회 범위 밖 모두 맵에 키가 없으므로,
+ * 확정되지 않은 날짜를 기록 없음으로 단정하지 않는다.
+ */
+const getIsStatusPending = (
+  date: string,
+  recordStatusByDate: HomeRecordStatusMapTypes,
+) => !(date in recordStatusByDate);
+
 interface CalendarPickerPropTypes {
   selectedDate: string;
   todayDate: string;
   recordStatusByDate: HomeRecordStatusMapTypes;
-  isRecordSummaryLoading: boolean;
   isRecordSummaryError: boolean;
   recordSummaryErrorMessage: string;
   onSelectDate: (date: string) => void;
@@ -29,7 +38,6 @@ const CalendarPicker = ({
   selectedDate,
   todayDate,
   recordStatusByDate,
-  isRecordSummaryLoading,
   isRecordSummaryError,
   recordSummaryErrorMessage,
   onSelectDate,
@@ -72,9 +80,7 @@ const CalendarPicker = ({
             key={date}
             date={date}
             recordStatus={getRecordStatus(date, recordStatusByDate)}
-            isStatusPending={
-              isRecordSummaryLoading && !recordStatusByDate[date]
-            }
+            isStatusPending={getIsStatusPending(date, recordStatusByDate)}
             isSelected={date === selectedDate}
             isToday={isHomeToday(date, todayDate)}
             onSelectDate={handleChipClick}
