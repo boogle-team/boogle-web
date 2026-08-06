@@ -154,7 +154,8 @@ export const MONTHLY_IMPROVEMENTS: PatternTypes[] = [
     title: '부글 컨디션 점수 상승',
   },
   {
-    description: '스트레스와 복통이 함께 나타난 횟수가 지난달 12회에서 5회로 줄었어요',
+    description:
+      '스트레스와 복통이 함께 나타난 횟수가 지난달 12회에서 5회로 줄었어요',
     icon: 'chart',
     title: '스트레스성 복통 완화',
   },
@@ -234,8 +235,7 @@ export const MONTHLY_TYPES: MonthlyTypeTypes[] = [
 
 export const WEEKLY_LIFE_GUIDE: LifeGuideTypes = {
   description: '하루 물 6~8잔을 목표로 해보세요. 딱딱한 변이 개선될 수 있어요.',
-  feedbackStatus: null,
-  guideContentId: 1,
+  guideId: 101,
   title: '수분 섭취와 딱딱한 변',
 };
 

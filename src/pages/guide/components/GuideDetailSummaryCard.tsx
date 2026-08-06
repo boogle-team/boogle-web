@@ -1,5 +1,5 @@
 import type { GuideDetailTypes } from '../types/guideTypes';
-import NoticeIcon from '../assets/illustrations/noticeIcon.svg?react';
+import NoticeIcon from '../assets/illustrations/noticeIcon/noticeIcon.svg?react';
 
 interface GuideDetailSummaryCardPropTypes {
   guideDetail: GuideDetailTypes;
@@ -105,7 +105,7 @@ const NoticeText = ({ highlightText, notice }: NoticeTextPropTypes) => {
   return (
     <p className="label mt-5 flex items-center gap-2 rounded-md bg-orange-1 px-3 py-2 text-gray-7">
       <NoticeIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-      <span>
+      <span className="whitespace-pre-line">
         {beforeText}
         {hasHighlightText && (
           <strong className="font-bold text-semantic-danger">

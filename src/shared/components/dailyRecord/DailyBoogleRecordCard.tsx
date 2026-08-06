@@ -11,6 +11,8 @@ import NoBoogleSignCharacter from '@/shared/assets/illustrations/dailyRecord/noB
 
 interface DailyBoogleRecordCardPropTypes {
   view: BoogleRecordViewTypes;
+  // 캘린더는 기록이 있으면 헤더 아이콘을 숨기고 행별 연필로만 수정한다.
+  shouldShowActionWhenRecorded?: boolean;
   onCreateClick: () => void;
   onEditClick?: (recordId: number) => void;
 }
@@ -27,12 +29,13 @@ const EMPTY_MESSAGE_MAP: Record<
 
 const DailyBoogleRecordCard = ({
   view,
+  shouldShowActionWhenRecorded = true,
   onCreateClick,
   onEditClick,
 }: DailyBoogleRecordCardPropTypes) => {
   const isFuture = view.status === 'future';
-  const statusText =
-    view.status === 'recorded' ? `${view.records.length}회` : undefined;
+  const isRecorded = view.status === 'recorded';
+  const statusText = isRecorded ? `${view.records.length}회` : undefined;
   const emptyCharacter =
     view.status === 'noBoogleSignal' ? (
       <NoBoogleSignCharacter className="h-[4.5rem] w-[4.5rem]" />
@@ -49,7 +52,9 @@ const DailyBoogleRecordCard = ({
       title="부글 기록"
       statusText={statusText}
       actionLabel="부글 기록 작성"
-      actionType="create"
+      actionType={
+        isRecorded && !shouldShowActionWhenRecorded ? 'none' : 'create'
+      }
       isActionDisabled={isFuture}
       onActionClick={handleCardActionClick}
     >
