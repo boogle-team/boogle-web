@@ -2,6 +2,7 @@ import type {
   AgeGroupValueTypes,
   BowelRhythmValueTypes,
   GenderValueTypes,
+  SocialLoginProviderTypes,
 } from '../types/loginTypes';
 
 // 스플래시 노출 시간 (ms)
@@ -49,3 +50,22 @@ export const MENSTRUAL_DATA_ITEMS = [
   '생리·호르몬 상태 (없음 / 생리 중 / 호르몬 변화 있음)',
   '기록 날짜 및 시간',
 ];
+
+export const SOCIAL_LOGIN_PROVIDER_LABEL_MAP: Record<
+  SocialLoginProviderTypes,
+  string
+> = {
+  google: 'Google',
+  kakao: '카카오',
+};
+
+export const LOGIN_ACCOUNT_LINK_CANCEL_MESSAGE =
+  '기존 계정으로 로그인해 주세요';
+
+export const LOGIN_ACCOUNT_LINK_EXPIRED_MESSAGE =
+  '계정 연동 요청이 만료되었습니다. 소셜 로그인을 다시 진행해주세요.';
+
+export const LOGIN_ACCOUNT_LINK_RETRY_MESSAGE =
+  '계정 연동에 실패했어요. 잠시 후 다시 시도해 주세요.';
+
+export const OAUTH_CALLBACK_ERROR_MESSAGE = '로그인을 완료하지 못했습니다.';

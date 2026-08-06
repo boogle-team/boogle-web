@@ -14,6 +14,9 @@ export type SocialLoginProviderTypes = 'kakao' | 'google';
 
 export type OAuthNextActionTypes = 'HOME' | 'ONBOARDING_REQUIRED';
 
+export type OAuthCallbackStatusTypes =
+  'PROCESSING' | 'LINK_CONFIRMATION' | 'LINKING' | 'ERROR';
+
 export interface AuthTokenDataTypes {
   accessToken: string;
   refreshToken: string;
@@ -25,9 +28,9 @@ export interface AuthTokenDataTypes {
 export interface OAuthUserTypes {
   id: number;
   email: string;
-  nickname: string;
+  nickname: string | null;
   profileImage: string | null;
-  profileImageSource: string;
+  profileImageSource: string | null;
   gender: string | null;
   ageGroup: number | null;
   baselineType: string | null;
@@ -36,6 +39,18 @@ export interface OAuthUserTypes {
 
 export interface OAuthExchangeRequestTypes {
   oauthResultCode: string;
+}
+
+export interface OAuthAccountLinkRequestTypes {
+  accountLinkToken: string;
+}
+
+export interface OAuthAccountLinkRequiredDataTypes {
+  accountLinkToken: string;
+  existingProvider: SocialLoginProviderTypes;
+  requestedProvider: SocialLoginProviderTypes;
+  maskedEmail: string;
+  expiresAt: string;
 }
 
 export interface AuthRefreshRequestTypes {
@@ -60,10 +75,16 @@ export interface OAuthExchangeResponseTypes {
   message: string;
 }
 
+export type OAuthAccountLinkResponseTypes = OAuthExchangeResponseTypes;
+
 export interface AuthRefreshResponseTypes {
   success: boolean;
   data: AuthTokenDataTypes;
   message: string;
+}
+
+export interface LoginNavigationStateTypes {
+  toastMessage?: string;
 }
 
 // 프로필 입력 최종 수집 데이터

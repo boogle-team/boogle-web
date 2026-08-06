@@ -3,6 +3,8 @@ import type {
   AuthLogoutRequestTypes,
   AuthRefreshRequestTypes,
   AuthRefreshResponseTypes,
+  OAuthAccountLinkRequestTypes,
+  OAuthAccountLinkResponseTypes,
   OAuthExchangeRequestTypes,
   OAuthExchangeResponseTypes,
   SocialLoginProviderTypes,
@@ -29,6 +31,17 @@ export const postOAuthExchange = async ({
   const { data } = await authApi.post<OAuthExchangeResponseTypes>(
     '/api/v1/auth/oauth/exchange',
     { oauthResultCode },
+  );
+
+  return data;
+};
+
+export const postOAuthAccountLink = async ({
+  accountLinkToken,
+}: OAuthAccountLinkRequestTypes) => {
+  const { data } = await authApi.post<OAuthAccountLinkResponseTypes>(
+    '/api/v1/auth/oauth/link',
+    { accountLinkToken },
   );
 
   return data;
