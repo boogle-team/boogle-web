@@ -18,20 +18,20 @@ const MonthlyConditionScoreCard = ({
           viewBox="0 0 80 80"
         >
           <circle
+            className="stroke-beige-5"
             cx="40"
             cy="40"
             r="33"
             fill="none"
-            stroke="#F9F7F5"
             strokeWidth="12"
           />
           <circle
+            className="stroke-orange-6"
             cx="40"
             cy="40"
             r="33"
             fill="none"
             pathLength="100"
-            stroke="#FF8C61"
             strokeDasharray={`${conditionScore} 100`}
             strokeLinecap="round"
             strokeWidth="12"

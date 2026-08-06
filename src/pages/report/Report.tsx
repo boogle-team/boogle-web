@@ -20,12 +20,20 @@ import {
 } from './utils/weeklyReportViewDataMapper';
 
 interface ReportStatusBodyPropTypes {
+  isError?: boolean;
   message: string;
   onRetry?: () => void;
 }
 
-const ReportStatusBody = ({ message, onRetry }: ReportStatusBodyPropTypes) => (
-  <div className="flex min-h-[24rem] flex-col items-center justify-center gap-4 text-center">
+const ReportStatusBody = ({
+  isError = false,
+  message,
+  onRetry,
+}: ReportStatusBodyPropTypes) => (
+  <div
+    role={isError ? 'alert' : 'status'}
+    className="flex min-h-[24rem] flex-col items-center justify-center gap-4 text-center"
+  >
     <p className="body-m text-gray-7">{message}</p>
     {onRetry && (
       <button
@@ -109,6 +117,7 @@ const Report = () => {
     if (isWeeklyReportError) {
       return (
         <ReportStatusBody
+          isError
           message="주간 리포트를 불러오지 못했어요."
           onRetry={handleWeeklyReportRetry}
         />
@@ -133,6 +142,7 @@ const Report = () => {
     if (!weeklyReportViewData) {
       return (
         <ReportStatusBody
+          isError
           message="주간 리포트를 표시하지 못했어요."
           onRetry={handleWeeklyReportRetry}
         />
@@ -150,6 +160,7 @@ const Report = () => {
     if (isMonthlyReportError) {
       return (
         <ReportStatusBody
+          isError
           message="월간 리포트를 불러오지 못했어요."
           onRetry={handleMonthlyReportRetry}
         />
@@ -174,6 +185,7 @@ const Report = () => {
     if (!monthlyReportViewData) {
       return (
         <ReportStatusBody
+          isError
           message="월간 리포트를 표시하지 못했어요."
           onRetry={handleMonthlyReportRetry}
         />

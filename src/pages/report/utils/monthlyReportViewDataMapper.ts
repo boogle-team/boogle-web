@@ -31,7 +31,7 @@ const formatNumber = (value: number) =>
 export const mapMonthlyReportViewData = (
   report: MonthlyReportDataResponseTypes,
 ): MonthlyReportViewDataTypes | null => {
-  if (report.dataStatus !== 'ENOUGH' || !report.summary || !report.userType) {
+  if (report.dataStatus !== 'ENOUGH' || !report.summary) {
     return null;
   }
 
@@ -45,6 +45,7 @@ export const mapMonthlyReportViewData = (
     summaries: [
       {
         description: '이번 달',
+        isHighlighted: true,
         label: '배변 횟수',
         value: `${formatNumber(report.summary.bowelCount)}회`,
       },
@@ -67,11 +68,13 @@ export const mapMonthlyReportViewData = (
         value: ratio,
       }),
     ),
-    monthlyType: {
-      description: report.userType.description,
-      symbol: report.userType.code,
-      title: report.userType.name,
-    },
+    monthlyType: report.userType
+      ? {
+          description: report.userType.description,
+          symbol: report.userType.code,
+          title: report.userType.name,
+        }
+      : null,
     patterns: report.patternCards.map(({ description, ruleCode, title }) => ({
       description,
       icon: MONTHLY_PATTERN_ICON_MAP[ruleCode],
@@ -96,6 +99,5 @@ export const mapMonthlyInsufficientReport = (
     description: report.notice?.message ?? '',
     minimumRequiredCount: report.recordStats.requiredDays,
     requiredCount: report.recordStats.totalDays,
-    trackerLabel: `이번 달 기록 ${currentCount}일째`,
   };
 };

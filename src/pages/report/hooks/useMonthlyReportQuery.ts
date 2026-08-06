@@ -4,10 +4,8 @@ import { getMonthlyReport } from '../apis/reportApis';
 
 export const MONTHLY_REPORT_QUERY_KEY = ['reports', 'monthly'] as const;
 
-export const getMonthlyReportQueryKey = (monthStartDate: string) => [
-  ...MONTHLY_REPORT_QUERY_KEY,
-  monthStartDate,
-];
+export const getMonthlyReportQueryKey = (monthStartDate: string) =>
+  [...MONTHLY_REPORT_QUERY_KEY, monthStartDate] as const;
 
 const useMonthlyReportQuery = (monthStartDate: string) => {
   const { data, isError, isLoading, refetch } = useQuery({

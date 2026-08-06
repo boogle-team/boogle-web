@@ -13,17 +13,19 @@ const InsufficientReportBody = ({
   insufficientReport,
   selectedMode,
 }: InsufficientReportBodyPropTypes) => {
+  const {
+    currentCount,
+    description: noticeDescription,
+    minimumRequiredCount,
+    requiredCount,
+  } = insufficientReport;
   const isWeeklyReport = selectedMode === 'weekly';
-  const progressWidth = `${
-    (insufficientReport.currentCount / insufficientReport.requiredCount) * 100
-  }%`;
-  const remainingCount = Math.max(
-    insufficientReport.minimumRequiredCount - insufficientReport.currentCount,
-    0,
-  );
+  const progressWidth = `${(currentCount / requiredCount) * 100}%`;
+  const remainingCount = Math.max(minimumRequiredCount - currentCount, 0);
   const trackerPeriodText = isWeeklyReport ? '이번 주 기록' : '이번 달 기록';
-  const requiredDayText = isWeeklyReport ? '3일' : '7일';
-  const description = `${requiredDayText} 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요`;
+  const description =
+    noticeDescription ||
+    `${minimumRequiredCount}일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요`;
 
   return (
     <div className="mt-4 flex min-h-[31rem] flex-col gap-8">
@@ -31,10 +33,7 @@ const InsufficientReportBody = ({
         <div className="flex items-center justify-between">
           <p className="caption text-gray-9">
             {trackerPeriodText}{' '}
-            <span className="caption-bold text-orange-6">
-              {insufficientReport.currentCount}일
-            </span>
-            째
+            <span className="caption-bold text-orange-6">{currentCount}일</span>
           </p>
         </div>
         <div className="mt-4 grid grid-cols-[1fr_2.5rem] items-center gap-3">
@@ -45,8 +44,7 @@ const InsufficientReportBody = ({
             />
           </div>
           <p className="micro text-right text-orange-6">
-            {insufficientReport.currentCount}/{insufficientReport.requiredCount}
-            일
+            {currentCount}/{requiredCount}일
           </p>
         </div>
       </section>

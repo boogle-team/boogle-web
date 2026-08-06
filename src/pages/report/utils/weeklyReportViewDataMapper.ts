@@ -71,6 +71,7 @@ export const mapWeeklyReportViewData = (
         description: formatPreviousWeekDifference(
           report.changeSummary?.bowelCountDiff ?? null,
         ),
+        isHighlighted: true,
         label: '배변 횟수',
         value: `${formatNumber(report.summary.bowelCount)}회`,
       },
@@ -133,6 +134,5 @@ export const mapWeeklyInsufficientReport = (
     description: report.insufficientNotice?.message ?? '',
     minimumRequiredCount,
     requiredCount,
-    trackerLabel: `이번 주 기록 ${currentCount}일째`,
   };
 };

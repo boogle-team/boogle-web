@@ -21,7 +21,7 @@ interface MonthlyReportBodyPropTypes {
   improvements: PatternTypes[];
   isPdfDownloadAvailable: boolean;
   isPdfDownloading: boolean;
-  monthlyType: MonthlyTypeTypes;
+  monthlyType: MonthlyTypeTypes | null;
   onPdfButtonClick: () => void;
   patterns: PatternTypes[];
   pdfErrorMessage?: string;
@@ -52,7 +52,7 @@ const MonthlyReportBody = ({
     <SummaryCards summaries={summaries} showDescription={false} />
     <MonthlyWeeklyTrendCard weeklyTrends={weeklyTrends} />
     <ConditionDistributionCard conditionProgress={conditionProgress} />
-    <MonthlyTypeCard monthlyType={monthlyType} />
+    {monthlyType && <MonthlyTypeCard monthlyType={monthlyType} />}
     {patterns.length > 0 && <MonthlyPatternListCard patterns={patterns} />}
     {improvements.length > 0 && (
       <MonthlyImprovementCard improvements={improvements} />

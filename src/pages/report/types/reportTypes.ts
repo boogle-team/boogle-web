@@ -2,6 +2,7 @@
 
 export interface ReportSummaryTypes {
   description: string;
+  isHighlighted?: boolean;
   label: string;
   value: string;
 }
@@ -50,7 +51,7 @@ export interface MonthlyReportViewDataTypes {
   conditionScore: number;
   improvements: PatternTypes[];
   isPdfDownloadAvailable: boolean;
-  monthlyType: MonthlyTypeTypes;
+  monthlyType: MonthlyTypeTypes | null;
   patterns: PatternTypes[];
   scores: MonthlyScoreTypes[];
   summaries: ReportSummaryTypes[];
@@ -84,7 +85,6 @@ export interface InsufficientReportTypes {
   description: string;
   minimumRequiredCount: number;
   requiredCount: number;
-  trackerLabel: string;
 }
 
 export interface ReportPeriodTextTypes {

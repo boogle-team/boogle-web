@@ -11,12 +11,12 @@ const SummaryCards = ({
 }: SummaryCardsPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
     <div className="grid grid-cols-3 divide-x divide-beige-7">
-      {summaries.map(({ description, label, value }, index) => (
+      {summaries.map(({ description, isHighlighted, label, value }) => (
         <article
           key={label}
           className="flex min-h-15 flex-col items-center justify-center text-center"
         >
-          <SummaryValue value={value} isHighlighted={index === 0} />
+          <SummaryValue value={value} isHighlighted={Boolean(isHighlighted)} />
           <span className="label mt-1 tracking-[-0.0175rem] text-gray-7">
             {label}
           </span>

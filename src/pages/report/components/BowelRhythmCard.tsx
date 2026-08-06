@@ -39,7 +39,6 @@ const BowelRhythmCard = ({
           <ClockIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
         </span>
         <p className="caption tracking-[-0.015rem] text-gray-8">
-          이번 주{' '}
           <strong className="caption-bold tracking-[-0.015rem] text-semantic-danger">
             {frequentTimeSlotLabel}
           </strong>
