@@ -53,9 +53,7 @@ const getRelativeTitle = (distance: number, unit: '주' | '달') => {
     return `이번 ${unit}`;
   }
 
-  return distance < 0
-    ? `${Math.abs(distance)}${unit} 전`
-    : `${distance}${unit} 후`;
+  return '';
 };
 
 export const isCurrentOrFutureReportPeriod = (

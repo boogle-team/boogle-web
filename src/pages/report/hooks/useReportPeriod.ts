@@ -9,8 +9,18 @@ import {
 } from '../utils/reportPeriodUtils';
 
 export const useReportPeriod = () => {
-  const [currentPeriodDate, setCurrentPeriodDate] = useState(() => new Date());
   const [selectedMode, setSelectedMode] = useState<ReportModeTypes>('weekly');
+  const [periodDateByMode, setPeriodDateByMode] = useState<
+    Record<ReportModeTypes, Date>
+  >(() => {
+    const currentDate = new Date();
+
+    return {
+      monthly: currentDate,
+      weekly: currentDate,
+    };
+  });
+  const currentPeriodDate = periodDateByMode[selectedMode];
   const isWeeklyReport = selectedMode === 'weekly';
   const isNextPeriodDisabled = isCurrentOrFutureReportPeriod(
     selectedMode,
@@ -23,17 +33,23 @@ export const useReportPeriod = () => {
   };
 
   const moveToPreviousPeriod = () => {
-    setCurrentPeriodDate((previousDate) =>
-      isWeeklyReport ? addDays(previousDate, -7) : addMonths(previousDate, -1),
-    );
+    setPeriodDateByMode((previousPeriodDateByMode) => ({
+      ...previousPeriodDateByMode,
+      [selectedMode]: isWeeklyReport
+        ? addDays(previousPeriodDateByMode[selectedMode], -7)
+        : addMonths(previousPeriodDateByMode[selectedMode], -1),
+    }));
   };
 
   const moveToNextPeriod = () => {
     if (isNextPeriodDisabled) return;
 
-    setCurrentPeriodDate((previousDate) =>
-      isWeeklyReport ? addDays(previousDate, 7) : addMonths(previousDate, 1),
-    );
+    setPeriodDateByMode((previousPeriodDateByMode) => ({
+      ...previousPeriodDateByMode,
+      [selectedMode]: isWeeklyReport
+        ? addDays(previousPeriodDateByMode[selectedMode], 7)
+        : addMonths(previousPeriodDateByMode[selectedMode], 1),
+    }));
   };
 
   return {
