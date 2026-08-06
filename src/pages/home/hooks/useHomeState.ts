@@ -1,7 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiErrorMessage } from '@/shared/apis/apiError';
-import { HOME_DATE_MODAL_MARK_CONFIG } from '@/pages/home/constants/homeCalendarConfig';
+import {
+  HOME_DATE_MODAL_MARK_CONFIG,
+  MAX_RECORD_SUMMARY_RANGE_COUNT,
+} from '@/pages/home/constants/homeCalendarConfig';
 import { HOME_RECORD_SUMMARY_RANGE } from '@/pages/home/constants/homeQueryKeys';
 import useHomeQuery from '@/pages/home/hooks/useHomeQuery';
 import useHomeRecordSummaryQueries from '@/pages/home/hooks/useHomeRecordSummaryQueries';
@@ -25,6 +28,7 @@ interface UseHomeStateReturnTypes {
   isDailyRecordLoading: boolean;
   isDailyRecordError: boolean;
   dailyRecordErrorMessage: string;
+  isRecordSummaryLoading: boolean;
   isRecordSummaryError: boolean;
   recordSummaryErrorMessage: string;
   selectedDateValue: string;
@@ -75,6 +79,7 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   } = useDailyRecordQuery(selectedDateValue);
   const {
     recordStatusByDate: summaryRecordStatusByDate,
+    isLoading: isRecordSummaryLoading,
     isError: isRecordSummaryError,
     error: recordSummaryError,
     refetchRecordSummaries,
@@ -149,10 +154,21 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     if (registeredRecordSummaryBaseDatesRef.current.has(baseDate)) return;
 
     registeredRecordSummaryBaseDatesRef.current.add(baseDate);
-    setRecordSummaryBaseDates((currentBaseDates) => [
-      ...currentBaseDates,
-      baseDate,
-    ]);
+    setRecordSummaryBaseDates((currentBaseDates) => {
+      const nextBaseDates = [...currentBaseDates, baseDate].slice(
+        -MAX_RECORD_SUMMARY_RANGE_COUNT,
+      );
+      const removedBaseDates = currentBaseDates.filter(
+        (currentBaseDate) => !nextBaseDates.includes(currentBaseDate),
+      );
+
+      // 제거된 범위는 다시 스크롤해 돌아왔을 때 재등록될 수 있어야 한다
+      removedBaseDates.forEach((removedBaseDate) => {
+        registeredRecordSummaryBaseDatesRef.current.delete(removedBaseDate);
+      });
+
+      return nextBaseDates;
+    });
   }, []);
 
   const handleRecordSummaryRetryButtonClick = () => {
@@ -185,6 +201,7 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     isDailyRecordLoading,
     isDailyRecordError,
     dailyRecordErrorMessage,
+    isRecordSummaryLoading,
     isRecordSummaryError,
     recordSummaryErrorMessage,
     selectedDateValue,
