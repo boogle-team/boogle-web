@@ -26,13 +26,13 @@ const RECORD_OPTIONS: RecordOptionTypes[] = [
   {
     title: '부글 기록',
     description: '배변 상태 기록하기',
-    path: '/record',
+    path: '/boogle-record/new',
     Icon: BoogleRecordIcon,
   },
   {
     title: '생활 기록',
     description: '수면·식단 기록하기',
-    path: '/record/life',
+    path: '/life-record/new',
     Icon: DailyRecordIcon,
   },
 ];

@@ -60,7 +60,7 @@ const get24Hour = ({ hour, meridiem }: RecordTimeValueTypes) => {
   return hour === 12 ? 12 : hour + 12;
 };
 
-/** 사용자가 선택한 시각을 KST 기준 HH:mm 문자열로 만든다. */
+/** 사용자가 선택한 시각을 타임존 없는 HH:mm 벽시계 문자열로 만든다. (서버가 KST로 해석) */
 export const buildBowelMovementAt = (time: RecordTimeValueTypes) => {
   const hour = `${get24Hour(time)}`.padStart(2, '0');
   const minute = `${time.minute}`.padStart(2, '0');

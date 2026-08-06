@@ -9,6 +9,7 @@ import { useUpdateBoogleRecordMutation } from '@/pages/record/hooks/useUpdateBoo
 import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButtons';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
+import type { PostBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
 import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
 import { mapBoogleRecordResponseToDraft } from '@/pages/record/utils/boogleRecordResponseMapper';
 
@@ -25,6 +26,7 @@ const Edit = () => {
   const navigate = useNavigate();
   const { recordId: recordIdParam } = useParams<{ recordId: string }>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordId = Number(recordIdParam);
   const isRecordIdValid = Number.isInteger(recordId) && recordId > 0;
@@ -83,11 +85,20 @@ const Edit = () => {
   const handleSave = () => {
     if (!isSubmittable || !isRecordIdValid || isUpdatingRecord) return;
 
-    const request = mapBoogleRecordRequest({
-      recordDate,
-      main: formState,
-      detail: detailFormState,
-    });
+    setIsRequestMappingError(false);
+
+    let request: PostBoogleRecordRequestTypes;
+
+    try {
+      request = mapBoogleRecordRequest({
+        recordDate,
+        main: formState,
+        detail: detailFormState,
+      });
+    } catch {
+      setIsRequestMappingError(true);
+      return;
+    }
 
     updateBoogleRecord(
       { recordId, request },
@@ -101,7 +112,7 @@ const Edit = () => {
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate('/record/detail');
+    navigate('/boogle-record/detail');
   };
 
   const handleDeleteButtonClick = () => {
@@ -150,11 +161,11 @@ const Edit = () => {
       subTitle={formatRecordDate(dayjs(recordDate).toDate())}
       contentClassName="gap-12"
       onBackButtonClick={handleBackButtonClick}
-      isDeleteButtonVisible={isRecordIdValid}
+      isDeleteButtonVisible
       onDeleteButtonClick={handleDeleteButtonClick}
       footer={
         <div className="flex flex-col gap-2">
-          {isUpdateRecordError && (
+          {(isUpdateRecordError || isRequestMappingError) && (
             <p
               role="alert"
               className="caption text-center text-semantic-danger"

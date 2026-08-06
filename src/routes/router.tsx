@@ -51,12 +51,20 @@ export const Router = createBrowserRouter([
         element: <RecordEdit />,
       },
       {
+        path: 'boogle-record/detail',
+        element: <RecordDetail />,
+      },
+      {
         path: 'life-record/new',
         element: <RecordLife />,
       },
       {
         path: 'life-record/edit/:recordId',
         element: <RecordLifeEdit />,
+      },
+      {
+        path: 'life-record/detail',
+        element: <RecordLifeDetail />,
       },
       {
         path: 'report',
@@ -100,30 +108,6 @@ export const Router = createBrowserRouter([
 
       return { Component: Profile };
     },
-  },
-  {
-    path: '/record',
-    element: <Record />,
-  },
-  {
-    path: '/record/edit',
-    element: <RecordEdit />,
-  },
-  {
-    path: '/record/detail',
-    element: <RecordDetail />,
-  },
-  {
-    path: '/record/life',
-    element: <RecordLife />,
-  },
-  {
-    path: '/record/life/detail',
-    element: <RecordLifeDetail />,
-  },
-  {
-    path: '/record/life/edit',
-    element: <RecordLifeEdit />,
   },
   {
     path: '/settings',

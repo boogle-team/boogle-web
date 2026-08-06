@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postBoogleRecord } from '../apis/boogleRecordApis';
+import { invalidateRecordRelatedQueries } from './invalidateRecordQueries';
 
 export const useCreateBoogleRecordMutation = () => {
   const queryClient = useQueryClient();
@@ -8,10 +9,7 @@ export const useCreateBoogleRecordMutation = () => {
   return useMutation({
     mutationFn: postBoogleRecord,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['home'] });
-      void queryClient.invalidateQueries({
-        queryKey: ['calendarDailyRecord'],
-      });
+      invalidateRecordRelatedQueries(queryClient);
     },
   });
 };

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import type {
   AmountTypes,
   DetailRecordFormStateTypes,
@@ -14,6 +16,7 @@ import type {
 import {
   INITIAL_DETAIL_RECORD_STATE,
   INITIAL_MAIN_RECORD_STATE,
+  RECORD_DATE_FORMAT,
 } from '@/pages/record/shared/stores/recordDraftStore';
 import type {
   BoogleRecordAmountCodeTypes,
@@ -97,7 +100,7 @@ export const mapBoogleRecordResponseToDraft = (
 ): BoogleRecordDraftTypes => {
   if (!record.hasBowel) {
     return {
-      recordDate: record.regDate,
+      recordDate: dayjs(record.regDate).format(RECORD_DATE_FORMAT),
       main: {
         ...INITIAL_MAIN_RECORD_STATE,
         bowelStatus: 'no',
@@ -107,7 +110,7 @@ export const mapBoogleRecordResponseToDraft = (
   }
 
   return {
-    recordDate: record.regDate,
+    recordDate: dayjs(record.regDate).format(RECORD_DATE_FORMAT),
     main: {
       bowelStatus: 'yes',
       time: mapBowelMovementTime(record.bowelMovementAt),

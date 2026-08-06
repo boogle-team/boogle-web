@@ -8,6 +8,7 @@ import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout'
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 import { useCreateBoogleRecordMutation } from '@/pages/record/hooks/useCreateBoogleRecordMutation';
+import type { PostBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
 import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
 
 import BowelStatusField from './components/BowelStatusField';
@@ -26,6 +27,7 @@ const HAS_LIFE_RECORD = false;
 const Main = () => {
   const navigate = useNavigate();
   const [isLifeRecordModalOpen, setIsLifeRecordModalOpen] = useState(false);
+  const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordDate = useRecordDraftDate();
   const startDraft = useRecordDraftStore((state) => state.startDraft);
@@ -55,11 +57,20 @@ const Main = () => {
   const handleSubmit = () => {
     if (!isSubmittable || isCreatingRecord) return;
 
-    const request = mapBoogleRecordRequest({
-      recordDate,
-      main: formState,
-      detail: detailFormState,
-    });
+    setIsRequestMappingError(false);
+
+    let request: PostBoogleRecordRequestTypes;
+
+    try {
+      request = mapBoogleRecordRequest({
+        recordDate,
+        main: formState,
+        detail: detailFormState,
+      });
+    } catch {
+      setIsRequestMappingError(true);
+      return;
+    }
 
     createRecord(request, {
       onSuccess: () => {
@@ -81,7 +92,7 @@ const Main = () => {
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate('/record/detail');
+    navigate('/boogle-record/detail');
   };
 
   const handleLifeRecordCancel = () => {
@@ -92,7 +103,7 @@ const Main = () => {
   // 생활 기록도 같은 날짜의 기록이므로 날짜를 그대로 넘긴다.
   const handleLifeRecordConfirm = () => {
     setIsLifeRecordModalOpen(false);
-    navigate(`/record/life?date=${recordDate}`);
+    navigate(`/life-record/new?date=${recordDate}`);
   };
 
   return (
@@ -103,7 +114,7 @@ const Main = () => {
       onBackButtonClick={handleBackButtonClick}
       footer={
         <div className="flex flex-col gap-2">
-          {isCreateRecordError && (
+          {(isCreateRecordError || isRequestMappingError) && (
             <p
               role="alert"
               className="caption text-center text-semantic-danger"

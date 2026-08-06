@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteBoogleRecord } from '../apis/boogleRecordApis';
+import { invalidateRecordRelatedQueries } from './invalidateRecordQueries';
 import { getBoogleRecordQueryKey } from './useBoogleRecordQuery';
 
 export const useDeleteBoogleRecordMutation = () => {
@@ -12,10 +13,7 @@ export const useDeleteBoogleRecordMutation = () => {
       queryClient.removeQueries({
         queryKey: getBoogleRecordQueryKey(recordId),
       });
-      void queryClient.invalidateQueries({ queryKey: ['home'] });
-      void queryClient.invalidateQueries({
-        queryKey: ['calendarDailyRecord'],
-      });
+      invalidateRecordRelatedQueries(queryClient);
     },
   });
 };

@@ -52,7 +52,7 @@ const LifeEdit = () => {
   // 세부 기록도 같은 날짜의 초안이므로 날짜를 그대로 넘긴다.
   // TODO: 기록 id가 생기면 id도 함께 넘겨 수정 대상 기록을 특정한다.
   const handleDetailRecordLinkClick = () => {
-    navigate(`/record/life/detail?date=${recordDate}`);
+    navigate(`/life-record/detail?date=${recordDate}`);
   };
 
   const handleDeleteButtonClick = () => {

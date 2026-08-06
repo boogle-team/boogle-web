@@ -238,7 +238,10 @@
 
 ## 부글 기록
 
-[]
+- `POST /api/v1/records`, `PATCH /api/v1/records/{id}` 요청의 `regDate`는 기록 대상 날짜인 `YYYY-MM-DD` 형식이다.
+- `GET /api/v1/records/{id}` 응답의 `regDate`는 `YYYY-MM-DD` 형식이다.
+- `GET /api/v1/calendar/daily?date={YYYY-MM-DD}` 응답 안의 부글 기록 `regDate`는 `YYYY-MM-DDTHH:mm:ss` 형식이다. 프론트에서는 기록 초안에 저장하기 전에 `YYYY-MM-DD`로 정규화한다.
+- 배변 시각 `bowelMovementAt`은 타임존 없는 `HH:mm` 형식이며 서버가 KST 시각으로 해석한다.
 
-- 엔드포인트:
-- http 메소드:
+- 엔드포인트: /api/v1/records, /api/v1/records/{id}
+- http 메소드: GET, POST, PATCH, DELETE

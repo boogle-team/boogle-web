@@ -8,7 +8,7 @@ import { RECORD_DATE_FORMAT } from '../stores/recordDraftStore';
 dayjs.extend(customParseFormat);
 
 /**
- * 기록 대상 날짜를 쿼리스트링에서 읽는다. (예: /record?date=2026-07-24)
+ * 기록 대상 날짜를 쿼리스트링에서 읽는다. (예: /boogle-record/new?date=2026-07-24)
  * 캘린더 클릭·홈 스와이프 등 진입 경로가 여러 개라, 진입한 쪽에서 날짜를 넘겨준다.
  *
  * strict 파싱을 쓰는 이유는 2026-02-31 같은 값이 3월 3일로 조용히 넘어가는 것을 막기 위해서다.
