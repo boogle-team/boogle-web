@@ -88,4 +88,4 @@ export const TAG_MIN_LENGTH = 2;
 export const TAG_MAX_LENGTH = 6;
 
 export const isValidTagLength = (tag: string) =>
-  tag.length >= TAG_MIN_LENGTH && tag.length < TAG_MAX_LENGTH;
+  tag.length >= TAG_MIN_LENGTH && tag.length <= TAG_MAX_LENGTH;

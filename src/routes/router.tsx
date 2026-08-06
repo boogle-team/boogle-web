@@ -1,20 +1,21 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Record from '../pages/record/main/Main';
-import RecordEdit from '../pages/record/edit/Edit';
-import RecordDetail from '../pages/record/detail/Detail';
-import RecordLife from '../pages/record/life/Life';
-import RecordLifeDetail from '../pages/record/life/LifeDetail';
-import RecordLifeEdit from '../pages/record/life/LifeEdit';
+
 import Notification from '@/pages/notification/Notification';
-import Settings from '@/pages/settings/Settings';
-import ProfileEdit from '@/pages/settings/ProfileEdit';
+import RecordDetail from '@/pages/record/detail/Detail';
+import RecordEdit from '@/pages/record/edit/Edit';
+import RecordLife from '@/pages/record/life/Life';
+import RecordLifeDetail from '@/pages/record/life/LifeDetail';
+import RecordLifeEdit from '@/pages/record/life/LifeEdit';
+import Record from '@/pages/record/main/Main';
 import BaselineInfoSetting from '@/pages/settings/BaselineInfoSetting';
 import BowelRhythmSetting from '@/pages/settings/BowelRhythmSetting';
+import DeleteAccount from '@/pages/settings/DeleteAccount';
 import LoginAccount from '@/pages/settings/LoginAccount';
 import PrivacyPolicy from '@/pages/settings/PrivacyPolicy';
+import ProfileEdit from '@/pages/settings/ProfileEdit';
 import SensitiveConsent from '@/pages/settings/SensitiveConsent';
+import Settings from '@/pages/settings/Settings';
 import Terms from '@/pages/settings/Terms';
-import DeleteAccount from '@/pages/settings/DeleteAccount';
 
 export const Router = createBrowserRouter([
   {

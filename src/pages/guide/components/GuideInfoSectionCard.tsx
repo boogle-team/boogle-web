@@ -1,6 +1,6 @@
 import type { GuideDetailTypes } from '../types/guideTypes';
-import InfoNoticeIcon from '../assets/illustrations/infoNoticeIcon.svg?react';
-import WaterNoticeIcon from '../assets/illustrations/waterNoticeIcon.svg?react';
+import InfoNoticeIcon from '../assets/illustrations/noticeIcon/infoNoticeIcon.svg?react';
+import WaterNoticeIcon from '../assets/illustrations/noticeIcon/waterNoticeIcon.svg?react';
 import BristolScalePreview from './BristolScalePreview';
 
 interface GuideInfoSectionCardPropTypes {
@@ -14,10 +14,10 @@ const GuideInfoSectionCard = ({
     return null;
   }
 
-  const isSectionNumberVisible = ![
-    'incomplete-evacuation',
-    'hormone-and-gut',
-  ].includes(guideDetail.id);
+  // 본문이 1개면 번호를 붙이지 않는다. (기존 상수 기반 가이드 2건은 예외 유지)
+  const isSectionNumberVisible =
+    guideDetail.infoSections.length > 1 &&
+    !['incomplete-evacuation', 'hormone-and-gut'].includes(guideDetail.id);
 
   return (
     <>
@@ -26,7 +26,7 @@ const GuideInfoSectionCard = ({
           {guideDetail.infoSections.map(
             ({ description, title, visualType }, index) => (
               <div
-                key={title}
+                key={`${index}-${title}`}
                 className={
                   index === 0
                     ? 'pb-6'
