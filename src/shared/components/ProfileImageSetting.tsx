@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import Camera from '@/shared/assets/icons/camera.svg?react';
 import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
+import { PROFILE_IMAGE_ACCEPT_TYPES } from '@/shared/constants/profileImageConstants';
 
 interface ProfileImageSettingPropTypes {
   imageUrl?: string;
@@ -55,7 +56,7 @@ const ProfileImageSetting = ({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept={PROFILE_IMAGE_ACCEPT_TYPES}
         className="hidden"
         onChange={handleFileChange}
       />

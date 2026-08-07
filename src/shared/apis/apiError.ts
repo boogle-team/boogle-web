@@ -12,6 +12,13 @@ const API_ERROR_MESSAGES: Record<string, string> = {
   UNAUTHORIZED: '로그인이 필요해요',
   TOKEN_REQUIRED: '로그인이 필요해요',
   INTERNAL_SERVER_ERROR: '서버에 문제가 생겼어요. 잠시 후 다시 시도해 주세요',
+  SOCIAL_ACCOUNT_LINK_REQUIRED: '계정 연동 확인이 필요해요',
+  AUTH_ACCOUNT_LINK_TOKEN_REQUIRED: '계정 연동 정보가 없어요',
+  AUTH_INVALID_ACCOUNT_LINK_TOKEN: '계정 연동 정보가 유효하지 않아요',
+  AUTH_ACCOUNT_LINK_TOKEN_EXPIRED:
+    '계정 연동 요청이 만료되었습니다. 소셜 로그인을 다시 진행해주세요.',
+  AUTH_WITHDRAWN_USER: '탈퇴한 사용자는 로그인할 수 없어요',
+  SOCIAL_LOGIN_FAILED: '소셜 계정 연동에 실패했어요',
 };
 
 const NETWORK_ERROR_MESSAGE = '네트워크 연결을 확인해 주세요';

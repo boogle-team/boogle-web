@@ -1,44 +1,24 @@
-import { useReducer, type ReactNode } from 'react';
+import { useEffect, useReducer } from 'react';
+import { Outlet } from 'react-router-dom';
 
-import ProfileSettingsContext from './profileSettingsContext';
-
-import type {
-  AgeGroupTypes,
-  BaselineTypeTypes,
-  GenderTypes,
-  MemberProfileTypes,
-} from '../types/settingsTypes';
-
-interface ProfileSettingsProviderPropTypes {
-  children: ReactNode;
-}
+import ProfileSettingsContext from '@/pages/settings/contexts/profileSettingsContext';
 
 interface ProfileSettingsStateTypes {
-  memberProfile: MemberProfileTypes;
-  nicknameDraft: string;
+  nicknameDraft: string | undefined;
+  profileImageFile: File | null;
+  profileImagePreview: string | null;
 }
 
 type ProfileSettingsActionTypes =
-  | { type: 'UPDATE_NICKNAME_DRAFT'; nickname: string }
-  | { type: 'RESET_NICKNAME_DRAFT' }
-  | { type: 'SAVE_NICKNAME'; nickname: string }
-  | {
-      type: 'SAVE_BASELINE_INFO';
-      ageGroup: AgeGroupTypes;
-      gender: GenderTypes;
-    }
-  | { type: 'SAVE_BASELINE_TYPE'; baselineType: BaselineTypeTypes };
-
-const INITIAL_MEMBER_PROFILE: MemberProfileTypes = {
-  nickname: '이연수',
-  ageGroup: 20,
-  gender: 'F',
-  baselineType: 'R',
-};
+  | { type: 'UPDATE_NICKNAME'; nickname: string }
+  | { type: 'SELECT_PROFILE_IMAGE'; imageFile: File; previewUrl: string }
+  | { type: 'CLEAR_PROFILE_IMAGE' }
+  | { type: 'RESET_PROFILE_DRAFT' };
 
 const INITIAL_PROFILE_SETTINGS_STATE: ProfileSettingsStateTypes = {
-  memberProfile: INITIAL_MEMBER_PROFILE,
-  nicknameDraft: INITIAL_MEMBER_PROFILE.nickname,
+  nicknameDraft: undefined,
+  profileImageFile: null,
+  profileImagePreview: null,
 };
 
 const profileSettingsReducer = (
@@ -46,85 +26,75 @@ const profileSettingsReducer = (
   action: ProfileSettingsActionTypes,
 ): ProfileSettingsStateTypes => {
   switch (action.type) {
-    case 'UPDATE_NICKNAME_DRAFT':
+    case 'UPDATE_NICKNAME':
       return {
         ...state,
         nicknameDraft: action.nickname,
       };
-    case 'RESET_NICKNAME_DRAFT':
+    case 'SELECT_PROFILE_IMAGE':
       return {
         ...state,
-        nicknameDraft: state.memberProfile.nickname,
+        profileImageFile: action.imageFile,
+        profileImagePreview: action.previewUrl,
       };
-    case 'SAVE_NICKNAME':
-      return {
-        memberProfile: {
-          ...state.memberProfile,
-          nickname: action.nickname,
-        },
-        nicknameDraft: action.nickname,
-      };
-    case 'SAVE_BASELINE_INFO':
+    case 'CLEAR_PROFILE_IMAGE':
       return {
         ...state,
-        memberProfile: {
-          ...state.memberProfile,
-          ageGroup: action.ageGroup,
-          gender: action.gender,
-        },
+        profileImageFile: null,
+        profileImagePreview: null,
       };
-    case 'SAVE_BASELINE_TYPE':
-      return {
-        ...state,
-        memberProfile: {
-          ...state.memberProfile,
-          baselineType: action.baselineType,
-        },
-      };
+    case 'RESET_PROFILE_DRAFT':
+      return INITIAL_PROFILE_SETTINGS_STATE;
   }
 };
 
-const ProfileSettingsProvider = ({
-  children,
-}: ProfileSettingsProviderPropTypes) => {
+const ProfileSettingsProvider = () => {
   const [state, dispatch] = useReducer(
     profileSettingsReducer,
     INITIAL_PROFILE_SETTINGS_STATE,
   );
 
+  useEffect(() => {
+    const previewUrl = state.profileImagePreview;
+
+    if (!previewUrl) return;
+
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [state.profileImagePreview]);
+
   const updateNicknameDraft = (nickname: string) => {
-    dispatch({ type: 'UPDATE_NICKNAME_DRAFT', nickname });
+    dispatch({ type: 'UPDATE_NICKNAME', nickname });
   };
 
-  const resetNicknameDraft = () => {
-    dispatch({ type: 'RESET_NICKNAME_DRAFT' });
+  const selectProfileImage = (imageFile: File) => {
+    dispatch({
+      type: 'SELECT_PROFILE_IMAGE',
+      imageFile,
+      previewUrl: URL.createObjectURL(imageFile),
+    });
   };
 
-  const saveNickname = (nickname: string) => {
-    dispatch({ type: 'SAVE_NICKNAME', nickname });
+  const clearProfileImage = () => {
+    dispatch({ type: 'CLEAR_PROFILE_IMAGE' });
   };
 
-  const saveBaselineInfo = (ageGroup: AgeGroupTypes, gender: GenderTypes) => {
-    dispatch({ type: 'SAVE_BASELINE_INFO', ageGroup, gender });
-  };
-
-  const saveBaselineType = (baselineType: BaselineTypeTypes) => {
-    dispatch({ type: 'SAVE_BASELINE_TYPE', baselineType });
+  const resetProfileDraft = () => {
+    dispatch({ type: 'RESET_PROFILE_DRAFT' });
   };
 
   return (
     <ProfileSettingsContext.Provider
       value={{
-        memberProfile: state.memberProfile,
         nicknameDraft: state.nicknameDraft,
+        profileImageFile: state.profileImageFile,
+        profileImagePreview: state.profileImagePreview,
         updateNicknameDraft,
-        resetNicknameDraft,
-        saveNickname,
-        saveBaselineInfo,
-        saveBaselineType,
+        selectProfileImage,
+        clearProfileImage,
+        resetProfileDraft,
       }}
     >
-      {children}
+      <Outlet />
     </ProfileSettingsContext.Provider>
   );
 };

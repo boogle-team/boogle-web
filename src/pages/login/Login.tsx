@@ -1,20 +1,52 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { getOAuthLoginUrl } from '@/pages/login/apis/loginApis';
+import LoginToast from '@/pages/login/components/LoginToast';
 import SocialLogin from '@/pages/login/SocialLogin';
+import type {
+  LoginNavigationStateTypes,
+  SocialLoginProviderTypes,
+} from '@/pages/login/types/loginTypes';
+
+const LOGIN_TOAST_DURATION = 2500;
 
 const Login = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const navigationState = location.state as LoginNavigationStateTypes | null;
+  const [toastMessage, setToastMessage] = useState<string | null>(
+    () => navigationState?.toastMessage ?? null,
+  );
 
-  const handleSocialLogin = () => {
-    // TODO: 실제 소셜 로그인 연동 성공 후 온보딩 프로필 입력으로 이동.
-    navigate('/onboarding/profile');
+  useEffect(() => {
+    if (!navigationState?.toastMessage) return;
+
+    navigate('/login', { replace: true, state: null });
+  }, [navigationState?.toastMessage, navigate]);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+
+    const toastTimerId = window.setTimeout(() => {
+      setToastMessage(null);
+    }, LOGIN_TOAST_DURATION);
+
+    return () => window.clearTimeout(toastTimerId);
+  }, [toastMessage]);
+
+  const handleSocialLoginClick = (provider: SocialLoginProviderTypes) => {
+    window.location.assign(getOAuthLoginUrl(provider));
   };
 
   return (
-    <SocialLogin
-      onKakaoLogin={handleSocialLogin}
-      onGoogleLogin={handleSocialLogin}
-    />
+    <>
+      <SocialLogin
+        onKakaoLogin={() => handleSocialLoginClick('kakao')}
+        onGoogleLogin={() => handleSocialLoginClick('google')}
+      />
+      <LoginToast message={toastMessage} />
+    </>
   );
 };
 

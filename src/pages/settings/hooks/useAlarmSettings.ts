@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { MemberAlarmTypes } from '../types/settingsTypes';
+import type { MemberAlarmTypes } from '@/pages/settings/types/settingsTypes';
 
 const INITIAL_MEMBER_ALARM: MemberAlarmTypes = {
   recordAlarm: 'Y',
