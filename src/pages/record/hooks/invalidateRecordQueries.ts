@@ -1,14 +1,16 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import { CALENDAR_DAILY_RECORD_QUERY_KEY } from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
 import { CALENDAR_MONTH_QUERY_KEY } from '@/pages/calendar/hooks/useCalendarMonthQuery';
-import { HOME_DASHBOARD_QUERY_KEY } from '@/pages/home/hooks/useHomeDashboardQuery';
-import { HOME_QUERY_KEY } from '@/pages/home/hooks/useHomeQuery';
+import {
+  HOME_QUERY_KEY,
+  HOME_RECORD_SUMMARY_QUERY_KEY,
+} from '@/pages/home/constants/homeQueryKeys';
+import { DAILY_RECORD_QUERY_KEY } from '@/shared/hooks/useDailyRecordQuery';
 
 const RECORD_RELATED_QUERY_KEYS = [
   HOME_QUERY_KEY,
-  [HOME_DASHBOARD_QUERY_KEY],
-  [CALENDAR_DAILY_RECORD_QUERY_KEY],
+  HOME_RECORD_SUMMARY_QUERY_KEY,
+  DAILY_RECORD_QUERY_KEY,
   [CALENDAR_MONTH_QUERY_KEY],
 ] as const;
 

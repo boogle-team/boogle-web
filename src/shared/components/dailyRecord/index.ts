@@ -5,6 +5,8 @@ export type {
   BoogleRecordSummaryTypes,
   BoogleRecordTypes,
   BoogleRecordViewTypes,
+  DailyRecordResponseTypes,
+  DailyRecordTypes,
   FoodTypes,
   LifeRecordStatusTypes,
   LifeRecordSummaryTypes,
@@ -19,3 +21,4 @@ export {
   getLifeRecordView,
   isFutureDate,
 } from './utils/dailyRecordUtils';
+export { getDailyAutoTags } from './utils/getDailyAutoTags';

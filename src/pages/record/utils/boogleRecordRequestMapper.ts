@@ -13,6 +13,7 @@ import type {
 import type {
   BoogleRecordAmountCodeTypes,
   BowelFeelingCodeTypes,
+  PatchBoogleRecordRequestTypes,
   PostBoogleRecordRequestTypes,
   StoolColorCodeTypes,
 } from '@/pages/record/types/boogleRecordApiTypes';
@@ -68,6 +69,28 @@ export const buildBowelMovementAt = (time: RecordTimeValueTypes) => {
   return `${hour}:${minute}`;
 };
 
+const mapBowelFields = (
+  main: RecordFormStateTypes,
+  detail: DetailRecordFormStateTypes,
+) => {
+  if (main.stoolType === null) {
+    throw new Error('변 형태를 선택해야 부글 기록을 저장할 수 있습니다.');
+  }
+
+  return {
+    bowelMovementAt: buildBowelMovementAt(main.time),
+    stoolBristol: main.stoolType,
+    bowelFeeling: BOWEL_FEELING_CODE[main.feeling],
+    stomach: main.painLevel,
+    distension: DETAIL_SEVERITY_CODE[detail.bloating],
+    remainingFeeling: DETAIL_SEVERITY_CODE[detail.tenesmus],
+    urgency: DETAIL_SEVERITY_CODE[detail.urgency],
+    takenTime: detail.duration ? TAKEN_TIME[detail.duration] : null,
+    amount: detail.amount ? AMOUNT_CODE[detail.amount] : null,
+    color: detail.stoolColor ? STOOL_COLOR_CODE[detail.stoolColor] : null,
+  };
+};
+
 export const mapBoogleRecordRequest = ({
   recordDate,
   main,
@@ -82,22 +105,48 @@ export const mapBoogleRecordRequest = ({
     };
   }
 
-  if (main.stoolType === null) {
-    throw new Error('변 형태를 선택해야 부글 기록을 저장할 수 있습니다.');
+  const { takenTime, amount, color, ...requiredBowelFields } = mapBowelFields(
+    main,
+    detail,
+  );
+
+  return {
+    regDate: recordDate,
+    hasBowel: true,
+    ...requiredBowelFields,
+    ...(takenTime !== null && { takenTime }),
+    ...(amount !== null && { amount }),
+    ...(color !== null && { color }),
+  };
+};
+
+export const mapBoogleRecordPatchRequest = ({
+  recordDate,
+  main,
+  detail,
+}: MapBoogleRecordRequestParamTypes): PatchBoogleRecordRequestTypes => {
+  const hasBowel = main.bowelStatus === 'yes';
+
+  if (!hasBowel) {
+    return {
+      regDate: recordDate,
+      hasBowel: false,
+      bowelMovementAt: null,
+      stoolBristol: null,
+      bowelFeeling: null,
+      stomach: null,
+      distension: null,
+      remainingFeeling: null,
+      urgency: null,
+      takenTime: null,
+      amount: null,
+      color: null,
+    };
   }
 
   return {
     regDate: recordDate,
-    bowelMovementAt: buildBowelMovementAt(main.time),
     hasBowel: true,
-    stoolBristol: main.stoolType,
-    bowelFeeling: BOWEL_FEELING_CODE[main.feeling],
-    stomach: main.painLevel,
-    distension: DETAIL_SEVERITY_CODE[detail.bloating],
-    remainingFeeling: DETAIL_SEVERITY_CODE[detail.tenesmus],
-    urgency: DETAIL_SEVERITY_CODE[detail.urgency],
-    ...(detail.duration && { takenTime: TAKEN_TIME[detail.duration] }),
-    ...(detail.amount && { amount: AMOUNT_CODE[detail.amount] }),
-    ...(detail.stoolColor && { color: STOOL_COLOR_CODE[detail.stoolColor] }),
+    ...mapBowelFields(main, detail),
   };
 };

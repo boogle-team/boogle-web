@@ -10,10 +10,13 @@ interface ConfirmModalPropTypes {
   icon?: ReactNode;
   title: string;
   description?: string;
+  errorMessage?: string | null;
   cancelText?: string;
   confirmText: string;
   cancelVariant?: ButtonPropTypes['variant'];
   confirmVariant?: ButtonPropTypes['variant'];
+  isPending?: boolean;
+  isDismissDisabled?: boolean;
   onCancel?: () => void;
   onConfirm: () => void;
 }
@@ -23,21 +26,26 @@ const ConfirmModal = ({
   icon,
   title,
   description,
+  errorMessage,
   cancelText = '취소',
   confirmText,
   // Modal 사용 시 variant 변경 가능
   cancelVariant = 'neutral',
   confirmVariant = 'primary',
+  isPending = false,
+  isDismissDisabled = false,
   onCancel,
   onConfirm,
 }: ConfirmModalPropTypes) => {
   const titleId = useId();
   const descriptionId = useId();
+  const isCancelDisabled = isPending || isDismissDisabled;
+  const pendingConfirmText = `${confirmText} 중`;
 
   useBodyScrollLock(isOpen);
 
   useEffect(() => {
-    if (!isOpen || !onCancel) return;
+    if (!isOpen || !onCancel || isCancelDisabled) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onCancel();
@@ -45,14 +53,26 @@ const ConfirmModal = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onCancel]);
+  }, [isOpen, isCancelDisabled, onCancel]);
 
   if (!isOpen) return null;
+
+  const handleCancelClick = () => {
+    if (isCancelDisabled) return;
+
+    onCancel?.();
+  };
+
+  const handleConfirmClick = () => {
+    if (isPending) return;
+
+    onConfirm();
+  };
 
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-      onClick={onCancel}
+      onClick={handleCancelClick}
     >
       <FocusTrap
         focusTrapOptions={{
@@ -81,23 +101,30 @@ const ConfirmModal = ({
                 {description}
               </p>
             )}
+            {errorMessage && (
+              <p className="label text-semantic-danger" role="alert">
+                {errorMessage}
+              </p>
+            )}
           </div>
 
           <div className="flex w-full gap-2">
             {onCancel && (
               <Button
                 text={cancelText}
-                onClick={onCancel}
+                onClick={handleCancelClick}
                 variant={cancelVariant}
                 size="sm"
+                disabled={isCancelDisabled}
                 className="flex-1"
               />
             )}
             <Button
-              text={confirmText}
-              onClick={onConfirm}
+              text={isPending ? pendingConfirmText : confirmText}
+              onClick={handleConfirmClick}
               variant={confirmVariant}
               size="sm"
+              disabled={isPending}
               className="flex-1"
             />
           </div>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 // noBoogleSignal은 사용자가 기록 화면에서 배변 없음을 선택한 저장된 기록 상태다.
 export type BoogleRecordStatusTypes =
@@ -66,6 +67,14 @@ export interface LifeRecordTypes {
   foods: FoodTypes[];
   updatedAt?: string | null;
 }
+
+export interface DailyRecordTypes {
+  date: string;
+  boogleRecords: BoogleRecordTypes[];
+  lifeRecord: LifeRecordTypes | null;
+}
+
+export type DailyRecordResponseTypes = ApiResponseTypes<DailyRecordTypes>;
 
 export interface BoogleRecordSummaryTypes {
   id: number;

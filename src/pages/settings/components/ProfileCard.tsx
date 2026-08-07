@@ -1,13 +1,9 @@
-﻿import { BASELINE_TYPE_LABEL_MAP } from '../constants/settingsConstants';
-import type { MemberTypes } from '../types/settingsTypes';
-
 import { ChevronRight } from 'lucide-react';
+
+import { BASELINE_TYPE_LABEL_MAP } from '@/pages/settings/constants/settingsConstants';
 import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
 
-interface ProfileCardPropTypes {
-  member: MemberTypes;
-  onProfileEditClick: () => void;
-}
+import type { MemberTypes } from '@/pages/settings/types/settingsTypes';
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -26,8 +22,15 @@ const getJoinedDays = (regDate: string) => {
   );
 };
 
+interface ProfileCardPropTypes {
+  member: MemberTypes;
+  onProfileEditClick: () => void;
+}
+
 const ProfileCard = ({ member, onProfileEditClick }: ProfileCardPropTypes) => {
-  const baselineTypeLabel = BASELINE_TYPE_LABEL_MAP[member.baselineType];
+  const baselineTypeLabel = member.baselineType
+    ? BASELINE_TYPE_LABEL_MAP[member.baselineType]
+    : '기준선 미설정';
   const joinedDays = getJoinedDays(member.regDate);
 
   return (
@@ -38,7 +41,7 @@ const ProfileCard = ({ member, onProfileEditClick }: ProfileCardPropTypes) => {
             <img
               src={member.profileImage}
               alt={`${member.nickname} 프로필 이미지`}
-              className="h-9 w-9 object-contain"
+              className="h-full w-full object-cover"
             />
           ) : (
             <ProfileFace className="h-9 w-9" />

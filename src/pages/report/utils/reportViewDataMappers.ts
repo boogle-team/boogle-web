@@ -5,8 +5,11 @@ const DEFAULT_WEEK_COUNT = 4;
 
 export const mapMonthlyWeeklyTrends = (
   weeklyTrend: MonthlyWeeklyTrendResponseTypes[] = [],
-  weekCount = DEFAULT_WEEK_COUNT,
 ): WeeklyTrendTypes[] => {
+  const weekCount = Math.max(
+    DEFAULT_WEEK_COUNT,
+    ...weeklyTrend.map(({ weekIndex }) => weekIndex),
+  );
   const weeklyBowelCountByIndex = new Map(
     weeklyTrend.map(({ bowelCount, weekIndex }) => [weekIndex, bowelCount]),
   );

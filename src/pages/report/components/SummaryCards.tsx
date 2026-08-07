@@ -11,12 +11,12 @@ const SummaryCards = ({
 }: SummaryCardsPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
     <div className="grid grid-cols-3 divide-x divide-beige-7">
-      {summaries.map(({ description, label, value }) => (
+      {summaries.map(({ description, isHighlighted, label, value }) => (
         <article
           key={label}
           className="flex min-h-15 flex-col items-center justify-center text-center"
         >
-          <SummaryValue value={value} />
+          <SummaryValue value={value} isHighlighted={Boolean(isHighlighted)} />
           <span className="label mt-1 tracking-[-0.0175rem] text-gray-7">
             {label}
           </span>
@@ -30,21 +30,21 @@ const SummaryCards = ({
 );
 
 interface SummaryValuePropTypes {
+  isHighlighted: boolean;
   value: string;
 }
 
-const SummaryValue = ({ value }: SummaryValuePropTypes) => {
+const SummaryValue = ({ isHighlighted, value }: SummaryValuePropTypes) => {
   const unitMatch = value.match(/^(\d+(?:\.\d+)?)(회|일|%)$/);
 
   if (unitMatch) {
     const [, amount, unit] = unitMatch;
-    const isHighlightedValue = value === '5회';
 
     return (
       <strong className="inline-flex items-baseline justify-center">
         <span
           className={`text-[1.375rem] font-semibold leading-[130%] tracking-[-0.06875rem] ${
-            isHighlightedValue ? 'text-orange-6' : 'text-gray-10'
+            isHighlighted ? 'text-orange-6' : 'text-gray-10'
           }`}
         >
           {amount}

@@ -9,8 +9,8 @@ import { useUpdateBoogleRecordMutation } from '@/pages/record/hooks/useUpdateBoo
 import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButtons';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
-import type { PostBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
-import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
+import type { PatchBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
+import { mapBoogleRecordPatchRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
 import { mapBoogleRecordResponseToDraft } from '@/pages/record/utils/boogleRecordResponseMapper';
 
 import BowelStatusField from '../main/components/BowelStatusField';
@@ -87,10 +87,10 @@ const Edit = () => {
 
     setIsRequestMappingError(false);
 
-    let request: PostBoogleRecordRequestTypes;
+    let request: PatchBoogleRecordRequestTypes;
 
     try {
-      request = mapBoogleRecordRequest({
+      request = mapBoogleRecordPatchRequest({
         recordDate,
         main: formState,
         detail: detailFormState,

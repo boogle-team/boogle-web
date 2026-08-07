@@ -47,8 +47,20 @@ export interface PostBoogleRecordResponseTypes {
 }
 
 export type GetBoogleRecordResponseTypes = PostBoogleRecordResponseTypes;
-export type PatchBoogleRecordRequestTypes =
-  Partial<PostBoogleRecordRequestTypes>;
+export interface PatchBoogleRecordRequestTypes {
+  regDate?: string;
+  bowelMovementAt?: string | null;
+  hasBowel?: boolean;
+  stoolBristol?: number | null;
+  bowelFeeling?: BowelFeelingCodeTypes | null;
+  stomach?: number | null;
+  distension?: BoogleRecordSeverityCodeTypes | null;
+  remainingFeeling?: BoogleRecordSeverityCodeTypes | null;
+  urgency?: BoogleRecordSeverityCodeTypes | null;
+  takenTime?: number | null;
+  amount?: BoogleRecordAmountCodeTypes | null;
+  color?: StoolColorCodeTypes | null;
+}
 export type PatchBoogleRecordResponseTypes = PostBoogleRecordResponseTypes;
 
 export interface DeleteBoogleRecordResponseTypes {

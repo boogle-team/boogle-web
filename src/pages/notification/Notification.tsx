@@ -1,25 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 
+import NotificationList from '@/pages/notification/components/NotificationList';
+import { NOTIFICATION_DESTINATION_MAP } from '@/pages/notification/constants/notificationConstants';
+import { useNotificationReadMutation } from '@/pages/notification/hooks/useNotificationReadMutation';
+import { useNotificationsQuery } from '@/pages/notification/hooks/useNotificationsQuery';
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import NotificationList from './components/NotificationList';
-import { NOTIFICATION_DESTINATION_MAP } from './constants/notificationConstants';
-import { useNotifications } from './hooks/useNotifications';
-
-import type { NotificationItemTypes } from './types/notificationTypes';
+import type { NotificationItemTypes } from '@/pages/notification/types/notificationTypes';
 
 const Notification = () => {
   const navigate = useNavigate();
-  const { notifications, isLoading, isError, refetch, markNotificationAsRead } =
-    useNotifications();
+  const { notifications, isLoading, isError, refetch } =
+    useNotificationsQuery();
+  const { markNotificationAsRead } = useNotificationReadMutation();
 
   const handleBackButtonClick = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {
-    markNotificationAsRead(notification.id);
-    navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo]);
+    if (!notification.isRead) {
+      markNotificationAsRead(notification.id);
+    }
+
+    navigate(NOTIFICATION_DESTINATION_MAP[notification.linkTo] ?? '/');
   };
 
   return (
@@ -31,7 +35,7 @@ const Notification = () => {
         className="mt-[3.06rem] bg-beige-5"
       />
 
-      <main className="flex-1 bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <NotificationList
           notifications={notifications}
           status={isLoading ? 'loading' : isError ? 'error' : 'success'}

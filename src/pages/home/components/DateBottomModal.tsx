@@ -14,15 +14,7 @@ import {
   type CalendarRecordMapTypes,
 } from '@/shared/components/calendar';
 
-interface DateBottomModalPropTypes {
-  isOpen: boolean;
-  selectedDate: string;
-  todayDate: string;
-  recordMap: CalendarRecordMapTypes;
-  markConfig: CalendarMarkConfigMapTypes;
-  onClose: () => void;
-  onSelectDate: (date: string) => void;
-}
+const RECORD_SUMMARY_BASE_DAY = 15;
 
 interface DateBottomModalSheetPropTypes {
   selectedDate: string;
@@ -31,6 +23,7 @@ interface DateBottomModalSheetPropTypes {
   markConfig: CalendarMarkConfigMapTypes;
   onClose: () => void;
   onSelectDate: (date: string) => void;
+  onVisibleMonthChange: (baseDate: string) => void;
 }
 
 const DateBottomModalSheet = ({
@@ -40,10 +33,17 @@ const DateBottomModalSheet = ({
   markConfig,
   onClose,
   onSelectDate,
+  onVisibleMonthChange,
 }: DateBottomModalSheetPropTypes) => {
   const [currentDate, setCurrentDate] = useState(() =>
     dayjs(selectedDate).startOf('month'),
   );
+
+  useEffect(() => {
+    onVisibleMonthChange(
+      currentDate.date(RECORD_SUMMARY_BASE_DAY).format(DATE_FORMAT),
+    );
+  }, [currentDate, onVisibleMonthChange]);
 
   const handleModalContentClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -113,6 +113,17 @@ const DateBottomModalSheet = ({
   );
 };
 
+interface DateBottomModalPropTypes {
+  isOpen: boolean;
+  selectedDate: string;
+  todayDate: string;
+  recordMap: CalendarRecordMapTypes;
+  markConfig: CalendarMarkConfigMapTypes;
+  onClose: () => void;
+  onSelectDate: (date: string) => void;
+  onVisibleMonthChange: (baseDate: string) => void;
+}
+
 const DateBottomModal = ({
   isOpen,
   selectedDate,
@@ -121,6 +132,7 @@ const DateBottomModal = ({
   markConfig,
   onClose,
   onSelectDate,
+  onVisibleMonthChange,
 }: DateBottomModalPropTypes) => {
   useBodyScrollLock(isOpen);
 
@@ -163,6 +175,7 @@ const DateBottomModal = ({
               markConfig={markConfig}
               onClose={onClose}
               onSelectDate={onSelectDate}
+              onVisibleMonthChange={onVisibleMonthChange}
             />
           </FocusTrap>
         </motion.div>

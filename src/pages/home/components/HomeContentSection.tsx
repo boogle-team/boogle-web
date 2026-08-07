@@ -13,6 +13,9 @@ interface HomeContentSectionPropTypes {
   selectedDateContent: HomeSelectedDateContentTypes;
   selectedDate: string;
   todayDate: string;
+  isDailyRecordLoading: boolean;
+  isDailyRecordError: boolean;
+  dailyRecordErrorMessage: string;
   onBoogleRecordCreateClick: () => void;
   onBoogleRecordEditClick: (recordId: number) => void;
   onLifeRecordCreateClick: () => void;
@@ -24,6 +27,9 @@ const HomeContentSection = ({
   selectedDateContent,
   selectedDate,
   todayDate,
+  isDailyRecordLoading,
+  isDailyRecordError,
+  dailyRecordErrorMessage,
   onBoogleRecordCreateClick,
   onBoogleRecordEditClick,
   onLifeRecordCreateClick,
@@ -41,8 +47,12 @@ const HomeContentSection = ({
     id: `${tagLabel}-${tagIndex}`,
     label: tagLabel,
   }));
+  const shouldShowDailyRecordContent =
+    !isDailyRecordLoading && !isDailyRecordError;
   const shouldShowSectionDivider =
-    tagItems.length > 0 && Boolean(weeklyPattern);
+    shouldShowDailyRecordContent &&
+    tagItems.length > 0 &&
+    Boolean(weeklyPattern);
   const shouldShowMessageBanner = isHomeToday(selectedDate, todayDate);
 
   return (
@@ -51,18 +61,31 @@ const HomeContentSection = ({
         {shouldShowMessageBanner ? (
           <HomeMessageBanner content={messageBannerContent} />
         ) : null}
-        <div className="flex flex-col gap-7">
-          <DailyBoogleRecordCard
-            view={boogleRecordView}
-            onCreateClick={onBoogleRecordCreateClick}
-            onEditClick={onBoogleRecordEditClick}
-          />
-          <DailyLifeRecordCard
-            view={lifeRecordView}
-            onCreateClick={onLifeRecordCreateClick}
-            onEditClick={onLifeRecordEditClick}
-          />
-        </div>
+        {isDailyRecordLoading ? (
+          <div className="rounded-xl bg-beige-1 px-4 py-6 text-center body-m-bold text-gray-8">
+            기록을 불러오는 중이에요
+          </div>
+        ) : null}
+        {isDailyRecordError ? (
+          <div className="rounded-xl bg-beige-1 px-4 py-6 text-center text-gray-8">
+            <p className="body-m-bold">기록 정보를 불러오지 못했어요</p>
+            <p className="pt-1 caption">{dailyRecordErrorMessage}</p>
+          </div>
+        ) : null}
+        {shouldShowDailyRecordContent ? (
+          <div className="flex flex-col gap-7">
+            <DailyBoogleRecordCard
+              view={boogleRecordView}
+              onCreateClick={onBoogleRecordCreateClick}
+              onEditClick={onBoogleRecordEditClick}
+            />
+            <DailyLifeRecordCard
+              view={lifeRecordView}
+              onCreateClick={onLifeRecordCreateClick}
+              onEditClick={onLifeRecordEditClick}
+            />
+          </div>
+        ) : null}
         <TagsSection
           icon={<Sparkle />}
           title="이날의 태그"

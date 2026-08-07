@@ -13,6 +13,8 @@ export type {
 } from '@/shared/components/tagSection/TagsSection';
 export { default as TooltipPopover } from '@/shared/components/TooltipPopover';
 export type { TooltipPopoverPropTypes } from '@/shared/components/TooltipPopover';
+export { default as LoadingSpinner } from '@/shared/components/LoadingSpinner';
+export type { LoadingSpinnerPropTypes } from '@/shared/components/LoadingSpinner';
 export {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,
