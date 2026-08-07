@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes } from 'react';
 
 import GoogleLogo from '@/shared/assets/icons/googleLogo.svg';
 import KakaoLogo from '@/shared/assets/icons/kakaoLogo.svg';
+import type { SocialLoginProviderTypes } from '@/pages/login/types/loginTypes';
 
 const SOCIAL_LOGIN_BUTTON_CONFIGS = {
   kakao: {
@@ -15,8 +16,6 @@ const SOCIAL_LOGIN_BUTTON_CONFIGS = {
     className: 'bg-gray-1',
   },
 } as const;
-
-type SocialLoginProviderTypes = keyof typeof SOCIAL_LOGIN_BUTTON_CONFIGS;
 
 interface SocialLoginButtonPropTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
   provider: SocialLoginProviderTypes;

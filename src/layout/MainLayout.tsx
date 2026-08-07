@@ -5,13 +5,17 @@ const MainLayout = () => {
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const isGuideDetailPage = pathname === '/guide' && searchParams.has('id');
+  const isRecordFormPage =
+    pathname.startsWith('/boogle-record/') ||
+    pathname.startsWith('/life-record/');
+  const isBottomNavigationHidden = isGuideDetailPage || isRecordFormPage;
 
   return (
     <div className="min-h-screen">
-      <main className={isGuideDetailPage ? '' : 'pb-[10rem]'}>
+      <main className={isBottomNavigationHidden ? '' : 'pb-[10rem]'}>
         <Outlet />
       </main>
-      {!isGuideDetailPage && <BottomNavigation />}
+      {!isBottomNavigationHidden && <BottomNavigation />}
     </div>
   );
 };

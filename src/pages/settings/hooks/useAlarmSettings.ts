@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
+import { useNotificationSettingMutation } from '@/pages/settings/hooks/useNotificationSettingMutation';
+import { useNotificationSettingsQuery } from '@/pages/settings/hooks/useNotificationSettingsQuery';
+import type {
+  MemberAlarmTypes,
+  YnTypes,
+} from '@/pages/settings/types/settingsTypes';
 import { requestFirebasePushToken } from '@/shared/apis/firebaseMessaging';
 import { usePushTokenRegistrationMutation } from '@/shared/hooks/usePushTokenRegistrationMutation';
-
-import { useNotificationSettingMutation } from './useNotificationSettingMutation';
-import { useNotificationSettingsQuery } from './useNotificationSettingsQuery';
-
-import type { MemberAlarmTypes, YnTypes } from '../types/settingsTypes';
 import type { PushTokenRequestStatusTypes } from '@/shared/types/firebaseMessagingTypes';
 
 const DISABLED_MEMBER_ALARM: MemberAlarmTypes = {

@@ -5,6 +5,7 @@ import DateCellRecordCompleteCharacter from '@/pages/home/assets/illustrations/d
 import DateCellOnlyBoogleRecord from '@/pages/home/assets/illustrations/dateCellOnlyBoogleRecord.svg?react';
 import DateCellNoBoogleCharacter from '@/pages/home/assets/illustrations/dateCellNoBoogleCharacter.svg?react';
 import DateCellOnlyDailyRecord from '@/pages/home/assets/illustrations/dateCellOnlyDailyRecord.svg?react';
+import DateCellDailyRecordWithNoBowel from '@/pages/home/assets/illustrations/dateCellDailyRecordWithNoBowel.svg?react';
 import type { HomeDateRecordStatusTypes } from '@/pages/home/types/homeTypes';
 import { isHomeSaturday, isHomeSunday } from '@/pages/home/utils/homeDateUtils';
 import { getWeekdayLabel } from '@/shared/utils/dateLabelUtils';
@@ -12,6 +13,8 @@ import { getWeekdayLabel } from '@/shared/utils/dateLabelUtils';
 interface CalendarChipPropTypes {
   date: string;
   recordStatus: HomeDateRecordStatusTypes;
+  /** 기록 요약이 아직 확정되지 않은 날짜 (조회 중·실패·조회 범위 밖) */
+  isStatusPending?: boolean;
   isSelected: boolean;
   isToday: boolean;
   onSelectDate?: (date: string) => void;
@@ -27,6 +30,7 @@ const RECORD_STATUS_ICON_MAP: Record<
   boogleOnly: DateCellOnlyBoogleRecord,
   noBoogle: DateCellNoBoogleCharacter,
   dailyOnly: DateCellOnlyDailyRecord,
+  noBoogleWithDaily: DateCellDailyRecordWithNoBowel,
 };
 
 const getDayLabelClassName = (date: string, isToday: boolean) => {
@@ -48,6 +52,7 @@ const getDayLabelClassName = (date: string, isToday: boolean) => {
 const CalendarChip = ({
   date,
   recordStatus,
+  isStatusPending = false,
   isSelected,
   isToday,
   onSelectDate,
@@ -97,10 +102,17 @@ const CalendarChip = ({
           <span className="caption relative z-20 text-gray-9">
             {dateNumber}
           </span>
-          <RecordStatusIcon
-            aria-hidden="true"
-            className={`${statusIconClassName} relative z-20 overflow-visible`}
-          />
+          {isStatusPending ? (
+            <span
+              aria-hidden="true"
+              className={`${statusIconClassName} relative z-20`}
+            />
+          ) : (
+            <RecordStatusIcon
+              aria-hidden="true"
+              className={`${statusIconClassName} relative z-20 overflow-visible`}
+            />
+          )}
         </span>
       </span>
     </>

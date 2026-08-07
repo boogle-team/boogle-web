@@ -1,18 +1,23 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ProfileCard from './components/ProfileCard';
-import SettingsNotice from './components/SettingsNotice';
-import SettingsRow from './components/SettingsRow';
-import SettingsSection from './components/SettingsSection';
-import ToggleSwitch from './components/ToggleSwitch';
-import { APP_VERSION, PROVIDER_LABEL_MAP } from './constants/settingsConstants';
-import useAlarmSettings from './hooks/useAlarmSettings';
-import useProfileSettings from './hooks/useProfileSettings';
+import ProfileCard from '@/pages/settings/components/ProfileCard';
+import SettingsNotice from '@/pages/settings/components/SettingsNotice';
+import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import SettingsRow from '@/pages/settings/components/SettingsRow';
+import SettingsSection from '@/pages/settings/components/SettingsSection';
+import ToggleSwitch from '@/pages/settings/components/ToggleSwitch';
+import {
+  APP_VERSION,
+  PROVIDER_LABEL_MAP,
+} from '@/pages/settings/constants/settingsConstants';
+import useAlarmSettings from '@/pages/settings/hooks/useAlarmSettings';
+import useLogout from '@/pages/settings/hooks/useLogout';
+import { useUserQuery } from '@/pages/settings/hooks/useSettingsQueries';
 
-import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import ConfirmModal from '@/shared/components/ConfirmModal';
-import { usePushTokenCleanup } from '@/shared/hooks/usePushTokenCleanup';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
+import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 
 import BellIcon from '@/shared/assets/icons/settingBellIcon.svg?react';
 import ErrorIcon from '@/shared/assets/icons/settingErrorIcon.svg?react';
@@ -22,36 +27,21 @@ import PersonIcon from '@/shared/assets/icons/settingPersonIcon.svg?react';
 import ReportIcon from '@/shared/assets/icons/settingReportIcon.svg?react';
 import ShieldIcon from '@/shared/assets/icons/settingShieldIcon.svg?react';
 
-import type { MemberTypes, SocialAccountTypes } from './types/settingsTypes';
-
-const MOCK_MEMBER: MemberTypes = {
-  nickname: '이연수',
-  profileImage: null,
-  gender: 'F',
-  baselineType: 'R',
-  regDate: '2026-07-08T00:00:00+09:00',
-};
-
-const MOCK_SOCIAL_ACCOUNT: SocialAccountTypes = {
-  provider: 'K',
-  maskedEmail: 'boogle****@kakao.com',
-};
-
 const Settings = () => {
   const navigate = useNavigate();
-  const { memberProfile } = useProfileSettings();
+  const { data: member, isLoading, isError, refetch } = useUserQuery();
   const {
     memberAlarm,
     toggleAlarm,
     isAlarmSettingDisabled,
     alarmNoticeMessage,
   } = useAlarmSettings();
-  const { cleanupPushToken } = usePushTokenCleanup();
+  const { logoutErrorMessage, isLoggingOut, clearLogoutError, logout } =
+    useLogout();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [isLogoutPending, setIsLogoutPending] = useState(false);
 
   const handleBackClick = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const handleProfileEditClick = () => {
@@ -75,48 +65,46 @@ const Settings = () => {
   };
 
   const handleLogoutClick = () => {
+    clearLogoutError();
     setIsLogoutModalOpen(true);
   };
 
   const handleLogoutModalClose = () => {
-    if (isLogoutPending) {
-      return;
-    }
-
     setIsLogoutModalOpen(false);
   };
 
-  const handleLogoutConfirm = async () => {
-    if (isLogoutPending) {
-      return;
-    }
-
-    setIsLogoutPending(true);
-
-    try {
-      await cleanupPushToken();
-    } finally {
-      // TODO: 로그인 API 병합 후 서버 로그아웃 호출을 함께 연결합니다.
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      setIsLogoutModalOpen(false);
-      setIsLogoutPending(false);
-      navigate('/login', { replace: true });
-    }
+  const handleLogoutConfirm = () => {
+    setIsLogoutModalOpen(false);
+    void logout();
   };
 
   const handleDeleteAccountClick = () => {
     navigate('/settings/delete-account');
   };
 
-  const member = {
-    ...MOCK_MEMBER,
-    nickname: memberProfile.nickname,
-    gender: memberProfile.gender,
-    baselineType: memberProfile.baselineType,
-  };
-  const isSensitiveConsentMenuVisible = member.gender !== 'M';
-  const providerLabel = PROVIDER_LABEL_MAP[MOCK_SOCIAL_ACCOUNT.provider];
+  const isSensitiveConsentMenuVisible =
+    member?.gender === 'F' || member?.gender === 'N';
+  const primarySocialAccount = member?.socialAccounts[0];
+  const providerLabel = primarySocialAccount
+    ? PROVIDER_LABEL_MAP[primarySocialAccount.provider]
+    : '연결 정보 없음';
+
+  if (isLoading || isError || !member) {
+    return (
+      <SettingsQueryStatePage
+        title="설정"
+        isLoading={isLoading}
+        loadingMessage="내 정보를 불러오고 있어요."
+        errorMessage="내 정보를 불러오지 못했어요."
+        onBackButtonClick={handleBackClick}
+        onRetryClick={() => void refetch()}
+        topNavigationClassName="mt-[3.06rem] bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
+        containerClassName="bg-beige-5"
+        mainClassName="bg-beige-5"
+        isBorderVisible={false}
+      />
+    );
+  }
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-5">
@@ -216,6 +204,12 @@ const Settings = () => {
           <SettingsRow title="로그아웃" onClick={handleLogoutClick} />
         </SettingsSection>
 
+        {logoutErrorMessage && (
+          <p role="alert" className="caption mt-2 px-2 text-semantic-danger">
+            {logoutErrorMessage}
+          </p>
+        )}
+
         <div className="mt-2 overflow-hidden rounded-2xl bg-white">
           <SettingsRow
             title="회원탈퇴"
@@ -234,11 +228,12 @@ const Settings = () => {
         title="로그아웃 할까요?"
         description="다시 로그인하면 기록은 그대로 남아있어요"
         cancelText="다음에 할게요"
-        confirmText={isLogoutPending ? '로그아웃 중...' : '로그아웃 하기'}
-        isConfirmDisabled={isLogoutPending}
+        confirmText="로그아웃 하기"
         onCancel={handleLogoutModalClose}
-        onConfirm={() => void handleLogoutConfirm()}
+        onConfirm={handleLogoutConfirm}
       />
+
+      {isLoggingOut && <LoadingSpinner hasBackdrop message="로그아웃 중..." />}
     </div>
   );
 };

@@ -10,6 +10,6 @@ export const NOTIFICATION_DESTINATION_MAP: Record<
   string
 > = {
   GUIDE_WARNING: '/guide?guideId=1001',
-  HOME: '/',
+  HOME: '/home',
   REPORT: '/report',
 };

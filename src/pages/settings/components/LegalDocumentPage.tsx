@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
 
-import type { LegalDocumentTypes } from '../constants/legalDocumentConstants';
-import SettingsNotice from './SettingsNotice';
+import SettingsNotice from '@/pages/settings/components/SettingsNotice';
+
+import type { LegalDocumentTypes } from '@/pages/settings/constants/legalDocumentConstants';
 
 interface LegalDocumentPagePropTypes {
   document: LegalDocumentTypes;

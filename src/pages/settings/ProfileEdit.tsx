@@ -1,36 +1,54 @@
+import { useRef, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '@/shared/components/Button';
-import InputText from '@/shared/components/InputText';
-import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
-
-import ProfileInfoRow from './components/ProfileInfoRow';
-import SettingsBottomAction from './components/SettingsBottomAction';
-import SettingsNotice from './components/SettingsNotice';
+import ProfileInfoRow from '@/pages/settings/components/ProfileInfoRow';
+import SettingsBottomAction from '@/pages/settings/components/SettingsBottomAction';
+import SettingsNotice from '@/pages/settings/components/SettingsNotice';
+import SettingsQueryStatePage from '@/pages/settings/components/SettingsQueryStatePage';
+import UnsavedChangesToast from '@/pages/settings/components/UnsavedChangesToast';
 import {
   AGE_GROUP_LABEL_MAP,
   BASELINE_TYPE_DETAIL_LABEL_MAP,
   GENDER_LABEL_MAP,
   NICKNAME_MAX_LENGTH,
-} from './constants/settingsConstants';
-import useProfileSettings from './hooks/useProfileSettings';
-
-import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
+} from '@/pages/settings/constants/settingsConstants';
+import useProfileSettings from '@/pages/settings/hooks/useProfileSettings';
+import useUnsavedChangesToast from '@/pages/settings/hooks/useUnsavedChangesToast';
 import Camera from '@/shared/assets/icons/camera.svg?react';
+import ProfileFace from '@/shared/assets/illustrations/profileFace.svg?react';
+import Button from '@/shared/components/Button';
+import InputText from '@/shared/components/InputText';
+import DefaultTopNavigation from '@/shared/components/topNavigation/DefaultTopNavigation';
+import { PROFILE_IMAGE_ACCEPT_TYPES } from '@/shared/constants/profileImageConstants';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
   const {
     memberProfile,
     nicknameDraft,
+    profileImagePreview,
+    profileImageErrorMessage,
+    errorMessage,
+    isProfileImageValid,
+    isModified,
+    isLoading,
+    isError,
+    isSaving,
     updateNicknameDraft,
-    resetNicknameDraft,
-    saveNickname,
+    selectProfileImage,
+    resetProfileDraft,
+    saveProfile,
+    refetch,
   } = useProfileSettings();
+  const { isToastVisible, dismissToast, handleBackAttempt } =
+    useUnsavedChangesToast();
+  const profileImageInputRef = useRef<HTMLInputElement>(null);
 
   const handleBackClick = () => {
-    resetNicknameDraft();
-    navigate('/settings');
+    handleBackAttempt(isModified, () => {
+      resetProfileDraft();
+      navigate('/settings');
+    });
   };
 
   const handleBowelRhythmClick = () => {
@@ -48,16 +66,74 @@ const ProfileEdit = () => {
   const isNicknameEmpty = !nicknameDraft.trim();
   const isNicknameTooLong = nicknameDraft.length > NICKNAME_MAX_LENGTH;
 
-  const handleSaveClick = () => {
+  const handleProfileImageClick = () => {
+    profileImageInputRef.current?.click();
+  };
+
+  const handleProfileImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const imageFile = event.target.files?.[0];
+
+    if (imageFile) {
+      selectProfileImage(imageFile);
+      dismissToast();
+    }
+
+    event.target.value = '';
+  };
+
+  const handleNicknameChange = (nickname: string) => {
+    updateNicknameDraft(nickname);
+    dismissToast();
+  };
+
+  const handleSaveClick = async () => {
     const trimmedNickname = nicknameDraft.trim();
 
-    if (!trimmedNickname || isNicknameTooLong) {
+    if (
+      !trimmedNickname ||
+      isNicknameTooLong ||
+      !isProfileImageValid ||
+      isSaving
+    ) {
       return;
     }
 
-    saveNickname(trimmedNickname);
-    navigate('/settings');
+    dismissToast();
+
+    try {
+      await saveProfile();
+      resetProfileDraft();
+      navigate('/settings');
+    } catch {
+      // 오류 문구는 프로필 상태 훅에서 사용자용 문구로 변환한다.
+    }
   };
+
+  const profileImage = profileImagePreview ?? memberProfile?.profileImage;
+  const baselineTypeLabel = memberProfile?.baselineType
+    ? BASELINE_TYPE_DETAIL_LABEL_MAP[memberProfile.baselineType]
+    : '미설정';
+  const ageGroupLabel = memberProfile?.ageGroup
+    ? AGE_GROUP_LABEL_MAP[memberProfile.ageGroup]
+    : '미설정';
+  const genderLabel = memberProfile?.gender
+    ? GENDER_LABEL_MAP[memberProfile.gender]
+    : '미설정';
+
+  if (isLoading || isError || !memberProfile) {
+    return (
+      <SettingsQueryStatePage
+        title="프로필 수정"
+        isLoading={isLoading}
+        loadingMessage="프로필을 불러오고 있어요."
+        errorMessage="프로필을 불러오지 못했어요."
+        onBackButtonClick={handleBackClick}
+        onRetryClick={() => void refetch()}
+        topNavigationClassName="mt-[3.06rem] bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
+        isBorderVisible={false}
+      />
+    );
+  }
 
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
@@ -69,19 +145,44 @@ const ProfileEdit = () => {
       />
 
       <main className="flex-1 bg-beige-1 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex flex-col items-center gap-2">
           <div className="relative">
-            <div className="flex h-30 w-30 items-center justify-center rounded-full bg-orange-3">
-              <ProfileFace className="h-20 w-20" />
+            <div className="flex h-30 w-30 items-center justify-center overflow-hidden rounded-full bg-orange-3">
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="프로필 이미지 미리보기"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <ProfileFace className="h-20 w-20" />
+              )}
             </div>
 
             <button
               type="button"
+              aria-label="프로필 이미지 선택"
+              onClick={handleProfileImageClick}
               className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow"
             >
               <Camera className="text-gray-7" />
             </button>
+            <input
+              ref={profileImageInputRef}
+              type="file"
+              accept={PROFILE_IMAGE_ACCEPT_TYPES}
+              className="hidden"
+              onChange={handleProfileImageChange}
+            />
           </div>
+          {profileImageErrorMessage && (
+            <p
+              role="alert"
+              className="caption text-center text-semantic-danger"
+            >
+              {profileImageErrorMessage}
+            </p>
+          )}
         </div>
         <div className="px-4">
           <div className="mt-8">
@@ -89,7 +190,7 @@ const ProfileEdit = () => {
 
             <InputText
               value={nicknameDraft}
-              onChange={updateNicknameDraft}
+              onChange={handleNicknameChange}
               placeholder="닉네임을 입력해주세요"
               maxCount={NICKNAME_MAX_LENGTH}
               isError={isNicknameTooLong}
@@ -106,9 +207,7 @@ const ProfileEdit = () => {
             <div className="overflow-hidden rounded-2xl border border-gray-4 bg-white">
               <ProfileInfoRow
                 title="평소 배변 리듬"
-                value={
-                  BASELINE_TYPE_DETAIL_LABEL_MAP[memberProfile.baselineType]
-                }
+                value={baselineTypeLabel}
                 onClick={handleBowelRhythmClick}
               />
             </div>
@@ -116,13 +215,13 @@ const ProfileEdit = () => {
             <div className="mt-2 divide-y divide-gray-4 overflow-hidden rounded-2xl border border-gray-4 bg-white">
               <ProfileInfoRow
                 title="나이대"
-                value={AGE_GROUP_LABEL_MAP[memberProfile.ageGroup]}
+                value={ageGroupLabel}
                 onClick={handleAgeGroupClick}
               />
 
               <ProfileInfoRow
                 title="성별"
-                value={GENDER_LABEL_MAP[memberProfile.gender]}
+                value={genderLabel}
                 onClick={handleGenderClick}
               />
             </div>
@@ -135,16 +234,30 @@ const ProfileEdit = () => {
             </div>
           </SettingsNotice>
 
+          {errorMessage && (
+            <p role="alert" className="caption mt-4 px-2 text-semantic-danger">
+              {errorMessage}
+            </p>
+          )}
+
           <SettingsBottomAction>
             <Button
-              text="저장하기"
+              text={isSaving ? '저장 중...' : '저장하기'}
               variant="primary"
-              disabled={isNicknameEmpty || isNicknameTooLong}
+              disabled={
+                !memberProfile ||
+                isNicknameEmpty ||
+                isNicknameTooLong ||
+                !isProfileImageValid ||
+                isSaving
+              }
               onClick={handleSaveClick}
             />
           </SettingsBottomAction>
         </div>
       </main>
+
+      <UnsavedChangesToast isVisible={isToastVisible} />
     </div>
   );
 };

@@ -15,7 +15,7 @@ const Notification = () => {
   const { markNotificationAsRead } = useNotificationReadMutation();
 
   const handleBackButtonClick = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const handleNotificationClick = (notification: NotificationItemTypes) => {

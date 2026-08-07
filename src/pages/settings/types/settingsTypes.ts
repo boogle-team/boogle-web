@@ -1,33 +1,41 @@
-export type GenderTypes = 'M' | 'F' | 'N';
+import type {
+  UserAgeGroupTypes,
+  UserBaselineTypeTypes,
+  UserGenderTypes,
+  UserProfileImageSourceTypes,
+} from '@/shared/types/userTypes';
 
-export type ProviderTypes = 'G' | 'K' | 'N';
+export type GenderTypes = UserGenderTypes;
 
-export type BaselineTypeTypes = 'R' | 'C' | 'L' | 'U';
+export type ProviderTypes = 'GOOGLE' | 'KAKAO';
 
-export type AgeGroupTypes = 10 | 20 | 30 | 40;
+export type BaselineTypeTypes = UserBaselineTypeTypes;
+
+export type AgeGroupTypes = UserAgeGroupTypes;
 
 export type YnTypes = 'Y' | 'N';
 
-export type TfTypes = 'T' | 'F';
-
-export interface MemberProfileTypes {
-  nickname: string;
-  ageGroup: AgeGroupTypes;
-  gender: GenderTypes;
-  baselineType: BaselineTypeTypes;
-}
+export type ProfileImageSourceTypes = UserProfileImageSourceTypes;
 
 export interface MemberTypes {
+  id: number;
+  email: string;
   nickname: string;
   profileImage: string | null;
-  gender: GenderTypes;
-  baselineType: BaselineTypeTypes;
+  profileImageSource: ProfileImageSourceTypes;
+  gender: GenderTypes | null;
+  ageGroup: AgeGroupTypes | null;
+  baselineType: BaselineTypeTypes | null;
+  sensitiveInfoAgreed: boolean;
+  onboardingCompleted: boolean;
+  socialAccounts: SocialAccountTypes[];
   regDate: string;
 }
 
 export interface SocialAccountTypes {
   provider: ProviderTypes;
   maskedEmail: string;
+  linkedAt: string;
 }
 
 export interface MemberAlarmTypes {

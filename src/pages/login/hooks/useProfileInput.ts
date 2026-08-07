@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { PROFILE_IMAGE_ERROR_MESSAGE } from '@/shared/constants/profileImageConstants';
+import { isValidProfileImage } from '@/shared/utils/profileImageValidation';
 import {
   NICKNAME_MAX_LENGTH,
   PROFILE_TOTAL_STEPS,
@@ -34,6 +36,9 @@ const useProfileInput = ({
   const [profileImagePreviewUrl, setProfileImagePreviewUrl] = useState<
     string | null
   >(null);
+  const [profileImageErrorMessage, setProfileImageErrorMessage] = useState<
+    string | null
+  >(null);
   const [bowelRhythm, setBowelRhythm] = useState<BowelRhythmValueTypes | null>(
     null,
   );
@@ -47,6 +52,7 @@ const useProfileInput = ({
 
   const isNicknameValid =
     nickname.trim().length > 0 && nickname.length <= NICKNAME_MAX_LENGTH;
+  const isProfileImageValid = profileImageErrorMessage === null;
   const isAgeGenderValid = Boolean(ageGroup && gender);
 
   const handleNextButtonClick = () => {
@@ -70,12 +76,18 @@ const useProfileInput = ({
   };
 
   const handleProfileImageChange = (file: File) => {
+    if (!isValidProfileImage(file)) {
+      setProfileImageErrorMessage(PROFILE_IMAGE_ERROR_MESSAGE);
+      return;
+    }
+
     const nextProfileImagePreviewUrl = URL.createObjectURL(file);
 
     revokeProfileImagePreviewUrl(profileImagePreviewUrlRef.current);
     profileImagePreviewUrlRef.current = nextProfileImagePreviewUrl;
     setProfileImageFile(file);
     setProfileImagePreviewUrl(nextProfileImagePreviewUrl);
+    setProfileImageErrorMessage(null);
   };
 
   const completeInput = (shouldTrack: boolean) => {
@@ -125,11 +137,13 @@ const useProfileInput = ({
     isCompleted,
     nickname,
     profileImagePreviewUrl,
+    profileImageErrorMessage,
     bowelRhythm,
     ageGroup,
     gender,
     isMenstrualCycleStepVisible,
     isNicknameValid,
+    isProfileImageValid,
     isAgeGenderValid,
     setNickname,
     setBowelRhythm,

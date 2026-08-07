@@ -3,9 +3,22 @@ import type {
   BaselineTypeTypes,
   GenderTypes,
   ProviderTypes,
-} from '../types/settingsTypes';
+} from '@/pages/settings/types/settingsTypes';
+import type { DeleteAccountReasonTypes } from '@/pages/settings/types/settingsApiTypes';
 
 export const NICKNAME_MAX_LENGTH = 10;
+
+export const DELETE_CONFIRMATION_TEXT = '탈퇴합니다';
+
+export const DELETE_REASON_OPTIONS: {
+  label: string;
+  value: DeleteAccountReasonTypes;
+}[] = [
+  { label: '기록이 번거로워요', value: 'RECORDING_INCONVENIENT' },
+  { label: '필요한 정보가 없어요', value: 'NO_NEEDED_INFO' },
+  { label: '다른 앱을 사용해요', value: 'USING_OTHER_APP' },
+  { label: '기타', value: 'OTHER' },
+];
 
 export const BASELINE_TYPE_LABEL_MAP: Record<BaselineTypeTypes, string> = {
   R: '규칙형',
@@ -15,9 +28,8 @@ export const BASELINE_TYPE_LABEL_MAP: Record<BaselineTypeTypes, string> = {
 };
 
 export const PROVIDER_LABEL_MAP: Record<ProviderTypes, string> = {
-  G: '구글',
-  K: '카카오',
-  N: '네이버',
+  GOOGLE: '구글',
+  KAKAO: '카카오',
 };
 
 export const AGE_GROUP_LABEL_MAP: Record<AgeGroupTypes, string> = {
