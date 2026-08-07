@@ -67,9 +67,10 @@ export default defineConfig({
       manifest: {
         name: 'Boogle',
         short_name: 'Boogle',
-        description: 'Boolge service',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        description: '기억이 아닌 기록으로 내 장 건강을 확인하세요',
+        lang: 'ko-KR',
+        theme_color: '#FF8253',
+        background_color: '#FF8253',
         display: 'standalone',
         start_url: '/',
         scope: '/',
@@ -84,13 +85,12 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png',
           },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
-          },
         ],
+      },
+
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        cleanupOutdatedCaches: true,
       },
     }),
   ],
