@@ -10,6 +10,11 @@ const Home = () => {
   const {
     isLoading,
     isError,
+    isDailyRecordLoading,
+    isDailyRecordError,
+    dailyRecordErrorMessage,
+    isRecordSummaryError,
+    recordSummaryErrorMessage,
     selectedDateValue,
     homeViewModel,
     dateModalRecordMap,
@@ -24,6 +29,8 @@ const Home = () => {
     handleSettingButtonClick,
     handleCalendarDateSelect,
     handleDateModalSelect,
+    handleRecordSummaryRangeRequest,
+    handleRecordSummaryRetryButtonClick,
     handleBoogleRecordCreateButtonClick,
     handleBoogleRecordEditButtonClick,
     handleLifeRecordCreateButtonClick,
@@ -69,7 +76,11 @@ const Home = () => {
           selectedDate={selectedDateValue}
           todayDate={homeViewModel.todayDate}
           recordStatusByDate={homeViewModel.recordStatusByDate}
+          isRecordSummaryError={isRecordSummaryError}
+          recordSummaryErrorMessage={recordSummaryErrorMessage}
           onSelectDate={handleCalendarDateSelect}
+          onRecordSummaryRangeRequest={handleRecordSummaryRangeRequest}
+          onRecordSummaryRetryClick={handleRecordSummaryRetryButtonClick}
         />
       </div>
 
@@ -77,6 +88,9 @@ const Home = () => {
         selectedDateContent={homeViewModel.selectedDateContent}
         selectedDate={selectedDateValue}
         todayDate={homeViewModel.todayDate}
+        isDailyRecordLoading={isDailyRecordLoading}
+        isDailyRecordError={isDailyRecordError}
+        dailyRecordErrorMessage={dailyRecordErrorMessage}
         onBoogleRecordCreateClick={handleBoogleRecordCreateButtonClick}
         onBoogleRecordEditClick={handleBoogleRecordEditButtonClick}
         onLifeRecordCreateClick={handleLifeRecordCreateButtonClick}
@@ -91,6 +105,7 @@ const Home = () => {
         markConfig={dateModalMarkConfig}
         onClose={handleDateModalClose}
         onSelectDate={handleDateModalSelect}
+        onVisibleMonthChange={handleRecordSummaryRangeRequest}
       />
     </div>
   );
