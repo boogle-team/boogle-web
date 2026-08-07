@@ -175,7 +175,7 @@ const LifeEdit = () => {
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate(`/record/life/detail?date=${editRecordDate}`);
+    navigate(`/life-record/detail?date=${editRecordDate}`);
   };
 
   const handleDeleteButtonClick = () => {
