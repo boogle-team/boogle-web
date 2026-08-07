@@ -7,16 +7,16 @@ import {
 } from '@/shared/components/calendar';
 import {
   getBoogleRecordView,
+  getDailyAutoTags,
   getLifeRecordView,
   type BoogleRecordViewTypes,
   type LifeRecordViewTypes,
 } from '@/shared/components/dailyRecord';
 import { CALENDAR_MARK_CONFIG } from '@/pages/calendar/constants/calendarMarkConfig';
-import useCalendarDailyRecordQuery from '@/pages/calendar/hooks/useCalendarDailyRecordQuery';
+import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
 import { toCalendarRecordMap } from '@/pages/calendar/utils/calendarRecordMapper';
 import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
-import { getDailyAutoTags } from '@/pages/calendar/utils/getDailyAutoTags';
 import type { CalendarMonthlySummaryTypes } from '@/pages/calendar/types/calendarSummaryTypes';
 
 interface UseCalendarStateReturnTypes {
@@ -57,7 +57,7 @@ const useCalendarState = (): UseCalendarStateReturnTypes => {
     error,
     isError,
     isLoading,
-  } = useCalendarDailyRecordQuery(selectedDate);
+  } = useDailyRecordQuery(selectedDate);
 
   const {
     data: calendarMonth,

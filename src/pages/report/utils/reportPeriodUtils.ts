@@ -1,8 +1,9 @@
-import { MILLISECONDS_PER_DAY } from '../constants/reportConstants';
 import type {
   ReportModeTypes,
   ReportPeriodTextTypes,
 } from '../types/reportTypes';
+
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const addDays = (date: Date, days: number) => {
   const nextDate = new Date(date);
@@ -13,6 +14,7 @@ export const addDays = (date: Date, days: number) => {
 
 export const addMonths = (date: Date, months: number) => {
   const nextDate = new Date(date);
+  nextDate.setDate(1);
   nextDate.setMonth(nextDate.getMonth() + months);
 
   return nextDate;
@@ -51,14 +53,17 @@ const getRelativeTitle = (distance: number, unit: '주' | '달') => {
     return `이번 ${unit}`;
   }
 
-  if (distance === 1) {
-    return `다음 ${unit}`;
-  }
-
-  return distance < 0
-    ? `${Math.abs(distance)}${unit} 전`
-    : `${distance}${unit} 후`;
+  return '';
 };
+
+export const isCurrentOrFutureReportPeriod = (
+  selectedMode: ReportModeTypes,
+  currentPeriodDate: Date,
+  comparisonDate = new Date(),
+) =>
+  selectedMode === 'weekly'
+    ? getWeekDistance(currentPeriodDate, comparisonDate) >= 0
+    : getMonthDistance(currentPeriodDate, comparisonDate) >= 0;
 
 const getMonthDayText = (date: Date) =>
   `${date.getMonth() + 1}월 ${date.getDate()}일`;

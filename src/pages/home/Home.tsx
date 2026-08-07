@@ -3,11 +3,18 @@ import CalendarPicker from '@/pages/home/components/CalendarPicker';
 import DateBottomModal from '@/pages/home/components/DateBottomModal';
 import HomeContentSection from '@/pages/home/components/HomeContentSection';
 import useHomeState from '@/pages/home/hooks/useHomeState';
+import { useNotificationsQuery } from '@/pages/notification/hooks/useNotificationsQuery';
 
 const Home = () => {
+  const { unreadCount } = useNotificationsQuery();
   const {
     isLoading,
     isError,
+    isDailyRecordLoading,
+    isDailyRecordError,
+    dailyRecordErrorMessage,
+    isRecordSummaryError,
+    recordSummaryErrorMessage,
     selectedDateValue,
     homeViewModel,
     dateModalRecordMap,
@@ -22,6 +29,8 @@ const Home = () => {
     handleSettingButtonClick,
     handleCalendarDateSelect,
     handleDateModalSelect,
+    handleRecordSummaryRangeRequest,
+    handleRecordSummaryRetryButtonClick,
     handleBoogleRecordCreateButtonClick,
     handleBoogleRecordEditButtonClick,
     handleLifeRecordCreateButtonClick,
@@ -57,7 +66,7 @@ const Home = () => {
           variant="home"
           title={homeDateTitle}
           subTitle={homeDateSubTitle}
-          hasUnreadNotification
+          hasUnreadNotification={unreadCount > 0}
           onTitleClick={handleDateTitleClick}
           onNotificationButtonClick={handleNotificationButtonClick}
           onSettingButtonClick={handleSettingButtonClick}
@@ -67,7 +76,11 @@ const Home = () => {
           selectedDate={selectedDateValue}
           todayDate={homeViewModel.todayDate}
           recordStatusByDate={homeViewModel.recordStatusByDate}
+          isRecordSummaryError={isRecordSummaryError}
+          recordSummaryErrorMessage={recordSummaryErrorMessage}
           onSelectDate={handleCalendarDateSelect}
+          onRecordSummaryRangeRequest={handleRecordSummaryRangeRequest}
+          onRecordSummaryRetryClick={handleRecordSummaryRetryButtonClick}
         />
       </div>
 
@@ -75,6 +88,9 @@ const Home = () => {
         selectedDateContent={homeViewModel.selectedDateContent}
         selectedDate={selectedDateValue}
         todayDate={homeViewModel.todayDate}
+        isDailyRecordLoading={isDailyRecordLoading}
+        isDailyRecordError={isDailyRecordError}
+        dailyRecordErrorMessage={dailyRecordErrorMessage}
         onBoogleRecordCreateClick={handleBoogleRecordCreateButtonClick}
         onBoogleRecordEditClick={handleBoogleRecordEditButtonClick}
         onLifeRecordCreateClick={handleLifeRecordCreateButtonClick}
@@ -89,6 +105,7 @@ const Home = () => {
         markConfig={dateModalMarkConfig}
         onClose={handleDateModalClose}
         onSelectDate={handleDateModalSelect}
+        onVisibleMonthChange={handleRecordSummaryRangeRequest}
       />
     </div>
   );

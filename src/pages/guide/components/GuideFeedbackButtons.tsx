@@ -1,46 +1,28 @@
-import { useEffect, useState } from 'react';
-
 import Chip from '@/shared/components/Chip';
 import type { GuideFeedbackTypes } from '../types/guideApiTypes';
 
 interface GuideFeedbackButtonsPropTypes {
   feedbackStatus: GuideFeedbackTypes | null;
-  guideId: string;
   isFeedbackPending: boolean;
   onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
-  onFeedbackSubmit?: () => void;
 }
 
 const GuideFeedbackButtons = ({
   feedbackStatus,
-  guideId,
   isFeedbackPending,
   onFeedbackClick,
-  onFeedbackSubmit,
 }: GuideFeedbackButtonsPropTypes) => {
-  const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(
-    Boolean(feedbackStatus),
-  );
-
-  useEffect(() => {
-    setIsFeedbackSubmitted(Boolean(feedbackStatus));
-  }, [feedbackStatus, guideId]);
-
-  const handleFeedbackClick = (feedback: GuideFeedbackTypes) => {
-    setIsFeedbackSubmitted(true);
-    onFeedbackSubmit?.();
-    onFeedbackClick?.(feedback);
-  };
-
   const handleHelpfulChipClick = () => {
-    handleFeedbackClick('G');
+    onFeedbackClick?.('G');
   };
 
   const handleAlreadyDoingChipClick = () => {
-    handleFeedbackClick('A');
+    onFeedbackClick?.('A');
   };
 
-  if (isFeedbackSubmitted) {
+  // 피드백은 주 1회만 받으므로 이번 주 응답이 있으면 칩을 감춘다.
+  // 다음 주에는 서버 feedbackStatus가 비워져 다시 노출되고, 등록에 실패하면 그대로 남는다.
+  if (feedbackStatus) {
     return null;
   }
 
@@ -60,7 +42,6 @@ const GuideFeedbackButtons = ({
         <Chip
           text="이미 해요"
           size="compact"
-          isSelected={feedbackStatus === 'A'}
           disabled={isFeedbackPending}
           onClick={handleAlreadyDoingChipClick}
         />

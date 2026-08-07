@@ -2,6 +2,7 @@
 
 export interface ReportSummaryTypes {
   description: string;
+  isHighlighted?: boolean;
   label: string;
   value: string;
 }
@@ -15,6 +16,15 @@ export interface ConditionProgressTypes {
 export interface BowelRhythmTypes {
   day: string;
   status: 'normal' | 'warning' | 'danger' | 'empty';
+}
+
+export interface WeeklyReportViewDataTypes {
+  bowelRhythms: BowelRhythmTypes[];
+  conditionProgress: ConditionProgressTypes[];
+  frequentTimeSlotLabel: string | null;
+  lifeGuide: LifeGuideTypes | null;
+  patterns: PatternTypes[];
+  summaries: ReportSummaryTypes[];
 }
 
 export interface PatternTypes {
@@ -36,6 +46,18 @@ export interface MonthlyScoreTypes {
   value: number;
 }
 
+export interface MonthlyReportViewDataTypes {
+  conditionProgress: ConditionProgressTypes[];
+  conditionScore: number;
+  improvements: PatternTypes[];
+  isPdfDownloadAvailable: boolean;
+  monthlyType: MonthlyTypeTypes | null;
+  patterns: PatternTypes[];
+  scores: MonthlyScoreTypes[];
+  summaries: ReportSummaryTypes[];
+  weeklyTrends: WeeklyTrendTypes[];
+}
+
 export interface WeeklyTrendTypes {
   count: number;
   week: string;
@@ -43,18 +65,15 @@ export interface WeeklyTrendTypes {
 
 export interface MonthlyTypeTypes {
   description: string;
-  symbol: 'R' | 'C' | 'L' | 'I' | '?';
+  symbol: 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
   title: string;
 }
 
-export type ReportGuideFeedbackTypes = 'A' | 'G';
-export type ReportGuideFeedbackStatusTypes =
-  ReportGuideFeedbackTypes | 'N' | null;
-
+// 주간 리포트의 생활 가이드는 가이드 탭의 패턴 기반(P) 가이드와 동일한 가이드다.
+// 피드백은 가이드 상세에서만 받으므로 여기에는 피드백 상태를 두지 않는다.
 export interface LifeGuideTypes {
   description: string;
-  feedbackStatus?: ReportGuideFeedbackStatusTypes;
-  guideContentId: number;
+  guideId: number;
   title: string;
 }
 
@@ -63,7 +82,6 @@ export interface InsufficientReportTypes {
   description: string;
   minimumRequiredCount: number;
   requiredCount: number;
-  trackerLabel: string;
 }
 
 export interface ReportPeriodTextTypes {

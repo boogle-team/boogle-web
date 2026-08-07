@@ -4,19 +4,15 @@ import FlameIcon from '@/shared/assets/icons/notificationPageIcons/flameIcon.svg
 import RoundedChartIcon from '@/shared/assets/icons/notificationPageIcons/roundedChartIcon.svg?react';
 import WarningNoticeIcon from '@/shared/assets/icons/notificationPageIcons/warningNotice.svg?react';
 
-import { getNotificationTimestamp } from '../utils/notificationDate';
+import { getNotificationTimestamp } from '@/pages/notification/utils/notificationDate';
 
 import type {
   NotificationCategoryTypes,
   NotificationIconTypes,
   NotificationItemTypes,
-} from '../types/notificationTypes';
+  NotificationTypeTypes,
+} from '@/pages/notification/types/notificationTypes';
 import type { ComponentType, SVGProps } from 'react';
-
-interface NotificationCardPropTypes {
-  notification: NotificationItemTypes;
-  onClick: () => void;
-}
 
 const NOTIFICATION_ICON_MAP = {
   warning: WarningNoticeIcon,
@@ -35,13 +31,26 @@ const DEFAULT_NOTIFICATION_ICON_MAP = {
   P: 'weeklyReport',
 } satisfies Record<NotificationCategoryTypes, NotificationIconTypes>;
 
+const NOTIFICATION_TYPE_ICON_MAP = {
+  WARNING: 'warning',
+  RECORD_REMINDER: 'record',
+  REPORT_READY: 'weeklyReport',
+  PDF_SAVED: 'monthlyReport',
+  STREAK: 'streak',
+} satisfies Record<NotificationTypeTypes, NotificationIconTypes>;
+
+interface NotificationCardPropTypes {
+  notification: NotificationItemTypes;
+  onClick: () => void;
+}
+
 const NotificationCard = ({
   notification,
   onClick,
 }: NotificationCardPropTypes) => {
   const isWarning = notification.category === 'W';
   const iconType =
-    notification.iconType ??
+    (notification.type && NOTIFICATION_TYPE_ICON_MAP[notification.type]) ??
     DEFAULT_NOTIFICATION_ICON_MAP[notification.category];
   const NotificationIcon = NOTIFICATION_ICON_MAP[iconType];
 

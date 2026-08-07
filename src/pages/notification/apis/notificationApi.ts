@@ -1,14 +1,34 @@
-import { MOCK_NOTIFICATION_DATA } from '../constants/notificationConstants';
+import { api } from '@/shared/apis/axiosInstance';
 
-import type { GetNotificationsDataTypes } from '../types/notificationTypes';
+import {
+  getNotificationReadApiEndpoint,
+  NOTIFICATION_API_ENDPOINT,
+} from '@/pages/notification/constants/notificationConstants';
+
+import type {
+  GetNotificationsDataTypes,
+  GetNotificationsResponseTypes,
+  PatchNotificationReadDataTypes,
+  PatchNotificationReadResponseTypes,
+} from '@/pages/notification/types/notificationTypes';
 
 export const NOTIFICATION_QUERY_KEY = ['notifications'] as const;
 
-// API 연결 시 목 반환을 axios 호출로 교체합니다.
-// const { data } =
-//   await api.get<GetNotificationsResponseTypes>(NOTIFICATION_API_ENDPOINT);
-// return data.data;
 export const getNotifications =
   async (): Promise<GetNotificationsDataTypes> => {
-    return MOCK_NOTIFICATION_DATA;
+    const { data } = await api.get<GetNotificationsResponseTypes>(
+      NOTIFICATION_API_ENDPOINT,
+    );
+
+    return data.data;
   };
+
+export const patchNotificationRead = async (
+  notificationId: number,
+): Promise<PatchNotificationReadDataTypes> => {
+  const { data } = await api.patch<PatchNotificationReadResponseTypes>(
+    getNotificationReadApiEndpoint(notificationId),
+  );
+
+  return data.data;
+};

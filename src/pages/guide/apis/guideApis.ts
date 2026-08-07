@@ -2,7 +2,6 @@ import { api } from '@/shared/apis/axiosInstance';
 import type {
   DeleteGuideFeedbackResponseTypes,
   GetGuideDetailRequestTypes,
-  GetGuidesRequestTypes,
   GuideDetailResponseTypes,
   GuideFeedbackPathTypes,
   GuideFeedbackRequestTypes,
@@ -11,48 +10,28 @@ import type {
   PostGuideFeedbackResponseTypes,
 } from '../types/guideApiTypes';
 
-export const getGuides = async ({
-  includeFeedback = true,
-  monthStartDate,
-  weekStartDate,
-}: GetGuidesRequestTypes = {}) => {
-  const { data } = await api.get<GuidesResponseTypes>('/api/v1/guides', {
-    params: {
-      includeFeedback,
-      monthStartDate,
-      weekStartDate,
-    },
-  });
+export const getGuides = async () => {
+  const { data } = await api.get<GuidesResponseTypes>('/api/v1/guides');
 
   return data;
 };
 
 export const getGuideDetail = async ({
-  guideContentId,
-  monthStartDate,
-  ruleCode,
-  weekStartDate,
+  guideId,
 }: GetGuideDetailRequestTypes) => {
   const { data } = await api.get<GuideDetailResponseTypes>(
-    `/api/v1/guides/${guideContentId}`,
-    {
-      params: {
-        monthStartDate,
-        ruleCode,
-        weekStartDate,
-      },
-    },
+    `/api/v1/guides/${guideId}`,
   );
 
   return data;
 };
 
 export const postGuideFeedback = async (
-  { guideContentId }: GuideFeedbackPathTypes,
+  { guideId }: GuideFeedbackPathTypes,
   requestBody: GuideFeedbackRequestTypes,
 ) => {
   const { data } = await api.post<PostGuideFeedbackResponseTypes>(
-    `/api/v1/guides/${guideContentId}/feedback`,
+    `/api/v1/guides/${guideId}/feedback`,
     requestBody,
   );
 
@@ -60,11 +39,11 @@ export const postGuideFeedback = async (
 };
 
 export const patchGuideFeedback = async (
-  { guideContentId }: GuideFeedbackPathTypes,
+  { guideId }: GuideFeedbackPathTypes,
   requestBody: GuideFeedbackRequestTypes,
 ) => {
   const { data } = await api.patch<PatchGuideFeedbackResponseTypes>(
-    `/api/v1/guides/${guideContentId}/feedback`,
+    `/api/v1/guides/${guideId}/feedback`,
     requestBody,
   );
 
@@ -72,10 +51,10 @@ export const patchGuideFeedback = async (
 };
 
 export const deleteGuideFeedback = async ({
-  guideContentId,
+  guideId,
 }: GuideFeedbackPathTypes) => {
   const { data } = await api.delete<DeleteGuideFeedbackResponseTypes>(
-    `/api/v1/guides/${guideContentId}/feedback`,
+    `/api/v1/guides/${guideId}/feedback`,
   );
 
   return data;

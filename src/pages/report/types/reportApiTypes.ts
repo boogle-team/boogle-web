@@ -11,14 +11,10 @@ export interface GetMonthlyReportRequestTypes {
 }
 
 export interface PostReportPdfRequestTypes {
-  endDate: string;
-  includeDailyRecords?: boolean;
-  startDate: string;
+  monthStartDate: string;
 }
 
 export type ReportDataStatusTypes = 'ENOUGH' | 'INSUFFICIENT';
-export type MonthlyReportDataStatusTypes =
-  'ENOUGH' | 'LOW_COMPLETION' | 'NO_RECORD';
 export type ReportPeriodTypes = 'MONTHLY' | 'WEEKLY';
 export type ReportCompareTypes = 'PREVIOUS_MONTH' | 'PREVIOUS_WEEK';
 export type ReportTrendTypes =
@@ -32,8 +28,9 @@ export type ReportTrendTypes =
 export type StoolSimpleTypes = 'H' | 'M' | 'T';
 export type BowelDayOfWeekTypes =
   'FRI' | 'MON' | 'SAT' | 'SUN' | 'THU' | 'TUE' | 'WED';
-export type TimeSlotTypes = 'AFTERNOON' | 'DAWN' | 'EVENING' | 'MORNING';
-export type PatternLevelTypes = 'GOOD' | 'INFO' | 'OK' | 'WARN';
+export type TimeSlotTypes =
+  'AFTERNOON' | 'DAWN' | 'EVENING' | 'MORNING' | 'NIGHT';
+export type PatternLevelTypes = 'DANGER' | 'GOOD' | 'INFO' | 'OK' | 'WARN';
 export type GuideCategoryTypes = 'H' | 'P' | 'W';
 export type GuideFeedbackStatusTypes = 'A' | 'G' | 'N' | null;
 export type MonthlyUserTypeCodeTypes = 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
@@ -51,13 +48,17 @@ export interface ReportSummaryResponseTypes {
 }
 
 export interface MonthlyReportSummaryResponseTypes extends ReportSummaryResponseTypes {
-  conditionScore: number | null;
+  bowelDays: number;
+  conditionScore: number;
+  rhythmScore: number;
   state: number;
   stateLabel: string;
+  stateScore: number;
 }
 
 export interface ReportRecordStatsResponseTypes {
   boogleRecordDays: number;
+  calendarDays?: number;
   completionScore: number;
   lifeRecordDays: number;
   recordedDays: number;
@@ -71,8 +72,8 @@ export interface ReportPreviousSummaryResponseTypes extends ReportSummaryRespons
 
 export interface MonthlyReportPreviousSummaryResponseTypes extends MonthlyReportSummaryResponseTypes {
   period: ReportPeriodResponseTypes;
-  userType: MonthlyUserTypeCodeTypes;
-  userTypeLabel: string;
+  userType: MonthlyUserTypeCodeTypes | null;
+  userTypeLabel: string | null;
 }
 
 export interface ReportChangeSummaryResponseTypes {
@@ -122,6 +123,36 @@ export interface PatternCardResponseTypes {
   level: PatternLevelTypes;
   ruleCode: string;
   title: string;
+}
+
+export type MonthlyPatternRuleCodeTypes =
+  | 'MONTHLY_HARD_STOOL_RATIO'
+  | 'MONTHLY_LOW_SLEEP'
+  | 'MONTHLY_LOW_WATER_WITH_HARD_STOOL'
+  | 'MONTHLY_STRESS_WITH_PAIN';
+
+export interface MonthlyPatternCardResponseTypes {
+  description: string;
+  level: 'WARN';
+  ruleCode: MonthlyPatternRuleCodeTypes;
+  threshold: number;
+  title: string;
+  unit: 'COUNT' | 'DAY' | 'PERCENT';
+  value: number;
+}
+
+export interface MonthlyImprovementResponseTypes {
+  code:
+    | 'CONDITION_SCORE_UP'
+    | 'HARD_STOOL_RATIO_DOWN'
+    | 'LOW_SLEEP_DOWN'
+    | 'LOW_WATER_HARD_STOOL_DOWN'
+    | 'STRESS_WITH_PAIN_DOWN';
+  currentValue: number;
+  description: string;
+  previousValue: number;
+  title: string;
+  unit: 'COUNT' | 'DAY' | 'PERCENT' | 'POINT';
 }
 
 export interface MonthlyWeeklyTrendResponseTypes {
@@ -190,18 +221,18 @@ export type WeeklyReportResponseTypes =
 
 export interface MonthlyReportDataResponseTypes {
   changeSummary: MonthlyReportChangeSummaryResponseTypes | null;
-  dataStatus: MonthlyReportDataStatusTypes;
+  dataStatus: ReportDataStatusTypes;
+  improvements: MonthlyImprovementResponseTypes[];
   lifeFactorStats: MonthlyLifeFactorStatsResponseTypes | null;
-  monthlyChange?: unknown | null;
   notice: InsufficientNoticeResponseTypes | null;
-  patternCards: PatternCardResponseTypes[];
+  patternCards: MonthlyPatternCardResponseTypes[];
   pdf: ReportPdfInfoResponseTypes;
   period: ReportPeriodResponseTypes;
   previousSummary: MonthlyReportPreviousSummaryResponseTypes | null;
   recordStats: ReportRecordStatsResponseTypes;
   stoolDistribution: StoolDistributionResponseTypes[];
   summary: MonthlyReportSummaryResponseTypes | null;
-  userType: MonthlyUserTypeResponseTypes;
+  userType: MonthlyUserTypeResponseTypes | null;
   weeklyTrend: MonthlyWeeklyTrendResponseTypes[];
 }
 
