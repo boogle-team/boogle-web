@@ -684,7 +684,6 @@ error response body:
 ```json
 {
   "reason": "RECORDING_INCONVENIENT",
-  "reasonDetail": "다른 서비스가 더 편리해요.",
   "confirmation": "탈퇴합니다"
 }
 ```

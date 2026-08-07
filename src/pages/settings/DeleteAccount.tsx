@@ -16,14 +16,11 @@ const DeleteAccount = () => {
   const navigate = useNavigate();
   const {
     selectedReason,
-    reasonDetail,
     confirmationText,
     errorMessage,
-    isOtherReasonDetailMissing,
     canDeleteAccount,
     isDeleting,
     selectReason,
-    updateReasonDetail,
     updateConfirmationText,
     deleteAccount,
   } = useDeleteAccount();
@@ -139,18 +136,6 @@ const DeleteAccount = () => {
               );
             })}
           </div>
-
-          {selectedReason === 'OTHER' && (
-            <div className="mt-3">
-              <InputText
-                value={reasonDetail}
-                onChange={updateReasonDetail}
-                placeholder="탈퇴 사유를 입력해주세요"
-                isError={isOtherReasonDetailMissing}
-                errorMessage="기타 사유를 입력해주세요"
-              />
-            </div>
-          )}
         </section>
 
         <section className="mt-8">

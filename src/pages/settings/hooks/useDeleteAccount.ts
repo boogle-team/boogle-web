@@ -16,27 +16,17 @@ const useDeleteAccount = () => {
   const deleteUserMutation = useDeleteUserMutation();
   const [selectedReason, setSelectedReason] =
     useState<DeleteAccountReasonTypes | null>(null);
-  const [reasonDetail, setReasonDetail] = useState('');
   const [confirmationText, setConfirmationText] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const isOtherReasonDetailMissing =
-    selectedReason === 'OTHER' && !reasonDetail.trim();
   const canDeleteAccount =
     confirmationText === DELETE_CONFIRMATION_TEXT &&
-    !isOtherReasonDetailMissing &&
     !deleteUserMutation.isPending;
 
   const selectReason = (reason: DeleteAccountReasonTypes) => {
     setSelectedReason((previousReason) =>
       previousReason === reason ? null : reason,
     );
-    setReasonDetail('');
-    setErrorMessage(null);
-  };
-
-  const updateReasonDetail = (detail: string) => {
-    setReasonDetail(detail);
     setErrorMessage(null);
   };
 
@@ -53,9 +43,6 @@ const useDeleteAccount = () => {
     try {
       await deleteUserMutation.mutateAsync({
         ...(selectedReason ? { reason: selectedReason } : {}),
-        ...(selectedReason === 'OTHER'
-          ? { reasonDetail: reasonDetail.trim() }
-          : {}),
         confirmation: DELETE_CONFIRMATION_TEXT,
       });
       clearAuthTokens();
@@ -69,14 +56,11 @@ const useDeleteAccount = () => {
 
   return {
     selectedReason,
-    reasonDetail,
     confirmationText,
     errorMessage,
-    isOtherReasonDetailMissing,
     canDeleteAccount,
     isDeleting: deleteUserMutation.isPending,
     selectReason,
-    updateReasonDetail,
     updateConfirmationText,
     deleteAccount,
   };

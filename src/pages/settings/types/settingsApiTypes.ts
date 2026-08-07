@@ -21,7 +21,6 @@ export type DeleteAccountReasonTypes =
 
 export interface DeleteAccountRequestTypes {
   reason?: DeleteAccountReasonTypes;
-  reasonDetail?: string;
   confirmation: '탈퇴합니다';
 }
 
