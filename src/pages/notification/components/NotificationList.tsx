@@ -1,16 +1,10 @@
-import NotificationCard from './NotificationCard';
-import { groupNotificationsByDate } from '../utils/notificationDate';
+import NotificationCard from '@/pages/notification/components/NotificationCard';
+import { groupNotificationsByDate } from '@/pages/notification/utils/notificationDate';
+import NotificationEmptyState from '@/shared/assets/icons/notificationPageIcons/notificationEmptyState.svg?react';
 
-import type { NotificationItemTypes } from '../types/notificationTypes';
+import type { NotificationItemTypes } from '@/pages/notification/types/notificationTypes';
 
 type NotificationListStatusTypes = 'loading' | 'success' | 'error';
-
-interface NotificationListPropTypes {
-  notifications: NotificationItemTypes[];
-  status?: NotificationListStatusTypes;
-  onNotificationClick: (notification: NotificationItemTypes) => void;
-  onRetry?: () => void;
-}
 
 const NotificationListSkeleton = () => {
   return (
@@ -31,6 +25,13 @@ const NotificationListSkeleton = () => {
     </div>
   );
 };
+
+interface NotificationListPropTypes {
+  notifications: NotificationItemTypes[];
+  status?: NotificationListStatusTypes;
+  onNotificationClick: (notification: NotificationItemTypes) => void;
+  onRetry?: () => void;
+}
 
 const NotificationList = ({
   notifications,
@@ -66,12 +67,16 @@ const NotificationList = ({
 
   if (notifications.length === 0) {
     return (
-      <div className="flex min-h-80 flex-col items-center justify-center text-center">
-        <strong className="label-bold text-gray-10">
-          새로운 알림이 없어요
+      <div className="flex flex-1 flex-col items-center justify-center pb-8 text-center">
+        <NotificationEmptyState
+          aria-hidden="true"
+          className="h-[7.5rem] w-[7.5rem] shrink-0"
+        />
+        <strong className="body-m-bold mt-5 text-gray-10">
+          아직 새로운 알림이 없어요
         </strong>
-        <p className="caption-reg mt-2 text-gray-7">
-          새로운 소식이 생기면 알려드릴게요.
+        <p className="caption mt-2 text-gray-7">
+          새로운 소식이 오면 알려드릴게요.
         </p>
       </div>
     );

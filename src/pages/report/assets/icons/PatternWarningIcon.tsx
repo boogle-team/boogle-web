@@ -1,3 +1,3 @@
-import PatternWarningIcon from '../illustrations/PatternWarningIcon.svg?react';
+import PatternWarningIcon from '../illustrations/patternWarningIcon.svg?react';
 
 export default PatternWarningIcon;

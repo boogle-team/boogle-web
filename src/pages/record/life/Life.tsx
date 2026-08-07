@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
-import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import Button from '@/shared/components/Button';
 
 import LifeRecordFields from './components/LifeRecordFields';
@@ -14,10 +14,11 @@ import {
   MAX_TAG_COUNT,
 } from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { usePostExtractLifeRecordTags } from './hooks/usePostExtractLifeRecordTags';
+import { usePostLifeRecord } from './hooks/usePostLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
-
-// TODO: 저장 응답으로 받은 AI 추천 태그로 교체
-const MOCK_RECOMMENDED_TAGS = ['음주', '야식', '자극적'];
+import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
+import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
 
 const Life = () => {
   const navigate = useNavigate();
@@ -26,32 +27,77 @@ const Life = () => {
   const startLifeRecord = useLifeRecordDraftStore(
     (state) => state.startLifeRecord,
   );
+  const resetLifeRecord = useLifeRecordDraftStore(
+    (state) => state.resetLifeRecord,
+  );
 
-  // 날짜가 같으면 같은 초안으로 보고 유지한다. 세부 기록에서 돌아와도 값이 남아야 하므로.
   useLayoutEffect(() => {
     startLifeRecord({ draftKey: `new-${recordDate}` });
   }, [startLifeRecord, recordDate]);
 
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+  const [recommendedTags, setRecommendedTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const form = useLifeRecordForm();
   const { formState, isSubmittable } = form;
+  const { mutate: extractLifeRecordTags, isPending: isExtractingTags } =
+    usePostExtractLifeRecordTags();
+  const { mutate: postLifeRecord, isPending: isPostingLifeRecord } =
+    usePostLifeRecord();
+
+  const saveLifeRecord = (tagNames: string[] = []) => {
+    const payload = createLifeRecordPayload({
+      formState,
+      recordDate,
+      tagNames,
+    });
+
+    if (!payload) return;
+
+    setErrorMessage('');
+
+    postLifeRecord(payload, {
+      onSuccess: () => {
+        resetLifeRecord();
+        navigate('/');
+      },
+      onError: (error) => {
+        setErrorMessage(getLifeRecordErrorMessage(error));
+      },
+    });
+  };
 
   const handleSubmit = () => {
-    if (!isSubmittable) return;
-    // TODO: 생활 기록 저장 API 연동
+    if (!isSubmittable || isPostingLifeRecord || isExtractingTags) return;
 
-    // 메모가 있으면 AI 태그 추천 모달(L-03)을 띄우고, 없으면 바로 완료한다.
-    if (formState.memo.trim()) {
-      setIsTagModalOpen(true);
+    const trimmedMemo = formState.memo.trim();
+
+    if (trimmedMemo) {
+      extractLifeRecordTags(
+        { text: trimmedMemo },
+        {
+          onSuccess: ({ tagNames }) => {
+            setRecommendedTags(tagNames);
+            setSelectedTags(tagNames.slice(0, MAX_TAG_COUNT));
+            setIsTagModalOpen(true);
+          },
+          onError: () => {
+            setRecommendedTags([]);
+            setSelectedTags([]);
+            setIsTagModalOpen(true);
+          },
+        },
+      );
       return;
     }
 
-    // TODO: 저장 완료 후 홈으로 복귀
+    setRecommendedTags([]);
+    setSelectedTags([]);
+    saveLifeRecord();
   };
 
-  // 해제는 항상 허용하고, 추가만 상한(MAX_TAG_COUNT)에서 막는다.
   const handleTagToggle = (tag: string) => {
     setSelectedTags((previousTags) => {
       if (previousTags.includes(tag)) {
@@ -82,17 +128,17 @@ const Life = () => {
 
   const handleTagModalCancel = () => {
     setIsTagModalOpen(false);
-    // TODO: 태그 미확정 상태로 홈 복귀 (기록 자체는 이미 저장됨)
+    saveLifeRecord();
   };
 
   const handleTagModalConfirm = () => {
     setIsTagModalOpen(false);
-    // TODO: 선택한 태그를 저장된 기록에 반영 후 홈 복귀
+    saveLifeRecord(selectedTags);
   };
 
   // 세부 기록도 같은 날짜의 초안이므로 날짜를 그대로 넘긴다.
   const handleDetailRecordLinkClick = () => {
-    navigate(`/record/life/detail?date=${recordDate}`);
+    navigate(`/life-record/detail?date=${recordDate}`);
   };
 
   return (
@@ -101,7 +147,11 @@ const Life = () => {
       subTitle={formatRecordDate(dayjs(recordDate).toDate())}
       contentClassName="gap-12"
       footer={
-        <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
+        <Button
+          text="완료"
+          onClick={handleSubmit}
+          disabled={!isSubmittable || isPostingLifeRecord || isExtractingTags}
+        />
       }
     >
       <LifeRecordFields
@@ -109,10 +159,19 @@ const Life = () => {
         onDetailRecordLinkClick={handleDetailRecordLinkClick}
       />
 
+      {errorMessage && (
+        <p
+          className="caption rounded-xl bg-orange-1 px-4 py-3 text-orange-6"
+          role="alert"
+        >
+          {errorMessage}
+        </p>
+      )}
+
       <TagSettingModal
         isOpen={isTagModalOpen}
         memo={formState.memo}
-        recommendedTags={MOCK_RECOMMENDED_TAGS}
+        recommendedTags={recommendedTags}
         selectedTags={selectedTags}
         onToggleTag={handleTagToggle}
         onAddTag={handleTagAdd}

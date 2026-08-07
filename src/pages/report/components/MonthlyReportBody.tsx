@@ -9,15 +9,19 @@ import type {
 } from '../types/reportTypes';
 import ConditionDistributionCard from './ConditionDistributionCard';
 import MonthlyConditionScoreCard from './MonthlyConditionScoreCard';
+import MonthlyImprovementCard from './MonthlyImprovementCard';
+import MonthlyPatternListCard from './MonthlyPatternListCard';
 import MonthlyTypeCard from './MonthlyTypeCard';
 import MonthlyWeeklyTrendCard from './MonthlyWeeklyTrendCard';
-import PatternCard from './PatternCard';
 import SummaryCards from './SummaryCards';
 
 interface MonthlyReportBodyPropTypes {
   conditionProgress: ConditionProgressTypes[];
   conditionScore: number;
-  monthlyType: MonthlyTypeTypes;
+  improvements: PatternTypes[];
+  isPdfDownloadAvailable: boolean;
+  isPdfDownloading: boolean;
+  monthlyType: MonthlyTypeTypes | null;
   onPdfButtonClick: () => void;
   patterns: PatternTypes[];
   pdfErrorMessage?: string;
@@ -29,6 +33,9 @@ interface MonthlyReportBodyPropTypes {
 const MonthlyReportBody = ({
   conditionProgress,
   conditionScore,
+  improvements,
+  isPdfDownloadAvailable,
+  isPdfDownloading,
   monthlyType,
   onPdfButtonClick,
   patterns,
@@ -45,14 +52,18 @@ const MonthlyReportBody = ({
     <SummaryCards summaries={summaries} showDescription={false} />
     <MonthlyWeeklyTrendCard weeklyTrends={weeklyTrends} />
     <ConditionDistributionCard conditionProgress={conditionProgress} />
-    <MonthlyTypeCard monthlyType={monthlyType} />
-    <PatternCard patterns={patterns} title="이번 달 패턴" />
+    {monthlyType && <MonthlyTypeCard monthlyType={monthlyType} />}
+    {patterns.length > 0 && <MonthlyPatternListCard patterns={patterns} />}
+    {improvements.length > 0 && (
+      <MonthlyImprovementCard improvements={improvements} />
+    )}
     <div className="flex justify-center">
       <Button
-        text="이번 달 리포트 PDF 저장"
+        text={isPdfDownloading ? 'PDF 저장 중...' : '이번 달 리포트 PDF 저장'}
         size="lg"
         variant="ghost"
         onClick={onPdfButtonClick}
+        disabled={!isPdfDownloadAvailable || isPdfDownloading}
         aria-label="이번 달 리포트 PDF 저장"
       />
     </div>

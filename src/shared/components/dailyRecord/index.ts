@@ -5,15 +5,20 @@ export type {
   BoogleRecordSummaryTypes,
   BoogleRecordTypes,
   BoogleRecordViewTypes,
+  DailyRecordResponseTypes,
+  DailyRecordTypes,
   FoodTypes,
   LifeRecordStatusTypes,
   LifeRecordSummaryTypes,
   LifeRecordTypes,
   LifeRecordViewTypes,
   RecordTagTypes,
+  StoolSimpleCodeTypes,
 } from './types/dailyRecordTypes';
 export {
   formatDateKey,
   getBoogleRecordView,
   getLifeRecordView,
+  isFutureDate,
 } from './utils/dailyRecordUtils';
+export { getDailyAutoTags } from './utils/getDailyAutoTags';

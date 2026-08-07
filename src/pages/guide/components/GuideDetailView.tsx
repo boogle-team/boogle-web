@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import useGuideFeedback from '../hooks/useGuideFeedback';
 import type { GuideFeedbackTypes } from '../types/guideApiTypes';
 import type { GuideDetailTypes } from '../types/guideTypes';
 import GuideActionSection from './GuideActionSection';
 import GuideCategoryBadge from './GuideCategoryBadge';
 import GuideDescriptionText, { GuideSourceText } from './GuideDescriptionText';
 import GuideDetailSummaryCard from './GuideDetailSummaryCard';
+import GuideFeedbackToast from './GuideFeedbackToast';
 import GuideInfoSectionCard from './GuideInfoSectionCard';
 import GuideRelatedGuideList from './GuideRelatedGuideList';
 import GuideWarningNoticeSection from './GuideWarningNoticeSection';
@@ -14,23 +17,60 @@ import GuideWarningSignList from './GuideWarningSignList';
 
 interface GuideDetailViewPropTypes {
   guideDetail: GuideDetailTypes;
-  isFeedbackPending?: boolean;
-  onFeedbackClick?: (feedback: GuideFeedbackTypes) => void;
 }
 
-const GuideDetailView = ({
-  guideDetail,
-  isFeedbackPending = false,
-  onFeedbackClick,
-}: GuideDetailViewPropTypes) => {
+const FEEDBACK_TOAST_DURATION = 2500;
+
+const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
   const navigate = useNavigate();
+  const { feedbackStatus, isFeedbackPending, submitGuideFeedback } =
+    useGuideFeedback(
+      Number(guideDetail.id),
+      guideDetail.feedbackStatus ?? null,
+    );
+  const [isFeedbackErrorToastVisible, setIsFeedbackErrorToastVisible] =
+    useState(false);
   const isInfoGuide = guideDetail.type === 'info';
   const isWarningGuide = guideDetail.type === 'warning';
   const hasInfoSections = Boolean(guideDetail.infoSections);
   const hasSummaryCard = !isInfoGuide && !isWarningGuide;
+  const [isFeedbackToastVisible, setIsFeedbackToastVisible] = useState(false);
+
+  useEffect(() => {
+    if (!isFeedbackToastVisible) return;
+
+    const toastTimerId = window.setTimeout(() => {
+      setIsFeedbackToastVisible(false);
+    }, FEEDBACK_TOAST_DURATION);
+
+    return () => window.clearTimeout(toastTimerId);
+  }, [isFeedbackToastVisible]);
+
+  useEffect(() => {
+    if (!isFeedbackErrorToastVisible) return;
+
+    const errorToastTimerId = window.setTimeout(() => {
+      setIsFeedbackErrorToastVisible(false);
+    }, FEEDBACK_TOAST_DURATION);
+
+    return () => window.clearTimeout(errorToastTimerId);
+  }, [isFeedbackErrorToastVisible]);
 
   const handleBackClick = () => {
     navigate(-1);
+  };
+
+  // 성공하면 감사 토스트를, 실패하면 재시도 안내 토스트를 노출한다.
+  const handleFeedbackClick = async (feedback: GuideFeedbackTypes) => {
+    const isSubmitted = await submitGuideFeedback(feedback);
+
+    if (isSubmitted) {
+      setIsFeedbackToastVisible(true);
+
+      return;
+    }
+
+    setIsFeedbackErrorToastVisible(true);
   };
 
   return (
@@ -78,21 +118,29 @@ const GuideDetailView = ({
         </section>
 
         <GuideActionSection
-          feedbackStatus={guideDetail.feedbackStatus}
+          feedbackStatus={feedbackStatus}
           guideDetail={guideDetail}
           isFeedbackPending={isFeedbackPending}
-          onFeedbackClick={onFeedbackClick}
+          isFeedbackToastVisible={isFeedbackToastVisible}
+          onFeedbackClick={handleFeedbackClick}
         />
 
-        {!isWarningGuide && <GuideSourceText guideDetail={guideDetail} />}
         {isWarningGuide && (
           <GuideWarningNoticeSection guideDetail={guideDetail} />
         )}
+        {/* 주의 신호는 notice 블록이 출처까지 함께 그리므로 그때만 생략한다. */}
+        {!(isWarningGuide && guideDetail.notice) && (
+          <GuideSourceText guideDetail={guideDetail} />
+        )}
 
         <GuideRelatedGuideList relatedGuides={guideDetail.relatedGuides} />
-
-        <div className="mx-auto mt-14 h-1 w-[6.75rem] rounded-full bg-gray-10" />
       </div>
+
+      {isFeedbackErrorToastVisible && (
+        <div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] z-50 mx-auto flex max-w-[430px] justify-center px-layout">
+          <GuideFeedbackToast variant="error" />
+        </div>
+      )}
     </section>
   );
 };

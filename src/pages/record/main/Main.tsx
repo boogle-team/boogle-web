@@ -7,6 +7,9 @@ import ConfirmModal from '@/shared/components/ConfirmModal';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
+import { useCreateBoogleRecordMutation } from '@/pages/record/hooks/useCreateBoogleRecordMutation';
+import type { PostBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
+import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
 
 import BowelStatusField from './components/BowelStatusField';
 import DetailRecordLink from './components/DetailRecordLink';
@@ -24,10 +27,17 @@ const HAS_LIFE_RECORD = false;
 const Main = () => {
   const navigate = useNavigate();
   const [isLifeRecordModalOpen, setIsLifeRecordModalOpen] = useState(false);
+  const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordDate = useRecordDraftDate();
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
+  const detailFormState = useRecordDraftStore((state) => state.detail);
+  const {
+    mutate: createRecord,
+    isPending: isCreatingRecord,
+    isError: isCreateRecordError,
+  } = useCreateBoogleRecordMutation();
 
   // 날짜가 같으면 같은 초안으로 보고 유지한다. 세부 기록에서 돌아와도 값이 남아야 하므로.
   useLayoutEffect(() => {
@@ -45,15 +55,35 @@ const Main = () => {
   } = useRecordForm();
 
   const handleSubmit = () => {
-    if (!isSubmittable) return;
-    // TODO: 부글 기록 생성 API 연동 (메인 + 세부 항목을 함께 제출)
+    if (!isSubmittable || isCreatingRecord) return;
 
-    if (!HAS_LIFE_RECORD) {
-      setIsLifeRecordModalOpen(true);
+    setIsRequestMappingError(false);
+
+    let request: PostBoogleRecordRequestTypes;
+
+    try {
+      request = mapBoogleRecordRequest({
+        recordDate,
+        main: formState,
+        detail: detailFormState,
+      });
+    } catch {
+      setIsRequestMappingError(true);
       return;
     }
 
-    // TODO: 기록 완료 후 이동할 화면 연결 (resetDraft()도 이때 함께 호출)
+    createRecord(request, {
+      onSuccess: () => {
+        resetDraft();
+
+        if (!HAS_LIFE_RECORD) {
+          setIsLifeRecordModalOpen(true);
+          return;
+        }
+
+        navigate('/');
+      },
+    });
   };
 
   const handleBackButtonClick = () => {
@@ -62,21 +92,18 @@ const Main = () => {
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate('/record/detail');
+    navigate('/boogle-record/detail');
   };
 
-  // 초안 리셋은 화면을 벗어날 때만 한다. 페이지에 남은 채로 리셋하면
-  // store의 recordDate가 오늘로 돌아가 세부 기록 화면이 다른 날짜를 보게 된다.
   const handleLifeRecordCancel = () => {
     setIsLifeRecordModalOpen(false);
-    // TODO: 기록 완료 후 이동할 화면 연결 (resetDraft()도 이때 함께 호출)
+    navigate('/');
   };
 
   // 생활 기록도 같은 날짜의 기록이므로 날짜를 그대로 넘긴다.
   const handleLifeRecordConfirm = () => {
     setIsLifeRecordModalOpen(false);
-    resetDraft();
-    navigate(`/record/life?date=${recordDate}`);
+    navigate(`/life-record/new?date=${recordDate}`);
   };
 
   return (
@@ -86,7 +113,21 @@ const Main = () => {
       contentClassName="gap-12"
       onBackButtonClick={handleBackButtonClick}
       footer={
-        <Button text="완료" onClick={handleSubmit} disabled={!isSubmittable} />
+        <div className="flex flex-col gap-2">
+          {(isCreateRecordError || isRequestMappingError) && (
+            <p
+              role="alert"
+              className="caption text-center text-semantic-danger"
+            >
+              기록을 저장하지 못했어요. 다시 시도해주세요.
+            </p>
+          )}
+          <Button
+            text={isCreatingRecord ? '저장 중...' : '완료'}
+            onClick={handleSubmit}
+            disabled={!isSubmittable || isCreatingRecord}
+          />
+        </div>
       }
     >
       <BowelStatusField

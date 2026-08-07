@@ -1,7 +1,7 @@
 import type {
   NotificationDateGroupTypes,
   NotificationItemTypes,
-} from '../types/notificationTypes';
+} from '@/pages/notification/types/notificationTypes';
 
 const MILLISECONDS_PER_MINUTE = 1000 * 60;
 const MILLISECONDS_PER_HOUR = MILLISECONDS_PER_MINUTE * 60;

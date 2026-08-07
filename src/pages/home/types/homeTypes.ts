@@ -5,16 +5,20 @@ import type {
   LifeRecordTypes,
   LifeRecordViewTypes,
 } from '@/shared/components/dailyRecord';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
 export type HomeDateRecordStatusTypes =
-  'none' | 'complete' | 'boogleOnly' | 'noBoogle' | 'dailyOnly';
+  | 'none'
+  | 'complete'
+  | 'boogleOnly'
+  | 'noBoogle'
+  | 'dailyOnly'
+  | 'noBoogleWithDaily';
 
 export type HomeRecordStatusMapTypes = Record<
   string,
   HomeDateRecordStatusTypes
 >;
-
-export type HomeDateMetricMapTypes = Record<string, number>;
 
 export type HomeMessageBannerStatusTypes = 'waiting' | 'sent' | 'noBowel';
 
@@ -33,8 +37,8 @@ export interface HomeMessageBannerContentTypes {
 export interface HomeUserTypes {
   id: number;
   nickname: string;
-  userType: string;
-  userTypeLabel: string;
+  userType: string | null;
+  userTypeLabel: string | null;
   joinedDays: number;
 }
 
@@ -67,16 +71,9 @@ export interface HomeDataTypes {
   boogleRecords: HomeBoogleRecordTypes[];
   lifeRecord: HomeLifeRecordTypes | null;
   weeklyPattern: HomeWeeklyPatternTypes | null;
-  recordStatusByDate?: HomeRecordStatusMapTypes;
-  boogleCountByDate?: HomeDateMetricMapTypes;
-  streakByDate?: HomeDateMetricMapTypes;
 }
 
-export interface HomeResponseTypes {
-  success: boolean;
-  data: HomeDataTypes;
-  message: string;
-}
+export type HomeResponseTypes = ApiResponseTypes<HomeDataTypes>;
 
 export interface HomeSelectedDateContentTypes {
   messageBannerContent: HomeMessageBannerContentTypes;

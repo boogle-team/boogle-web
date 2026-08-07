@@ -9,6 +9,7 @@ export const INITIAL_LIFE_RECORD_STATE: LifeRecordFormStateTypes = {
   hydration: null,
   foods: [],
   memo: '',
+  detailRecord: null,
 };
 
 interface StartLifeRecordParamTypes {

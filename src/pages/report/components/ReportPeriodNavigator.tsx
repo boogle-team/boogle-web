@@ -1,13 +1,15 @@
-import PeriodChevronRightIcon from '../assets/illustrations/PeriodChevronRightIcon.svg?react';
+import PeriodChevronRightIcon from '../assets/illustrations/periodChevronRightIcon.svg?react';
 import type { ReportPeriodTextTypes } from '../types/reportTypes';
 
 interface ReportPeriodNavigatorPropTypes {
+  isNextDisabled: boolean;
   onNextClick: () => void;
   onPreviousClick: () => void;
   periodText: ReportPeriodTextTypes;
 }
 
 const ReportPeriodNavigator = ({
+  isNextDisabled,
   onNextClick,
   onPreviousClick,
   periodText,
@@ -17,7 +19,7 @@ const ReportPeriodNavigator = ({
       type="button"
       aria-label="이전 기간"
       onClick={onPreviousClick}
-      className="absolute bottom-1 left-[4.75rem] flex h-6 w-6 items-center justify-center"
+      className="absolute bottom-1 left-[4.75rem] flex h-6 w-6 items-center justify-center text-gray-8"
     >
       <PeriodChevronRightIcon
         aria-hidden="true"
@@ -40,7 +42,8 @@ const ReportPeriodNavigator = ({
       type="button"
       aria-label="다음 기간"
       onClick={onNextClick}
-      className="absolute bottom-1 right-[4.75rem] flex h-6 w-6 items-center justify-center"
+      disabled={isNextDisabled}
+      className="absolute bottom-1 right-[4.75rem] flex h-6 w-6 items-center justify-center text-gray-8 disabled:cursor-not-allowed disabled:text-gray-5"
     >
       <PeriodChevronRightIcon aria-hidden="true" className="h-[0.875rem] w-2" />
     </button>

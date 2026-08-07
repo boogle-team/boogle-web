@@ -7,6 +7,7 @@ interface NicknameStepPropTypes {
   nickname: string;
   onNicknameChange: (value: string) => void;
   profileImageUrl: string | null;
+  profileImageErrorMessage: string | null;
   onProfileImageChange: (file: File) => void;
 }
 
@@ -14,6 +15,7 @@ const NicknameStep = ({
   nickname,
   onNicknameChange,
   profileImageUrl,
+  profileImageErrorMessage,
   onProfileImageChange,
 }: NicknameStepPropTypes) => {
   const handleNicknameChange = (value: string) => {
@@ -28,11 +30,16 @@ const NicknameStep = ({
         <span className="text-orange-6">프로필</span>을 입력해 주세요!
       </h2>
 
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-2">
         <ProfileImageSetting
           imageUrl={profileImageUrl ?? undefined}
           onImageChange={onProfileImageChange}
         />
+        {profileImageErrorMessage && (
+          <p role="alert" className="caption text-center text-semantic-danger">
+            {profileImageErrorMessage}
+          </p>
+        )}
       </div>
       <div>
         <p className="body-m mb-2 ml-[0.12rem] text-gray-8">닉네임</p>

@@ -1,43 +1,89 @@
-﻿import { useSearchParams } from 'react-router-dom';
-
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import InsufficientReportBody from './components/InsufficientReportBody';
 import MonthlyReportBody from './components/MonthlyReportBody';
-import { MonthlyTypePreview } from './components/MonthlyTypeCard';
 import ReportModeTabs from './components/ReportModeTabs';
 import ReportPeriodNavigator from './components/ReportPeriodNavigator';
 import WeeklyReportBody from './components/WeeklyReportBody';
-import { useReportGuideFeedback } from './hooks/useReportGuideFeedback';
+import useMonthlyReportQuery from './hooks/useMonthlyReportQuery';
 import { useReportPdfDownload } from './hooks/useReportPdfDownload';
 import { useReportPeriod } from './hooks/useReportPeriod';
-import { useReportViewData } from './hooks/useReportViewData';
-import type {
-  ReportGuideFeedbackTypes,
-  ReportModeTypes,
-} from './types/reportTypes';
+import useWeeklyReportQuery from './hooks/useWeeklyReportQuery';
+import type { ReportModeTypes } from './types/reportTypes';
+import {
+  mapMonthlyInsufficientReport,
+  mapMonthlyReportViewData,
+} from './utils/monthlyReportViewDataMapper';
+import { getReportDateRange } from './utils/reportPeriodUtils';
+import {
+  mapWeeklyInsufficientReport,
+  mapWeeklyReportViewData,
+} from './utils/weeklyReportViewDataMapper';
+
+interface ReportStatusBodyPropTypes {
+  isError?: boolean;
+  message: string;
+  onRetry?: () => void;
+}
+
+const ReportStatusBody = ({
+  isError = false,
+  message,
+  onRetry,
+}: ReportStatusBodyPropTypes) => (
+  <div
+    role={isError ? 'alert' : 'status'}
+    className="flex min-h-[24rem] flex-col items-center justify-center gap-4 text-center"
+  >
+    <p className="body-m text-gray-7">{message}</p>
+    {onRetry && (
+      <button
+        type="button"
+        className="label-bold rounded-full border border-orange-6 px-5 py-2 text-orange-6"
+        onClick={onRetry}
+      >
+        다시 시도
+      </button>
+    )}
+  </div>
+);
 
 const Report = () => {
-  const [searchParams] = useSearchParams();
   const {
     changeReportMode,
     currentPeriodDate,
+    isNextPeriodDisabled,
     isWeeklyReport,
     moveToNextPeriod,
     moveToPreviousPeriod,
     periodText,
     selectedMode,
   } = useReportPeriod();
-  const { downloadReportPdf, pdfErrorMessage } = useReportPdfDownload();
-  const { insufficientReport, monthlyReportViewData, weeklyReportViewData } =
-    useReportViewData(selectedMode);
+  const { startDate: reportStartDate } = getReportDateRange(
+    selectedMode,
+    currentPeriodDate,
+  );
+
   const {
-    feedbackStatus: lifeGuideFeedbackStatus,
-    isFeedbackPending: isLifeGuideFeedbackPending,
-    submitGuideFeedback,
-  } = useReportGuideFeedback(weeklyReportViewData.lifeGuide);
-  const isMonthlyTypePreview = searchParams.get('preview') === 'monthly-types';
-  const isInsufficientReportPreview =
-    searchParams.get('preview') === 'insufficient';
+    weeklyReport,
+    isError: isWeeklyReportError,
+    isLoading: isWeeklyReportLoading,
+    refetch: refetchWeeklyReport,
+  } = useWeeklyReportQuery(isWeeklyReport ? reportStartDate : '');
+  const {
+    monthlyReport,
+    isError: isMonthlyReportError,
+    isLoading: isMonthlyReportLoading,
+    refetch: refetchMonthlyReport,
+  } = useMonthlyReportQuery(isWeeklyReport ? '' : reportStartDate);
+
+  const { downloadReportPdf, isPdfDownloading, pdfErrorMessage } =
+    useReportPdfDownload();
+  const weeklyReportViewData = weeklyReport
+    ? mapWeeklyReportViewData(weeklyReport)
+    : null;
+  const monthlyReportViewData = monthlyReport
+    ? mapMonthlyReportViewData(monthlyReport)
+    : null;
 
   const handleModeClick = (mode: ReportModeTypes) => {
     changeReportMode(mode);
@@ -52,18 +98,109 @@ const Report = () => {
   };
 
   const handlePdfButtonClick = () => {
-    void downloadReportPdf(selectedMode, currentPeriodDate);
+    void downloadReportPdf(currentPeriodDate);
   };
 
-  const handleLifeGuideFeedbackClick = (feedback: ReportGuideFeedbackTypes) => {
-    void submitGuideFeedback(feedback);
+  const handleWeeklyReportRetry = () => {
+    void refetchWeeklyReport();
   };
 
-  if (isMonthlyTypePreview) {
+  const handleMonthlyReportRetry = () => {
+    void refetchMonthlyReport();
+  };
+
+  const renderWeeklyReport = () => {
+    if (isWeeklyReportLoading) {
+      return <ReportStatusBody message="주간 리포트를 불러오는 중이에요." />;
+    }
+
+    if (isWeeklyReportError) {
+      return (
+        <ReportStatusBody
+          isError
+          message="주간 리포트를 불러오지 못했어요."
+          onRetry={handleWeeklyReportRetry}
+        />
+      );
+    }
+
+    if (!weeklyReport) {
+      return (
+        <ReportStatusBody message="주간 리포트가 아직 준비되지 않았어요." />
+      );
+    }
+
+    if (weeklyReport.dataStatus === 'INSUFFICIENT') {
+      return (
+        <InsufficientReportBody
+          insufficientReport={mapWeeklyInsufficientReport(weeklyReport)}
+          selectedMode="weekly"
+        />
+      );
+    }
+
+    if (!weeklyReportViewData) {
+      return (
+        <ReportStatusBody
+          isError
+          message="주간 리포트를 표시하지 못했어요."
+          onRetry={handleWeeklyReportRetry}
+        />
+      );
+    }
+
+    return <WeeklyReportBody {...weeklyReportViewData} />;
+  };
+
+  const renderMonthlyReport = () => {
+    if (isMonthlyReportLoading) {
+      return <ReportStatusBody message="월간 리포트를 불러오는 중이에요." />;
+    }
+
+    if (isMonthlyReportError) {
+      return (
+        <ReportStatusBody
+          isError
+          message="월간 리포트를 불러오지 못했어요."
+          onRetry={handleMonthlyReportRetry}
+        />
+      );
+    }
+
+    if (!monthlyReport) {
+      return (
+        <ReportStatusBody message="월간 리포트가 아직 준비되지 않았어요." />
+      );
+    }
+
+    if (monthlyReport.dataStatus === 'INSUFFICIENT') {
+      return (
+        <InsufficientReportBody
+          insufficientReport={mapMonthlyInsufficientReport(monthlyReport)}
+          selectedMode="monthly"
+        />
+      );
+    }
+
+    if (!monthlyReportViewData) {
+      return (
+        <ReportStatusBody
+          isError
+          message="월간 리포트를 표시하지 못했어요."
+          onRetry={handleMonthlyReportRetry}
+        />
+      );
+    }
+
     return (
-      <MonthlyTypePreview monthlyTypes={monthlyReportViewData.monthlyTypes} />
+      <MonthlyReportBody
+        {...monthlyReportViewData}
+        isPdfDownloading={isPdfDownloading}
+        pdfErrorMessage={pdfErrorMessage}
+        onPdfButtonClick={handlePdfButtonClick}
+      />
     );
-  }
+  };
 
   return (
     <section className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem] pt-[3.06rem] text-gray-10">
@@ -83,30 +220,13 @@ const Report = () => {
         />
 
         <ReportPeriodNavigator
+          isNextDisabled={isNextPeriodDisabled}
           periodText={periodText}
           onNextClick={handleNextPeriodClick}
           onPreviousClick={handlePreviousPeriodClick}
         />
 
-        {isInsufficientReportPreview ? (
-          <InsufficientReportBody
-            insufficientReport={insufficientReport}
-            selectedMode={selectedMode}
-          />
-        ) : isWeeklyReport ? (
-          <WeeklyReportBody
-            {...weeklyReportViewData}
-            lifeGuideFeedbackStatus={lifeGuideFeedbackStatus}
-            isLifeGuideFeedbackPending={isLifeGuideFeedbackPending}
-            onLifeGuideFeedbackClick={handleLifeGuideFeedbackClick}
-          />
-        ) : (
-          <MonthlyReportBody
-            {...monthlyReportViewData}
-            pdfErrorMessage={pdfErrorMessage}
-            onPdfButtonClick={handlePdfButtonClick}
-          />
-        )}
+        {isWeeklyReport ? renderWeeklyReport() : renderMonthlyReport()}
       </div>
     </section>
   );

@@ -1,9 +1,8 @@
-import { Info } from 'lucide-react';
+import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import RelatedBristolIcon from '../assets/icons/RelatedBristolIcon';
-import RelatedSleepIcon from '../assets/icons/RelatedSleepIcon';
-import RelatedGuideChevronRightIcon from '../assets/illustrations/RelatedGuideChevronRightIcon.svg?react';
+import RelatedGuideChevronRightIcon from '../assets/illustrations/relatedGuideChevronRightIcon.svg?react';
+import { getGuideIcon } from '../constants/guideIcons';
 import type { GuideRelatedTypes } from '../types/guideTypes';
 import { getGuideDetailPath } from '../utils/guideRouteUtils';
 
@@ -24,7 +23,7 @@ const GuideRelatedGuideList = ({
       <div className="mt-3 flex flex-col gap-2">
         {relatedGuides.map((relatedGuide) => (
           <RelatedGuideCard
-            key={relatedGuide.title}
+            key={relatedGuide.guideId}
             relatedGuide={relatedGuide}
           />
         ))}
@@ -37,37 +36,33 @@ interface RelatedGuideCardPropTypes {
   relatedGuide: GuideRelatedTypes;
 }
 
-const RelatedGuideCard = ({ relatedGuide }: RelatedGuideCardPropTypes) => (
-  <Link
-    to={getGuideDetailPath({
-      guideContentId: relatedGuide.guideContentId,
-      routeId: relatedGuide.id,
-    })}
-    className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
-  >
-    <span className="flex items-center gap-2">
-      <span
-        className={`flex h-6 w-6 items-center justify-center rounded-md text-beige-1 ${
-          relatedGuide.icon === 'stool' ? 'bg-transparent' : 'bg-yellow-4'
-        }`}
-      >
-        {relatedGuide.icon === 'sleep' ? (
-          <RelatedSleepIcon className="h-6 w-6" />
-        ) : relatedGuide.icon === 'stool' ? (
-          <RelatedBristolIcon className="h-6 w-6" />
-        ) : (
-          <Info className="h-3.5 w-3.5" />
-        )}
+const RelatedGuideCard = ({ relatedGuide }: RelatedGuideCardPropTypes) => {
+  const { guideId, title } = relatedGuide;
+  // 목록 카드와 같은 아이콘을 쓴다. 배경이 SVG에 포함돼 있어 슬롯에 배경을 씌우지 않는다.
+  const guideIcon = getGuideIcon(guideId);
+
+  return (
+    <Link
+      to={getGuideDetailPath({ guideId })}
+      className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
+    >
+      <span className="flex items-center gap-2">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center">
+          {guideIcon
+            ? createElement(guideIcon, {
+                'aria-hidden': true,
+                className: 'h-6 w-6',
+              })
+            : null}
+        </span>
+        <span className="body-m tracking-[-0.02rem] text-gray-9">{title}</span>
       </span>
-      <span className="body-m tracking-[-0.02rem] text-gray-9">
-        {relatedGuide.title}
-      </span>
-    </span>
-    <RelatedGuideChevronRightIcon
-      aria-hidden="true"
-      className="h-5 w-5 shrink-0"
-    />
-  </Link>
-);
+      <RelatedGuideChevronRightIcon
+        aria-hidden="true"
+        className="h-5 w-5 shrink-0"
+      />
+    </Link>
+  );
+};
 
 export default GuideRelatedGuideList;

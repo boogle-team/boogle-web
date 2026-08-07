@@ -1,14 +1,22 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HOME_DATE_MODAL_MARK_CONFIG } from '@/pages/home/constants/homeCalendarConfig';
+import { getApiErrorMessage } from '@/shared/apis/apiError';
+import {
+  HOME_DATE_MODAL_MARK_CONFIG,
+  MAX_RECORD_SUMMARY_RANGE_COUNT,
+} from '@/pages/home/constants/homeCalendarConfig';
+import { HOME_RECORD_SUMMARY_RANGE } from '@/pages/home/constants/homeQueryKeys';
 import useHomeQuery from '@/pages/home/hooks/useHomeQuery';
+import useHomeRecordSummaryQueries from '@/pages/home/hooks/useHomeRecordSummaryQueries';
+import { useHomeSelectedDateStore } from '@/pages/home/stores/homeSelectedDateStore';
+import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 import type { HomeViewModelTypes } from '@/pages/home/types/homeTypes';
 import { getCalendarRecordMapFromHomeStatus } from '@/pages/home/utils/homeCalendarUtils';
-import {
-  getHomeDateSubTitle,
-  getHomeDateTitle,
-} from '@/pages/home/utils/homeDateUtils';
 import { getHomeViewModel } from '@/pages/home/utils/homeDataMapper';
+import {
+  getFullWeekdayLabel,
+  getMonthDayLabel,
+} from '@/shared/utils/dateLabelUtils';
 import type {
   CalendarMarkConfigMapTypes,
   CalendarRecordMapTypes,
@@ -17,6 +25,11 @@ import type {
 interface UseHomeStateReturnTypes {
   isLoading: boolean;
   isError: boolean;
+  isDailyRecordLoading: boolean;
+  isDailyRecordError: boolean;
+  dailyRecordErrorMessage: string;
+  isRecordSummaryError: boolean;
+  recordSummaryErrorMessage: string;
   selectedDateValue: string;
   homeViewModel: HomeViewModelTypes | null;
   dateModalRecordMap: CalendarRecordMapTypes;
@@ -31,6 +44,8 @@ interface UseHomeStateReturnTypes {
   handleSettingButtonClick: () => void;
   handleCalendarDateSelect: (date: string) => void;
   handleDateModalSelect: (date: string) => void;
+  handleRecordSummaryRangeRequest: (baseDate: string) => void;
+  handleRecordSummaryRetryButtonClick: () => void;
   handleBoogleRecordCreateButtonClick: () => void;
   handleBoogleRecordEditButtonClick: (recordId: number) => void;
   handleLifeRecordCreateButtonClick: () => void;
@@ -41,22 +56,57 @@ interface UseHomeStateReturnTypes {
 const useHomeState = (): UseHomeStateReturnTypes => {
   const navigate = useNavigate();
   const { homeData, isError, isLoading } = useHomeQuery();
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const selectedDate = useHomeSelectedDateStore((state) => state.selectedDate);
+  const setSelectedDate = useHomeSelectedDateStore(
+    (state) => state.setSelectedDate,
+  );
+  const registeredRecordSummaryBaseDatesRef = useRef(new Set<string>());
+  const [recordSummaryBaseDates, setRecordSummaryBaseDates] = useState<
+    string[]
+  >([]);
   const [pickerBaseDate, setPickerBaseDate] = useState<string | null>(null);
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
 
   const selectedDateValue = homeData
     ? (selectedDate ?? homeData.today.date)
     : '';
+  const {
+    data: selectedDailyRecord,
+    error: dailyRecordError,
+    isError: isDailyRecordError,
+    isLoading: isDailyRecordLoading,
+  } = useDailyRecordQuery(selectedDateValue);
+  const {
+    recordStatusByDate: summaryRecordStatusByDate,
+    isError: isRecordSummaryError,
+    error: recordSummaryError,
+    refetchRecordSummaries,
+  } = useHomeRecordSummaryQueries(
+    recordSummaryBaseDates,
+    HOME_RECORD_SUMMARY_RANGE,
+  );
+  const dailyRecordErrorMessage = isDailyRecordError
+    ? getApiErrorMessage(dailyRecordError, '잠시 후 다시 시도해 주세요')
+    : '';
+  const recordSummaryErrorMessage = isRecordSummaryError
+    ? getApiErrorMessage(recordSummaryError, '기록 표시를 불러오지 못했어요')
+    : '';
 
   const homeViewModel = useMemo(() => {
     if (!homeData || !selectedDateValue) return null;
 
     return getHomeViewModel({
+      dailyRecord: selectedDailyRecord,
       homeData,
       selectedDate: selectedDateValue,
+      summaryRecordStatusByDate,
     });
-  }, [homeData, selectedDateValue]);
+  }, [
+    homeData,
+    selectedDailyRecord,
+    selectedDateValue,
+    summaryRecordStatusByDate,
+  ]);
 
   const dateModalRecordMap = useMemo(() => {
     if (!homeViewModel) return {};
@@ -67,10 +117,10 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   const calendarPickerKey = pickerBaseDate ?? homeViewModel?.todayDate ?? '';
 
   const homeDateTitle = selectedDateValue
-    ? getHomeDateTitle(selectedDateValue)
+    ? getMonthDayLabel(selectedDateValue)
     : '';
   const homeDateSubTitle = selectedDateValue
-    ? getHomeDateSubTitle(selectedDateValue)
+    ? getFullWeekdayLabel(selectedDateValue)
     : '';
 
   const handleDateTitleClick = () => {
@@ -98,6 +148,31 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     setSelectedDate(date);
   };
 
+  const handleRecordSummaryRangeRequest = useCallback((baseDate: string) => {
+    if (registeredRecordSummaryBaseDatesRef.current.has(baseDate)) return;
+
+    registeredRecordSummaryBaseDatesRef.current.add(baseDate);
+    setRecordSummaryBaseDates((currentBaseDates) => {
+      const nextBaseDates = [...currentBaseDates, baseDate].slice(
+        -MAX_RECORD_SUMMARY_RANGE_COUNT,
+      );
+      const removedBaseDates = currentBaseDates.filter(
+        (currentBaseDate) => !nextBaseDates.includes(currentBaseDate),
+      );
+
+      // 제거된 범위는 다시 스크롤해 돌아왔을 때 재등록될 수 있어야 한다
+      removedBaseDates.forEach((removedBaseDate) => {
+        registeredRecordSummaryBaseDatesRef.current.delete(removedBaseDate);
+      });
+
+      return nextBaseDates;
+    });
+  }, []);
+
+  const handleRecordSummaryRetryButtonClick = () => {
+    void refetchRecordSummaries();
+  };
+
   const handleBoogleRecordCreateButtonClick = () => {
     navigate(`/boogle-record/new?date=${selectedDateValue}`);
   };
@@ -121,6 +196,11 @@ const useHomeState = (): UseHomeStateReturnTypes => {
   return {
     isLoading,
     isError,
+    isDailyRecordLoading,
+    isDailyRecordError,
+    dailyRecordErrorMessage,
+    isRecordSummaryError,
+    recordSummaryErrorMessage,
     selectedDateValue,
     homeViewModel,
     dateModalRecordMap,
@@ -135,6 +215,8 @@ const useHomeState = (): UseHomeStateReturnTypes => {
     handleSettingButtonClick,
     handleCalendarDateSelect,
     handleDateModalSelect,
+    handleRecordSummaryRangeRequest,
+    handleRecordSummaryRetryButtonClick,
     handleBoogleRecordCreateButtonClick,
     handleBoogleRecordEditButtonClick,
     handleLifeRecordCreateButtonClick,

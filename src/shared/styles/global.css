@@ -27,9 +27,11 @@ button {
   cursor: pointer;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+@layer base {
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 /* 포커스 스타일 - 웹 접근성 */

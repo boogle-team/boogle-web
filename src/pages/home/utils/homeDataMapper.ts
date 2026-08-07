@@ -1,6 +1,8 @@
 import {
   getBoogleRecordView,
+  getDailyAutoTags,
   getLifeRecordView,
+  type DailyRecordTypes,
 } from '@/shared/components/dailyRecord';
 import { DEFAULT_HOME_RECORD_STATUS } from '@/pages/home/constants/homeCalendarConfig';
 import { getHomeMessageBannerContentByStatus } from '@/pages/home/utils/homeMessageUtils';
@@ -11,6 +13,31 @@ import type {
   HomeSelectedDateContentTypes,
   HomeViewModelTypes,
 } from '@/pages/home/types/homeTypes';
+
+interface GetBoogleCountBySelectedDateParamTypes {
+  homeData: HomeDataTypes;
+  recordStatus: HomeDateRecordStatusTypes;
+  selectedDate: string;
+}
+
+interface GetStreakBySelectedDateParamTypes {
+  homeData: HomeDataTypes;
+  selectedDate: string;
+}
+
+interface GetSelectedDateContentParamTypes {
+  dailyRecord?: DailyRecordTypes;
+  homeData: HomeDataTypes;
+  recordStatusByDate: HomeRecordStatusMapTypes;
+  selectedDate: string;
+}
+
+interface GetHomeViewModelParamTypes {
+  dailyRecord?: DailyRecordTypes;
+  homeData: HomeDataTypes;
+  selectedDate: string;
+  summaryRecordStatusByDate: HomeRecordStatusMapTypes;
+}
 
 const getFallbackRecordStatusByDate = ({
   boogleRecords,
@@ -26,16 +53,15 @@ const getFallbackRecordStatusByDate = ({
     {},
   );
 
-  const hasBoogleRecord = boogleRecords.length > 0;
+  const hasBowelRecord = boogleRecords.some(({ hasBowel }) => hasBowel);
+  const hasNoBowelRecord = boogleRecords.some(({ hasBowel }) => !hasBowel);
   const hasLifeRecord = Boolean(lifeRecord);
 
-  if (hasBoogleRecord && hasLifeRecord) {
-    recordStatusByDate[today.date] = 'complete';
-  } else if (hasBoogleRecord) {
-    recordStatusByDate[today.date] = boogleRecords.some(
-      ({ hasBowel }) => hasBowel,
-    )
-      ? 'boogleOnly'
+  if (hasBowelRecord) {
+    recordStatusByDate[today.date] = hasLifeRecord ? 'complete' : 'boogleOnly';
+  } else if (hasNoBowelRecord) {
+    recordStatusByDate[today.date] = hasLifeRecord
+      ? 'noBoogleWithDaily'
       : 'noBoogle';
   } else if (hasLifeRecord) {
     recordStatusByDate[today.date] = 'dailyOnly';
@@ -44,54 +70,11 @@ const getFallbackRecordStatusByDate = ({
   return recordStatusByDate;
 };
 
-const isSameRecordDate = ({
-  recordDate,
-  selectedDate,
-}: {
-  recordDate: string;
-  selectedDate: string;
-}) => recordDate.startsWith(selectedDate);
-
-const getBoogleRecordsBySelectedDate = ({
-  homeData,
-  selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}) =>
-  homeData.boogleRecords.filter(({ regDate }) =>
-    isSameRecordDate({ recordDate: regDate, selectedDate }),
-  );
-
-const getLifeRecordBySelectedDate = ({
-  homeData,
-  selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}) => {
-  if (!homeData.lifeRecord) return null;
-
-  return isSameRecordDate({
-    recordDate: homeData.lifeRecord.regDate,
-    selectedDate,
-  })
-    ? homeData.lifeRecord
-    : null;
-};
-
 const getBoogleCountBySelectedDate = ({
   homeData,
   recordStatus,
   selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  recordStatus: HomeDateRecordStatusTypes;
-  selectedDate: string;
-}) => {
-  const mappedBoogleCount = homeData.boogleCountByDate?.[selectedDate];
-  if (mappedBoogleCount !== undefined) return mappedBoogleCount;
-
+}: GetBoogleCountBySelectedDateParamTypes) => {
   if (selectedDate === homeData.today.date) {
     return homeData.boogleCount > 0
       ? homeData.boogleCount
@@ -104,37 +87,22 @@ const getBoogleCountBySelectedDate = ({
 const getStreakBySelectedDate = ({
   homeData,
   selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}) => {
-  const mappedStreak = homeData.streakByDate?.[selectedDate];
-  if (mappedStreak !== undefined) return mappedStreak;
-
+}: GetStreakBySelectedDateParamTypes) => {
   if (selectedDate === homeData.today.date) return homeData.streak;
 
   return 1;
 };
 
 const getSelectedDateContent = ({
+  dailyRecord,
   homeData,
   recordStatusByDate,
   selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  recordStatusByDate: HomeRecordStatusMapTypes;
-  selectedDate: string;
-}): HomeSelectedDateContentTypes => {
+}: GetSelectedDateContentParamTypes): HomeSelectedDateContentTypes => {
   const recordStatus =
     recordStatusByDate[selectedDate] ?? DEFAULT_HOME_RECORD_STATUS;
-  const selectedDateBoogleRecords = getBoogleRecordsBySelectedDate({
-    homeData,
-    selectedDate,
-  });
-  const selectedDateLifeRecord = getLifeRecordBySelectedDate({
-    homeData,
-    selectedDate,
-  });
+  const selectedDateBoogleRecords = dailyRecord?.boogleRecords ?? [];
+  const selectedDateLifeRecord = dailyRecord?.lifeRecord ?? null;
 
   return {
     messageBannerContent: getHomeMessageBannerContentByStatus({
@@ -157,25 +125,30 @@ const getSelectedDateContent = ({
       selectedDate,
       record: selectedDateLifeRecord,
     }),
-    autoTags: selectedDateLifeRecord?.autoTags ?? [],
+    autoTags: getDailyAutoTags({
+      boogleRecords: selectedDateBoogleRecords,
+      lifeRecord: selectedDateLifeRecord,
+    }),
     weeklyPattern: homeData.weeklyPattern ?? null,
   };
 };
 
 export const getHomeViewModel = ({
+  dailyRecord,
   homeData,
   selectedDate,
-}: {
-  homeData: HomeDataTypes;
-  selectedDate: string;
-}): HomeViewModelTypes => {
-  const recordStatusByDate =
-    homeData.recordStatusByDate ?? getFallbackRecordStatusByDate(homeData);
+  summaryRecordStatusByDate,
+}: GetHomeViewModelParamTypes): HomeViewModelTypes => {
+  const recordStatusByDate = {
+    ...getFallbackRecordStatusByDate(homeData),
+    ...summaryRecordStatusByDate,
+  };
 
   return {
     todayDate: homeData.today.date,
     recordStatusByDate,
     selectedDateContent: getSelectedDateContent({
+      dailyRecord,
       homeData,
       recordStatusByDate,
       selectedDate,
