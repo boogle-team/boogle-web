@@ -19,6 +19,9 @@ import type { NotificationLinkToTypes } from '@/pages/notification/types/notific
 
 declare const self: ServiceWorkerGlobalScope;
 
+// workbox-window의 messageSkipWaiting()이 보내는 메시지 타입과 동일해야 한다.
+const SKIP_WAITING_MESSAGE_TYPE = 'SKIP_WAITING';
+
 const DEFAULT_NOTIFICATION_TITLE = '부글';
 const DEFAULT_NOTIFICATION_BODY = '새로운 알림이 도착했어요.';
 const DEFAULT_NOTIFICATION_LINK_TO = 'HOME';
@@ -41,8 +44,12 @@ registerRoute(
   }),
 );
 
-self.addEventListener('install', () => {
-  void self.skipWaiting();
+// 사용자가 업데이트를 수락하기 전까지 새 서비스 워커를 대기 상태로 둔다.
+// 즉시 skipWaiting을 호출하면 기록 입력 중에 화면이 갱신될 수 있다.
+self.addEventListener('message', (event) => {
+  if (event.data?.type === SKIP_WAITING_MESSAGE_TYPE) {
+    void self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {
