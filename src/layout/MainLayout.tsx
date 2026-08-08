@@ -16,7 +16,7 @@ const MainLayout = () => {
         className={
           isBottomNavigationHidden
             ? ''
-            : 'pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))]'
+            : 'pb-[var(--bottom-navigation-page-space)]'
         }
       >
         <Outlet />
