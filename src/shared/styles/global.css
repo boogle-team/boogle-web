@@ -3,6 +3,8 @@
 @import "pretendard/dist/web/variable/pretendardvariable.css";
 
 :root {
+  --root-background-color: #ffffff;
+  --color-background: var(--root-background-color);
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --top-navigation-height: 3.5625rem;
@@ -31,9 +33,16 @@
   min-width: 320px;
   min-height: 100dvh;
   margin: 0 auto;
+  background-color: var(--root-background-color);
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
   /* 가로 넘침/자식 margin이 박스 밖으로 새는 것만 차단하고, 세로는 콘텐츠가 길어지면 스크롤되도록 허용한다. */
   overflow-x: hidden;
+}
+
+html,
+body,
+#root {
+  background-color: var(--root-background-color);
 }
 
 body {
