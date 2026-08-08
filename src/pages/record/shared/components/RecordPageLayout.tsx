@@ -43,7 +43,7 @@ const RecordPageLayout = ({
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-beige-1 pt-12.25">
+    <div className="flex min-h-screen flex-col bg-beige-1">
       <TopNavigation
         variant="detail"
         title={title}
@@ -55,14 +55,16 @@ const RecordPageLayout = ({
 
       <div
         className={`flex flex-1 flex-col px-layout pt-6 ${
-          footer ? 'pb-[11.1275rem]' : 'pb-[3.69rem]'
+          footer
+            ? 'pb-[calc(var(--record-footer-content-space)+var(--safe-area-bottom))]'
+            : 'pb-[calc(var(--form-bottom-padding)+var(--safe-area-bottom))]'
         } ${contentClassName}`}
       >
         {children}
       </div>
 
       {footer && (
-        <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 px-layout pt-4 pb-[3.69rem]">
+        <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-107.5 -translate-x-1/2 px-layout pt-4 pb-[calc(var(--form-bottom-padding)+var(--safe-area-bottom))]">
           {footer}
         </div>
       )}

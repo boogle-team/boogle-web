@@ -75,12 +75,12 @@ const BaselineInfoSetting = () => {
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="mt-[3.06rem] bg-beige-2"
+        className="bg-beige-2"
         title="기준선 정보"
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(var(--settings-fixed-action-space)+var(--safe-area-bottom))]">
         <section className="mt-6 text-center">
           <h1 className="text-[1.375rem] font-semibold leading-[1.7875rem] tracking-[-0.06875rem] text-gray-10">
             정보를 조금만 더 알려주세요!

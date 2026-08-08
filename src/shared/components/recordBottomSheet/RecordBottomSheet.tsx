@@ -1,4 +1,4 @@
-﻿import { createPortal } from 'react-dom';
+import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { FocusTrap } from 'focus-trap-react';
@@ -101,7 +101,7 @@ const RecordBottomSheet = ({
                 ease: ['easeOut', 'easeInOut', 'easeOut'],
               }}
               onClick={handleSheetClick}
-              className="-mb-4 w-full max-w-[430px] origin-bottom rounded-t-[24px] bg-beige-1 px-[0.94rem] pt-[0.31rem] pb-[calc(3.75rem+1rem)] shadow-[0_0.94rem_4.69rem_rgba(0,0,0,0.18)]"
+              className="-mb-4 w-full max-w-[430px] origin-bottom rounded-t-[24px] bg-beige-1 px-[0.94rem] pt-[0.31rem] pb-[calc(var(--bottom-sheet-padding-bottom)+var(--safe-area-bottom))] shadow-[0_0.94rem_4.69rem_rgba(0,0,0,0.18)]"
             >
               <div className="mx-auto mb-[1.75rem] h-1 w-10 rounded-full bg-gray-4" />
               <h2 className="body-m-bold mb-5 text-center text-gray-10">

@@ -21,8 +21,11 @@ const authApi = axios.create({
 
 export const getOAuthLoginUrl = (provider: SocialLoginProviderTypes) => {
   const normalizedApiBaseUrl = API_BASE_URL.replace(/\/$/, '');
+  const frontendOrigin = window.location.origin;
 
-  return `${normalizedApiBaseUrl}/api/v1/auth/oauth/${provider}`;
+  return `${normalizedApiBaseUrl}/api/v1/auth/oauth/${provider}?frontendOrigin=${encodeURIComponent(
+    frontendOrigin,
+  )}`;
 };
 
 export const postOAuthExchange = async ({

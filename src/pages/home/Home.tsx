@@ -41,7 +41,7 @@ const Home = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-beige-6">
-        <div className="h-12.25 bg-beige-1" />
+        <div className="h-[calc(var(--top-navigation-height)+var(--safe-area-top))] bg-beige-1" />
         <div className="h-[13.1875rem] bg-beige-1" />
         <section className="min-h-[24rem] bg-beige-6 px-layout py-8">
           <div className="h-[5.75rem] rounded-xl bg-beige-1" />
@@ -59,9 +59,8 @@ const Home = () => {
   }
 
   return (
-    <div className="-mb-[10rem] min-h-screen bg-beige-6 pb-[10rem]">
+    <div className="-mb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] min-h-screen bg-beige-6 pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))]">
       <div className="bg-beige-1">
-        <div className="h-12.25" />
         <TopNavigation
           variant="home"
           title={homeDateTitle}

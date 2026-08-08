@@ -10,7 +10,7 @@ interface SocialLoginPropTypes {
 
 const SocialLogin = ({ onKakaoLogin, onGoogleLogin }: SocialLoginPropTypes) => {
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-5 px-layout pb-18">
+    <div className="flex min-h-dvh flex-col bg-beige-5 px-layout pb-[calc(var(--social-login-bottom-padding)+var(--safe-area-bottom))]">
       <div className="flex flex-1 flex-col items-center justify-center">
         <BoogleLogo className="w-[13.75rem] h-[6.25rem] text-orange-5" />
         <p className="body-lg mt-4 text-gray-8">내 장 건강을 위한 작은 습관</p>
