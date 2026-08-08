@@ -60,7 +60,7 @@ export default defineConfig({
     tailwindcss(),
 
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'serviceWorker.ts',
@@ -91,9 +91,11 @@ export default defineConfig({
         ],
       },
 
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
-        cleanupOutdatedCaches: true,
+      // strategies가 injectManifest이므로 generateSW 전용 workbox 옵션은
+      // 무시된다. injectManifest 키에 설정해야 실제로 적용된다.
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff,woff2}'],
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
     }),
   ],
