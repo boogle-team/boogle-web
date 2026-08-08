@@ -203,7 +203,7 @@ const Report = () => {
   };
 
   return (
-    <section className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem] pt-[3.06rem] text-gray-10">
+    <section className="-mb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] min-h-screen bg-beige-5 pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] text-gray-10">
       <div className="bg-beige-5">
         <TopNavigation
           title="리포트"

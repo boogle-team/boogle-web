@@ -21,7 +21,7 @@ const SettingsQueryStatePage = ({
   errorMessage,
   onBackButtonClick,
   onRetryClick,
-  topNavigationClassName = 'mt-[3.06rem] bg-beige-2',
+  topNavigationClassName = 'bg-beige-2',
   containerClassName = 'bg-beige-2',
   mainClassName = 'bg-beige-1',
   isBorderVisible = true,

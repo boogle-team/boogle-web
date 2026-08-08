@@ -93,7 +93,7 @@ const Settings = () => {
         errorMessage="내 정보를 불러오지 못했어요."
         onBackButtonClick={handleBackClick}
         onRetryClick={() => void refetch()}
-        topNavigationClassName="mt-[3.06rem] bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
+        topNavigationClassName="bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
         containerClassName="bg-beige-5"
         mainClassName="bg-beige-5"
         isBorderVisible={false}
@@ -107,7 +107,7 @@ const Settings = () => {
         title="설정"
         onBackButtonClick={handleBackClick}
         isBorderVisible={false}
-        className="mt-[3.06rem] bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
+        className="bg-beige-5! [&_svg]:h-4.5 [&_svg]:w-2.5"
       />
 
       <main className="min-h-screen bg-beige-5 pt-6 px-5 pb-10">

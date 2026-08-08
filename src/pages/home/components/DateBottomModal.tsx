@@ -1,4 +1,4 @@
-﻿import { createPortal } from 'react-dom';
+import { createPortal } from 'react-dom';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { AnimatePresence, motion } from 'motion/react';
@@ -85,7 +85,7 @@ const DateBottomModalSheet = ({
         ease: ['easeOut', 'easeInOut', 'easeOut'],
       }}
       onClick={handleModalContentClick}
-      className="-mb-4 w-full max-w-[430px] origin-bottom rounded-t-[24px] bg-beige-1 px-4 pt-[0.31rem] pb-[calc(2rem+1rem)] shadow-[0_0.94rem_4.69rem_rgba(0,0,0,0.18)]"
+      className="-mb-4 w-full max-w-[430px] origin-bottom rounded-t-[24px] bg-beige-1 px-4 pt-[0.31rem] pb-[calc(var(--bottom-sheet-padding-bottom)+var(--safe-area-bottom))] shadow-[0_0.94rem_4.69rem_rgba(0,0,0,0.18)]"
     >
       <div className="mx-auto mb-[0.56rem] h-1 w-10 rounded-full bg-gray-4" />
       <MonthNavigator

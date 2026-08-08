@@ -20,12 +20,12 @@ const LegalDocumentPage = ({ document }: LegalDocumentPagePropTypes) => {
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="mt-[3.06rem] bg-beige-2"
+        className="bg-beige-2"
         title={document.title}
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex-1 bg-beige-1 px-[0.94rem] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex-1 bg-beige-1 px-[0.94rem] pb-[calc(var(--page-bottom-padding)+var(--safe-area-bottom))]">
         <p className="caption-reg mt-6 text-[#999999]">{document.dateText}</p>
 
         <div className="mt-6 space-y-7">

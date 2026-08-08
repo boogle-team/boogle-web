@@ -18,9 +18,8 @@ const GuideMainView = ({ isInsufficient = false }: GuideMainViewPropTypes) => {
     isInsufficient || patternSection?.dataStatus === 'INSUFFICIENT';
 
   return (
-    <section className="-mb-[10rem] min-h-screen bg-beige-5 px-layout pb-[10rem] text-gray-10">
+    <section className="-mb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] min-h-screen bg-beige-5 px-layout pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] text-gray-10">
       <div className="-mx-layout bg-beige-5">
-        <div className="h-10" />
         <TopNavigation
           title="가이드"
           isBackButtonVisible={false}

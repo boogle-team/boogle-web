@@ -26,7 +26,7 @@ const DetailTopNavigation = ({
 
   return (
     <header
-      className={`grid h-[3.5625rem] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center border-b border-gray-3 bg-beige-1 px-[1rem] py-[0.5rem] ${className}`}
+      className={`grid h-[calc(var(--top-navigation-height)+var(--safe-area-top))] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center border-b border-gray-3 bg-beige-1 px-[1rem] pt-[calc(var(--top-navigation-detail-padding-y)+var(--safe-area-top))] pb-[var(--top-navigation-detail-padding-y)] ${className}`}
     >
       <button
         type="button"

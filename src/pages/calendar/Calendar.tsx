@@ -38,8 +38,7 @@ const Calendar = () => {
   } = useCalendarState();
 
   return (
-    <div className="-mb-[10rem] min-h-screen bg-beige-5 pb-[10rem]">
-      <div className="h-12.25" />
+    <div className="-mb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] min-h-screen bg-beige-5 pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))]">
 
       <TopNavigation
         title="캘린더"

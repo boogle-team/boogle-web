@@ -68,12 +68,12 @@ const SensitiveConsent = () => {
   return (
     <div className="relative flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="bg-beige-2 mt-[3.06rem]"
+        className="bg-beige-2"
         title="민감정보 수집 동의 관리"
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(var(--settings-fixed-action-space)+var(--safe-area-bottom))]">
         <section className="mt-6 rounded-xl border border-orange-3 bg-orange-1 px-4 py-4">
           <div className="flex items-center gap-2 text-orange-7">
             <InfoFlagIcon

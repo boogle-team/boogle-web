@@ -12,7 +12,7 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen">
-      <main className={isBottomNavigationHidden ? '' : 'pb-[10rem]'}>
+      <main className={isBottomNavigationHidden ? '' : 'pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))]'}>
         <Outlet />
       </main>
       {!isBottomNavigationHidden && <BottomNavigation />}

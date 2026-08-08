@@ -137,7 +137,7 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
       </div>
 
       {isFeedbackErrorToastVisible && (
-        <div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] z-50 mx-auto flex max-w-[430px] justify-center px-layout">
+        <div className="fixed inset-x-0 bottom-[calc(var(--safe-area-bottom)+var(--page-bottom-padding))] z-50 mx-auto flex max-w-[430px] justify-center px-layout">
           <GuideFeedbackToast variant="error" />
         </div>
       )}
