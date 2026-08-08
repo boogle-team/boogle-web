@@ -38,6 +38,7 @@ const useAlarmSettings = () => {
     notificationSettings,
     isNotificationSettingsLoading,
     isNotificationSettingsError,
+    refetchNotificationSettings,
   } = useNotificationSettingsQuery();
   const { updateNotificationSetting, isNotificationSettingPending } =
     useNotificationSettingMutation();
@@ -76,7 +77,15 @@ const useAlarmSettings = () => {
       return;
     }
 
-    await registerPushToken({ token: pushTokenResult.token });
+    const isPushTokenRegistered = await registerPushToken({
+      token: pushTokenResult.token,
+    });
+
+    if (!isPushTokenRegistered) {
+      setAlarmNoticeMessage(PUSH_TOKEN_FAILURE_MESSAGE_MAP.failed);
+      return;
+    }
+
     await updateAlarmSetting(alarmKey, 'Y');
   };
 
@@ -106,6 +115,8 @@ const useAlarmSettings = () => {
     toggleAlarm,
     isAlarmSettingDisabled,
     alarmNoticeMessage: resolvedAlarmNoticeMessage,
+    isNotificationSettingsError,
+    refetchNotificationSettings,
   };
 };
 

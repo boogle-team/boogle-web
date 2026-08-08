@@ -2,7 +2,12 @@
 
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
-import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
+import {
+  cleanupOutdatedCaches,
+  createHandlerBoundToURL,
+  precacheAndRoute,
+} from 'workbox-precaching';
+import { NavigationRoute, registerRoute } from 'workbox-routing';
 
 import {
   FIREBASE_CONFIG,
@@ -30,6 +35,11 @@ const isNotificationLinkTo = (
 
 cleanupOutdatedCaches();
 precacheAndRoute(self.__WB_MANIFEST);
+registerRoute(
+  new NavigationRoute(createHandlerBoundToURL('/index.html'), {
+    denylist: [/^\/api\//],
+  }),
+);
 
 self.addEventListener('install', () => {
   void self.skipWaiting();
@@ -113,13 +123,17 @@ const handleNotificationClick = (event: NotificationEvent) => {
       const existingWindowClient = exactWindowClient ?? windowClients[0];
 
       if (existingWindowClient) {
-        const navigatedWindowClient =
-          existingWindowClient.url === destinationUrl
-            ? existingWindowClient
-            : await existingWindowClient.navigate(destinationUrl);
+        try {
+          const navigatedWindowClient =
+            existingWindowClient.url === destinationUrl
+              ? existingWindowClient
+              : await existingWindowClient.navigate(destinationUrl);
 
-        await (navigatedWindowClient ?? existingWindowClient).focus();
-        return;
+          await (navigatedWindowClient ?? existingWindowClient).focus();
+          return;
+        } catch {
+          // 현재 서비스 워커가 제어하지 않는 창이면 새 창으로 대체합니다.
+        }
       }
 
       await self.clients.openWindow(destinationUrl);

@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { postAuthLogout } from '@/pages/login/apis/loginApis';
 import { getApiErrorMessage } from '@/shared/apis/apiError';
-import { synchronizePushToken } from '@/shared/apis/pushTokenSynchronization';
+import {
+  resumePushTokenSynchronization,
+  synchronizePushToken,
+} from '@/shared/apis/pushTokenSynchronization';
 import { usePushTokenCleanup } from '@/shared/hooks/usePushTokenCleanup';
 import {
   clearAuthTokens,
@@ -66,6 +69,7 @@ const useLogout = () => {
 
       setLogoutErrorMessage(getApiErrorMessage(error, LOGOUT_ERROR_MESSAGE));
       setIsLoggingOut(false);
+      resumePushTokenSynchronization();
       void synchronizePushToken();
     }
   };

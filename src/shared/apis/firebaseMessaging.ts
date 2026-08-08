@@ -98,8 +98,7 @@ export const getCurrentFirebasePushToken = async (): Promise<string | null> => {
 
   try {
     const messaging = await getFirebaseMessaging();
-    const serviceWorkerRegistration =
-      await navigator.serviceWorker.getRegistration();
+    const serviceWorkerRegistration = await waitForServiceWorkerRegistration();
 
     if (!messaging || !serviceWorkerRegistration) {
       return null;

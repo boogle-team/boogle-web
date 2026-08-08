@@ -35,6 +35,8 @@ const Settings = () => {
     toggleAlarm,
     isAlarmSettingDisabled,
     alarmNoticeMessage,
+    isNotificationSettingsError,
+    refetchNotificationSettings,
   } = useAlarmSettings();
   const { logoutErrorMessage, isLoggingOut, clearLogoutError, logout } =
     useLogout();
@@ -183,6 +185,15 @@ const Settings = () => {
         <SettingsNotice className="mt-2 px-2">
           {alarmNoticeMessage ??
             '토글을 꺼도 위험 신호 발생 시 앱 내 안내는 항상 표시돼요'}
+          {isNotificationSettingsError && (
+            <button
+              type="button"
+              className="ml-2 shrink-0 font-semibold text-orange-7 underline underline-offset-2"
+              onClick={() => void refetchNotificationSettings()}
+            >
+              다시 시도
+            </button>
+          )}
         </SettingsNotice>
 
         <SettingsSection title="데이터">

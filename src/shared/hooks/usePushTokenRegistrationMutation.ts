@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { postPushToken } from '@/shared/apis/pushTokenApi';
+import { registerSynchronizedPushToken } from '@/shared/apis/pushTokenSynchronization';
 
 export const usePushTokenRegistrationMutation = () => {
   const {
     mutateAsync: registerPushToken,
     isPending: isPushTokenRegistrationPending,
   } = useMutation({
-    mutationFn: postPushToken,
+    mutationFn: registerSynchronizedPushToken,
   });
 
   return {
