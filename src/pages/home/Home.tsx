@@ -59,7 +59,7 @@ const Home = () => {
   }
 
   return (
-    <div className="-mb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] min-h-screen bg-beige-6 pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))]">
+    <div className="-mb-[var(--bottom-navigation-page-space)] min-h-screen bg-beige-6 pb-[var(--bottom-navigation-page-space)]">
       <div className="bg-beige-1">
         <TopNavigation
           variant="home"

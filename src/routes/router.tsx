@@ -17,6 +17,7 @@ import SensitiveConsent from '@/pages/settings/SensitiveConsent';
 import Terms from '@/pages/settings/Terms';
 import DeleteAccount from '@/pages/settings/DeleteAccount';
 import ProfileSettingsProvider from '@/pages/settings/contexts/ProfileSettingsProvider';
+import RootBackgroundSync from '@/routes/RootBackgroundSync';
 import {
   loadAppEntryRoute,
   loadHomeRoute,
@@ -29,6 +30,7 @@ import ProtectedRoute from '@/routes/ProtectedRoute';
 export const Router = createBrowserRouter([
   {
     path: '/',
+    element: <RootBackgroundSync />,
     children: [
       {
         index: true,
