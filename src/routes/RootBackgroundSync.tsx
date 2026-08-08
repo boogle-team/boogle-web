@@ -28,10 +28,6 @@ const getRootBackgroundColor = (pathname: string) => {
     return ROOT_BACKGROUND_COLORS.BEIGE_5;
   }
 
-  if (pathname === '/home') {
-    return ROOT_BACKGROUND_COLORS.BEIGE_6;
-  }
-
   if (
     pathname === '/calendar' ||
     pathname === '/report' ||
@@ -56,6 +52,7 @@ const getRootBackgroundColor = (pathname: string) => {
   }
 
   if (
+    pathname === '/home' ||
     pathname === '/boogle-record/new' ||
     pathname === '/boogle-record/detail' ||
     pathname.startsWith('/boogle-record/edit/') ||
