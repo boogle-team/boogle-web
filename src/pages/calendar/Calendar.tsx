@@ -38,8 +38,7 @@ const Calendar = () => {
   } = useCalendarState();
 
   return (
-    <div className="-mb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))] min-h-screen bg-beige-5 pb-[calc(var(--bottom-navigation-page-space)+var(--safe-area-bottom))]">
-
+    <div className="-mb-[var(--bottom-navigation-page-space)] min-h-screen bg-beige-5 pb-[var(--bottom-navigation-page-space)]">
       <TopNavigation
         title="캘린더"
         isBackButtonVisible={false}
