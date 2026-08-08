@@ -32,10 +32,10 @@ const Notification = () => {
         title="알림"
         onBackButtonClick={handleBackButtonClick}
         isBorderVisible={false}
-        className="mt-[3.06rem] bg-beige-5"
+        className="bg-beige-5"
       />
 
-      <main className="flex flex-1 flex-col bg-beige-5 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-5 px-4 pb-[calc(var(--page-bottom-padding)+var(--safe-area-bottom))]">
         <NotificationList
           notifications={notifications}
           status={isLoading ? 'loading' : isError ? 'error' : 'success'}

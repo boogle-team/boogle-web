@@ -33,7 +33,7 @@ const HomeTopNavigation = ({
 
   return (
     <header
-      className={`flex h-[3.5625rem] w-full items-center justify-between bg-beige-1 px-[1rem] ${className}`}
+      className={`flex h-[calc(var(--top-navigation-height)+var(--safe-area-top))] w-full items-center justify-between bg-beige-1 px-[1rem] pt-[var(--safe-area-top)] ${className}`}
     >
       {/* 날짜 / 요일 / 드롭다운 영역 */}
       <button

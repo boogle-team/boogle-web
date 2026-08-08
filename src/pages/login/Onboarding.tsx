@@ -24,7 +24,7 @@ const Onboarding = ({ onStart }: OnboardingPropTypes) => {
   }, [animationData]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-4 px-layout pb-[3.69rem] pt-[7.5rem]">
+    <div className="flex min-h-dvh flex-col bg-beige-4 px-layout pb-[calc(var(--onboarding-bottom-padding)+var(--safe-area-bottom))] pt-[calc(var(--onboarding-top-padding)+var(--safe-area-top))]">
       <h1 className="display-lg text-center text-gray-10">
         기록으로 시작하는
         <br />

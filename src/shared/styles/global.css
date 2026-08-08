@@ -2,6 +2,27 @@
 @import "./theme.css";
 @import "pretendard/dist/web/variable/pretendardvariable.css";
 
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --top-navigation-height: 3.5625rem;
+  --top-navigation-detail-padding-y: 0.5rem;
+  --bottom-navigation-page-space: 10rem;
+  --bottom-navigation-shell-height: 8.31rem;
+  --bottom-navigation-bar-height: 6.25rem;
+  --bottom-navigation-content-padding-bottom: 2.13rem;
+  --page-bottom-padding: 1.5rem;
+  --form-bottom-padding: 2.56rem;
+  --settings-fixed-action-space: 7.5rem;
+  --record-footer-content-space: 11.1275rem;
+  --onboarding-top-padding: 5rem;
+  --onboarding-bottom-padding: 2.81rem;
+  --social-login-bottom-padding: 3.37rem;
+  --bottom-sheet-padding-bottom: 2.63rem;
+  --login-toast-bottom: 2rem;
+  --unsaved-toast-bottom: 6.75rem;
+}
+
 /* 앱 컨테이너 */
 .app {
   /* 웹앱 너비 고정 */

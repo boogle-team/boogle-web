@@ -22,7 +22,7 @@ const StepLayout = ({
   children,
 }: StepLayoutPropTypes) => {
   return (
-    <div className="flex min-h-dvh flex-col bg-beige-1 pt-[3.06rem]">
+    <div className="flex min-h-dvh flex-col bg-beige-1">
       <TopNavigation
         variant="default"
         title={title}
@@ -34,7 +34,9 @@ const StepLayout = ({
 
       <main className="flex flex-1 flex-col px-layout pt-6">{children}</main>
 
-      <footer className="px-layout pb-[3.69rem]">{footer}</footer>
+      <footer className="px-layout pb-[calc(var(--form-bottom-padding)+var(--safe-area-bottom))]">
+        {footer}
+      </footer>
     </div>
   );
 };

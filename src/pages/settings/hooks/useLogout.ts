@@ -5,6 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { postAuthLogout } from '@/pages/login/apis/loginApis';
 import { getApiErrorMessage } from '@/shared/apis/apiError';
 import {
+  resumePushTokenSynchronization,
+  synchronizePushToken,
+} from '@/shared/apis/pushTokenSynchronization';
+import { usePushTokenCleanup } from '@/shared/hooks/usePushTokenCleanup';
+import {
   clearAuthTokens,
   getAccessToken,
   getRefreshToken,
@@ -18,6 +23,7 @@ const useLogout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const logoutMutation = useMutation({ mutationFn: postAuthLogout });
+  const { cleanupPushToken } = usePushTokenCleanup();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [logoutErrorMessage, setLogoutErrorMessage] = useState<string | null>(
     null,
@@ -45,6 +51,8 @@ const useLogout = () => {
     setLogoutErrorMessage(null);
     setIsLoggingOut(true);
 
+    await cleanupPushToken();
+
     if (!accessToken || !refreshToken) {
       await completeLocalLogout();
       return;
@@ -61,6 +69,8 @@ const useLogout = () => {
 
       setLogoutErrorMessage(getApiErrorMessage(error, LOGOUT_ERROR_MESSAGE));
       setIsLoggingOut(false);
+      resumePushTokenSynchronization();
+      void synchronizePushToken();
     }
   };
 

@@ -129,7 +129,7 @@ const ProfileEdit = () => {
         errorMessage="프로필을 불러오지 못했어요."
         onBackButtonClick={handleBackClick}
         onRetryClick={() => void refetch()}
-        topNavigationClassName="mt-[3.06rem] bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
+        topNavigationClassName="bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
         isBorderVisible={false}
       />
     );
@@ -138,13 +138,13 @@ const ProfileEdit = () => {
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="mt-[3.06rem] bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
+        className="bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
         title="프로필 수정"
         onBackButtonClick={handleBackClick}
         isBorderVisible={false}
       />
 
-      <main className="flex-1 bg-beige-1 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex-1 bg-beige-1 pb-[calc(var(--settings-fixed-action-space)+var(--safe-area-bottom))]">
         <div className="mt-8 flex flex-col items-center gap-2">
           <div className="relative">
             <div className="flex h-30 w-30 items-center justify-center overflow-hidden rounded-full bg-orange-3">

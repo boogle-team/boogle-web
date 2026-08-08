@@ -63,12 +63,12 @@ const BottomNavigation = () => {
     <>
       <nav
         ref={navRef}
-        className="fixed bottom-0 left-1/2 z-50 h-[8.31rem] w-full max-w-[430px] -translate-x-1/2 overflow-visible"
+        className="fixed bottom-0 left-1/2 z-50 h-[calc(var(--bottom-navigation-shell-height)+var(--safe-area-bottom))] w-full max-w-[430px] -translate-x-1/2 overflow-visible"
       >
         {/* 실제 렌더 폭에 맞춰 생성한 하단 네비게이션 실루엣 (노치 곡률은 폭과 무관하게 고정) */}
         {navWidth > 0 && (
           <svg
-            className="absolute inset-x-0 bottom-0 z-10 h-[6.25rem] w-full overflow-visible"
+            className="absolute inset-x-0 bottom-0 z-10 h-[calc(var(--bottom-navigation-bar-height)+var(--safe-area-bottom))] w-full overflow-visible"
             viewBox={`0 0 ${navWidth} ${NAV_BAR_HEIGHT}`}
             aria-hidden="true"
           >
@@ -99,7 +99,7 @@ const BottomNavigation = () => {
         )}
 
         {/* 네비게이션 아이템 */}
-        <div className="absolute inset-x-0 bottom-0 z-20 grid h-[6.25rem] grid-cols-[1fr_1fr_5rem_1fr_1fr] items-end gap-x-[1.06rem] px-[1.56rem] pb-[2.13rem]">
+        <div className="absolute inset-x-0 bottom-0 z-20 grid h-[calc(var(--bottom-navigation-bar-height)+var(--safe-area-bottom))] grid-cols-[1fr_1fr_5rem_1fr_1fr] items-end gap-x-[1.06rem] px-[1.56rem] pb-[calc(var(--bottom-navigation-content-padding-bottom)+var(--safe-area-bottom))]">
           {NAV_ITEMS.map(({ label, path, Icon }, index) => {
             const isActive = pathname === path;
 

@@ -50,12 +50,12 @@ const DeleteAccount = () => {
   return (
     <div className="flex min-h-dvh flex-col bg-beige-2">
       <DefaultTopNavigation
-        className="mt-[3.06rem] bg-beige-2"
+        className="bg-beige-2"
         title="회원탈퇴"
         onBackButtonClick={handleBackClick}
       />
 
-      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <main className="flex flex-1 flex-col bg-beige-1 px-4 pb-[calc(var(--page-bottom-padding)+var(--safe-area-bottom))]">
         <section className="mt-6 rounded-xl border border-orange-3 bg-orange-1 p-4">
           <div className="flex items-center gap-2 text-orange-6">
             <ReportBellIcon

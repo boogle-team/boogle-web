@@ -19,7 +19,7 @@ const DefaultTopNavigation = ({
 
   return (
     <header
-      className={`grid h-[3.5625rem] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center bg-beige-1 px-[1rem] ${isBorderVisible ? 'border-b border-gray-3' : ''} ${className}`}
+      className={`grid h-[calc(var(--top-navigation-height)+var(--safe-area-top))] w-full grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center bg-beige-1 px-[1rem] pt-[var(--safe-area-top)] ${isBorderVisible ? 'border-b border-gray-3' : ''} ${className}`}
     >
       {isBackButtonVisible ? (
         <button

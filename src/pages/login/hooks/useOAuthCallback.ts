@@ -3,6 +3,10 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { getApiErrorCode, getApiErrorMessage } from '@/shared/apis/apiError';
+import {
+  resumePushTokenSynchronization,
+  synchronizePushToken,
+} from '@/shared/apis/pushTokenSynchronization';
 import type { ApiErrorResponseTypes } from '@/shared/types/apiTypes';
 import { saveAuthTokens } from '@/shared/utils/authTokenStorage';
 import {
@@ -155,6 +159,8 @@ export const useOAuthCallback = () => {
   const handleOAuthLoginSuccess = useCallback(
     ({ data }: OAuthExchangeResponseTypes) => {
       saveAuthTokens(data);
+      resumePushTokenSynchronization();
+      void synchronizePushToken();
       navigate(getOAuthSuccessRedirectPath(data), { replace: true });
     },
     [navigate],

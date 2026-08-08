@@ -31,7 +31,7 @@ const SettingsBottomAction = ({ children }: SettingsBottomActionPropTypes) => {
 
   return (
     <div
-      className="fixed left-1/2 z-40 w-full max-w-[26.875rem] -translate-x-1/2 bg-beige-1 px-4 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+      className="fixed left-1/2 z-40 w-full max-w-[26.875rem] -translate-x-1/2 bg-beige-1 px-4 pt-3 pb-[calc(var(--page-bottom-padding)+var(--safe-area-bottom))]"
       style={{ bottom: keyboardInset }}
     >
       {children}
