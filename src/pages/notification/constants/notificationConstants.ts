@@ -9,7 +9,7 @@ export const NOTIFICATION_DESTINATION_MAP: Record<
   NotificationLinkToTypes,
   string
 > = {
-  GUIDE_WARNING: '/guide?id=warning-signs',
+  GUIDE_WARNING: '/guide?guideId=1001',
   HOME: '/home',
   REPORT: '/report',
 };
