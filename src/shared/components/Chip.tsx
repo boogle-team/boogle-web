@@ -33,7 +33,7 @@ const Chip = ({
   }[variant];
 
   const chipClassName = [
-    'inline-flex min-w-0 items-center justify-center border font-inherit transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
+    'inline-flex min-w-0 items-center justify-center whitespace-nowrap border font-inherit transition-[transform,border-color,background-color,color] duration-150 ease-out hover:not-disabled:cursor-pointer active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
     sizeClassName,
     size === 'default' ? 'rounded-xl' : 'rounded-full',
     variantClassName,
