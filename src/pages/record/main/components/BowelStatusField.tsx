@@ -1,5 +1,6 @@
 import BowelStatusNoIcon from '@/shared/assets/illustrations/record/bowelStatus/bowelStatusNo.svg?react';
 import BowelStatusYesIcon from '@/shared/assets/illustrations/record/bowelStatus/bowelStatusYes.svg?react';
+import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 
 import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
 
@@ -8,7 +9,7 @@ import type { BowelStatusTypes } from '../types/recordTypes';
 
 interface BowelStatusFieldPropTypes {
   value: BowelStatusTypes;
-  isNoOptionDisabled?: boolean;
+  hasNoOptionError?: boolean;
   onChange: (value: BowelStatusTypes) => void;
 }
 
@@ -19,7 +20,7 @@ const BOWEL_STATUS_ICONS = {
 
 const BowelStatusField = ({
   value,
-  isNoOptionDisabled = false,
+  hasNoOptionError = false,
   onChange,
 }: BowelStatusFieldPropTypes) => {
   return (
@@ -29,7 +30,6 @@ const BowelStatusField = ({
       <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-gray-3 p-1.5">
         {BOWEL_STATUS_OPTIONS.map((option) => {
           const isSelected = value === option.value;
-          const isDisabled = option.value === 'no' && isNoOptionDisabled;
           const BowelStatusIcon = BOWEL_STATUS_ICONS[option.value];
 
           return (
@@ -38,8 +38,7 @@ const BowelStatusField = ({
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isSelected}
-              disabled={isDisabled}
-              className={`flex flex-col items-center gap-3 rounded-xl py-5 transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+              className={`flex flex-col items-center gap-3 rounded-xl py-5 transition-colors ${
                 isSelected ? 'bg-beige-1 shadow-sm' : 'bg-transparent'
               }`}
             >
@@ -55,9 +54,13 @@ const BowelStatusField = ({
         })}
       </div>
 
-      {isNoOptionDisabled && (
-        <p className="caption text-semantic-danger">
-          이미 부글 기록이 있어 ‘없음’은 추가할 수 없어요.
+      {hasNoOptionError && (
+        <p
+          role="alert"
+          className="caption flex items-center gap-1 text-semantic-danger"
+        >
+          <WarningIcon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <span>이미 부글 기록이 있어 ‘없음’은 추가할 수 없어요.</span>
         </p>
       )}
     </section>

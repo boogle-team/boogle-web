@@ -2,7 +2,11 @@ import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
+import NotFound from '@/shared/components/NotFound';
+import { getApiErrorMessage, getApiErrorStatus } from '@/shared/apis/apiError';
 import { useDeleteBoogleRecordMutation } from '@/pages/record/hooks/useDeleteBoogleRecordMutation';
 import { useBoogleRecordQuery } from '@/pages/record/hooks/useBoogleRecordQuery';
 import { useUpdateBoogleRecordMutation } from '@/pages/record/hooks/useUpdateBoogleRecordMutation';
@@ -32,8 +36,11 @@ const Edit = () => {
   const isRecordIdValid = Number.isInteger(recordId) && recordId > 0;
   const {
     data: boogleRecord,
+    error: boogleRecordError,
+    isFetching: isBoogleRecordFetching,
     isLoading: isBoogleRecordLoading,
     isError: isBoogleRecordError,
+    refetch: refetchBoogleRecord,
   } = useBoogleRecordQuery(isRecordIdValid ? recordId : undefined);
   const {
     mutate: deleteBoogleRecord,
@@ -135,25 +142,47 @@ const Edit = () => {
     });
   };
 
-  if (!isRecordIdValid || isBoogleRecordError) {
+  const handleBoogleRecordRetryClick = () => {
+    void refetchBoogleRecord();
+  };
+
+  const isBoogleRecordNotFound =
+    !isRecordIdValid || getApiErrorStatus(boogleRecordError) === 404;
+
+  if (isBoogleRecordNotFound) {
+    return <NotFound />;
+  }
+
+  if (isBoogleRecordLoading || (isBoogleRecordFetching && !boogleRecord)) {
+    return (
+      <div className="min-h-dvh bg-beige-5">
+        <LoadingSpinner message="기록을 불러오는 중입니다." />
+      </div>
+    );
+  }
+
+  if (isBoogleRecordError) {
     return (
       <RecordPageLayout title="부글 기록하기">
-        <p className="body-m-bold py-12 text-center text-gray-8">
-          기록을 불러오지 못했어요.
-        </p>
+        <div className="flex flex-col items-center gap-4 py-12 text-center">
+          <p role="alert" className="body-m text-gray-7">
+            {getApiErrorMessage(
+              boogleRecordError,
+              '기록을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',
+            )}
+          </p>
+          <Button
+            className="max-w-40"
+            text="다시 시도"
+            size="sm"
+            onClick={handleBoogleRecordRetryClick}
+          />
+        </div>
       </RecordPageLayout>
     );
   }
 
-  if (isBoogleRecordLoading || !boogleRecord) {
-    return (
-      <RecordPageLayout title="부글 기록하기">
-        <p className="body-m py-12 text-center text-gray-7">
-          기록을 불러오는 중입니다.
-        </p>
-      </RecordPageLayout>
-    );
-  }
+  if (!boogleRecord) return null;
 
   return (
     <RecordPageLayout

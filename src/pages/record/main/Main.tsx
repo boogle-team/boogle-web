@@ -151,7 +151,7 @@ const Main = () => {
     >
       <BowelStatusField
         value={formState.bowelStatus}
-        isNoOptionDisabled={hasExistingBowelRecord}
+        hasNoOptionError={hasBowelStatusConflict}
         onChange={handleBowelStatusChange}
       />
 
