@@ -16,20 +16,15 @@ interface MonthlyTypeCardItemPropTypes {
 }
 
 const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
-  <section className="rounded-xl bg-orange-6 px-4 py-4 text-beige-1 shadow-sm">
+  <section className="rounded-xl bg-orange-6 p-4 text-beige-1 shadow-sm">
     <h2 className="body-m">이번 달 나의 유형</h2>
     <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-3">
       <MonthlyTypeIcon symbol={monthlyType.symbol} />
-      <div>
+      <div className="min-w-0">
         <h3 className="display">{monthlyType.title}</h3>
-        {monthlyType.description.split('\n').map((text, index) => (
-          <p
-            key={text}
-            className={`micro mt-1 ${index > 0 ? 'text-orange-1' : ''}`}
-          >
-            {text}
-          </p>
-        ))}
+        <p className="label mt-1 whitespace-pre-line break-keep">
+          {monthlyType.description}
+        </p>
       </div>
     </div>
   </section>

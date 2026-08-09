@@ -15,11 +15,9 @@ const PatternCard = ({ patterns, title }: PatternCardPropTypes) => (
       {patterns.map(({ description, icon, title: patternTitle }, index) => (
         <article
           key={patternTitle}
-          className={`grid grid-cols-[2.5rem_1fr] gap-3 py-2 ${
-            index > 0 ? 'border-t border-beige-7' : ''
-          }`}
+          className="grid grid-cols-[2.5rem_1fr] gap-4"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl">
+          <div className="mt-2 flex h-10 w-10 items-center justify-center">
             {icon === 'check' && (
               <PatternCheckIcon aria-hidden="true" className="h-10 w-10" />
             )}
@@ -30,11 +28,11 @@ const PatternCard = ({ patterns, title }: PatternCardPropTypes) => (
               <PatternDangerIcon aria-hidden="true" className="h-10 w-10" />
             )}
           </div>
-          <div>
+          <div className={`py-2 ${index > 0 ? 'border-t border-beige-7' : ''}`}>
             <h3 className="label-bold tracking-[-0.0175rem] text-gray-10">
               {patternTitle}
             </h3>
-            <p className="caption mt-1 tracking-[-0.015rem] text-[#929090]">
+            <p className="caption mt-0.5 tracking-[-0.015rem] text-[#929090]">
               {description}
             </p>
           </div>

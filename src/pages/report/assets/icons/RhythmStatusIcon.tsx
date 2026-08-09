@@ -13,9 +13,9 @@ const RhythmStatusIcon = ({ status }: RhythmStatusIconPropTypes) => {
   }
 
   const fillColorClassName = {
-    normal: 'text-[#FFA17D]',
-    warning: 'text-[#F5C162]',
-    danger: 'text-[#FF7675]',
+    normal: 'text-orange-5',
+    warning: 'text-yellow-4',
+    danger: 'text-semantic-danger',
   }[status];
 
   return (
