@@ -12,14 +12,18 @@ const MonthlyImprovementCard = ({
     <h2 className="body-m tracking-[-0.02rem] text-gray-9">
       이번 달 개선된 점
     </h2>
-    <div className="mt-3 flex flex-col gap-4">
-      {improvements.map(({ description, title }) => (
+    <div className="mt-4 flex flex-col">
+      {improvements.map(({ description, title }, index) => (
         <article key={title} className="grid grid-cols-[2.5rem_1fr] gap-3">
           <MonthlyConditionImprovementIcon
             aria-hidden="true"
-            className="h-10 w-10"
+            className="h-10 w-10 self-center"
           />
-          <div>
+          <div
+            className={`flex min-h-[4.5rem] flex-col justify-center py-3 ${
+              index > 0 ? 'border-t border-orange-3' : ''
+            }`}
+          >
             <h3 className="label-bold tracking-[-0.0175rem] text-orange-6">
               {title}
             </h3>

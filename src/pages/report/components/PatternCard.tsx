@@ -11,13 +11,13 @@ interface PatternCardPropTypes {
 const PatternCard = ({ patterns, title }: PatternCardPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
     <h2 className="body-m text-gray-9">{title}</h2>
-    <div className="mt-3 flex flex-col">
+    <div className="mt-4 flex flex-col">
       {patterns.map(({ description, icon, title: patternTitle }, index) => (
         <article
           key={patternTitle}
-          className="grid grid-cols-[2.5rem_1fr] gap-4"
+          className="grid grid-cols-[2.5rem_1fr] gap-3"
         >
-          <div className="mt-2 flex h-10 w-10 items-center justify-center">
+          <div className="flex h-10 w-10 items-center justify-center self-center">
             {icon === 'check' && (
               <PatternCheckIcon aria-hidden="true" className="h-10 w-10" />
             )}
@@ -28,7 +28,11 @@ const PatternCard = ({ patterns, title }: PatternCardPropTypes) => (
               <PatternDangerIcon aria-hidden="true" className="h-10 w-10" />
             )}
           </div>
-          <div className={`py-2 ${index > 0 ? 'border-t border-beige-7' : ''}`}>
+          <div
+            className={`flex min-h-[4.5rem] flex-col justify-center py-3 ${
+              index > 0 ? 'border-t border-beige-7' : ''
+            }`}
+          >
             <h3 className="label-bold tracking-[-0.0175rem] text-gray-10">
               {patternTitle}
             </h3>

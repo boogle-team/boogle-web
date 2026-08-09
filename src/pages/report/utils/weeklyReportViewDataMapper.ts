@@ -31,6 +31,15 @@ const BOWEL_RHYTHM_STATUS_MAP: Record<
   T: 'danger',
 };
 
+const getBowelRhythmStatusByCount = (
+  bowelCount: number,
+): BowelRhythmTypes['status'] => {
+  if (bowelCount === 0) return 'empty';
+  if (bowelCount === 1) return 'normal';
+  if (bowelCount === 2) return 'warning';
+  return 'danger';
+};
+
 const getPatternIcon = (level: PatternLevelTypes): PatternTypes['icon'] => {
   if (level === 'GOOD' || level === 'OK') return 'check';
   if (level === 'INFO' || level === 'WARN') return 'warning';
@@ -53,12 +62,6 @@ export const mapWeeklyReportViewData = (
 ): WeeklyReportViewDataTypes | null => {
   if (report.dataStatus !== 'ENOUGH' || !report.summary) return null;
 
-  const bowelRhythmByDay = new Map(
-    report.bowelRhythmByDay.map(({ dayOfWeek, stoolSimple }) => [
-      dayOfWeek,
-      stoolSimple,
-    ]),
-  );
   const firstGuide = report.guides[0];
 
   return {
@@ -87,11 +90,16 @@ export const mapWeeklyReportViewData = (
     ],
     conditionProgress: mapStoolDistribution(report.stoolDistribution),
     bowelRhythms: WEEKDAYS.map(({ dayOfWeek, label }) => {
-      const stoolSimple = bowelRhythmByDay.get(dayOfWeek);
+      const bowelRhythm = report.bowelRhythmByDay.find(
+        (rhythm) => rhythm.dayOfWeek === dayOfWeek || rhythm.label === label,
+      );
+      const stoolSimple = bowelRhythm?.stoolSimple;
 
       return {
         day: label,
-        status: stoolSimple ? BOWEL_RHYTHM_STATUS_MAP[stoolSimple] : 'empty',
+        status: stoolSimple
+          ? BOWEL_RHYTHM_STATUS_MAP[stoolSimple]
+          : getBowelRhythmStatusByCount(bowelRhythm?.bowelCount ?? 0),
       };
     }),
     frequentTimeSlotLabel: report.frequentTimeSlots[0]?.label ?? null,

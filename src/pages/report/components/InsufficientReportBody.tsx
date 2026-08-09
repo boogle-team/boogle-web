@@ -13,38 +13,40 @@ const InsufficientReportBody = ({
   insufficientReport,
   selectedMode,
 }: InsufficientReportBodyPropTypes) => {
-  const {
-    currentCount,
-    description: noticeDescription,
-    minimumRequiredCount,
-    requiredCount,
-  } = insufficientReport;
+  const { currentCount, minimumRequiredCount, requiredCount } =
+    insufficientReport;
   const isWeeklyReport = selectedMode === 'weekly';
   const progressWidth = `${(currentCount / requiredCount) * 100}%`;
   const remainingCount = Math.max(minimumRequiredCount - currentCount, 0);
   const trackerPeriodText = isWeeklyReport ? '이번 주 기록' : '이번 달 기록';
-  const description =
-    noticeDescription ||
-    `${minimumRequiredCount}일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요`;
+  const description = isWeeklyReport
+    ? `${minimumRequiredCount}일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요`
+    : `현재 ${currentCount}일째 기록 중이에요. ${minimumRequiredCount}일 이상 기록하면 월간 리포트를\n볼 수 있어요.`;
+  const currentCountText = isWeeklyReport
+    ? `${currentCount}일째`
+    : `${currentCount}일`;
 
   return (
     <div className="mt-4 flex min-h-[31rem] flex-col gap-8">
       <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
         <div className="flex items-center justify-between">
-          <p className="caption text-gray-9">
+          <p className="body-m text-gray-9">
             {trackerPeriodText}{' '}
-            <span className="caption-bold text-orange-6">{currentCount}일</span>
+            <span className="body-m-bold text-orange-6">
+              {currentCountText}
+            </span>
           </p>
         </div>
-        <div className="mt-4 grid grid-cols-[1fr_2.5rem] items-center gap-3">
-          <div className="h-2 overflow-hidden rounded-full bg-gray-4">
+        <div className="mt-5 grid grid-cols-[1fr_3.25rem] items-center gap-3">
+          <div className="h-1.5 overflow-hidden rounded-full bg-gray-4">
             <div
               className="h-full rounded-full bg-orange-6"
               style={{ width: progressWidth }}
             />
           </div>
-          <p className="micro text-right text-orange-6">
-            {currentCount}/{requiredCount}일
+          <p className="label text-right text-orange-5">
+            <span className="label-bold text-orange-6">{currentCount}</span>/
+            {requiredCount}일
           </p>
         </div>
       </section>
@@ -54,13 +56,13 @@ const InsufficientReportBody = ({
           aria-hidden="true"
           className="h-[5.75rem] w-24 shrink-0"
         />
-        <h2 className="label-bold mt-6 whitespace-pre-line text-gray-10">
+        <h2 className="body-m-bold mt-6 whitespace-pre-line text-gray-10">
           아직 패턴을 보여드리기엔{'\n'}기록이 조금 부족해요
         </h2>
-        <p className="micro mt-3 max-w-[14.5rem] whitespace-pre-line text-gray-7">
+        <p className="caption mt-3 max-w-[16rem] whitespace-pre-line text-gray-7">
           {description}
         </p>
-        <p className="caption-bold mt-5 rounded-full border border-orange-6 bg-orange-1 px-5 py-2 text-orange-6">
+        <p className="label-semi mt-5 rounded-full border border-orange-6 bg-orange-1 px-4 py-2 text-orange-6">
           앞으로 {remainingCount}일만 더!
         </p>
       </section>

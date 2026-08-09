@@ -28,7 +28,7 @@ const WeeklyReportBody = ({
   patterns,
   summaries,
 }: WeeklyReportBodyPropTypes) => (
-  <div className="mt-4 flex flex-col gap-5">
+  <div className="mt-6 flex flex-col gap-8">
     <SummaryCards summaries={summaries} showDescription />
     <ConditionDistributionCard conditionProgress={conditionProgress} />
     <BowelRhythmCard

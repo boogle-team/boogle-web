@@ -22,7 +22,7 @@ const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
       <MonthlyTypeIcon symbol={monthlyType.symbol} />
       <div className="min-w-0">
         <h3 className="display">{monthlyType.title}</h3>
-        <p className="label mt-1 whitespace-pre-line break-keep">
+        <p className="caption mt-1 max-w-[16.5625rem] whitespace-pre-line break-keep text-orange-1">
           {monthlyType.description}
         </p>
       </div>

@@ -44,7 +44,7 @@ const MonthlyReportBody = ({
   summaries,
   weeklyTrends,
 }: MonthlyReportBodyPropTypes) => (
-  <div className="mt-4 flex flex-col gap-8">
+  <div className="mt-6 flex flex-col gap-8">
     <MonthlyConditionScoreCard
       conditionScore={conditionScore}
       scores={scores}

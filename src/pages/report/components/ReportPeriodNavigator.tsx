@@ -14,7 +14,7 @@ const ReportPeriodNavigator = ({
   onPreviousClick,
   periodText,
 }: ReportPeriodNavigatorPropTypes) => (
-  <section className="relative mt-3 flex items-end justify-center text-center">
+  <section className="relative mt-2 flex items-end justify-center text-center">
     <button
       type="button"
       aria-label="이전 기간"

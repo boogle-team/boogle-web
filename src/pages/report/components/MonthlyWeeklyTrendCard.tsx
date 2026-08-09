@@ -14,20 +14,20 @@ const MonthlyWeeklyTrendCard = ({
       <h2 className="body-m text-gray-9">
         주간 배변 추이 ({weeklyTrends.length}주)
       </h2>
-      <div className="mt-3 flex flex-col gap-3">
+      <div className="mt-4 flex flex-col gap-3">
         {weeklyTrends.map(({ count, week }) => (
           <div
             key={week}
-            className="grid grid-cols-[1.5rem_1fr_2rem] items-center gap-2"
+            className="grid grid-cols-[2rem_1fr_2rem] items-center gap-2"
           >
-            <span className="micro text-gray-7">{week}</span>
-            <div className="h-1.5 overflow-hidden rounded-full bg-gray-4">
+            <span className="caption text-gray-7">{week}</span>
+            <div className="h-2.5 overflow-hidden rounded-full bg-gray-4">
               <div
-                className="h-full rounded-full bg-orange-6"
+                className="h-full rounded-full bg-orange-5"
                 style={{ width: `${(count / maxCount) * 100}%` }}
               />
             </div>
-            <span className="micro text-right text-gray-7">{count}회</span>
+            <span className="caption text-right text-gray-7">{count}회</span>
           </div>
         ))}
       </div>
