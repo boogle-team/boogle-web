@@ -8,6 +8,7 @@ import type { BowelStatusTypes } from '../types/recordTypes';
 
 interface BowelStatusFieldPropTypes {
   value: BowelStatusTypes;
+  isNoOptionDisabled?: boolean;
   onChange: (value: BowelStatusTypes) => void;
 }
 
@@ -16,7 +17,11 @@ const BOWEL_STATUS_ICONS = {
   no: BowelStatusNoIcon,
 };
 
-const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
+const BowelStatusField = ({
+  value,
+  isNoOptionDisabled = false,
+  onChange,
+}: BowelStatusFieldPropTypes) => {
   return (
     <section className="flex flex-col gap-3">
       <RecordSectionTitle title="배변 여부" />
@@ -24,6 +29,7 @@ const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
       <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-gray-3 p-1.5">
         {BOWEL_STATUS_OPTIONS.map((option) => {
           const isSelected = value === option.value;
+          const isDisabled = option.value === 'no' && isNoOptionDisabled;
           const BowelStatusIcon = BOWEL_STATUS_ICONS[option.value];
 
           return (
@@ -32,7 +38,8 @@ const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isSelected}
-              className={`flex flex-col items-center gap-3 rounded-xl py-5 transition-colors ${
+              disabled={isDisabled}
+              className={`flex flex-col items-center gap-3 rounded-xl py-5 transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                 isSelected ? 'bg-beige-1 shadow-sm' : 'bg-transparent'
               }`}
             >
@@ -47,6 +54,12 @@ const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
           );
         })}
       </div>
+
+      {isNoOptionDisabled && (
+        <p className="caption text-semantic-danger">
+          이미 부글 기록이 있어 ‘없음’은 추가할 수 없어요.
+        </p>
+      )}
     </section>
   );
 };

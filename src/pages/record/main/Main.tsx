@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
@@ -21,15 +22,18 @@ import { LIFE_RECORD_MODAL } from './constants/recordConstants';
 import { useRecordForm } from './hooks/useRecordForm';
 import { formatRecordDate } from './utils/formatRecordDate';
 
-// TODO: 해당 날짜의 생활 기록 존재 여부 조회 API 연동
-const HAS_LIFE_RECORD = false;
-
 const Main = () => {
   const navigate = useNavigate();
   const [isLifeRecordModalOpen, setIsLifeRecordModalOpen] = useState(false);
   const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordDate = useRecordDraftDate();
+  const parsedRecordDate = dayjs(recordDate);
+  const { data: calendarMonth, refetch: refetchCalendarMonth } =
+    useCalendarMonthQuery({
+      year: parsedRecordDate.year(),
+      month: parsedRecordDate.month() + 1,
+    });
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
   const detailFormState = useRecordDraftStore((state) => state.detail);
@@ -54,8 +58,16 @@ const Main = () => {
     handlePainLevelChange,
   } = useRecordForm();
 
+  const hasExistingBowelRecord = Boolean(
+    calendarMonth?.days.some(
+      (day) => day.date === recordDate && day.boogleStatus === 'BOWEL',
+    ),
+  );
+  const hasBowelStatusConflict =
+    hasExistingBowelRecord && formState.bowelStatus === 'no';
+
   const handleSubmit = () => {
-    if (!isSubmittable || isCreatingRecord) return;
+    if (!isSubmittable || isCreatingRecord || hasBowelStatusConflict) return;
 
     setIsRequestMappingError(false);
 
@@ -73,10 +85,15 @@ const Main = () => {
     }
 
     createRecord(request, {
-      onSuccess: () => {
+      onSuccess: async () => {
+        const { data: latestCalendarMonth } = await refetchCalendarMonth();
+        const hasLifeRecord = (latestCalendarMonth ?? calendarMonth)?.days.some(
+          (day) => day.date === recordDate && day.hasLifeRecord,
+        );
+
         resetDraft();
 
-        if (!HAS_LIFE_RECORD) {
+        if (!hasLifeRecord) {
           setIsLifeRecordModalOpen(true);
           return;
         }
@@ -92,7 +109,7 @@ const Main = () => {
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate('/boogle-record/detail');
+    navigate(`/boogle-record/detail?date=${recordDate}`);
   };
 
   const handleLifeRecordCancel = () => {
@@ -125,13 +142,16 @@ const Main = () => {
           <Button
             text={isCreatingRecord ? '저장 중...' : '완료'}
             onClick={handleSubmit}
-            disabled={!isSubmittable || isCreatingRecord}
+            disabled={
+              !isSubmittable || isCreatingRecord || hasBowelStatusConflict
+            }
           />
         </div>
       }
     >
       <BowelStatusField
         value={formState.bowelStatus}
+        isNoOptionDisabled={hasExistingBowelRecord}
         onChange={handleBowelStatusChange}
       />
 
