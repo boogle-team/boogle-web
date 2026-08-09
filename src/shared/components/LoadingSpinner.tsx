@@ -6,12 +6,14 @@ const Lottie = lazy(() => import('lottie-react'));
 export interface LoadingSpinnerPropTypes {
   hasBackdrop?: boolean;
   backdropClassName?: string;
+  zIndexClassName?: string;
   message?: string;
 }
 
 const LoadingSpinner = ({
   hasBackdrop = false,
   backdropClassName,
+  zIndexClassName = 'z-50',
   message,
 }: LoadingSpinnerPropTypes) => {
   const backgroundClassName = hasBackdrop
@@ -20,7 +22,7 @@ const LoadingSpinner = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 ${backgroundClassName}`}
+      className={`fixed inset-0 flex flex-col items-center justify-center gap-3 ${zIndexClassName} ${backgroundClassName}`}
       role="status"
       aria-live="polite"
     >

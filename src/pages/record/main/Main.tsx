@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
@@ -190,6 +191,14 @@ const Main = () => {
         onCancel={handleLifeRecordCancel}
         onConfirm={handleLifeRecordConfirm}
       />
+
+      {isCreatingRecord && (
+        <LoadingSpinner
+          hasBackdrop
+          zIndexClassName="z-[60]"
+          message="기록을 저장하는 중입니다."
+        />
+      )}
     </RecordPageLayout>
   );
 };

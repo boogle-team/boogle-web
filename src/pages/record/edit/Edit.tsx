@@ -257,6 +257,18 @@ const Edit = () => {
         onCancel={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
       />
+
+      {(isUpdatingRecord || isDeletingRecord) && (
+        <LoadingSpinner
+          hasBackdrop
+          zIndexClassName="z-[60]"
+          message={
+            isDeletingRecord
+              ? '기록을 삭제하는 중입니다.'
+              : '기록을 저장하는 중입니다.'
+          }
+        />
+      )}
     </RecordPageLayout>
   );
 };
