@@ -99,7 +99,7 @@ const Main = () => {
           return;
         }
 
-        navigate('/');
+        navigate('/home', { replace: true });
       },
     });
   };
@@ -115,7 +115,7 @@ const Main = () => {
 
   const handleLifeRecordCancel = () => {
     setIsLifeRecordModalOpen(false);
-    navigate('/');
+    navigate('/home', { replace: true });
   };
 
   // 생활 기록도 같은 날짜의 기록이므로 날짜를 그대로 넘긴다.

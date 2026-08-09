@@ -86,7 +86,7 @@ const Edit = () => {
 
   const handleCancel = () => {
     resetDraft();
-    navigate('/');
+    navigate('/home', { replace: true });
   };
 
   const handleSave = () => {
@@ -112,7 +112,7 @@ const Edit = () => {
       {
         onSuccess: () => {
           resetDraft();
-          navigate('/');
+          navigate('/home', { replace: true });
         },
       },
     );
@@ -137,7 +137,7 @@ const Edit = () => {
       onSuccess: () => {
         setIsDeleteModalOpen(false);
         resetDraft();
-        navigate('/');
+        navigate('/home', { replace: true });
       },
     });
   };
