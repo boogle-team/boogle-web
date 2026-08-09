@@ -1,22 +1,28 @@
 import { lazy, Suspense } from 'react';
 import loadingSpinnerAnimation from '@/shared/assets/lottie/loadingSpinner.json';
+import useRootBackgroundOverride from '@/shared/hooks/useRootBackgroundOverride';
 
 const Lottie = lazy(() => import('lottie-react'));
+const DEFAULT_BACKDROP_ROOT_BACKGROUND_COLOR = 'var(--color-beige-5)';
 
 export interface LoadingSpinnerPropTypes {
   hasBackdrop?: boolean;
   backdropClassName?: string;
+  rootBackgroundColor?: string;
   message?: string;
 }
 
 const LoadingSpinner = ({
   hasBackdrop = false,
   backdropClassName,
+  rootBackgroundColor = DEFAULT_BACKDROP_ROOT_BACKGROUND_COLOR,
   message,
 }: LoadingSpinnerPropTypes) => {
   const backgroundClassName = hasBackdrop
     ? (backdropClassName ?? 'bg-beige-5/70')
     : 'bg-transparent';
+
+  useRootBackgroundOverride(hasBackdrop ? rootBackgroundColor : null);
 
   return (
     <div
