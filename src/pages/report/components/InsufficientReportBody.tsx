@@ -22,9 +22,7 @@ const InsufficientReportBody = ({
   const description = isWeeklyReport
     ? `${minimumRequiredCount}일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요`
     : `현재 ${currentCount}일째 기록 중이에요. ${minimumRequiredCount}일 이상 기록하면 월간 리포트를\n볼 수 있어요.`;
-  const currentCountText = isWeeklyReport
-    ? `${currentCount}일째`
-    : `${currentCount}일`;
+  const currentCountText = `${currentCount}일째`;
 
   return (
     <div className="mt-4 flex min-h-[31rem] flex-col gap-8">
