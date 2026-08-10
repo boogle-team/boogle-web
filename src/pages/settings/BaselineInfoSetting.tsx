@@ -146,7 +146,11 @@ const BaselineInfoSetting = () => {
             text={isSaving ? '저장 중...' : '저장하기'}
             variant="primary"
             disabled={
-              !selectedAgeGroup || !selectedGender || isLoading || isSaving
+              !isModified ||
+              !selectedAgeGroup ||
+              !selectedGender ||
+              isLoading ||
+              isSaving
             }
             onClick={handleSaveClick}
           />
