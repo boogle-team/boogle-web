@@ -30,6 +30,8 @@ const Edit = () => {
   const navigate = useNavigate();
   const { recordId: recordIdParam } = useParams<{ recordId: string }>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteTransitionPending, setIsDeleteTransitionPending] =
+    useState(false);
   const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordId = Number(recordIdParam);
@@ -133,11 +135,16 @@ const Edit = () => {
   const handleDeleteConfirm = () => {
     if (!isRecordIdValid || isDeletingRecord) return;
 
+    setIsDeleteTransitionPending(true);
+
     deleteBoogleRecord(recordId, {
       onSuccess: () => {
         setIsDeleteModalOpen(false);
         resetDraft();
         navigate('/home', { replace: true });
+      },
+      onError: () => {
+        setIsDeleteTransitionPending(false);
       },
     });
   };
@@ -148,6 +155,14 @@ const Edit = () => {
 
   const isBoogleRecordNotFound =
     !isRecordIdValid || getApiErrorStatus(boogleRecordError) === 404;
+
+  if (isDeleteTransitionPending) {
+    return (
+      <div className="min-h-dvh bg-beige-5">
+        <LoadingSpinner hasBackdrop message="기록을 삭제하는 중입니다." />
+      </div>
+    );
+  }
 
   if (isBoogleRecordNotFound) {
     return <NotFound />;
@@ -258,15 +273,11 @@ const Edit = () => {
         onConfirm={handleDeleteConfirm}
       />
 
-      {(isUpdatingRecord || isDeletingRecord) && (
+      {isUpdatingRecord && (
         <LoadingSpinner
           hasBackdrop
           zIndexClassName="z-[60]"
-          message={
-            isDeletingRecord
-              ? '기록을 삭제하는 중입니다.'
-              : '기록을 저장하는 중입니다.'
-          }
+          message="기록을 저장하는 중입니다."
         />
       )}
     </RecordPageLayout>
