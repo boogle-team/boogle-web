@@ -1,4 +1,7 @@
 import MonthlyConstipationTypeIcon from '../assets/illustrations/monthlyConstipationTypeIcon.svg?react';
+import MonthlyIrregularTypeIcon from '../assets/illustrations/monthlyIrregularTypeIcon.svg?react';
+import MonthlyLifestyleTypeIcon from '../assets/illustrations/monthlyLifestyleTypeIcon.svg?react';
+import MonthlyLooseStoolTypeIcon from '../assets/illustrations/monthlyLooseStoolTypeIcon.svg?react';
 import MonthlyPendingTypeIcon from '../assets/illustrations/monthlyPendingTypeIcon.svg?react';
 import MonthlyRegularTypeIcon from '../assets/illustrations/monthlyRegularTypeIcon.svg?react';
 import type { MonthlyTypeTypes } from '../types/reportTypes';
@@ -55,6 +58,24 @@ const MonthlyTypeIcon = ({ symbol }: MonthlyTypeIconPropTypes) => {
   if (symbol === 'N') {
     return (
       <MonthlyPendingTypeIcon aria-hidden="true" className={iconClassName} />
+    );
+  }
+
+  if (symbol === 'L') {
+    return (
+      <MonthlyLooseStoolTypeIcon aria-hidden="true" className={iconClassName} />
+    );
+  }
+
+  if (symbol === 'I') {
+    return (
+      <MonthlyLifestyleTypeIcon aria-hidden="true" className={iconClassName} />
+    );
+  }
+
+  if (symbol === 'U') {
+    return (
+      <MonthlyIrregularTypeIcon aria-hidden="true" className={iconClassName} />
     );
   }
 
