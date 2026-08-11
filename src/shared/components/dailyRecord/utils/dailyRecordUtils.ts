@@ -21,13 +21,6 @@ export const isFutureDate = (dateKey: string) => dateKey > getTodayDateKey();
 
 export const isTodayDate = (dateKey: string) => dateKey === getTodayDateKey();
 
-export const formatRecordTime = (dateTime: string) =>
-  new Intl.DateTimeFormat('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  }).format(new Date(dateTime));
-
 const toBoogleRecordSummaries = (
   boogleRecords: BoogleRecordTypes[],
 ): BoogleRecordSummaryTypes[] =>
@@ -35,6 +28,7 @@ const toBoogleRecordSummaries = (
     ({
       id,
       regDate,
+      bowelMovementAt,
       hasBowel,
       stoolBristol,
       stoolSimple,
@@ -43,6 +37,7 @@ const toBoogleRecordSummaries = (
     }) => ({
       id,
       regDate,
+      bowelMovementAt,
       hasBowel,
       stoolBristol,
       stoolSimple,

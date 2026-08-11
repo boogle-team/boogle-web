@@ -30,6 +30,7 @@ export interface FoodTypes {
 export interface BoogleRecordTypes {
   id: number;
   regDate: string;
+  bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
@@ -79,6 +80,7 @@ export type DailyRecordResponseTypes = ApiResponseTypes<DailyRecordTypes>;
 export interface BoogleRecordSummaryTypes {
   id: number;
   regDate: string;
+  bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;

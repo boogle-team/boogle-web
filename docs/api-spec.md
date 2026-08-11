@@ -873,6 +873,7 @@ error response body:
       {
         "id": 100,
         "regDate": "2026-06-17T08:30:00",
+        "bowelMovementAt": "08:30",
         "hasBowel": true,
         "stoolBristol": 4,
         "stoolSimple": "M",

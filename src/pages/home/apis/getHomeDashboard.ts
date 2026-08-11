@@ -31,6 +31,7 @@ const MOCK_HOME_DASHBOARD_RESPONSE: HomeDashboardResponseTypes = {
       {
         id: 100,
         regDate: '2026-05-12T08:30:00',
+        bowelMovementAt: '08:30',
         hasBowel: true,
         stoolBristol: 4,
         stoolSimple: 'M',
@@ -40,6 +41,7 @@ const MOCK_HOME_DASHBOARD_RESPONSE: HomeDashboardResponseTypes = {
       {
         id: 101,
         regDate: '2026-05-12T17:30:00',
+        bowelMovementAt: '17:30',
         hasBowel: true,
         stoolBristol: 6,
         stoolSimple: 'T',
