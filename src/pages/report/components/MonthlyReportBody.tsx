@@ -6,14 +6,13 @@ import type {
   PatternTypes,
   ReportSummaryTypes,
   WeeklyTrendTypes,
-} from '../types/reportTypes';
-import ConditionDistributionCard from './ConditionDistributionCard';
-import MonthlyConditionScoreCard from './MonthlyConditionScoreCard';
-import MonthlyImprovementCard from './MonthlyImprovementCard';
-import MonthlyPatternListCard from './MonthlyPatternListCard';
-import MonthlyTypeCard from './MonthlyTypeCard';
-import MonthlyWeeklyTrendCard from './MonthlyWeeklyTrendCard';
-import SummaryCards from './SummaryCards';
+} from '@/pages/report/types/reportTypes';
+import ConditionDistributionCard from '@/pages/report/components/ConditionDistributionCard';
+import MonthlyConditionScoreCard from '@/pages/report/components/MonthlyConditionScoreCard';
+import MonthlyTypeCard from '@/pages/report/components/MonthlyTypeCard';
+import MonthlyWeeklyTrendCard from '@/pages/report/components/MonthlyWeeklyTrendCard';
+import PatternCardBlock from '@/pages/report/components/PatternCardBlock';
+import SummaryCards from '@/pages/report/components/SummaryCards';
 
 interface MonthlyReportBodyPropTypes {
   conditionProgress: ConditionProgressTypes[];
@@ -53,9 +52,19 @@ const MonthlyReportBody = ({
     <MonthlyWeeklyTrendCard weeklyTrends={weeklyTrends} />
     <ConditionDistributionCard conditionProgress={conditionProgress} />
     {monthlyType && <MonthlyTypeCard monthlyType={monthlyType} />}
-    {patterns.length > 0 && <MonthlyPatternListCard patterns={patterns} />}
+    {patterns.length > 0 && (
+      <PatternCardBlock
+        items={patterns}
+        title="이번 달 패턴"
+        variant="default"
+      />
+    )}
     {improvements.length > 0 && (
-      <MonthlyImprovementCard improvements={improvements} />
+      <PatternCardBlock
+        items={improvements}
+        title="이번 달 개선된 점"
+        variant="improvement"
+      />
     )}
     <div className="flex justify-center">
       <Button

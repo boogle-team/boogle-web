@@ -3,14 +3,14 @@ import type {
   PatternLevelTypes,
   StoolSimpleTypes,
   WeeklyReportDataResponseTypes,
-} from '../types/reportApiTypes';
+} from '@/pages/report/types/reportApiTypes';
 import type {
   BowelRhythmTypes,
   InsufficientReportTypes,
   PatternTypes,
   WeeklyReportViewDataTypes,
-} from '../types/reportTypes';
-import { mapStoolDistribution } from './reportViewDataMappers';
+} from '@/pages/report/types/reportTypes';
+import { mapStoolDistribution } from '@/pages/report/utils/reportViewDataMappers';
 
 const WEEKDAYS: { dayOfWeek: BowelDayOfWeekTypes; label: string }[] = [
   { dayOfWeek: 'MON', label: '월' },
@@ -53,8 +53,6 @@ export const mapWeeklyReportViewData = (
 ): WeeklyReportViewDataTypes | null => {
   if (report.dataStatus !== 'ENOUGH' || !report.summary) return null;
 
-  const firstGuide = report.guides[0];
-
   return {
     summaries: [
       {
@@ -88,9 +86,7 @@ export const mapWeeklyReportViewData = (
 
       return {
         day: label,
-        status: stoolSimple
-          ? BOWEL_RHYTHM_STATUS_MAP[stoolSimple]
-          : 'empty',
+        status: stoolSimple ? BOWEL_RHYTHM_STATUS_MAP[stoolSimple] : 'empty',
       };
     }),
     frequentTimeSlotLabel: report.frequentTimeSlots[0]?.label ?? null,
@@ -99,13 +95,12 @@ export const mapWeeklyReportViewData = (
       icon: getPatternIcon(level),
       title,
     })),
-    lifeGuide: firstGuide
-      ? {
-          description: firstGuide.content,
-          guideId: firstGuide.guideContentId,
-          title: firstGuide.title,
-        }
-      : null,
+    lifeGuides: report.guides.map(({ guideId, summary, title }) => ({
+      description: summary,
+      guideId,
+      icon: 'guide',
+      title,
+    })),
   };
 };
 

@@ -4,18 +4,17 @@
   LifeGuideTypes,
   PatternTypes,
   ReportSummaryTypes,
-} from '../types/reportTypes';
-import BowelRhythmCard from './BowelRhythmCard';
-import ConditionDistributionCard from './ConditionDistributionCard';
-import LifeGuideCard from './LifeGuideCard';
-import PatternCard from './PatternCard';
-import SummaryCards from './SummaryCards';
+} from '@/pages/report/types/reportTypes';
+import BowelRhythmCard from '@/pages/report/components/BowelRhythmCard';
+import ConditionDistributionCard from '@/pages/report/components/ConditionDistributionCard';
+import PatternCardBlock from '@/pages/report/components/PatternCardBlock';
+import SummaryCards from '@/pages/report/components/SummaryCards';
 
 interface WeeklyReportBodyPropTypes {
   bowelRhythms: BowelRhythmTypes[];
   conditionProgress: ConditionProgressTypes[];
   frequentTimeSlotLabel: string | null;
-  lifeGuide: LifeGuideTypes | null;
+  lifeGuides: LifeGuideTypes[];
   patterns: PatternTypes[];
   summaries: ReportSummaryTypes[];
 }
@@ -24,7 +23,7 @@ const WeeklyReportBody = ({
   bowelRhythms,
   conditionProgress,
   frequentTimeSlotLabel,
-  lifeGuide,
+  lifeGuides,
   patterns,
   summaries,
 }: WeeklyReportBodyPropTypes) => (
@@ -36,9 +35,19 @@ const WeeklyReportBody = ({
       frequentTimeSlotLabel={frequentTimeSlotLabel}
     />
     {patterns.length > 0 && (
-      <PatternCard patterns={patterns} title="감지된 패턴" />
+      <PatternCardBlock
+        items={patterns}
+        title="감지된 패턴"
+        variant="default"
+      />
     )}
-    {lifeGuide && <LifeGuideCard lifeGuide={lifeGuide} />}
+    {lifeGuides.length > 0 && (
+      <PatternCardBlock
+        items={lifeGuides}
+        title="생활 가이드"
+        variant="default"
+      />
+    )}
     <p className="label text-center text-gray-6">
       월간 리포트에서 PDF로 저장할 수 있어요
     </p>

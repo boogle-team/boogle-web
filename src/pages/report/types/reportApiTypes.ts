@@ -187,9 +187,9 @@ export interface ReportPdfInfoResponseTypes {
 
 export interface ReportGuideResponseTypes {
   category: GuideCategoryTypes;
-  content: string;
   feedbackStatus: GuideFeedbackStatusTypes;
-  guideContentId: number;
+  guideId: number;
+  summary: string;
   title: string;
 }
 
