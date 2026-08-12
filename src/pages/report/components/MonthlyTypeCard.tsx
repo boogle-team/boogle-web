@@ -21,10 +21,10 @@ interface MonthlyTypeCardItemPropTypes {
 const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
   <section className="rounded-xl bg-orange-6 p-4 text-beige-1 shadow-sm">
     <h2 className="body-m">이번 달 나의 유형</h2>
-    <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-3">
+    <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-4">
       <MonthlyTypeIcon symbol={monthlyType.symbol} />
       <div className="min-w-0">
-        <h3 className="display">{monthlyType.title}</h3>
+        <h3 className="header">{monthlyType.title}</h3>
         <p className="caption mt-1 max-w-[16.5625rem] whitespace-pre-line break-keep text-orange-1">
           {monthlyType.description}
         </p>

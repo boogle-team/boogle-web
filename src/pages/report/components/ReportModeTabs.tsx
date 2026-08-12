@@ -20,7 +20,7 @@ const ReportModeTabs = ({
           type="button"
           onClick={() => onModeClick(value)}
           className={`relative flex h-[1.875rem] w-20 shrink-0 flex-col items-center text-center tracking-[-0.0175rem] ${
-            isSelected ? 'label-semi text-orange-6' : 'label text-gray-6'
+            isSelected ? 'label-semi text-orange-6' : 'label-semi text-gray-6'
           }`}
         >
           {label}

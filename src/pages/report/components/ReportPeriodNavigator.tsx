@@ -14,39 +14,43 @@ const ReportPeriodNavigator = ({
   onPreviousClick,
   periodText,
 }: ReportPeriodNavigatorPropTypes) => (
-  <section className="relative mt-2 flex items-end justify-center text-center">
-    <button
-      type="button"
-      aria-label="이전 기간"
-      onClick={onPreviousClick}
-      className="absolute bottom-1 left-[4.75rem] flex h-6 w-6 items-center justify-center text-gray-8"
-    >
-      <PeriodChevronRightIcon
-        aria-hidden="true"
-        className="h-[0.875rem] w-2 rotate-180"
-      />
-    </button>
+  <section className="mt-6 text-center">
+    {periodText.title && (
+      <p className="label tracking-[-0.0175rem] text-gray-8">
+        {periodText.title}
+      </p>
+    )}
 
-    <div>
-      {periodText.title && (
-        <p className="label text-center tracking-[-0.0175rem] text-gray-8">
-          {periodText.title}
-        </p>
-      )}
+    <div className="relative flex items-center justify-center">
+      <button
+        type="button"
+        aria-label="이전 기간"
+        onClick={onPreviousClick}
+        className="absolute left-[4.75rem] top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center text-gray-8"
+      >
+        <PeriodChevronRightIcon
+          aria-hidden="true"
+          className="h-[0.875rem] w-2 rotate-180"
+        />
+      </button>
+
       <p className="body-m-bold tracking-[-0.02rem] text-gray-8">
         {periodText.description}
       </p>
-    </div>
 
-    <button
-      type="button"
-      aria-label="다음 기간"
-      onClick={onNextClick}
-      disabled={isNextDisabled}
-      className="absolute bottom-1 right-[4.75rem] flex h-6 w-6 items-center justify-center text-gray-8 disabled:cursor-not-allowed disabled:text-gray-5"
-    >
-      <PeriodChevronRightIcon aria-hidden="true" className="h-[0.875rem] w-2" />
-    </button>
+      <button
+        type="button"
+        aria-label="다음 기간"
+        onClick={onNextClick}
+        disabled={isNextDisabled}
+        className="absolute right-[4.75rem] top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center text-gray-8 disabled:cursor-not-allowed disabled:text-gray-5"
+      >
+        <PeriodChevronRightIcon
+          aria-hidden="true"
+          className="h-[0.875rem] w-2"
+        />
+      </button>
+    </div>
   </section>
 );
 
