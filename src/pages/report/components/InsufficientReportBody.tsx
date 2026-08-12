@@ -3,6 +3,7 @@ import type {
   InsufficientReportTypes,
   ReportModeTypes,
 } from '../types/reportTypes';
+import ReportRecordProgressCard from './ReportRecordProgressCard';
 
 interface InsufficientReportBodyPropTypes {
   insufficientReport: InsufficientReportTypes;
@@ -16,38 +17,19 @@ const InsufficientReportBody = ({
   const { currentCount, minimumRequiredCount, requiredCount } =
     insufficientReport;
   const isWeeklyReport = selectedMode === 'weekly';
-  const progressWidth = `${(currentCount / requiredCount) * 100}%`;
   const remainingCount = Math.max(minimumRequiredCount - currentCount, 0);
   const trackerPeriodText = isWeeklyReport ? '이번 주 기록' : '이번 달 기록';
   const description = isWeeklyReport
     ? `${minimumRequiredCount}일 이상 기록하면 변 상태 분포와\n배변 리듬을 확인할 수 있어요`
-    : `현재 ${currentCount}일째 기록 중이에요. ${minimumRequiredCount}일 이상 기록하면 월간 리포트를\n볼 수 있어요.`;
-  const currentCountText = `${currentCount}일째`;
+    : `현재 ${currentCount}일째 기록 중이에요.\n ${minimumRequiredCount}일 이상 기록하면 월간 리포트를 볼 수 있어요.`;
 
   return (
-    <div className="mt-4 flex min-h-[31rem] flex-col gap-8">
-      <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-        <div className="flex items-center justify-between">
-          <p className="body-m text-gray-9">
-            {trackerPeriodText}{' '}
-            <span className="body-m-bold text-orange-6">
-              {currentCountText}
-            </span>
-          </p>
-        </div>
-        <div className="mt-5 grid grid-cols-[1fr_3.25rem] items-center gap-3">
-          <div className="h-1.5 overflow-hidden rounded-full bg-gray-4">
-            <div
-              className="h-full rounded-full bg-orange-6"
-              style={{ width: progressWidth }}
-            />
-          </div>
-          <p className="label text-right text-orange-5">
-            <span className="label-bold text-orange-6">{currentCount}</span>/
-            {requiredCount}일
-          </p>
-        </div>
-      </section>
+    <div className="mt-6 flex min-h-[31rem] flex-col gap-8">
+      <ReportRecordProgressCard
+        currentCount={currentCount}
+        periodText={trackerPeriodText}
+        requiredCount={requiredCount}
+      />
 
       <section className="flex flex-1 flex-col items-center justify-center text-center">
         <InsufficientReportIcon
