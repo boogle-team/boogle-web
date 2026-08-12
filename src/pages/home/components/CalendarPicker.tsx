@@ -1,3 +1,5 @@
+import type { WheelEvent } from 'react';
+
 import CalendarChip from '@/pages/home/components/CalendarChip';
 import useCalendarPicker from '@/pages/home/hooks/useCalendarPicker';
 import { DEFAULT_HOME_RECORD_STATUS } from '@/pages/home/constants/homeCalendarConfig';
@@ -52,11 +54,22 @@ const CalendarPicker = ({
     setChipRef,
     handleScroll,
     handleChipClick,
+    handleScrollInteractionStart,
   } = useCalendarPicker({
     selectedDate,
     onSelectDate,
     onRecordSummaryRangeRequest,
   });
+
+  const handleCalendarWheel = ({
+    deltaX,
+    deltaY,
+    shiftKey,
+  }: WheelEvent<HTMLDivElement>) => {
+    if (deltaX !== 0 || (shiftKey && deltaY !== 0)) {
+      handleScrollInteractionStart();
+    }
+  };
 
   return (
     <section className="relative min-h-[9.625rem] bg-beige-1 pt-[1.13rem]">
@@ -68,6 +81,8 @@ const CalendarPicker = ({
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
+        onPointerDown={handleScrollInteractionStart}
+        onWheel={handleCalendarWheel}
         className="scrollbar-hide relative z-10 flex snap-x snap-mandatory gap-1 overflow-x-auto px-[calc(50%-2rem)]"
       >
         <span
