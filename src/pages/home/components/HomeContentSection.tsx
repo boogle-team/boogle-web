@@ -3,6 +3,7 @@ import {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,
 } from '@/shared/components/dailyRecord';
+import InlineLoadingState from '@/shared/components/InlineLoadingState';
 import TagsSection from '@/shared/components/tagSection/TagsSection';
 import type { HomeSelectedDateContentTypes } from '@/pages/home/types/homeTypes';
 import { isHomeToday } from '@/pages/home/utils/homeDateUtils';
@@ -62,9 +63,7 @@ const HomeContentSection = ({
           <HomeMessageBanner content={messageBannerContent} />
         ) : null}
         {isDailyRecordLoading ? (
-          <div className="rounded-xl bg-beige-1 px-4 py-6 text-center body-m-bold text-gray-8">
-            기록을 불러오는 중이에요
-          </div>
+          <InlineLoadingState message="기록을 불러오는 중이에요" />
         ) : null}
         {isDailyRecordError ? (
           <div className="rounded-xl bg-beige-1 px-4 py-6 text-center text-gray-8">
