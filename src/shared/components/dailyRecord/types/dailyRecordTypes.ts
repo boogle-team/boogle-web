@@ -10,8 +10,8 @@ export type LifeRecordStatusTypes =
 
 type LiteralUnionTypes<T extends string> = T | (string & {});
 
-export type StoolSimpleCodeTypes = LiteralUnionTypes<'M' | 'T'>;
-export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'H'>;
+export type StoolSimpleCodeTypes = LiteralUnionTypes<'H' | 'M' | 'T'>;
+export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'N' | 'H'>;
 export type LifeConditionCodeTypes = LiteralUnionTypes<
   'B' | 'N' | 'L' | 'H' | 'R' | 'O'
 >;

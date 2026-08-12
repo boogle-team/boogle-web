@@ -7,12 +7,14 @@ import type {
 import { PAIN_LEVEL_LABELS } from '@/shared/constants/painLevelConstants';
 
 export const STOOL_SIMPLE_LABELS: Record<string, string> = {
+  H: '딱딱함',
   M: '보통',
   T: '묽음',
 };
 
 export const BOWEL_FEELING_LABELS: Record<string, string> = {
   C: '편안함',
+  N: '보통',
   H: '힘들었음',
 };
 
