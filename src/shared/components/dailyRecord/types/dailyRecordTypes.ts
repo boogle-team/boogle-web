@@ -28,7 +28,9 @@ export interface FoodTypes {
 
 export interface BoogleRecordTypes {
   id: number;
+  // regDate는 KST 자정으로 저장되므로 날짜 용도로만 쓴다. 시각은 bowelMovementAt.
   regDate: string;
+  bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
@@ -79,6 +81,7 @@ export type DailyRecordResponseTypes = ApiResponseTypes<DailyRecordTypes>;
 export interface BoogleRecordSummaryTypes {
   id: number;
   regDate: string;
+  bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
