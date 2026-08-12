@@ -48,7 +48,7 @@ const toBoogleRecordSummaries = (
 
 // 시간 이른 대로 정렬
 const sortBoogleRecordsByTime = (boogleRecords: BoogleRecordTypes[]) =>
-  boogleRecords.toSorted(
+  [...boogleRecords].sort(
     (
       { bowelMovementAt: firstBowelMovementAt },
       { bowelMovementAt: secondBowelMovementAt },

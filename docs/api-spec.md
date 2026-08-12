@@ -1091,7 +1091,7 @@ error response body:
 - `POST /api/v1/records`, `PATCH /api/v1/records/{id}` 요청의 `regDate`는 기록 대상 날짜인 `YYYY-MM-DD` 형식이다.
 - `GET /api/v1/records/{id}` 응답의 `regDate`는 `YYYY-MM-DD` 형식이다.
 - `GET /api/v1/calendar/daily?date={YYYY-MM-DD}` 응답 안의 부글 기록 `regDate`는 `YYYY-MM-DDTHH:mm:ss` 형식이다. 프론트에서는 기록 초안에 저장하기 전에 `YYYY-MM-DD`로 정규화한다.
-- 배변 시각 `bowelMovementAt`은 타임존 없는 `HH:mm` 형식이며 서버가 KST 시각으로 해석한다.
+- 배변 시각 `bowelMovementAt`은 값이 있으면 타임존 없는 `HH:mm` 형식이며 서버가 KST 시각으로 해석한다. 값이 없으면 `null`이다.
 - `PATCH /api/v1/records/{id}`에서 필드를 생략하면 기존 값을 유지하고, nullable 필드에 `null`을 보내면 기존 값을 삭제한다.
 - 배변 없음으로 수정할 때는 `hasBowel: false`와 함께 모든 배변 상세 필드를 `null`로 전송한다.
 
