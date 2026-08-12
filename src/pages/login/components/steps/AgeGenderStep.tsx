@@ -33,7 +33,7 @@ const AgeGenderStep = ({
 
       <section className="mt-8">
         <h3 className="body-m text-center text-gray-8">나이대</h3>
-        <div className="mt-3 grid grid-cols-4 gap-2">
+        <div className="mx-auto mt-3 flex w-full max-w-[17rem] flex-wrap justify-center gap-2 min-[400px]:max-w-none">
           {AGE_GROUP_OPTIONS.map((option) => (
             <Chip
               key={option.value}
@@ -50,7 +50,7 @@ const AgeGenderStep = ({
 
       <section>
         <h3 className="body-m text-center text-gray-8">성별</h3>
-        <div className="mx-auto mt-3 grid w-full max-w-[17rem] grid-cols-3 gap-2">
+        <div className="mx-auto mt-3 flex w-full max-w-[17rem] flex-wrap justify-center gap-2">
           {GENDER_OPTIONS.map((option) => (
             <Chip
               key={option.value}

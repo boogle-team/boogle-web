@@ -18,7 +18,7 @@ const RECORD_RELATED_QUERY_KEYS = [
   MONTHLY_REPORT_QUERY_KEY,
 ] as const;
 
-/** 기록 변경 후 홈, 캘린더, 리포트가 최신 데이터를 다시 조회하도록 한다. */
+/** 부글 기록 변경 후 홈, 캘린더, 리포트가 최신 데이터를 다시 조회하도록 한다. */
 export const invalidateRecordRelatedQueries = (queryClient: QueryClient) => {
   RECORD_RELATED_QUERY_KEYS.forEach((queryKey) => {
     void queryClient.invalidateQueries({ queryKey });

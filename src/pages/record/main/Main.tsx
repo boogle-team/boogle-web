@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 import { useCreateBoogleRecordMutation } from '@/pages/record/hooks/useCreateBoogleRecordMutation';
 import type { PostBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
 import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
+import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 
 import BowelStatusField from './components/BowelStatusField';
 import DetailRecordLink from './components/DetailRecordLink';
@@ -21,15 +23,20 @@ import { LIFE_RECORD_MODAL } from './constants/recordConstants';
 import { useRecordForm } from './hooks/useRecordForm';
 import { formatRecordDate } from './utils/formatRecordDate';
 
-// TODO: 해당 날짜의 생활 기록 존재 여부 조회 API 연동
-const HAS_LIFE_RECORD = false;
-
 const Main = () => {
   const navigate = useNavigate();
   const [isLifeRecordModalOpen, setIsLifeRecordModalOpen] = useState(false);
   const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordDate = useRecordDraftDate();
+  const {
+    data: dailyRecord,
+    isPending: isDailyRecordPending,
+    isFetching: isDailyRecordFetching,
+    isError: isDailyRecordError,
+    fetchStatus: dailyRecordFetchStatus,
+    refetch: refetchDailyRecord,
+  } = useDailyRecordQuery(recordDate);
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
   const detailFormState = useRecordDraftStore((state) => state.detail);
@@ -54,8 +61,22 @@ const Main = () => {
     handlePainLevelChange,
   } = useRecordForm();
 
+  const isDailyRecordChecking =
+    (isDailyRecordPending && dailyRecordFetchStatus !== 'idle') ||
+    isDailyRecordFetching;
+  const hasExistingBoogleRecord = Boolean(dailyRecord?.boogleRecords.length);
+  const hasBowelStatusConflict =
+    hasExistingBoogleRecord && formState.bowelStatus === 'no';
+  const hasLifeRecord = Boolean(dailyRecord?.lifeRecord);
+  const isSubmitBlocked =
+    !isSubmittable ||
+    isCreatingRecord ||
+    isDailyRecordChecking ||
+    isDailyRecordError ||
+    hasBowelStatusConflict;
+
   const handleSubmit = () => {
-    if (!isSubmittable || isCreatingRecord) return;
+    if (isSubmitBlocked) return;
 
     setIsRequestMappingError(false);
 
@@ -76,12 +97,12 @@ const Main = () => {
       onSuccess: () => {
         resetDraft();
 
-        if (!HAS_LIFE_RECORD) {
+        if (!hasLifeRecord) {
           setIsLifeRecordModalOpen(true);
           return;
         }
 
-        navigate('/');
+        navigate('/home', { replace: true });
       },
     });
   };
@@ -92,18 +113,22 @@ const Main = () => {
   };
 
   const handleDetailRecordLinkClick = () => {
-    navigate('/boogle-record/detail');
+    navigate(`/boogle-record/detail?date=${recordDate}`);
   };
 
   const handleLifeRecordCancel = () => {
     setIsLifeRecordModalOpen(false);
-    navigate('/');
+    navigate('/home', { replace: true });
   };
 
   // 생활 기록도 같은 날짜의 기록이므로 날짜를 그대로 넘긴다.
   const handleLifeRecordConfirm = () => {
     setIsLifeRecordModalOpen(false);
     navigate(`/life-record/new?date=${recordDate}`);
+  };
+
+  const handleDailyRecordRetryClick = () => {
+    void refetchDailyRecord();
   };
 
   return (
@@ -114,6 +139,23 @@ const Main = () => {
       onBackButtonClick={handleBackButtonClick}
       footer={
         <div className="flex flex-col gap-2">
+          {isDailyRecordError && (
+            <div className="flex flex-col items-center gap-2">
+              <p
+                role="alert"
+                className="caption text-center text-semantic-danger"
+              >
+                기록 상태를 확인하지 못했어요. 다시 시도해 주세요.
+              </p>
+              <Button
+                className="max-w-40"
+                text="다시 시도"
+                size="sm"
+                variant="ghost"
+                onClick={handleDailyRecordRetryClick}
+              />
+            </div>
+          )}
           {(isCreateRecordError || isRequestMappingError) && (
             <p
               role="alert"
@@ -125,13 +167,14 @@ const Main = () => {
           <Button
             text={isCreatingRecord ? '저장 중...' : '완료'}
             onClick={handleSubmit}
-            disabled={!isSubmittable || isCreatingRecord}
+            disabled={isSubmitBlocked}
           />
         </div>
       }
     >
       <BowelStatusField
         value={formState.bowelStatus}
+        hasNoOptionError={hasBowelStatusConflict}
         onChange={handleBowelStatusChange}
       />
 
@@ -170,6 +213,14 @@ const Main = () => {
         onCancel={handleLifeRecordCancel}
         onConfirm={handleLifeRecordConfirm}
       />
+
+      {isCreatingRecord && (
+        <LoadingSpinner
+          hasBackdrop
+          zIndexClassName="z-[60]"
+          message="기록을 저장하는 중입니다."
+        />
+      )}
     </RecordPageLayout>
   );
 };
