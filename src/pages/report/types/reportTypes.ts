@@ -22,24 +22,28 @@ export interface WeeklyReportViewDataTypes {
   bowelRhythms: BowelRhythmTypes[];
   conditionProgress: ConditionProgressTypes[];
   frequentTimeSlotLabel: string | null;
-  lifeGuide: LifeGuideTypes | null;
+  lifeGuides: LifeGuideTypes[];
   patterns: PatternTypes[];
   summaries: ReportSummaryTypes[];
 }
 
+export type PatternIconTypes =
+  | 'chart'
+  | 'check'
+  | 'danger'
+  | 'droplet'
+  | 'frown'
+  | 'moon'
+  | 'package'
+  | 'warning';
+
 export interface PatternTypes {
   description: string;
-  icon:
-    | 'chart'
-    | 'check'
-    | 'danger'
-    | 'droplet'
-    | 'frown'
-    | 'moon'
-    | 'package'
-    | 'warning';
+  icon: PatternIconTypes;
   title: string;
 }
+
+export type PatternCardVariantTypes = 'default' | 'improvement';
 
 export interface MonthlyScoreTypes {
   label: string;
@@ -74,8 +78,11 @@ export interface MonthlyTypeTypes {
 export interface LifeGuideTypes {
   description: string;
   guideId: number;
+  icon: 'guide';
   title: string;
 }
+
+export type PatternCardItemTypes = LifeGuideTypes | PatternTypes;
 
 export interface InsufficientReportTypes {
   currentCount: number;

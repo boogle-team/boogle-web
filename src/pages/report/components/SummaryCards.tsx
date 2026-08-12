@@ -21,7 +21,7 @@ const SummaryCards = ({
             {label}
           </span>
           {showDescription && (
-            <span className="micro text-orange-6">{description}</span>
+            <span className="caption text-orange-6">{description}</span>
           )}
         </article>
       ))}
