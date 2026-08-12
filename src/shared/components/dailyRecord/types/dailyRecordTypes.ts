@@ -12,7 +12,6 @@ type LiteralUnionTypes<T extends string> = T | (string & {});
 
 export type StoolSimpleCodeTypes = LiteralUnionTypes<'M' | 'T'>;
 export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'H'>;
-export type StomachCodeTypes = LiteralUnionTypes<'N'>;
 export type LifeConditionCodeTypes = LiteralUnionTypes<
   'B' | 'N' | 'L' | 'H' | 'R' | 'O'
 >;
@@ -34,7 +33,8 @@ export interface BoogleRecordTypes {
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
-  stomach: StomachCodeTypes;
+  // 복통 강도 0~4. 배변하지 않은 기록은 null.
+  stomach: number | null;
   distension?: string;
   remainingFeeling?: string;
   urgency?: string;
@@ -83,7 +83,7 @@ export interface BoogleRecordSummaryTypes {
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
-  stomach: StomachCodeTypes;
+  stomach: number | null;
 }
 
 export interface LifeRecordSummaryTypes {

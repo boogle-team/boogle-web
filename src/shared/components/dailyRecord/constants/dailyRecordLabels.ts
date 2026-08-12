@@ -1,9 +1,10 @@
 import type {
   BowelFeelingCodeTypes,
   LifeConditionCodeTypes,
-  StomachCodeTypes,
   StoolSimpleCodeTypes,
 } from '../types/dailyRecordTypes';
+
+import { PAIN_LEVEL_LABELS } from '@/shared/constants/painLevelConstants';
 
 export const STOOL_SIMPLE_LABELS: Record<string, string> = {
   M: '보통',
@@ -13,10 +14,6 @@ export const STOOL_SIMPLE_LABELS: Record<string, string> = {
 export const BOWEL_FEELING_LABELS: Record<string, string> = {
   C: '편안함',
   H: '힘들었음',
-};
-
-export const STOMACH_LABELS: Record<string, string> = {
-  N: '복통 약간 있음',
 };
 
 export const SLEEP_LABELS: Record<string, string> = {
@@ -82,8 +79,14 @@ export const getStoolSimpleLabel = (code: StoolSimpleCodeTypes) =>
 export const getBowelFeelingLabel = (code: BowelFeelingCodeTypes) =>
   BOWEL_FEELING_LABELS[code] ?? '기록됨';
 
-export const getStomachLabel = (code: StomachCodeTypes) =>
-  STOMACH_LABELS[code] ?? '복통 기록됨';
+// 복통을 기록하지 않은 경우(null)는 칩을 띄우지 않도록 null을 돌려준다.
+export const getStomachLabel = (level: number | null) => {
+  if (level === null) return null;
+
+  const painLevelLabel = PAIN_LEVEL_LABELS[level];
+
+  return painLevelLabel ? `복통 ${painLevelLabel}` : '복통 기록됨';
+};
 
 export const getSleepLabel = (code: LifeConditionCodeTypes) =>
   SLEEP_LABELS[code] ?? '기록됨';
