@@ -16,7 +16,7 @@ const HomeMessageBanner = ({ content }: HomeMessageBannerPropTypes) => {
       <div className="flex min-h-[5.75rem] w-full items-center">
         <BoogleWaitingCharacter
           aria-hidden="true"
-          className="h-[5.75rem] w-[6rem] shrink-0 max-[375px]:h-auto max-[375px]:w-[5.25rem]"
+          className="h-[5.75rem] w-[6rem] shrink-0 max-[23.4375rem]:h-auto max-[23.4375rem]:w-[5.25rem]"
         />
 
         <div className="relative -ml-3 flex min-h-[5.75rem] min-w-0 flex-1 items-center">
@@ -26,7 +26,7 @@ const HomeMessageBanner = ({ content }: HomeMessageBannerPropTypes) => {
             preserveAspectRatio="none"
           />
 
-          <div className="relative z-10 flex min-h-[5.75rem] w-full min-w-0 flex-col justify-center py-[0.69rem] pr-[1.19rem] pl-[calc(11.25%+1.19rem)] max-[375px]:pr-[0.75rem] max-[375px]:pl-[calc(11.25%+0.75rem)]">
+          <div className="relative z-10 flex min-h-[5.75rem] w-full min-w-0 flex-col justify-center py-[0.69rem] pr-[1.19rem] pl-[calc(11.25%+1.19rem)] max-[23.4375rem]:pr-[0.75rem] max-[23.4375rem]:pl-[calc(11.25%+0.75rem)]">
             <div className="inline-flex max-w-full items-center gap-1 self-start rounded-full bg-orange-1 px-2 py-1 text-beige-1">
               <Flame
                 aria-hidden="true"
