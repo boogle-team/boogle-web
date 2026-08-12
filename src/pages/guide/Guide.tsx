@@ -31,7 +31,7 @@ interface GuideDetailStatusPropTypes {
 
 const GuideDetailStatus = ({ isError }: GuideDetailStatusPropTypes) => (
   <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pt-20 text-gray-10">
-    <p className="caption text-center text-gray-7">
+    <p className="label text-center text-gray-7">
       {isError ? '가이드를 불러오지 못했어요.' : '가이드를 불러오는 중이에요.'}
     </p>
   </section>
