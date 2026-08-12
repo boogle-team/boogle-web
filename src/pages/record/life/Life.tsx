@@ -6,6 +6,7 @@ import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import Button from '@/shared/components/Button';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 
 import LifeRecordFields from './components/LifeRecordFields';
 import TagSettingModal from './components/TagSettingModal';
@@ -178,6 +179,10 @@ const Life = () => {
         onCancel={handleTagModalCancel}
         onConfirm={handleTagModalConfirm}
       />
+
+      {isExtractingTags && (
+        <LoadingSpinner hasBackdrop message="AI가 태그를 찾고 있어요" />
+      )}
     </RecordPageLayout>
   );
 };
