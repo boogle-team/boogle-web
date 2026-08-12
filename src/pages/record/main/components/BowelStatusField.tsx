@@ -1,5 +1,6 @@
 import BowelStatusNoIcon from '@/shared/assets/illustrations/record/bowelStatus/bowelStatusNo.svg?react';
 import BowelStatusYesIcon from '@/shared/assets/illustrations/record/bowelStatus/bowelStatusYes.svg?react';
+import WarningIcon from '@/shared/assets/icons/warningIcon.svg?react';
 
 import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
 
@@ -8,6 +9,7 @@ import type { BowelStatusTypes } from '../types/recordTypes';
 
 interface BowelStatusFieldPropTypes {
   value: BowelStatusTypes;
+  hasNoOptionError?: boolean;
   onChange: (value: BowelStatusTypes) => void;
 }
 
@@ -16,7 +18,11 @@ const BOWEL_STATUS_ICONS = {
   no: BowelStatusNoIcon,
 };
 
-const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
+const BowelStatusField = ({
+  value,
+  hasNoOptionError = false,
+  onChange,
+}: BowelStatusFieldPropTypes) => {
   return (
     <section className="flex flex-col gap-3">
       <RecordSectionTitle title="배변 여부" />
@@ -47,6 +53,16 @@ const BowelStatusField = ({ value, onChange }: BowelStatusFieldPropTypes) => {
           );
         })}
       </div>
+
+      {hasNoOptionError && (
+        <p
+          role="alert"
+          className="caption flex items-center gap-1 text-semantic-danger"
+        >
+          <WarningIcon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <span>이미 부글 기록이 있어 ‘없음’은 추가할 수 없어요.</span>
+        </p>
+      )}
     </section>
   );
 };

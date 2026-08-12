@@ -8,6 +8,7 @@ const DEFAULT_BACKDROP_ROOT_BACKGROUND_COLOR = 'var(--color-beige-5)';
 export interface LoadingSpinnerPropTypes {
   hasBackdrop?: boolean;
   backdropClassName?: string;
+  zIndexClassName?: string;
   rootBackgroundColor?: string;
   message?: string;
 }
@@ -15,6 +16,7 @@ export interface LoadingSpinnerPropTypes {
 const LoadingSpinner = ({
   hasBackdrop = false,
   backdropClassName,
+  zIndexClassName = 'z-50',
   rootBackgroundColor = DEFAULT_BACKDROP_ROOT_BACKGROUND_COLOR,
   message,
 }: LoadingSpinnerPropTypes) => {
@@ -26,7 +28,7 @@ const LoadingSpinner = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 ${backgroundClassName}`}
+      className={`fixed inset-0 flex flex-col items-center justify-center gap-3 ${zIndexClassName} ${backgroundClassName}`}
       role="status"
       aria-live="polite"
     >
