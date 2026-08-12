@@ -5,13 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
 import LoadingSpinner from '@/shared/components/LoadingSpinner';
-import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 import { useCreateBoogleRecordMutation } from '@/pages/record/hooks/useCreateBoogleRecordMutation';
 import type { PostBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
 import { mapBoogleRecordRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
+import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 
 import BowelStatusField from './components/BowelStatusField';
 import DetailRecordLink from './components/DetailRecordLink';
@@ -29,12 +29,14 @@ const Main = () => {
   const [isRequestMappingError, setIsRequestMappingError] = useState(false);
 
   const recordDate = useRecordDraftDate();
-  const parsedRecordDate = dayjs(recordDate);
-  const { data: calendarMonth, refetch: refetchCalendarMonth } =
-    useCalendarMonthQuery({
-      year: parsedRecordDate.year(),
-      month: parsedRecordDate.month() + 1,
-    });
+  const {
+    data: dailyRecord,
+    isPending: isDailyRecordPending,
+    isFetching: isDailyRecordFetching,
+    isError: isDailyRecordError,
+    fetchStatus: dailyRecordFetchStatus,
+    refetch: refetchDailyRecord,
+  } = useDailyRecordQuery(recordDate);
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
   const detailFormState = useRecordDraftStore((state) => state.detail);
@@ -59,16 +61,22 @@ const Main = () => {
     handlePainLevelChange,
   } = useRecordForm();
 
-  const hasExistingBowelRecord = Boolean(
-    calendarMonth?.days.some(
-      (day) => day.date === recordDate && day.boogleStatus === 'BOWEL',
-    ),
-  );
+  const isDailyRecordChecking =
+    (isDailyRecordPending && dailyRecordFetchStatus !== 'idle') ||
+    isDailyRecordFetching;
+  const hasExistingBoogleRecord = Boolean(dailyRecord?.boogleRecords.length);
   const hasBowelStatusConflict =
-    hasExistingBowelRecord && formState.bowelStatus === 'no';
+    hasExistingBoogleRecord && formState.bowelStatus === 'no';
+  const hasLifeRecord = Boolean(dailyRecord?.lifeRecord);
+  const isSubmitBlocked =
+    !isSubmittable ||
+    isCreatingRecord ||
+    isDailyRecordChecking ||
+    isDailyRecordError ||
+    hasBowelStatusConflict;
 
   const handleSubmit = () => {
-    if (!isSubmittable || isCreatingRecord || hasBowelStatusConflict) return;
+    if (isSubmitBlocked) return;
 
     setIsRequestMappingError(false);
 
@@ -86,12 +94,7 @@ const Main = () => {
     }
 
     createRecord(request, {
-      onSuccess: async () => {
-        const { data: latestCalendarMonth } = await refetchCalendarMonth();
-        const hasLifeRecord = (latestCalendarMonth ?? calendarMonth)?.days.some(
-          (day) => day.date === recordDate && day.hasLifeRecord,
-        );
-
+      onSuccess: () => {
         resetDraft();
 
         if (!hasLifeRecord) {
@@ -124,6 +127,10 @@ const Main = () => {
     navigate(`/life-record/new?date=${recordDate}`);
   };
 
+  const handleDailyRecordRetryClick = () => {
+    void refetchDailyRecord();
+  };
+
   return (
     <RecordPageLayout
       title="부글 기록하기"
@@ -132,6 +139,23 @@ const Main = () => {
       onBackButtonClick={handleBackButtonClick}
       footer={
         <div className="flex flex-col gap-2">
+          {isDailyRecordError && (
+            <div className="flex flex-col items-center gap-2">
+              <p
+                role="alert"
+                className="caption text-center text-semantic-danger"
+              >
+                기록 상태를 확인하지 못했어요. 다시 시도해 주세요.
+              </p>
+              <Button
+                className="max-w-40"
+                text="다시 시도"
+                size="sm"
+                variant="ghost"
+                onClick={handleDailyRecordRetryClick}
+              />
+            </div>
+          )}
           {(isCreateRecordError || isRequestMappingError) && (
             <p
               role="alert"
@@ -143,9 +167,7 @@ const Main = () => {
           <Button
             text={isCreatingRecord ? '저장 중...' : '완료'}
             onClick={handleSubmit}
-            disabled={
-              !isSubmittable || isCreatingRecord || hasBowelStatusConflict
-            }
+            disabled={isSubmitBlocked}
           />
         </div>
       }
