@@ -40,8 +40,8 @@ const Edit = () => {
     data: boogleRecord,
     error: boogleRecordError,
     isFetching: isBoogleRecordFetching,
-    isLoading: isBoogleRecordLoading,
-    isError: isBoogleRecordError,
+    isPending: isBoogleRecordPending,
+    isLoadingError: isBoogleRecordLoadingError,
     refetch: refetchBoogleRecord,
   } = useBoogleRecordQuery(isRecordIdValid ? recordId : undefined);
   const {
@@ -168,7 +168,7 @@ const Edit = () => {
     return <NotFound />;
   }
 
-  if (isBoogleRecordLoading || (isBoogleRecordFetching && !boogleRecord)) {
+  if (isBoogleRecordPending || (isBoogleRecordFetching && !boogleRecord)) {
     return (
       <div className="min-h-dvh bg-beige-5">
         <LoadingSpinner message="기록을 불러오는 중입니다." />
@@ -176,7 +176,7 @@ const Edit = () => {
     );
   }
 
-  if (isBoogleRecordError) {
+  if (isBoogleRecordLoadingError) {
     return (
       <RecordPageLayout title="부글 기록하기">
         <div className="flex flex-col items-center gap-4 py-12 text-center">
@@ -197,7 +197,7 @@ const Edit = () => {
     );
   }
 
-  if (!boogleRecord) return null;
+  if (!boogleRecord) return <NotFound />;
 
   return (
     <RecordPageLayout
