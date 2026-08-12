@@ -52,6 +52,7 @@ const CalendarPicker = ({
     setChipRef,
     handleScroll,
     handleChipClick,
+    handleScrollInteractionStart,
   } = useCalendarPicker({
     selectedDate,
     onSelectDate,
@@ -68,6 +69,8 @@ const CalendarPicker = ({
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
+        onPointerDown={handleScrollInteractionStart}
+        onWheel={handleScrollInteractionStart}
         className="scrollbar-hide relative z-10 flex snap-x snap-mandatory gap-1 overflow-x-auto px-[calc(50%-2rem)]"
       >
         <span

@@ -25,6 +25,7 @@ const PICKER_SIDE_DATE_COUNT = 30;
 const PICKER_DATE_BATCH_COUNT = 30;
 const SENTINEL_ROOT_MARGIN = '0px 240px 0px 240px';
 const SENTINEL_THRESHOLD = 0;
+const PROGRAMMATIC_SCROLL_END_DELAY = 150;
 
 const useCalendarPicker = ({
   selectedDate,
@@ -38,9 +39,11 @@ const useCalendarPicker = ({
   const animationFrameRef = useRef<number | null>(null);
   const alignFrameRef = useRef<number | null>(null);
   const initialAlignFrameRef = useRef<number | null>(null);
+  const programmaticScrollEndTimerRef = useRef<number | null>(null);
   const initialSelectedDateRef = useRef(selectedDate);
   const latestSelectedDateRef = useRef(selectedDate);
   const isScrollReadyRef = useRef(false);
+  const isProgrammaticScrollRef = useRef(false);
   const isLeftRangeLockedRef = useRef(false);
   const isRightRangeLockedRef = useRef(false);
   const pendingPrependScrollRef = useRef<PendingPrependScrollTypes | null>(
@@ -177,19 +180,52 @@ const useCalendarPicker = ({
     }
   }, [getCenteredDate, onSelectDate, scheduleAlignToDate]);
 
+  const clearProgrammaticScrollEndTimer = useCallback(() => {
+    if (programmaticScrollEndTimerRef.current) {
+      window.clearTimeout(programmaticScrollEndTimerRef.current);
+      programmaticScrollEndTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleProgrammaticScrollEnd = useCallback(() => {
+    clearProgrammaticScrollEndTimer();
+
+    programmaticScrollEndTimerRef.current = window.setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+      programmaticScrollEndTimerRef.current = null;
+      updateCenteredDate();
+    }, PROGRAMMATIC_SCROLL_END_DELAY);
+  }, [clearProgrammaticScrollEndTimer, updateCenteredDate]);
+
   const handleScroll = useCallback(() => {
-    if (!isScrollReadyRef.current || animationFrameRef.current) return;
+    if (!isScrollReadyRef.current) return;
+
+    if (isProgrammaticScrollRef.current) {
+      scheduleProgrammaticScrollEnd();
+      return;
+    }
+
+    if (animationFrameRef.current) return;
 
     animationFrameRef.current = window.requestAnimationFrame(() => {
       updateCenteredDate();
       animationFrameRef.current = null;
     });
-  }, [updateCenteredDate]);
+  }, [scheduleProgrammaticScrollEnd, updateCenteredDate]);
 
   const handleChipClick = (date: string) => {
+    isProgrammaticScrollRef.current = true;
     latestSelectedDateRef.current = date;
     onSelectDate(date);
     scheduleAlignToDate(date, 'smooth');
+    scheduleProgrammaticScrollEnd();
+  };
+
+  const handleScrollInteractionStart = () => {
+    if (!isProgrammaticScrollRef.current) return;
+
+    isProgrammaticScrollRef.current = false;
+    clearProgrammaticScrollEndTimer();
   };
 
   const setChipRef = (date: string) => (element: HTMLElement | null) => {
@@ -285,8 +321,10 @@ const useCalendarPicker = ({
       if (initialAlignFrameRef.current) {
         window.cancelAnimationFrame(initialAlignFrameRef.current);
       }
+
+      clearProgrammaticScrollEndTimer();
     },
-    [],
+    [clearProgrammaticScrollEndTimer],
   );
 
   return {
@@ -297,6 +335,7 @@ const useCalendarPicker = ({
     setChipRef,
     handleScroll,
     handleChipClick,
+    handleScrollInteractionStart,
   };
 };
 
