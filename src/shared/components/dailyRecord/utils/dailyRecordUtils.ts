@@ -34,6 +34,12 @@ const toBoogleRecordSummaries = (
       stoolSimple,
       bowelFeeling,
       stomach,
+      distension,
+      remainingFeeling,
+      urgency,
+      takenTime,
+      amount,
+      color,
     }) => ({
       id,
       regDate,
@@ -43,6 +49,12 @@ const toBoogleRecordSummaries = (
       stoolSimple,
       bowelFeeling,
       stomach,
+      distension,
+      remainingFeeling,
+      urgency,
+      takenTime,
+      amount,
+      color,
     }),
   );
 

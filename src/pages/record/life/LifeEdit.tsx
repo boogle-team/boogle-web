@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
@@ -7,80 +7,98 @@ import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButton
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftDate } from '@/pages/record/shared/hooks/useRecordDraftDate';
 import ConfirmModal from '@/shared/components/ConfirmModal';
+import Button from '@/shared/components/Button';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
+import NotFound from '@/shared/components/NotFound';
+import { getApiErrorMessage, getApiErrorStatus } from '@/shared/apis/apiError';
 
 import LifeRecordFields from './components/LifeRecordFields';
 import { useDeleteLifeRecord } from './hooks/useDeleteLifeRecord';
 import { useLifeRecord } from './hooks/useLifeRecord';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { useFoods } from './hooks/useFoods';
+import { useMedicines } from './hooks/useMedicines';
 import { usePatchLifeRecord } from './hooks/usePatchLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 import {
   CAFFEINE_VALUE_BY_CODE,
   EXERCISE_VALUE_BY_CODE,
-  FOOD_VALUE_BY_ID,
   HORMONE_VALUE_BY_CODE,
   MEAL_REGULAR_VALUE_BY_CODE,
-  MEDICINE_VALUE_BY_ID,
   OUTING_VALUE_BY_CODE,
   SLEEP_TIME_VALUE_BY_NUMBER,
   SLEEP_VALUE_BY_CODE,
   STRESS_VALUE_BY_CODE,
   WATER_VALUE_BY_CODE,
 } from './types/lifeRecordApiTypes';
-import type {
-  LifeRecordDetailResponseTypes,
-  PatchLifeRecordRequestTypes,
-} from './types/lifeRecordApiTypes';
+import type { LifeRecordDetailResponseTypes } from './types/lifeRecordApiTypes';
 import type { LifeRecordFormStateTypes } from './types/lifeRecordTypes';
-import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
+import { createLifeRecordPatchPayload } from './utils/createLifeRecordPayload';
 import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
+import {
+  getFoodIdByValue,
+  getFoodValue,
+  getMedicineIdByValue,
+  getMedicineValue,
+} from './utils/lifeRecordItemMapper';
 
 const toLifeRecordFormState = (
   lifeRecord: LifeRecordDetailResponseTypes,
 ): LifeRecordFormStateTypes => {
+  const medicines = lifeRecord.medicines
+    .map(getMedicineValue)
+    .filter(
+      (
+        medicine,
+      ): medicine is NonNullable<
+        LifeRecordFormStateTypes['detailRecord']
+      >['medicines'][number] => Boolean(medicine),
+    );
+  const hasDetailRecord =
+    lifeRecord.sleepTime !== null ||
+    lifeRecord.exercise !== null ||
+    lifeRecord.caffeine !== null ||
+    medicines.length > 0 ||
+    lifeRecord.outing !== null ||
+    lifeRecord.hormone !== null;
+
   return {
     sleep: SLEEP_VALUE_BY_CODE[lifeRecord.sleep],
     stress: STRESS_VALUE_BY_CODE[lifeRecord.stress],
     mealRegularity: MEAL_REGULAR_VALUE_BY_CODE[lifeRecord.mealRegular],
     hydration: WATER_VALUE_BY_CODE[lifeRecord.water],
     foods: lifeRecord.foods
-      .map(({ id }) => FOOD_VALUE_BY_ID[id])
+      .map(getFoodValue)
       .filter((food): food is LifeRecordFormStateTypes['foods'][number] =>
         Boolean(food),
       ),
     memo: lifeRecord.memo ?? '',
-    detailRecord: {
-      sleepDuration:
-        lifeRecord.sleepTime !== null
-          ? SLEEP_TIME_VALUE_BY_NUMBER[lifeRecord.sleepTime]
-          : null,
-      exercise:
-        lifeRecord.exercise !== null
-          ? EXERCISE_VALUE_BY_CODE[lifeRecord.exercise]
-          : null,
-      caffeine:
-        lifeRecord.caffeine !== null
-          ? CAFFEINE_VALUE_BY_CODE[lifeRecord.caffeine]
-          : null,
-      waterIntake: lifeRecord.waterIntake,
-      medicines: lifeRecord.medicines
-        .map(({ id }) => MEDICINE_VALUE_BY_ID[id])
-        .filter(
-          (
-            medicine,
-          ): medicine is NonNullable<
-            LifeRecordFormStateTypes['detailRecord']
-          >['medicines'][number] => Boolean(medicine),
-        ),
-      outing:
-        lifeRecord.outing !== null
-          ? OUTING_VALUE_BY_CODE[lifeRecord.outing]
-          : null,
-      menstruation:
-        lifeRecord.hormone !== null
-          ? HORMONE_VALUE_BY_CODE[lifeRecord.hormone]
-          : null,
-    },
+    detailRecord: hasDetailRecord
+      ? {
+          sleepDuration:
+            lifeRecord.sleepTime !== null
+              ? (SLEEP_TIME_VALUE_BY_NUMBER[lifeRecord.sleepTime] ?? null)
+              : null,
+          exercise:
+            lifeRecord.exercise !== null
+              ? (EXERCISE_VALUE_BY_CODE[lifeRecord.exercise] ?? null)
+              : null,
+          caffeine:
+            lifeRecord.caffeine !== null
+              ? (CAFFEINE_VALUE_BY_CODE[lifeRecord.caffeine] ?? null)
+              : null,
+          waterIntake: lifeRecord.waterIntake,
+          medicines,
+          outing:
+            lifeRecord.outing !== null
+              ? (OUTING_VALUE_BY_CODE[lifeRecord.outing] ?? null)
+              : null,
+          menstruation:
+            lifeRecord.hormone !== null
+              ? (HORMONE_VALUE_BY_CODE[lifeRecord.hormone] ?? null)
+              : null,
+        }
+      : null,
   };
 };
 
@@ -90,15 +108,22 @@ const LifeEdit = () => {
   const [searchParams] = useSearchParams();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const hydratedLifeRecordIdRef = useRef<number | undefined>(undefined);
 
   const recordDate = useRecordDraftDate();
   const rawLifeId = Number(searchParams.get('lifeId') ?? recordId);
   const lifeId =
     Number.isFinite(rawLifeId) && rawLifeId > 0 ? rawLifeId : undefined;
 
-  const { data: lifeRecord } = useLifeRecord(lifeId);
+  const {
+    data: lifeRecord,
+    error: lifeRecordError,
+    isFetching: isLifeRecordFetching,
+    isLoadingError: isLifeRecordLoadingError,
+    isPending: isLifeRecordPending,
+    refetch: refetchLifeRecord,
+  } = useLifeRecord(lifeId);
   const editRecordDate = lifeRecord?.regDate ?? recordDate;
+  const editDraftKey = `edit-${lifeId ?? recordDate}`;
   const { mutate: patchLifeRecord, isPending: isPatchingLifeRecord } =
     usePatchLifeRecord();
   const { mutate: deleteLifeRecord, isPending: isDeletingLifeRecord } =
@@ -106,29 +131,50 @@ const LifeEdit = () => {
   const startLifeRecord = useLifeRecordDraftStore(
     (state) => state.startLifeRecord,
   );
-  const updateLifeRecord = useLifeRecordDraftStore(
-    (state) => state.updateLifeRecord,
+  const draftKey = useLifeRecordDraftStore((state) => state.draftKey);
+  const hydratedDraftKey = useLifeRecordDraftStore(
+    (state) => state.hydratedDraftKey,
+  );
+  const hydrateLifeRecord = useLifeRecordDraftStore(
+    (state) => state.hydrateLifeRecord,
   );
   const resetLifeRecord = useLifeRecordDraftStore(
     (state) => state.resetLifeRecord,
   );
 
   useLayoutEffect(() => {
-    startLifeRecord({ draftKey: `edit-${lifeId ?? recordDate}` });
-  }, [lifeId, recordDate, startLifeRecord]);
+    startLifeRecord({ draftKey: editDraftKey });
+  }, [editDraftKey, startLifeRecord]);
 
   useEffect(() => {
-    hydratedLifeRecordIdRef.current = undefined;
-  }, [lifeId]);
+    if (!lifeRecord) return;
 
-  useEffect(() => {
-    if (!lifeRecord || hydratedLifeRecordIdRef.current === lifeRecord.id) {
-      return;
-    }
+    hydrateLifeRecord({
+      draftKey: editDraftKey,
+      formState: toLifeRecordFormState(lifeRecord),
+    });
+  }, [editDraftKey, hydrateLifeRecord, lifeRecord]);
 
-    updateLifeRecord(toLifeRecordFormState(lifeRecord));
-    hydratedLifeRecordIdRef.current = lifeRecord.id;
-  }, [lifeRecord, updateLifeRecord]);
+  const { data: foodsData, isFetching: isFoodsFetching } = useFoods();
+  const { data: medicinesData, isFetching: isMedicinesFetching } =
+    useMedicines();
+  const isReferenceDataFetching = isFoodsFetching || isMedicinesFetching;
+  const foodIdByValue = useMemo(
+    () =>
+      getFoodIdByValue([
+        ...(foodsData?.items ?? []),
+        ...(lifeRecord?.foods ?? []),
+      ]),
+    [foodsData?.items, lifeRecord?.foods],
+  );
+  const medicineIdByValue = useMemo(
+    () =>
+      getMedicineIdByValue([
+        ...(medicinesData?.items ?? []),
+        ...(lifeRecord?.medicines ?? []),
+      ]),
+    [lifeRecord?.medicines, medicinesData?.items],
+  );
 
   const form = useLifeRecordForm();
   const { formState, isSubmittable } = form;
@@ -144,19 +190,27 @@ const LifeEdit = () => {
   };
 
   const handleSave = () => {
-    if (!isSubmittable || !lifeId || isPatchingLifeRecord) return;
+    if (
+      !isSubmittable ||
+      !lifeId ||
+      isPatchingLifeRecord ||
+      isReferenceDataFetching
+    ) {
+      return;
+    }
 
-    const payload = createLifeRecordPayload({
+    const patchRequestBody = createLifeRecordPatchPayload({
       formState,
-      recordDate: editRecordDate,
+      foodIdByValue,
+      medicineIdByValue,
     });
 
-    if (!payload) return;
-
-    const { regDate, tagNames, ...requestBody } = payload;
-    void regDate;
-    void tagNames;
-    const patchRequestBody: PatchLifeRecordRequestTypes = requestBody;
+    if (!patchRequestBody) {
+      setErrorMessage(
+        '선택 항목 정보를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.',
+      );
+      return;
+    }
 
     setErrorMessage('');
 
@@ -201,6 +255,48 @@ const LifeEdit = () => {
     });
   };
 
+  const isLifeRecordNotFound =
+    !lifeId || getApiErrorStatus(lifeRecordError) === 404;
+  const isLifeRecordReady =
+    draftKey === editDraftKey && hydratedDraftKey === editDraftKey;
+
+  if (isLifeRecordNotFound) return <NotFound />;
+
+  if (
+    isLifeRecordPending ||
+    (isLifeRecordFetching && !lifeRecord) ||
+    (lifeRecord && !isLifeRecordReady)
+  ) {
+    return (
+      <div className="min-h-dvh bg-beige-5">
+        <LoadingSpinner message="생활 기록을 불러오는 중이에요" />
+      </div>
+    );
+  }
+
+  if (isLifeRecordLoadingError) {
+    return (
+      <RecordPageLayout title="생활 기록하기">
+        <div className="flex flex-col items-center gap-4 py-12 text-center">
+          <p role="alert" className="body-m text-gray-7">
+            {getApiErrorMessage(
+              lifeRecordError,
+              '생활 기록을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',
+            )}
+          </p>
+          <Button
+            className="max-w-40"
+            text="다시 시도"
+            size="sm"
+            onClick={() => void refetchLifeRecord()}
+          />
+        </div>
+      </RecordPageLayout>
+    );
+  }
+
+  if (!lifeRecord) return <NotFound />;
+
   return (
     <RecordPageLayout
       title="생활 기록하기"
@@ -209,7 +305,16 @@ const LifeEdit = () => {
       onBackButtonClick={handleBackButtonClick}
       isDeleteButtonVisible
       onDeleteButtonClick={handleDeleteButtonClick}
-      footer={<CancelSaveButtons onCancel={handleCancel} onSave={handleSave} />}
+      footer={
+        <CancelSaveButtons
+          onCancel={handleCancel}
+          onSave={handleSave}
+          cancelDisabled={isPatchingLifeRecord}
+          saveDisabled={
+            !isSubmittable || isPatchingLifeRecord || isReferenceDataFetching
+          }
+        />
+      }
     >
       <LifeRecordFields
         form={form}

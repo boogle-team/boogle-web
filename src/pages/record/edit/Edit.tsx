@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import Button from '@/shared/components/Button';
 import ConfirmModal from '@/shared/components/ConfirmModal';
@@ -13,6 +13,7 @@ import { useUpdateBoogleRecordMutation } from '@/pages/record/hooks/useUpdateBoo
 import CancelSaveButtons from '@/pages/record/shared/components/CancelSaveButtons';
 import RecordPageLayout from '@/pages/record/shared/components/RecordPageLayout';
 import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
+import type { RecordEditNavigationStateTypes } from '@/pages/record/shared/types/recordNavigationTypes';
 import type { PatchBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
 import { mapBoogleRecordPatchRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
 import { mapBoogleRecordResponseToDraft } from '@/pages/record/utils/boogleRecordResponseMapper';
@@ -28,12 +29,15 @@ import { useRecordForm } from '../main/hooks/useRecordForm';
 import { formatRecordDate } from '../main/utils/formatRecordDate';
 
 const Edit = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const { recordId: recordIdParam } = useParams<{ recordId: string }>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteTransitionPending, setIsDeleteTransitionPending] =
     useState(false);
   const [isRequestMappingError, setIsRequestMappingError] = useState(false);
+  const navigationState =
+    location.state as RecordEditNavigationStateTypes | null;
 
   const recordId = Number(recordIdParam);
   const isRecordIdValid = Number.isInteger(recordId) && recordId > 0;
@@ -114,9 +118,18 @@ const Edit = () => {
     navigate(-1);
   };
 
+  const navigateAfterEdit = () => {
+    if (navigationState?.source === 'calendar') {
+      navigate(-1);
+      return;
+    }
+
+    navigate('/home', { replace: true });
+  };
+
   const handleCancel = () => {
     resetDraft();
-    navigate('/home', { replace: true });
+    navigateAfterEdit();
   };
 
   const handleSave = () => {
@@ -146,7 +159,7 @@ const Edit = () => {
       {
         onSuccess: () => {
           resetDraft();
-          navigate('/home', { replace: true });
+          navigateAfterEdit();
         },
       },
     );
@@ -188,7 +201,7 @@ const Edit = () => {
         onSuccess: () => {
           setIsDeleteModalOpen(false);
           resetDraft();
-          navigate('/home', { replace: true });
+          navigateAfterEdit();
         },
         onError: () => {
           setIsDeleteTransitionPending(false);

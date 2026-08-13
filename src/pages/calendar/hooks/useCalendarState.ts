@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import dayjs, { type Dayjs } from 'dayjs';
 import {
   DATE_FORMAT,
@@ -18,6 +18,8 @@ import useCalendarMonthQuery from '@/pages/calendar/hooks/useCalendarMonthQuery'
 import { toCalendarRecordMap } from '@/pages/calendar/utils/calendarRecordMapper';
 import { getCalendarMonthlySummary } from '@/pages/calendar/utils/getCalendarMonthlySummary';
 import type { CalendarMonthlySummaryTypes } from '@/pages/calendar/types/calendarSummaryTypes';
+import { getCalendarSelectedDate } from '@/pages/calendar/utils/calendarSelectedDate';
+import type { RecordEditNavigationStateTypes } from '@/pages/record/shared/types/recordNavigationTypes';
 
 interface UseCalendarStateReturnTypes {
   currentDate: Dayjs;
@@ -45,12 +47,14 @@ interface UseCalendarStateReturnTypes {
 
 const useCalendarState = (): UseCalendarStateReturnTypes => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   // TODO: 캘린더 조회 API에 서버 기준 날짜가 추가되면 그 값으로 교체한다.
   const [todayDate] = useState(() => dayjs().format(DATE_FORMAT));
-  const [currentDate, setCurrentDate] = useState(() =>
-    dayjs().startOf('month'),
+  const selectedDate = getCalendarSelectedDate(
+    searchParams.get('date'),
+    todayDate,
   );
-  const [selectedDate, setSelectedDate] = useState(todayDate);
+  const currentDate = dayjs(selectedDate).startOf('month');
 
   const {
     data: selectedDailyRecord,
@@ -106,8 +110,19 @@ const useCalendarState = (): UseCalendarStateReturnTypes => {
     [selectedDailyRecord?.boogleRecords, selectedDailyRecord?.lifeRecord],
   );
 
+  const setSelectedDate = (date: string) => {
+    setSearchParams(
+      (currentSearchParams) => {
+        const nextSearchParams = new URLSearchParams(currentSearchParams);
+        nextSearchParams.set('date', date);
+
+        return nextSearchParams;
+      },
+      { replace: true },
+    );
+  };
+
   const moveToMonth = (nextMonth: Dayjs) => {
-    setCurrentDate(nextMonth);
     setSelectedDate(nextMonth.format(DATE_FORMAT));
   };
 
@@ -128,7 +143,11 @@ const useCalendarState = (): UseCalendarStateReturnTypes => {
   };
 
   const handleBoogleRecordEditButtonClick = (recordId: number) => {
-    navigate(`/boogle-record/edit/${recordId}`);
+    const navigationState: RecordEditNavigationStateTypes = {
+      source: 'calendar',
+    };
+
+    navigate(`/boogle-record/edit/${recordId}`, { state: navigationState });
   };
 
   const handleLifeRecordCreateButtonClick = () => {
@@ -136,7 +155,11 @@ const useCalendarState = (): UseCalendarStateReturnTypes => {
   };
 
   const handleLifeRecordEditButtonClick = (recordId: number) => {
-    navigate(`/life-record/edit/${recordId}`);
+    const navigationState: RecordEditNavigationStateTypes = {
+      source: 'calendar',
+    };
+
+    navigate(`/life-record/edit/${recordId}`, { state: navigationState });
   };
 
   return {
