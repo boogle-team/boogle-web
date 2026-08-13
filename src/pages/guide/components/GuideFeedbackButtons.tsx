@@ -1,5 +1,5 @@
 import Chip from '@/shared/components/Chip';
-import type { GuideFeedbackTypes } from '../types/guideApiTypes';
+import type { GuideFeedbackTypes } from '@/pages/guide/types/guideApiTypes';
 
 interface GuideFeedbackButtonsPropTypes {
   feedbackStatus: GuideFeedbackTypes | null;

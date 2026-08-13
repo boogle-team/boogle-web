@@ -8,7 +8,7 @@ import type {
   GuidesResponseTypes,
   PatchGuideFeedbackResponseTypes,
   PostGuideFeedbackResponseTypes,
-} from '../types/guideApiTypes';
+} from '@/pages/guide/types/guideApiTypes';
 
 export const getGuides = async () => {
   const { data } = await api.get<GuidesResponseTypes>('/api/v1/guides');

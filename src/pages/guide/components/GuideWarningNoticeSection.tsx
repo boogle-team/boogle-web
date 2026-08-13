@@ -1,26 +1,21 @@
-import type { GuideDetailTypes } from '../types/guideTypes';
-import { GuideSourceText } from './GuideDescriptionText';
+import GuideSourceText from '@/pages/guide/components/GuideSourceText';
 
 interface GuideWarningNoticeSectionPropTypes {
-  guideDetail: GuideDetailTypes;
+  notice: string;
+  source: string;
 }
 
 const GuideWarningNoticeSection = ({
-  guideDetail,
+  notice,
+  source,
 }: GuideWarningNoticeSectionPropTypes) => {
-  if (!guideDetail.notice) {
-    return null;
-  }
-
   return (
     <>
       <article className="mt-10 rounded-lg bg-beige-1 px-4 py-4 shadow-sm">
-        <p className="label whitespace-pre-line text-gray-7">
-          {guideDetail.notice}
-        </p>
+        <p className="label whitespace-pre-line text-gray-7">{notice}</p>
       </article>
       <GuideSourceText
-        guideDetail={guideDetail}
+        source={source}
         className="caption mt-6 text-center tracking-[-0.015rem] text-gray-7"
       />
     </>

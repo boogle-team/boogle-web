@@ -1,10 +1,10 @@
 import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import RelatedGuideChevronRightIcon from '../assets/illustrations/relatedGuideChevronRightIcon.svg?react';
-import { getGuideIcon } from '../constants/guideIcons';
-import type { GuideRelatedTypes } from '../types/guideTypes';
-import { getGuideDetailPath } from '../utils/guideRouteUtils';
+import RelatedGuideChevronRightIcon from '@/pages/guide/assets/illustrations/relatedGuideChevronRightIcon.svg?react';
+import { getGuideIcon } from '@/pages/guide/constants/guideIcons';
+import type { GuideRelatedTypes } from '@/pages/guide/types/guideTypes';
+import { getGuideDetailPath } from '@/pages/guide/utils/guideRouteUtils';
 
 interface GuideRelatedGuideListPropTypes {
   relatedGuides: GuideRelatedTypes[];

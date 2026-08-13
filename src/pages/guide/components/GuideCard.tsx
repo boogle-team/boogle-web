@@ -1,9 +1,9 @@
 import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getGuideIcon } from '../constants/guideIcons';
-import type { GuideItemResponseTypes } from '../types/guideApiTypes';
-import { getGuideDetailPath } from '../utils/guideRouteUtils';
+import { getGuideIcon } from '@/pages/guide/constants/guideIcons';
+import type { GuideItemResponseTypes } from '@/pages/guide/types/guideApiTypes';
+import { getGuideDetailPath } from '@/pages/guide/utils/guideRouteUtils';
 
 interface GuideCardPropTypes {
   guideItem: GuideItemResponseTypes;
