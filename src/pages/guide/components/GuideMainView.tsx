@@ -13,9 +13,16 @@ const GuideMainView = ({ isInsufficient = false }: GuideMainViewPropTypes) => {
   const patternSection = guidesData?.patternGuideSection;
   const healthSection = guidesData?.healthGuideSection;
   const warningSection = guidesData?.warningGuideSection;
-  // preview 쿼리로 강제하거나, 주간 기록이 모자라면 안내 카드를 대신 노출한다.
-  const hasNoPattern =
-    isInsufficient || patternSection?.dataStatus === 'INSUFFICIENT';
+  const isPatternDataInsufficient =
+    isInsufficient ||
+    patternSection?.dataStatus === 'INSUFFICIENT' ||
+    (patternSection !== undefined &&
+      patternSection.recordedDays < patternSection.requiredDays);
+  const isPatternGuideEmpty =
+    patternSection !== undefined &&
+    !isPatternDataInsufficient &&
+    (patternSection.dataStatus === 'NOT_FOUND' ||
+      patternSection.guides.length === 0);
 
   return (
     <section className="-mb-[var(--bottom-navigation-page-space)] min-h-screen bg-beige-5 px-layout pb-[var(--bottom-navigation-page-space)] text-gray-10">
@@ -36,8 +43,19 @@ const GuideMainView = ({ isInsufficient = false }: GuideMainViewPropTypes) => {
             title={patternSection?.sectionTitle ?? '내 패턴 기반'}
             guideItems={patternSection?.guides}
           >
-            {hasNoPattern ? (
-              <InsufficientGuideCard notice={patternSection?.notice?.message} />
+            {isPatternDataInsufficient ? (
+              <PatternGuideStatusCard
+                title="아직 패턴을 보여드리기엔 일러요"
+                description={
+                  patternSection?.notice?.message ??
+                  '3일 이상 기록하면 카드가 나타나요!'
+                }
+              />
+            ) : isPatternGuideEmpty ? (
+              <PatternGuideStatusCard
+                title="이번 주에는 눈에 띄는 패턴이 없어요"
+                description="기록을 계속하면 새로운 패턴을 알려드릴게요."
+              />
             ) : undefined}
           </GuideCardSection>
 
@@ -73,20 +91,20 @@ const GuideMainStatus = ({ isError }: GuideMainStatusPropTypes) => (
   </p>
 );
 
-interface InsufficientGuideCardPropTypes {
-  notice?: string;
+interface PatternGuideStatusCardPropTypes {
+  description: string;
+  title: string;
 }
 
-const InsufficientGuideCard = ({ notice }: InsufficientGuideCardPropTypes) => (
-  <article className="flex min-h-[4.5rem] items-center gap-3 rounded-lg border border-dashed border-orange-4 bg-orange-1 px-4 py-3">
+const PatternGuideStatusCard = ({
+  description,
+  title,
+}: PatternGuideStatusCardPropTypes) => (
+  <article className="flex min-h-[4.5rem] items-center gap-3 rounded-xl border border-dashed border-orange-4 bg-orange-1 px-4 py-3">
     <InsufficientGuideIcon aria-hidden="true" className="h-10 w-10 shrink-0" />
     <div>
-      <h3 className="caption-bold text-gray-10">
-        아직 패턴을 보여드리기엔 일러요
-      </h3>
-      <p className="micro mt-1 text-gray-7">
-        {notice ?? '3일 이상 기록하면 가이드가 나타나요!'}
-      </p>
+      <h3 className="label-bold text-gray-10">{title}</h3>
+      <p className="caption mt-1 text-gray-7">{description}</p>
     </div>
   </article>
 );
