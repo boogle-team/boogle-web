@@ -29,7 +29,14 @@ import ShieldIcon from '@/shared/assets/icons/settingShieldIcon.svg?react';
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { data: member, isLoading, isError, refetch } = useUserQuery();
+  const { logoutErrorMessage, isLoggingOut, clearLogoutError, logout } =
+    useLogout();
+  const {
+    data: member,
+    isLoading,
+    isError,
+    refetch,
+  } = useUserQuery(!isLoggingOut);
   const {
     memberAlarm,
     toggleAlarm,
@@ -37,9 +44,7 @@ const Settings = () => {
     alarmNoticeMessage,
     isNotificationSettingsError,
     refetchNotificationSettings,
-  } = useAlarmSettings();
-  const { logoutErrorMessage, isLoggingOut, clearLogoutError, logout } =
-    useLogout();
+  } = useAlarmSettings(!isLoggingOut);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const handleBackClick = () => {
@@ -90,6 +95,14 @@ const Settings = () => {
   const providerLabel = primarySocialAccount
     ? PROVIDER_LABEL_MAP[primarySocialAccount.provider]
     : '연결 정보 없음';
+
+  if (isLoggingOut) {
+    return (
+      <div className="min-h-dvh bg-beige-5">
+        <LoadingSpinner message="로그아웃 중..." />
+      </div>
+    );
+  }
 
   if (isLoading || isError || !member) {
     return (
@@ -243,8 +256,6 @@ const Settings = () => {
         onCancel={handleLogoutModalClose}
         onConfirm={handleLogoutConfirm}
       />
-
-      {isLoggingOut && <LoadingSpinner hasBackdrop message="로그아웃 중..." />}
     </div>
   );
 };
