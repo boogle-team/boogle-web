@@ -10,14 +10,10 @@ import LoadingSpinner from '@/shared/components/LoadingSpinner';
 
 import LifeRecordFields from './components/LifeRecordFields';
 import TagSettingModal from './components/TagSettingModal';
-import {
-  isValidTagLength,
-  MAX_TAG_COUNT,
-} from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { useLifeRecordTagSettings } from './hooks/useLifeRecordTagSettings';
 import { useFoods } from './hooks/useFoods';
 import { useMedicines } from './hooks/useMedicines';
-import { usePostExtractLifeRecordTags } from './hooks/usePostExtractLifeRecordTags';
 import { usePostLifeRecord } from './hooks/usePostLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
@@ -42,15 +38,20 @@ const Life = () => {
     startLifeRecord({ draftKey: `new-${recordDate}` });
   }, [startLifeRecord, recordDate]);
 
-  const [isTagModalOpen, setIsTagModalOpen] = useState(false);
-  const [recommendedTags, setRecommendedTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const form = useLifeRecordForm();
   const { formState, isSubmittable } = form;
-  const { mutate: extractLifeRecordTags, isPending: isExtractingTags } =
-    usePostExtractLifeRecordTags();
+  const {
+    closeTagSettings,
+    handleTagAdd,
+    handleTagToggle,
+    isExtractingTags,
+    isTagModalOpen,
+    openTagSettings,
+    recommendedTags,
+    selectedTags,
+  } = useLifeRecordTagSettings();
   const { mutate: postLifeRecord, isPending: isPostingLifeRecord } =
     usePostLifeRecord();
   const { data: foodsData, isFetching: isFoodsFetching } = useFoods();
@@ -108,64 +109,20 @@ const Life = () => {
     const trimmedMemo = formState.memo.trim();
 
     if (trimmedMemo) {
-      extractLifeRecordTags(
-        { text: trimmedMemo },
-        {
-          onSuccess: ({ tagNames }) => {
-            setRecommendedTags(tagNames);
-            setSelectedTags(tagNames.slice(0, MAX_TAG_COUNT));
-            setIsTagModalOpen(true);
-          },
-          onError: () => {
-            setRecommendedTags([]);
-            setSelectedTags([]);
-            setIsTagModalOpen(true);
-          },
-        },
-      );
+      openTagSettings({ memo: trimmedMemo });
       return;
     }
 
-    setRecommendedTags([]);
-    setSelectedTags([]);
     saveLifeRecord();
   };
 
-  const handleTagToggle = (tag: string) => {
-    setSelectedTags((previousTags) => {
-      if (previousTags.includes(tag)) {
-        return previousTags.filter((selectedTag) => selectedTag !== tag);
-      }
-
-      if (previousTags.length >= MAX_TAG_COUNT) return previousTags;
-
-      return [...previousTags, tag];
-    });
-  };
-
-  const handleTagAdd = (tag: string) => {
-    const trimmedTag = tag.trim();
-    if (!isValidTagLength(trimmedTag)) return;
-
-    setSelectedTags((previousTags) => {
-      if (
-        previousTags.includes(trimmedTag) ||
-        previousTags.length >= MAX_TAG_COUNT
-      ) {
-        return previousTags;
-      }
-
-      return [...previousTags, trimmedTag];
-    });
-  };
-
   const handleTagModalCancel = () => {
-    setIsTagModalOpen(false);
+    closeTagSettings();
     saveLifeRecord();
   };
 
   const handleTagModalConfirm = () => {
-    setIsTagModalOpen(false);
+    closeTagSettings();
     saveLifeRecord(selectedTags);
   };
 

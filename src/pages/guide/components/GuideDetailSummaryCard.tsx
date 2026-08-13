@@ -1,18 +1,23 @@
 import NoticeIcon from '@/pages/guide/assets/illustrations/noticeIcon/noticeIcon.svg?react';
-import type { GuideMetricTypes } from '@/pages/guide/types/guideTypes';
+import type {
+  GuideMetricColorTypes,
+  GuideMetricTypes,
+} from '@/pages/guide/types/guideTypes';
+
+const METRIC_BAR_COLOR_CLASS_NAME_MAP: Record<GuideMetricColorTypes, string> = {
+  danger: 'bg-semantic-danger',
+  warning: 'bg-yellow-4',
+};
+
+const WEEKLY_METRIC_DAY_COUNT = 7;
 
 interface GuideDetailSummaryCardPropTypes {
   metrics: GuideMetricTypes[];
   notice?: string;
 }
 
-const getMetricProgress = ({ threshold, value }: GuideMetricTypes) => {
-  if (threshold <= 0) {
-    return 0;
-  }
-
-  return Math.min(Math.max((value / threshold) * 100, 0), 100);
-};
+const getMetricProgress = ({ value }: GuideMetricTypes) =>
+  Math.min(Math.max((value / WEEKLY_METRIC_DAY_COUNT) * 100, 0), 100);
 
 const GuideDetailSummaryCard = ({
   metrics,
@@ -24,7 +29,7 @@ const GuideDetailSummaryCard = ({
     </h4>
 
     {metrics.length > 0 && (
-      <div className="mt-4 grid grid-cols-[max-content_minmax(0,1fr)_2.5rem] items-center gap-x-1 gap-y-2.5">
+      <div className="mt-4 grid grid-cols-[max-content_minmax(0,1fr)_max-content] items-center gap-x-4 gap-y-1">
         {metrics.map((metric) => (
           <div key={metric.id} className="contents">
             <span className="caption whitespace-nowrap tracking-[-0.015rem] text-[#929090]">
@@ -32,12 +37,12 @@ const GuideDetailSummaryCard = ({
             </span>
             <div className="h-2.5 overflow-hidden rounded-full bg-beige-5">
               <div
-                className="h-full rounded-full bg-semantic-danger"
+                className={`h-full rounded-full ${METRIC_BAR_COLOR_CLASS_NAME_MAP[metric.color]}`}
                 style={{ width: `${getMetricProgress(metric)}%` }}
               />
             </div>
-            <span className="caption-bold w-10 text-right tracking-[-0.015rem] text-gray-8">
-              {`${metric.value}/${metric.threshold}${metric.unit}`}
+            <span className="caption-bold text-right tracking-[-0.015rem] text-gray-8">
+              {`${metric.value}/${WEEKLY_METRIC_DAY_COUNT}일`}
             </span>
           </div>
         ))}

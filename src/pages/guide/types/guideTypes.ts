@@ -1,8 +1,10 @@
 import type { GuideFeedbackStatusTypes } from '@/pages/guide/types/guideApiTypes';
 
 export type GuideDetailCategoryTypes = 'info' | 'personal' | 'warning';
+export type GuideMetricColorTypes = 'danger' | 'warning';
 
 export interface GuideMetricTypes {
+  color: GuideMetricColorTypes;
   comparison: string;
   id: string;
   label: string;
