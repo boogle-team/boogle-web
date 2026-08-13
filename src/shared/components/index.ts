@@ -15,6 +15,8 @@ export { default as TooltipPopover } from '@/shared/components/TooltipPopover';
 export type { TooltipPopoverPropTypes } from '@/shared/components/TooltipPopover';
 export { default as LoadingSpinner } from '@/shared/components/LoadingSpinner';
 export type { LoadingSpinnerPropTypes } from '@/shared/components/LoadingSpinner';
+export { default as InlineLoadingState } from '@/shared/components/InlineLoadingState';
+export type { InlineLoadingStatePropTypes } from '@/shared/components/InlineLoadingState';
 export {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,

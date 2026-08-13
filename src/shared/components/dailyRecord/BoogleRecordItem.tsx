@@ -5,7 +5,6 @@ import {
 } from './constants/dailyRecordLabels';
 import BoogleRecordChip from './BoogleRecordChip';
 import type { BoogleRecordSummaryTypes } from './types/dailyRecordTypes';
-import { formatRecordTime } from './utils/dailyRecordUtils';
 
 import RecordEdit from '@/shared/assets/icons/recordEdit.svg?react';
 import BoogleRecordTimeLineFlower from '@/shared/assets/illustrations/dailyRecord/boogleRecordTimeLineFlower.svg?react';
@@ -21,9 +20,15 @@ const BoogleRecordItem = ({
   isLastItem,
   onEditClick,
 }: BoogleRecordItemPropTypes) => {
-  const { id, regDate, stoolBristol, stoolSimple, bowelFeeling, stomach } =
-    record;
-  const recordTime = formatRecordTime(regDate);
+  const {
+    id,
+    bowelMovementAt,
+    stoolBristol,
+    stoolSimple,
+    bowelFeeling,
+    stomach,
+  } = record;
+  const recordTime = bowelMovementAt ?? '--:--';
 
   const handleRecordEditClick = () => {
     onEditClick?.(id);
