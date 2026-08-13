@@ -10,8 +10,9 @@ const MonthlyConditionScoreCard = ({
   scores,
 }: MonthlyConditionScoreCardPropTypes) => (
   <section className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
-    <div className="grid grid-cols-[5rem_1fr] items-center gap-3">
-      <div className="relative flex h-20 w-20 items-center justify-center">
+    <h2 className="body-m text-gray-9">부글 컨디션 점수</h2>
+    <div className="mt-3 grid grid-cols-[5rem_1fr] items-center gap-4">
+      <div className="relative flex h-20 w-20 items-center justify-center self-center">
         <svg
           aria-hidden="true"
           className="h-20 w-20 -rotate-90"
@@ -41,22 +42,21 @@ const MonthlyConditionScoreCard = ({
           {conditionScore}%
         </span>
       </div>
-      <div>
-        <h2 className="body-m text-gray-10">부글 컨디션 점수</h2>
-        <div className="mt-2 flex flex-col gap-1.5">
+      <div className="min-w-0">
+        <div className="flex flex-col gap-2">
           {scores.map(({ label, value }) => (
             <div
               key={label}
-              className="grid grid-cols-[4.25rem_1fr_2rem] items-center gap-2"
+              className="grid grid-cols-[4.5rem_1fr_2.25rem] items-center gap-2"
             >
-              <span className="micro text-gray-7">{label}</span>
-              <div className="h-1.5 overflow-hidden rounded-full bg-gray-4">
+              <span className="caption text-gray-7">{label}</span>
+              <div className="h-2.5 overflow-hidden rounded-full bg-gray-4">
                 <div
-                  className="h-full rounded-full bg-orange-6"
+                  className="h-full rounded-full bg-orange-5"
                   style={{ width: `${value}%` }}
                 />
               </div>
-              <span className="micro text-right text-gray-7">{value}%</span>
+              <span className="caption text-right text-gray-8">{value}%</span>
             </div>
           ))}
         </div>
