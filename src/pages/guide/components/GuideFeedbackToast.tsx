@@ -1,7 +1,6 @@
-import FeedbackErrorToastIcon from '../assets/illustrations/feedbackToast/feedbackErrorToastIcon.svg?react';
-import FeedbackToastIcon from '../assets/illustrations/feedbackToast/feedbackToastIcon.svg?react';
-
-type GuideFeedbackToastVariantTypes = 'error' | 'success';
+import FeedbackErrorToastIcon from '@/pages/guide/assets/illustrations/feedbackToast/feedbackErrorToastIcon.svg?react';
+import FeedbackToastIcon from '@/pages/guide/assets/illustrations/feedbackToast/feedbackToastIcon.svg?react';
+import type { GuideFeedbackToastVariantTypes } from '@/pages/guide/hooks/useGuideFeedbackToast';
 
 interface GuideFeedbackToastPropTypes {
   variant?: GuideFeedbackToastVariantTypes;

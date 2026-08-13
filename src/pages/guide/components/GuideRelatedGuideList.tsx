@@ -1,10 +1,10 @@
 import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import RelatedGuideChevronRightIcon from '../assets/illustrations/relatedGuideChevronRightIcon.svg?react';
-import { getGuideIcon } from '../constants/guideIcons';
-import type { GuideRelatedTypes } from '../types/guideTypes';
-import { getGuideDetailPath } from '../utils/guideRouteUtils';
+import RelatedGuideChevronRightIcon from '@/pages/guide/assets/illustrations/relatedGuideChevronRightIcon.svg?react';
+import { getGuideIcon } from '@/pages/guide/constants/guideIcons';
+import type { GuideRelatedTypes } from '@/pages/guide/types/guideTypes';
+import { getGuideDetailPath } from '@/pages/guide/utils/guideRouteUtils';
 
 interface GuideRelatedGuideListPropTypes {
   relatedGuides: GuideRelatedTypes[];
@@ -18,8 +18,8 @@ const GuideRelatedGuideList = ({
   }
 
   return (
-    <section className="mt-7">
-      <h3 className="caption-bold text-gray-8">함께 보면 좋은 가이드</h3>
+    <section className="mt-8">
+      <h3 className="body-m-bold text-gray-8">함께 보면 좋은 가이드</h3>
       <div className="mt-3 flex flex-col gap-2">
         {relatedGuides.map((relatedGuide) => (
           <RelatedGuideCard
@@ -44,7 +44,7 @@ const RelatedGuideCard = ({ relatedGuide }: RelatedGuideCardPropTypes) => {
   return (
     <Link
       to={getGuideDetailPath({ guideId })}
-      className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
+      className="flex h-12 items-center justify-between rounded-xl bg-beige-1 p-4 text-left shadow-sm"
     >
       <span className="flex items-center gap-2">
         <span className="flex h-6 w-6 shrink-0 items-center justify-center">

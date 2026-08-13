@@ -16,6 +16,7 @@ import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftSto
 import type { PatchBoogleRecordRequestTypes } from '@/pages/record/types/boogleRecordApiTypes';
 import { mapBoogleRecordPatchRequest } from '@/pages/record/utils/boogleRecordRequestMapper';
 import { mapBoogleRecordResponseToDraft } from '@/pages/record/utils/boogleRecordResponseMapper';
+import useDailyRecordQuery from '@/shared/hooks/useDailyRecordQuery';
 
 import BowelStatusField from '../main/components/BowelStatusField';
 import DetailRecordLink from '../main/components/DetailRecordLink';
@@ -44,6 +45,14 @@ const Edit = () => {
     isLoadingError: isBoogleRecordLoadingError,
     refetch: refetchBoogleRecord,
   } = useBoogleRecordQuery(isRecordIdValid ? recordId : undefined);
+  const {
+    data: dailyRecord,
+    isPending: isDailyRecordPending,
+    isFetching: isDailyRecordFetching,
+    isError: isDailyRecordError,
+    fetchStatus: dailyRecordFetchStatus,
+    refetch: refetchDailyRecord,
+  } = useDailyRecordQuery(boogleRecord?.regDate ?? '');
   const {
     mutate: deleteBoogleRecord,
     isPending: isDeletingRecord,
@@ -81,6 +90,25 @@ const Edit = () => {
     handlePainLevelChange,
   } = useRecordForm();
 
+  const isDailyRecordChecking =
+    Boolean(boogleRecord) &&
+    ((isDailyRecordPending && dailyRecordFetchStatus !== 'idle') ||
+      isDailyRecordFetching);
+  const hasOtherBowelRecord = Boolean(
+    dailyRecord?.boogleRecords.some(
+      ({ id, hasBowel }) => id !== recordId && hasBowel,
+    ),
+  );
+  const hasBowelStatusConflict =
+    formState.bowelStatus === 'no' && hasOtherBowelRecord;
+  const isSaveBlocked =
+    !isSubmittable ||
+    isUpdatingRecord ||
+    isDailyRecordChecking ||
+    isDailyRecordError ||
+    !dailyRecord ||
+    hasBowelStatusConflict;
+
   const handleBackButtonClick = () => {
     resetDraft();
     navigate(-1);
@@ -92,7 +120,7 @@ const Edit = () => {
   };
 
   const handleSave = () => {
-    if (!isSubmittable || !isRecordIdValid || isUpdatingRecord) return;
+    if (!isRecordIdValid || !dailyRecord || isSaveBlocked) return;
 
     setIsRequestMappingError(false);
 
@@ -110,7 +138,11 @@ const Edit = () => {
     }
 
     updateBoogleRecord(
-      { recordId, request },
+      {
+        recordId,
+        request,
+        existingBoogleRecords: dailyRecord.boogleRecords,
+      },
       {
         onSuccess: () => {
           resetDraft();
@@ -133,24 +165,41 @@ const Edit = () => {
   };
 
   const handleDeleteConfirm = () => {
-    if (!isRecordIdValid || isDeletingRecord) return;
+    if (
+      !isRecordIdValid ||
+      !boogleRecord ||
+      !dailyRecord ||
+      isDeletingRecord ||
+      isDailyRecordChecking ||
+      isDailyRecordError
+    ) {
+      return;
+    }
 
     setIsDeleteTransitionPending(true);
 
-    deleteBoogleRecord(recordId, {
-      onSuccess: () => {
-        setIsDeleteModalOpen(false);
-        resetDraft();
-        navigate('/home', { replace: true });
+    deleteBoogleRecord(
+      {
+        recordId,
+        recordDate: boogleRecord.regDate,
+        existingBoogleRecords: dailyRecord.boogleRecords,
       },
-      onError: () => {
-        setIsDeleteTransitionPending(false);
+      {
+        onSuccess: () => {
+          setIsDeleteModalOpen(false);
+          resetDraft();
+          navigate('/home', { replace: true });
+        },
+        onError: () => {
+          setIsDeleteTransitionPending(false);
+        },
       },
-    });
+    );
   };
 
   const handleBoogleRecordRetryClick = () => {
     void refetchBoogleRecord();
+    void refetchDailyRecord();
   };
 
   const isBoogleRecordNotFound =
@@ -209,6 +258,23 @@ const Edit = () => {
       onDeleteButtonClick={handleDeleteButtonClick}
       footer={
         <div className="flex flex-col gap-2">
+          {isDailyRecordError && (
+            <div className="flex flex-col items-center gap-2">
+              <p
+                role="alert"
+                className="caption text-center text-semantic-danger"
+              >
+                같은 날짜의 기록을 확인하지 못했어요. 다시 시도해 주세요.
+              </p>
+              <Button
+                className="max-w-40"
+                text="다시 시도"
+                size="sm"
+                variant="ghost"
+                onClick={handleBoogleRecordRetryClick}
+              />
+            </div>
+          )}
           {(isUpdateRecordError || isRequestMappingError) && (
             <p
               role="alert"
@@ -222,13 +288,14 @@ const Edit = () => {
             onCancel={handleCancel}
             onSave={handleSave}
             cancelDisabled={isUpdatingRecord}
-            saveDisabled={!isSubmittable || isUpdatingRecord}
+            saveDisabled={isSaveBlocked}
           />
         </div>
       }
     >
       <BowelStatusField
         value={formState.bowelStatus}
+        hasNoOptionError={hasBowelStatusConflict}
         onChange={handleBowelStatusChange}
       />
 
