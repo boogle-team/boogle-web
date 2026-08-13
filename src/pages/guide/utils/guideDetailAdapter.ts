@@ -15,6 +15,9 @@ import type {
 } from '../types/guideTypes';
 
 const PATTERN_SUMMARY_TITLE = '최근 7일 데이터';
+const FOOD_AND_GUT_GUIDE_TITLE = '음식과 장 건강의 관계';
+const ALCOHOL_LATE_NIGHT_METRIC_LABEL = '음주·야식';
+const LOOSE_STOOL_METRIC_LABEL = '묽은 변';
 // 모든 주의 신호 가이드에 동일하게 붙는 고정 안내로, 응답에 대응 필드가 없다.
 const WARNING_DISCLAIMER =
   '부글은 의료 진단을 제공하지 않아요.\n이 안내는 참고용이며 정확한 진단은 전문의와 상담하세요.';
@@ -89,6 +92,22 @@ export const getGuideDetailFromResponse = (
   const metrics: GuideMetricTypes[] = matchedPatterns.flatMap(({ evidence }) =>
     evidence.map(({ label, value }) => ({ label, value })),
   );
+
+  if (title === FOOD_AND_GUT_GUIDE_TITLE && metrics.length > 0) {
+    metrics[0].colorClassName = 'bg-semantic-danger';
+    metrics[0].label = ALCOHOL_LATE_NIGHT_METRIC_LABEL;
+
+    if (
+      metrics.length === 1 &&
+      !metrics.some(({ label }) => label === LOOSE_STOOL_METRIC_LABEL)
+    ) {
+      metrics.push({
+        colorClassName: 'bg-yellow-4',
+        label: LOOSE_STOOL_METRIC_LABEL,
+        value: metrics[0].value,
+      });
+    }
+  }
   const notice = matchedPatterns
     .map(({ description }) => description)
     .join('\n');
