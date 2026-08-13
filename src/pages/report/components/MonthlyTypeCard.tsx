@@ -1,4 +1,7 @@
 import MonthlyConstipationTypeIcon from '../assets/illustrations/monthlyConstipationTypeIcon.svg?react';
+import MonthlyIrregularTypeIcon from '../assets/illustrations/monthlyIrregularTypeIcon.svg?react';
+import MonthlyLifestyleTypeIcon from '../assets/illustrations/monthlyLifestyleTypeIcon.svg?react';
+import MonthlyLooseStoolTypeIcon from '../assets/illustrations/monthlyLooseStoolTypeIcon.svg?react';
 import MonthlyPendingTypeIcon from '../assets/illustrations/monthlyPendingTypeIcon.svg?react';
 import MonthlyRegularTypeIcon from '../assets/illustrations/monthlyRegularTypeIcon.svg?react';
 import type { MonthlyTypeTypes } from '../types/reportTypes';
@@ -16,20 +19,15 @@ interface MonthlyTypeCardItemPropTypes {
 }
 
 const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
-  <section className="rounded-xl bg-orange-6 px-4 py-4 text-beige-1 shadow-sm">
+  <section className="rounded-xl bg-orange-6 p-4 text-beige-1 shadow-sm">
     <h2 className="body-m">이번 달 나의 유형</h2>
-    <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-3">
+    <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-4">
       <MonthlyTypeIcon symbol={monthlyType.symbol} />
-      <div>
-        <h3 className="display">{monthlyType.title}</h3>
-        {monthlyType.description.split('\n').map((text, index) => (
-          <p
-            key={text}
-            className={`micro mt-1 ${index > 0 ? 'text-orange-1' : ''}`}
-          >
-            {text}
-          </p>
-        ))}
+      <div className="min-w-0">
+        <h3 className="header">{monthlyType.title}</h3>
+        <p className="caption mt-1 max-w-[16.5625rem] whitespace-pre-line break-keep text-orange-1">
+          {monthlyType.description}
+        </p>
       </div>
     </div>
   </section>
@@ -60,6 +58,24 @@ const MonthlyTypeIcon = ({ symbol }: MonthlyTypeIconPropTypes) => {
   if (symbol === 'N') {
     return (
       <MonthlyPendingTypeIcon aria-hidden="true" className={iconClassName} />
+    );
+  }
+
+  if (symbol === 'L') {
+    return (
+      <MonthlyLooseStoolTypeIcon aria-hidden="true" className={iconClassName} />
+    );
+  }
+
+  if (symbol === 'I') {
+    return (
+      <MonthlyLifestyleTypeIcon aria-hidden="true" className={iconClassName} />
+    );
+  }
+
+  if (symbol === 'U') {
+    return (
+      <MonthlyIrregularTypeIcon aria-hidden="true" className={iconClassName} />
     );
   }
 

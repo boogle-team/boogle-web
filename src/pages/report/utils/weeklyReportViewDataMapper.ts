@@ -1,14 +1,16 @@
 import type {
   BowelDayOfWeekTypes,
   PatternLevelTypes,
+  StoolSimpleTypes,
   WeeklyReportDataResponseTypes,
-} from '../types/reportApiTypes';
+} from '@/pages/report/types/reportApiTypes';
 import type {
   BowelRhythmTypes,
   InsufficientReportTypes,
   PatternTypes,
   WeeklyReportViewDataTypes,
-} from '../types/reportTypes';
+} from '@/pages/report/types/reportTypes';
+import { mapStoolDistribution } from '@/pages/report/utils/reportViewDataMappers';
 
 const WEEKDAYS: { dayOfWeek: BowelDayOfWeekTypes; label: string }[] = [
   { dayOfWeek: 'MON', label: '월' },
@@ -20,19 +22,13 @@ const WEEKDAYS: { dayOfWeek: BowelDayOfWeekTypes; label: string }[] = [
   { dayOfWeek: 'SUN', label: '일' },
 ];
 
-const STOOL_COLOR_CLASS_NAME = {
-  H: 'bg-yellow-6',
-  M: 'bg-orange-6',
-  T: 'bg-semantic-danger',
-} as const;
-
-const getBowelRhythmStatus = (
-  bowelCount: number,
-): BowelRhythmTypes['status'] => {
-  if (bowelCount === 0) return 'empty';
-  if (bowelCount === 1) return 'normal';
-  if (bowelCount === 2) return 'warning';
-  return 'danger';
+const BOWEL_RHYTHM_STATUS_MAP: Record<
+  StoolSimpleTypes,
+  BowelRhythmTypes['status']
+> = {
+  H: 'warning',
+  M: 'normal',
+  T: 'danger',
 };
 
 const getPatternIcon = (level: PatternLevelTypes): PatternTypes['icon'] => {
@@ -56,14 +52,6 @@ export const mapWeeklyReportViewData = (
   report: WeeklyReportDataResponseTypes,
 ): WeeklyReportViewDataTypes | null => {
   if (report.dataStatus !== 'ENOUGH' || !report.summary) return null;
-
-  const bowelCountByDay = new Map(
-    report.bowelRhythmByDay.map(({ bowelCount, dayOfWeek }) => [
-      dayOfWeek,
-      bowelCount,
-    ]),
-  );
-  const firstGuide = report.guides[0];
 
   return {
     summaries: [
@@ -89,19 +77,16 @@ export const mapWeeklyReportViewData = (
         value: `${formatNumber(report.summary.completionScore)}%`,
       },
     ],
-    conditionProgress: report.stoolDistribution.map(
-      ({ label, ratio, stoolSimple }) => ({
-        colorClassName: STOOL_COLOR_CLASS_NAME[stoolSimple],
-        label,
-        value: ratio,
-      }),
-    ),
+    conditionProgress: mapStoolDistribution(report.stoolDistribution),
     bowelRhythms: WEEKDAYS.map(({ dayOfWeek, label }) => {
-      const bowelCount = bowelCountByDay.get(dayOfWeek) ?? 0;
+      const bowelRhythm = report.bowelRhythmByDay.find(
+        (rhythm) => rhythm.dayOfWeek === dayOfWeek || rhythm.label === label,
+      );
+      const stoolSimple = bowelRhythm?.stoolSimple;
 
       return {
         day: label,
-        status: getBowelRhythmStatus(bowelCount),
+        status: stoolSimple ? BOWEL_RHYTHM_STATUS_MAP[stoolSimple] : 'empty',
       };
     }),
     frequentTimeSlotLabel: report.frequentTimeSlots[0]?.label ?? null,
@@ -110,13 +95,12 @@ export const mapWeeklyReportViewData = (
       icon: getPatternIcon(level),
       title,
     })),
-    lifeGuide: firstGuide
-      ? {
-          description: firstGuide.content,
-          guideId: firstGuide.guideContentId,
-          title: firstGuide.title,
-        }
-      : null,
+    lifeGuides: report.guides.map(({ guideId, summary, title }) => ({
+      description: summary,
+      guideId,
+      icon: 'guide',
+      title,
+    })),
   };
 };
 

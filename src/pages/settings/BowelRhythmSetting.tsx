@@ -127,7 +127,9 @@ const BowelRhythmSetting = () => {
           <Button
             text={isSaving ? '저장 중...' : '저장하기'}
             variant="primary"
-            disabled={!selectedBaselineType || isLoading || isSaving}
+            disabled={
+              !isModified || !selectedBaselineType || isLoading || isSaving
+            }
             onClick={handleSaveClick}
           />
         </SettingsBottomAction>

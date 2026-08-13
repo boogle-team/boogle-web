@@ -76,7 +76,6 @@ const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
   return (
     <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pb-10 text-gray-10">
       <div className="-mx-layout">
-        <div className="h-10 bg-beige-5" />
         <TopNavigation
           title="가이드 상세"
           isBorderVisible={false}

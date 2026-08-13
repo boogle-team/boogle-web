@@ -87,7 +87,7 @@ const LoginAccount = () => {
 
                 <div className="flex min-w-0 items-center gap-2">
                   <ProviderIcon provider={socialAccount.provider} />
-                  <span className="caption truncate text-gray-8">
+                  <span className="label truncate text-gray-8">
                     {socialAccount.maskedEmail}
                   </span>
                 </div>
@@ -99,7 +99,7 @@ const LoginAccount = () => {
 
               <div className="flex min-h-12 items-center justify-between rounded-xl border border-gray-4 bg-beige-1 px-4 py-3">
                 <span className="label text-gray-10">가입일</span>
-                <span className="caption text-gray-8">{formattedRegDate}</span>
+                <span className="label text-gray-8">{formattedRegDate}</span>
               </div>
             </section>
           </>

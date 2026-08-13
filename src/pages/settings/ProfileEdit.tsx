@@ -130,7 +130,6 @@ const ProfileEdit = () => {
         onBackButtonClick={handleBackClick}
         onRetryClick={() => void refetch()}
         topNavigationClassName="bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
-        isBorderVisible={false}
       />
     );
   }
@@ -141,7 +140,6 @@ const ProfileEdit = () => {
         className="bg-beige-2 [&_svg]:h-4.5 [&_svg]:w-2.5"
         title="프로필 수정"
         onBackButtonClick={handleBackClick}
-        isBorderVisible={false}
       />
 
       <main className="flex-1 bg-beige-1 pb-[calc(var(--settings-fixed-action-space)+var(--safe-area-bottom))]">
@@ -228,10 +226,10 @@ const ProfileEdit = () => {
           </div>
 
           <SettingsNotice className="mt-2 px-2">
-            <div className="flex flex-col">
+            <span className="flex flex-col">
               <span>기준선 정보는 패턴 분석 초기값으로만 쓰여요.</span>
               <span>기록이 쌓이면 실제 데이터가 우선 반영돼요.</span>
-            </div>
+            </span>
           </SettingsNotice>
 
           {errorMessage && (
@@ -246,6 +244,7 @@ const ProfileEdit = () => {
               variant="primary"
               disabled={
                 !memberProfile ||
+                !isModified ||
                 isNicknameEmpty ||
                 isNicknameTooLong ||
                 !isProfileImageValid ||
