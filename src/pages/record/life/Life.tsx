@@ -62,7 +62,7 @@ const Life = () => {
     postLifeRecord(payload, {
       onSuccess: () => {
         resetLifeRecord();
-        navigate('/');
+        navigate('/home', { replace: true });
       },
       onError: (error) => {
         setErrorMessage(getLifeRecordErrorMessage(error));
