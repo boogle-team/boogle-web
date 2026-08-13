@@ -3,6 +3,7 @@ import {
   DailyBoogleRecordCard,
   DailyLifeRecordCard,
 } from '@/shared/components/dailyRecord';
+import InlineLoadingState from '@/shared/components/InlineLoadingState';
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 import TagsSection from '@/shared/components/tagSection/TagsSection';
 import Sparkle from '@/shared/assets/icons/todaysTagSparkle.svg?react';
@@ -79,9 +80,7 @@ const Calendar = () => {
         <SelectedDateHeader selectedDate={selectedDate} />
 
         {isLoading ? (
-          <div className="rounded-xl bg-beige-1 px-4 py-6 text-center body-m-bold text-gray-8">
-            기록을 불러오는 중이에요
-          </div>
+          <InlineLoadingState message="기록을 불러오는 중이에요" />
         ) : null}
         {isError ? (
           <div className="rounded-xl bg-beige-1 px-4 py-6 text-center text-gray-8">
