@@ -11,9 +11,15 @@ import type {
   GuideRelatedTypes,
   GuideWarningSignTypes,
 } from '@/pages/guide/types/guideTypes';
+import { GUIDE_METRIC_LABELS_BY_ID } from '@/pages/guide/constants/guideMetricConfig';
 
 const WARNING_DISCLAIMER =
   '부글은 의료 진단을 제공하지 않아요.\n이 안내는 참고용이며 정확한 진단은 전문의와 상담하세요.';
+
+const GUIDE_METRIC_UNIT_LABEL_MAP: Record<string, string> = {
+  COUNT: '일',
+  DAY: '일',
+};
 
 const compareByOrder = (
   { order: firstOrder }: { order: number },
@@ -45,18 +51,31 @@ const getWarningSigns = (
 
 const getGuideMetrics = (
   responseData: GuideDetailDataResponseTypes,
-): GuideMetricTypes[] =>
-  (responseData.patternReason?.matchedPatterns ?? []).flatMap(
-    ({ evidence, ruleCode }) =>
-      evidence.map(({ comparison, key, label, threshold, unit, value }) => ({
-        comparison,
-        id: `${ruleCode}-${key}`,
-        label,
-        threshold,
-        unit,
-        value,
-      })),
+): GuideMetricTypes[] => {
+  const metricLabels = GUIDE_METRIC_LABELS_BY_ID[responseData.guideId] ?? [];
+  const evidenceItems = (
+    responseData.patternReason?.matchedPatterns ?? []
+  ).flatMap(({ evidence, ruleCode }) =>
+    evidence.map((evidenceItem) => ({ ...evidenceItem, ruleCode })),
   );
+
+  const metrics: GuideMetricTypes[] = evidenceItems.map(
+    (
+      { comparison, key, label, ruleCode, threshold, unit, value },
+      metricIndex,
+    ) => ({
+      color: metricIndex === 1 ? 'warning' : 'danger',
+      comparison,
+      id: `${ruleCode}-${key}`,
+      label: metricLabels[metricIndex] ?? label,
+      threshold,
+      unit: GUIDE_METRIC_UNIT_LABEL_MAP[unit] ?? unit,
+      value,
+    }),
+  );
+
+  return metrics;
+};
 
 export const getGuideDetailFromResponse = (
   responseData: GuideDetailDataResponseTypes,
