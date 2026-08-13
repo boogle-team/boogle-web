@@ -28,8 +28,7 @@ const BoogleRecordItem = ({
     bowelFeeling,
     stomach,
   } = record;
-  // 서버가 KST HH:mm 문자열로 내려주므로 그대로 노출한다.
-  const recordTime = bowelMovementAt ?? '시간 미기록';
+  const recordTime = bowelMovementAt ?? '--:--';
   const stomachLabel = getStomachLabel(stomach);
 
   const handleRecordEditClick = () => {

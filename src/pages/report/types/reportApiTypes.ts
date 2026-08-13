@@ -103,6 +103,7 @@ export interface BowelRhythmByDayResponseTypes {
   bowelCount: number;
   dayOfWeek: BowelDayOfWeekTypes;
   label: string;
+  stoolSimple?: StoolSimpleTypes | null;
 }
 
 export interface FrequentTimeSlotResponseTypes {
@@ -186,9 +187,9 @@ export interface ReportPdfInfoResponseTypes {
 
 export interface ReportGuideResponseTypes {
   category: GuideCategoryTypes;
-  content: string;
   feedbackStatus: GuideFeedbackStatusTypes;
-  guideContentId: number;
+  guideId: number;
+  summary: string;
   title: string;
 }
 

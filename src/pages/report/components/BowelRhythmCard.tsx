@@ -34,11 +34,12 @@ const BowelRhythmCard = ({
       ))}
     </div>
     {frequentTimeSlotLabel && (
-      <div className="mt-4 flex items-center gap-2 rounded-md bg-orange-1 px-3 py-2">
+      <div className="mt-4 flex items-center gap-2 rounded-xl bg-orange-1 px-3 py-2.5">
         <span className="flex h-5 w-5 items-center justify-center">
           <ClockIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
         </span>
         <p className="caption tracking-[-0.015rem] text-gray-8">
+          최근 2주{' '}
           <strong className="caption-bold tracking-[-0.015rem] text-semantic-danger">
             {frequentTimeSlotLabel}
           </strong>

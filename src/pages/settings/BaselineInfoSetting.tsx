@@ -97,7 +97,7 @@ const BaselineInfoSetting = () => {
             나이대
           </h2>
 
-          <div className="grid grid-cols-4 gap-1.5">
+          <div className="mx-auto flex w-full max-w-[17rem] flex-wrap justify-center gap-2 min-[400px]:max-w-none">
             {AGE_GROUP_OPTIONS.map((option) => {
               const isSelected = selectedAgeGroup === option.value;
 
@@ -114,12 +114,12 @@ const BaselineInfoSetting = () => {
           </div>
         </section>
 
-        <section className="mt-8 border-t border-gray-4 pt-8 px-[2.81rem]">
+        <section className="mt-8 border-t border-gray-4 pt-8">
           <h2 className="mb-3 text-center text-[1rem] font-medium leading-[1.4rem] tracking-[-0.02rem] text-gray-8">
             성별
           </h2>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="mx-auto flex w-full max-w-[17rem] flex-wrap justify-center gap-2">
             {GENDER_OPTIONS.map((option) => {
               const isSelected = selectedGender === option.value;
 
@@ -146,7 +146,11 @@ const BaselineInfoSetting = () => {
             text={isSaving ? '저장 중...' : '저장하기'}
             variant="primary"
             disabled={
-              !selectedAgeGroup || !selectedGender || isLoading || isSaving
+              !isModified ||
+              !selectedAgeGroup ||
+              !selectedGender ||
+              isLoading ||
+              isSaving
             }
             onClick={handleSaveClick}
           />

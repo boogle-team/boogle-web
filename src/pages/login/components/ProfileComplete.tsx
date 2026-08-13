@@ -1,5 +1,8 @@
 import Button from '@/shared/components/Button';
 import OnboardingCompleteCharacter from '@/shared/assets/illustrations/onboardingCompleteCharacter.svg?react';
+import useRootBackgroundOverride from '@/shared/hooks/useRootBackgroundOverride';
+
+const PROFILE_COMPLETE_ROOT_BACKGROUND_COLOR = 'var(--color-beige-5)';
 
 interface ProfileCompletePropTypes {
   onGoHome: () => void;
@@ -12,6 +15,8 @@ const ProfileComplete = ({
   isSubmitting = false,
   errorMessage = null,
 }: ProfileCompletePropTypes) => {
+  useRootBackgroundOverride(PROFILE_COMPLETE_ROOT_BACKGROUND_COLOR);
+
   return (
     <div className="flex min-h-dvh flex-col bg-beige-5 px-layout pb-[calc(var(--form-bottom-padding)+var(--safe-area-bottom))]">
       <div className="flex flex-1 flex-col items-center justify-center">
