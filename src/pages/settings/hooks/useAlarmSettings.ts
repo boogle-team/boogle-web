@@ -30,7 +30,7 @@ const PUSH_TOKEN_FAILURE_MESSAGE_MAP: Record<
   failed: '푸시 알림 설정 중 오류가 발생했어요.',
 };
 
-const useAlarmSettings = () => {
+const useAlarmSettings = (isQueryEnabled = true) => {
   const [alarmNoticeMessage, setAlarmNoticeMessage] = useState<string | null>(
     null,
   );
@@ -39,7 +39,7 @@ const useAlarmSettings = () => {
     isNotificationSettingsLoading,
     isNotificationSettingsError,
     refetchNotificationSettings,
-  } = useNotificationSettingsQuery();
+  } = useNotificationSettingsQuery(isQueryEnabled);
   const { updateNotificationSetting, isNotificationSettingPending } =
     useNotificationSettingMutation();
   const { registerPushToken, isPushTokenRegistrationPending } =

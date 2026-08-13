@@ -226,9 +226,10 @@ const ProfileEdit = () => {
           </div>
 
           <SettingsNotice className="mt-2 px-2">
-            기준선 정보는 패턴 분석 초기값으로만 쓰여요.
-            <br />
-            기록이 쌓이면 실제 데이터가 우선 반영돼요.
+            <span className="flex flex-col">
+              <span>기준선 정보는 패턴 분석 초기값으로만 쓰여요.</span>
+              <span>기록이 쌓이면 실제 데이터가 우선 반영돼요.</span>
+            </span>
           </SettingsNotice>
 
           {errorMessage && (

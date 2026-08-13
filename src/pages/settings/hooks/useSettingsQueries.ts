@@ -16,10 +16,11 @@ export const SETTINGS_SENSITIVE_CONSENT_QUERY_KEY = [
   'sensitiveInfoConsent',
 ] as const;
 
-export const useUserQuery = () =>
+export const useUserQuery = (isEnabled = true) =>
   useQuery({
     queryKey: SETTINGS_USER_QUERY_KEY,
     queryFn: getUser,
+    enabled: isEnabled,
   });
 
 export const useUserOnboardingSettingsQuery = () =>

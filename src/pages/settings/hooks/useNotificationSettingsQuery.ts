@@ -5,10 +5,11 @@ import {
   NOTIFICATION_SETTINGS_QUERY_KEY,
 } from '@/pages/settings/apis/notificationSettingsApi';
 
-export const useNotificationSettingsQuery = () => {
+export const useNotificationSettingsQuery = (isEnabled = true) => {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: NOTIFICATION_SETTINGS_QUERY_KEY,
     queryFn: getNotificationSettings,
+    enabled: isEnabled,
   });
 
   return {
