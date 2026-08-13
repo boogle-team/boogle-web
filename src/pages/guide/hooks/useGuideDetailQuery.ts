@@ -2,16 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getGuideDetail } from '@/pages/guide/apis/guideApis';
 
-export const GUIDE_DETAIL_QUERY_KEY = ['guideDetail'] as const;
-export const getGuideDetailQueryKey = (guideId: number) => [
-  ...GUIDE_DETAIL_QUERY_KEY,
-  guideId,
-];
+export const GUIDE_DETAIL_QUERY_KEY = 'guideDetail';
 
-const useGuideDetailQuery = (guideId: number) => {
+const useGuideDetailQuery = (guideId: number | null) => {
   const { data, isError, isLoading } = useQuery({
-    queryKey: getGuideDetailQueryKey(guideId),
-    queryFn: () => getGuideDetail({ guideId }),
+    queryKey: [GUIDE_DETAIL_QUERY_KEY, guideId],
+    queryFn: () => getGuideDetail({ guideId: guideId as number }),
+    enabled: guideId !== null,
   });
 
   return {

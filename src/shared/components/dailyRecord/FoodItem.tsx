@@ -10,21 +10,20 @@ import FoodVegetable from '@/shared/assets/illustrations/dailyRecord/foodVegetab
 type FoodIconComponentTypes = FunctionComponent<SVGProps<SVGSVGElement>>;
 
 interface FoodItemPropTypes {
-  id: number;
   name: string;
 }
 
-const FOOD_ICON_BY_ID: Record<number, FoodIconComponentTypes> = {
-  1: FoodAlcohol,
-  2: FoodLateNight,
-  3: FoodSpicy,
-  4: FoodGreasy,
-  5: FoodDairy,
-  6: FoodVegetable,
+const FOOD_ICON_MAP: Record<string, FoodIconComponentTypes> = {
+  음주: FoodAlcohol,
+  야식: FoodLateNight,
+  자극적: FoodSpicy,
+  기름진: FoodGreasy,
+  유제품: FoodDairy,
+  '채소·잡곡': FoodVegetable,
 };
 
-const FoodItem = ({ id, name }: FoodItemPropTypes) => {
-  const FoodIcon = FOOD_ICON_BY_ID[id] ?? FoodVegetable;
+const FoodItem = ({ name }: FoodItemPropTypes) => {
+  const FoodIcon = FOOD_ICON_MAP[name] ?? FoodVegetable;
 
   return (
     <li className="flex min-w-1 flex-col items-center gap-1 text-center">

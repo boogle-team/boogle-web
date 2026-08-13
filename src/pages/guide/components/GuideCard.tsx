@@ -1,9 +1,9 @@
 import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getGuideIcon } from '@/pages/guide/constants/guideIcons';
-import type { GuideItemResponseTypes } from '@/pages/guide/types/guideApiTypes';
-import { getGuideDetailPath } from '@/pages/guide/utils/guideRouteUtils';
+import { getGuideIcon } from '../constants/guideIcons';
+import type { GuideItemResponseTypes } from '../types/guideApiTypes';
+import { getGuideDetailPath } from '../utils/guideRouteUtils';
 
 interface GuideCardPropTypes {
   guideItem: GuideItemResponseTypes;
@@ -18,7 +18,7 @@ const GuideCard = ({ guideItem, isWarning = false }: GuideCardPropTypes) => {
   return (
     <Link
       to={getGuideDetailPath({ guideId })}
-      className="flex min-h-[4.5rem] items-start gap-4 rounded-xl bg-beige-1 px-4 py-3 shadow-sm"
+      className="flex min-h-[4.5rem] items-start gap-4 rounded-lg bg-beige-1 px-4 py-3 shadow-sm"
     >
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
         {guideIcon

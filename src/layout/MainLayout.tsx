@@ -1,11 +1,10 @@
 import { Outlet, useLocation } from 'react-router-dom';
-
-import { isGuideDetailLocation } from '@/pages/guide/utils/guideRouteUtils';
 import BottomNavigation from '@/shared/components/BottomNavigation';
 
 const MainLayout = () => {
   const { pathname, search } = useLocation();
-  const isGuideDetailPage = isGuideDetailLocation({ pathname, search });
+  const searchParams = new URLSearchParams(search);
+  const isGuideDetailPage = pathname === '/guide' && searchParams.has('id');
   const isRecordFormPage =
     pathname.startsWith('/boogle-record/') ||
     pathname.startsWith('/life-record/');

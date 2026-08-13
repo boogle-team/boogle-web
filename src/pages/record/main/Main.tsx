@@ -93,21 +93,18 @@ const Main = () => {
       return;
     }
 
-    createRecord(
-      { request, existingBoogleRecords: dailyRecord?.boogleRecords ?? [] },
-      {
-        onSuccess: () => {
-          resetDraft();
+    createRecord(request, {
+      onSuccess: () => {
+        resetDraft();
 
-          if (!hasLifeRecord) {
-            setIsLifeRecordModalOpen(true);
-            return;
-          }
+        if (!hasLifeRecord) {
+          setIsLifeRecordModalOpen(true);
+          return;
+        }
 
-          navigate('/home', { replace: true });
-        },
+        navigate('/home', { replace: true });
       },
-    );
+    });
   };
 
   const handleBackButtonClick = () => {

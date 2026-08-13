@@ -1,43 +1,57 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
+import { GUIDE_DETAIL_QUERY_KEY } from '@/pages/guide/hooks/useGuideDetailQuery';
 import type {
-  GuideDetailResponseTypes,
+  GuideFeedbackStatusTypes,
   GuideFeedbackTypes,
 } from '@/pages/guide/types/guideApiTypes';
-import { getGuideDetailQueryKey } from '@/pages/guide/hooks/useGuideDetailQuery';
-import { GUIDES_QUERY_KEY } from '@/pages/guide/hooks/useGuidesQuery';
 import { registerGuideFeedback } from '@/pages/guide/utils/guideFeedbackUtils';
 
-const useGuideFeedback = (guideId: number) => {
+const useGuideFeedback = (
+  guideId: number,
+  initialFeedbackStatus: GuideFeedbackStatusTypes,
+) => {
   const queryClient = useQueryClient();
+  const [feedbackStatus, setFeedbackStatus] = useState(initialFeedbackStatus);
+  const [isFeedbackPending, setIsFeedbackPending] = useState(false);
+  const [isFeedbackError, setIsFeedbackError] = useState(false);
 
-  return useMutation({
-    mutationFn: (feedback: GuideFeedbackTypes) =>
-      registerGuideFeedback(guideId, feedback),
-    onSuccess: (_response, feedback) => {
-      queryClient.setQueryData<GuideDetailResponseTypes>(
-        getGuideDetailQueryKey(guideId),
-        (previousGuideDetail) => {
-          if (!previousGuideDetail) {
-            return previousGuideDetail;
-          }
+  // 토스트 노출 여부를 호출부가 판단할 수 있도록 성공 여부를 반환한다.
+  const submitGuideFeedback = async (feedback: GuideFeedbackTypes) => {
+    if (isFeedbackPending) {
+      return false;
+    }
 
-          return {
-            ...previousGuideDetail,
-            data: {
-              ...previousGuideDetail.data,
-              feedbackStatus: feedback,
-            },
-          };
-        },
-      );
+    try {
+      setIsFeedbackPending(true);
+      setIsFeedbackError(false);
 
-      void queryClient.invalidateQueries({ queryKey: GUIDES_QUERY_KEY });
-      void queryClient.invalidateQueries({
-        queryKey: getGuideDetailQueryKey(guideId),
+      await registerGuideFeedback(guideId, feedback);
+
+      setFeedbackStatus(feedback);
+
+      // 서버 피드백 상태가 바뀌었으므로 상세 캐시를 지워 재진입 시 옛 값이 남지 않게 한다.
+      queryClient.invalidateQueries({
+        queryKey: [GUIDE_DETAIL_QUERY_KEY, guideId],
       });
-    },
-  });
+
+      return true;
+    } catch {
+      setIsFeedbackError(true);
+
+      return false;
+    } finally {
+      setIsFeedbackPending(false);
+    }
+  };
+
+  return {
+    feedbackStatus,
+    isFeedbackError,
+    isFeedbackPending,
+    submitGuideFeedback,
+  };
 };
 
 export default useGuideFeedback;

@@ -1,4 +1,3 @@
-import { MIN_WATER_INTAKE } from '../constants/lifeDetailRecordConstants';
 import type { LifeDetailRecordFormStateTypes } from '../types/lifeDetailRecordTypes';
 import type { PostLifeRecordRequestTypes } from '../types/lifeRecordApiTypes';
 import {
@@ -13,6 +12,7 @@ import {
   SLEEP_TIME_BY_VALUE,
   STRESS_CODE_BY_VALUE,
   WATER_CODE_BY_VALUE,
+  WATER_INTAKE_BY_VALUE,
 } from '../types/lifeRecordApiTypes';
 import type { LifeRecordFormStateTypes } from '../types/lifeRecordTypes';
 
@@ -101,7 +101,7 @@ export const createLifeRecordPayload = ({
     sleep: SLEEP_CODE_BY_VALUE[sleep],
     stress: STRESS_CODE_BY_VALUE[stress],
     water: WATER_CODE_BY_VALUE[hydration],
-    waterIntake: MIN_WATER_INTAKE,
+    waterIntake: WATER_INTAKE_BY_VALUE[hydration],
     mealRegular: MEAL_REGULAR_CODE_BY_VALUE[mealRegularity],
     memo: trimmedMemo || undefined,
     tagNames,

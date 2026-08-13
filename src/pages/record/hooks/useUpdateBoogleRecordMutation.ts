@@ -1,23 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { patchBoogleRecord } from '../apis/boogleRecordApis';
 import { invalidateRecordRelatedQueries } from './invalidateRecordQueries';
 import { getBoogleRecordQueryKey } from './useBoogleRecordQuery';
-import { getDailyRecordQueryKey } from '@/shared/hooks/useDailyRecordQuery';
-import { updateBoogleRecord } from '../utils/boogleRecordMutationUtils';
+
+import type { PatchBoogleRecordRequestTypes } from '../types/boogleRecordApiTypes';
+
+interface UpdateBoogleRecordMutationParamTypes {
+  recordId: number;
+  request: PatchBoogleRecordRequestTypes;
+}
 
 export const useUpdateBoogleRecordMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateBoogleRecord,
-    onSuccess: async (record) => {
+    mutationFn: ({ recordId, request }: UpdateBoogleRecordMutationParamTypes) =>
+      patchBoogleRecord(recordId, request),
+    onSuccess: (record) => {
       queryClient.setQueryData(getBoogleRecordQueryKey(record.id), record);
-      queryClient.removeQueries({
-        queryKey: getDailyRecordQueryKey(record.regDate),
-        exact: true,
-      });
-
-      await invalidateRecordRelatedQueries(queryClient);
+      invalidateRecordRelatedQueries(queryClient);
     },
   });
 };

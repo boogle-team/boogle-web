@@ -1,38 +1,77 @@
-import GuideActionSection from '@/pages/guide/components/GuideActionSection';
-import GuideCategoryBadge from '@/pages/guide/components/GuideCategoryBadge';
-import GuideDescriptionText from '@/pages/guide/components/GuideDescriptionText';
-import GuideDetailSummaryCard from '@/pages/guide/components/GuideDetailSummaryCard';
-import GuideFeedbackToast from '@/pages/guide/components/GuideFeedbackToast';
-import GuideInfoSectionCard from '@/pages/guide/components/GuideInfoSectionCard';
-import GuideRelatedGuideList from '@/pages/guide/components/GuideRelatedGuideList';
-import GuideSourceText from '@/pages/guide/components/GuideSourceText';
-import GuideWarningNoticeSection from '@/pages/guide/components/GuideWarningNoticeSection';
-import GuideWarningSignList from '@/pages/guide/components/GuideWarningSignList';
-import type { GuideFeedbackToastVariantTypes } from '@/pages/guide/hooks/useGuideFeedbackToast';
-import type { GuideFeedbackTypes } from '@/pages/guide/types/guideApiTypes';
-import type { GuideDetailTypes } from '@/pages/guide/types/guideTypes';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import useGuideFeedback from '../hooks/useGuideFeedback';
+import type { GuideFeedbackTypes } from '../types/guideApiTypes';
+import type { GuideDetailTypes } from '../types/guideTypes';
+import GuideActionSection from './GuideActionSection';
+import GuideCategoryBadge from './GuideCategoryBadge';
+import GuideDescriptionText, { GuideSourceText } from './GuideDescriptionText';
+import GuideDetailSummaryCard from './GuideDetailSummaryCard';
+import GuideFeedbackToast from './GuideFeedbackToast';
+import GuideInfoSectionCard from './GuideInfoSectionCard';
+import GuideRelatedGuideList from './GuideRelatedGuideList';
+import GuideWarningNoticeSection from './GuideWarningNoticeSection';
+import GuideWarningSignList from './GuideWarningSignList';
 
 interface GuideDetailViewPropTypes {
-  feedbackToastVariant: GuideFeedbackToastVariantTypes | null;
   guideDetail: GuideDetailTypes;
-  isFeedbackPending: boolean;
-  onBackClick: () => void;
-  onFeedbackClick: (feedback: GuideFeedbackTypes) => void;
 }
 
-const GuideDetailView = ({
-  feedbackToastVariant,
-  guideDetail,
-  isFeedbackPending,
-  onBackClick,
-  onFeedbackClick,
-}: GuideDetailViewPropTypes) => {
+const FEEDBACK_TOAST_DURATION = 2500;
+
+const GuideDetailView = ({ guideDetail }: GuideDetailViewPropTypes) => {
+  const navigate = useNavigate();
+  const { feedbackStatus, isFeedbackPending, submitGuideFeedback } =
+    useGuideFeedback(
+      Number(guideDetail.id),
+      guideDetail.feedbackStatus ?? null,
+    );
+  const [isFeedbackErrorToastVisible, setIsFeedbackErrorToastVisible] =
+    useState(false);
   const isInfoGuide = guideDetail.type === 'info';
-  const isPersonalGuide = guideDetail.type === 'personal';
   const isWarningGuide = guideDetail.type === 'warning';
-  const infoSections = isWarningGuide ? [] : guideDetail.infoSections;
-  const hasInfoSections = infoSections.length > 0;
+  const hasInfoSections = Boolean(guideDetail.infoSections);
+  const hasSummaryCard = !isInfoGuide && !isWarningGuide;
+  const [isFeedbackToastVisible, setIsFeedbackToastVisible] = useState(false);
+
+  useEffect(() => {
+    if (!isFeedbackToastVisible) return;
+
+    const toastTimerId = window.setTimeout(() => {
+      setIsFeedbackToastVisible(false);
+    }, FEEDBACK_TOAST_DURATION);
+
+    return () => window.clearTimeout(toastTimerId);
+  }, [isFeedbackToastVisible]);
+
+  useEffect(() => {
+    if (!isFeedbackErrorToastVisible) return;
+
+    const errorToastTimerId = window.setTimeout(() => {
+      setIsFeedbackErrorToastVisible(false);
+    }, FEEDBACK_TOAST_DURATION);
+
+    return () => window.clearTimeout(errorToastTimerId);
+  }, [isFeedbackErrorToastVisible]);
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  // 성공하면 감사 토스트를, 실패하면 재시도 안내 토스트를 노출한다.
+  const handleFeedbackClick = async (feedback: GuideFeedbackTypes) => {
+    const isSubmitted = await submitGuideFeedback(feedback);
+
+    if (isSubmitted) {
+      setIsFeedbackToastVisible(true);
+
+      return;
+    }
+
+    setIsFeedbackErrorToastVisible(true);
+  };
 
   return (
     <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pb-10 text-gray-10">
@@ -41,12 +80,12 @@ const GuideDetailView = ({
           title="가이드 상세"
           isBorderVisible={false}
           className="bg-beige-5"
-          onBackButtonClick={onBackClick}
+          onBackButtonClick={handleBackClick}
         />
       </div>
 
       <div className="pt-6">
-        <GuideCategoryBadge guideType={guideDetail.type} />
+        <GuideCategoryBadge guideDetail={guideDetail} />
 
         <h2 className="display mt-5 tracking-[-0.06875rem] text-gray-10">
           {guideDetail.title}
@@ -60,52 +99,43 @@ const GuideDetailView = ({
             </h3>
           )}
 
-          {isWarningGuide && (
-            <GuideWarningSignList warningSigns={guideDetail.warningSigns} />
-          )}
+          {isWarningGuide && <GuideWarningSignList guideDetail={guideDetail} />}
 
-          {isPersonalGuide && (
-            <GuideDetailSummaryCard
-              metrics={guideDetail.metrics}
-              notice={guideDetail.notice}
-            />
+          {hasSummaryCard && (
+            <GuideDetailSummaryCard guideDetail={guideDetail} />
           )}
 
           {hasInfoSections && (
             <div
               className={
-                isPersonalGuide
-                  ? 'mt-5 border-t border-beige-7 pt-5'
-                  : undefined
+                hasSummaryCard ? 'mt-5 border-t border-beige-7 pt-5' : undefined
               }
             >
-              <GuideInfoSectionCard infoSections={infoSections} />
+              <GuideInfoSectionCard guideDetail={guideDetail} />
             </div>
           )}
         </section>
 
         <GuideActionSection
-          actions={guideDetail.actions}
-          feedbackStatus={isPersonalGuide ? guideDetail.feedbackStatus : null}
-          isFeedbackAllowed={isPersonalGuide}
+          feedbackStatus={feedbackStatus}
+          guideDetail={guideDetail}
           isFeedbackPending={isFeedbackPending}
-          isFeedbackToastVisible={feedbackToastVariant === 'success'}
-          onFeedbackClick={onFeedbackClick}
+          isFeedbackToastVisible={isFeedbackToastVisible}
+          onFeedbackClick={handleFeedbackClick}
         />
 
-        {isWarningGuide ? (
-          <GuideWarningNoticeSection
-            notice={guideDetail.notice}
-            source={guideDetail.source}
-          />
-        ) : (
-          <GuideSourceText source={guideDetail.source} />
+        {isWarningGuide && (
+          <GuideWarningNoticeSection guideDetail={guideDetail} />
+        )}
+        {/* 주의 신호는 notice 블록이 출처까지 함께 그리므로 그때만 생략한다. */}
+        {!(isWarningGuide && guideDetail.notice) && (
+          <GuideSourceText guideDetail={guideDetail} />
         )}
 
         <GuideRelatedGuideList relatedGuides={guideDetail.relatedGuides} />
       </div>
 
-      {feedbackToastVariant === 'error' && (
+      {isFeedbackErrorToastVisible && (
         <div className="fixed inset-x-0 bottom-[calc(var(--safe-area-bottom)+var(--page-bottom-padding))] z-50 mx-auto flex max-w-[430px] justify-center px-layout">
           <GuideFeedbackToast variant="error" />
         </div>

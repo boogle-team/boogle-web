@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getGuides } from '@/pages/guide/apis/guideApis';
 
-export const GUIDES_QUERY_KEY = ['guides'] as const;
+export const GUIDES_QUERY_KEY = 'guides';
 
 const useGuidesQuery = () => {
   const { data, isError, isLoading } = useQuery({
-    queryKey: GUIDES_QUERY_KEY,
+    queryKey: [GUIDES_QUERY_KEY],
     queryFn: getGuides,
   });
 

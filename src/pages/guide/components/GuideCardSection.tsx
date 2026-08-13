@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import GuideCard from '@/pages/guide/components/GuideCard';
-import type { GuideItemResponseTypes } from '@/pages/guide/types/guideApiTypes';
+import type { GuideItemResponseTypes } from '../types/guideApiTypes';
+import GuideCard from './GuideCard';
 
 interface GuideCardSectionPropTypes {
   children?: ReactNode;
