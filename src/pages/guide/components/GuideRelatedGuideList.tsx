@@ -18,8 +18,8 @@ const GuideRelatedGuideList = ({
   }
 
   return (
-    <section className="mt-7">
-      <h3 className="caption-bold text-gray-8">함께 보면 좋은 가이드</h3>
+    <section className="mt-8">
+      <h3 className="body-m-bold text-gray-8">함께 보면 좋은 가이드</h3>
       <div className="mt-3 flex flex-col gap-2">
         {relatedGuides.map((relatedGuide) => (
           <RelatedGuideCard
@@ -44,7 +44,7 @@ const RelatedGuideCard = ({ relatedGuide }: RelatedGuideCardPropTypes) => {
   return (
     <Link
       to={getGuideDetailPath({ guideId })}
-      className="flex h-12 items-center justify-between rounded-lg bg-beige-1 px-3 text-left shadow-sm"
+      className="flex h-12 items-center justify-between rounded-xl bg-beige-1 p-4 text-left shadow-sm"
     >
       <span className="flex items-center gap-2">
         <span className="flex h-6 w-6 shrink-0 items-center justify-center">

@@ -15,12 +15,9 @@ const GuideDetailSummaryCard = ({
     <SummaryDescriptionText text={guideDetail.summaryDescription} />
 
     {guideDetail.metrics && (
-      <div className="mt-4 flex flex-col gap-2.5">
+      <div className="mt-4 grid grid-cols-[max-content_minmax(0,1fr)_2.5rem] items-center gap-x-1 gap-y-2.5">
         {guideDetail.metrics.map(({ colorClassName, label, value }) => (
-          <div
-            key={label}
-            className="grid grid-cols-[3.25rem_minmax(0,1fr)_2.5rem] items-center gap-1"
-          >
+          <div key={label} className="contents">
             <span className="caption whitespace-nowrap tracking-[-0.015rem] text-[#929090]">
               {label}
             </span>
