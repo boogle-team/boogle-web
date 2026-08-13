@@ -29,6 +29,7 @@ const BoogleRecordItem = ({
     stomach,
   } = record;
   const recordTime = bowelMovementAt ?? '--:--';
+  const stomachLabel = getStomachLabel(stomach);
 
   const handleRecordEditClick = () => {
     onEditClick?.(id);
@@ -67,7 +68,7 @@ const BoogleRecordItem = ({
             text={`${getStoolSimpleLabel(stoolSimple)} (${stoolBristol}형)`}
           />
           <BoogleRecordChip text={getBowelFeelingLabel(bowelFeeling)} />
-          <BoogleRecordChip text={getStomachLabel(stomach)} />
+          {stomachLabel ? <BoogleRecordChip text={stomachLabel} /> : null}
         </div>
       </div>
     </li>

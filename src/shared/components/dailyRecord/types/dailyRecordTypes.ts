@@ -10,9 +10,8 @@ export type LifeRecordStatusTypes =
 
 type LiteralUnionTypes<T extends string> = T | (string & {});
 
-export type StoolSimpleCodeTypes = LiteralUnionTypes<'M' | 'T'>;
-export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'H'>;
-export type StomachCodeTypes = LiteralUnionTypes<'N'>;
+export type StoolSimpleCodeTypes = LiteralUnionTypes<'H' | 'M' | 'T'>;
+export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'N' | 'H'>;
 export type LifeConditionCodeTypes = LiteralUnionTypes<
   'B' | 'N' | 'L' | 'H' | 'R' | 'O'
 >;
@@ -29,13 +28,15 @@ export interface FoodTypes {
 
 export interface BoogleRecordTypes {
   id: number;
+  // regDate는 KST 자정으로 저장되므로 날짜 용도로만 쓴다. 시각은 bowelMovementAt.
   regDate: string;
   bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
-  stomach: StomachCodeTypes;
+  // 복통 강도 0~4. 배변하지 않은 기록은 null.
+  stomach: number | null;
   distension?: string;
   remainingFeeling?: string;
   urgency?: string;
@@ -85,7 +86,7 @@ export interface BoogleRecordSummaryTypes {
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
-  stomach: StomachCodeTypes;
+  stomach: number | null;
 }
 
 export interface LifeRecordSummaryTypes {

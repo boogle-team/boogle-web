@@ -5,7 +5,7 @@ import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTi
 import {
   PAIN_LEVEL_LABELS,
   PAIN_LEVEL_MAX,
-} from '../constants/recordConstants';
+} from '@/shared/constants/painLevelConstants';
 
 interface PainLevelFieldPropTypes {
   value: number;
