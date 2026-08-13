@@ -95,6 +95,7 @@ const Calendar = () => {
             <DailyBoogleRecordCard
               view={boogleRecordView}
               shouldShowActionWhenRecorded={false}
+              shouldShowDetail
               onCreateClick={handleBoogleRecordCreateButtonClick}
               onEditClick={handleBoogleRecordEditButtonClick}
             />

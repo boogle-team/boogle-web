@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 
 import { MEDICINE_OPTIONS } from '../constants/lifeDetailRecordConstants';
 import { useMedicines } from '../hooks/useMedicines';
-import { MEDICINE_VALUE_BY_ID } from '../types/lifeRecordApiTypes';
 import type { MedicineTypes } from '../types/lifeDetailRecordTypes';
+import { getMedicineValue } from '../utils/lifeRecordItemMapper';
 import LifeSectionTitle from './LifeSectionTitle';
 import MedicineChip from './MedicineChip';
 
@@ -26,7 +26,7 @@ const MedicineField = ({ value, onToggle }: MedicineFieldPropTypes) => {
 
     const serverOptions = medicinesData?.items
       ? medicinesData.items
-          .map(({ id }) => MEDICINE_VALUE_BY_ID[id])
+          .map(getMedicineValue)
           .filter((medicine): medicine is MedicineTypes => Boolean(medicine))
           .map((medicine) => optionByValue.get(medicine))
           .filter(
