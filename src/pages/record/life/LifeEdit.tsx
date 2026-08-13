@@ -13,9 +13,11 @@ import NotFound from '@/shared/components/NotFound';
 import { getApiErrorMessage, getApiErrorStatus } from '@/shared/apis/apiError';
 
 import LifeRecordFields from './components/LifeRecordFields';
+import TagSettingModal from './components/TagSettingModal';
 import { useDeleteLifeRecord } from './hooks/useDeleteLifeRecord';
 import { useLifeRecord } from './hooks/useLifeRecord';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { useLifeRecordTagSettings } from './hooks/useLifeRecordTagSettings';
 import { useFoods } from './hooks/useFoods';
 import { useMedicines } from './hooks/useMedicines';
 import { usePatchLifeRecord } from './hooks/usePatchLifeRecord';
@@ -34,6 +36,7 @@ import {
 import type { LifeRecordDetailResponseTypes } from './types/lifeRecordApiTypes';
 import type { LifeRecordFormStateTypes } from './types/lifeRecordTypes';
 import { createLifeRecordPatchPayload } from './utils/createLifeRecordPayload';
+import { getLifeRecordTagUpdateAction } from './utils/lifeRecordTagUtils';
 import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
 import {
   getFoodIdByValue,
@@ -126,6 +129,16 @@ const LifeEdit = () => {
   const editDraftKey = `edit-${lifeId ?? recordDate}`;
   const { mutate: patchLifeRecord, isPending: isPatchingLifeRecord } =
     usePatchLifeRecord();
+  const {
+    closeTagSettings,
+    handleTagAdd,
+    handleTagToggle,
+    isExtractingTags,
+    isTagModalOpen,
+    openTagSettings,
+    recommendedTags,
+    selectedTags,
+  } = useLifeRecordTagSettings();
   const { mutate: deleteLifeRecord, isPending: isDeletingLifeRecord } =
     useDeleteLifeRecord();
   const startLifeRecord = useLifeRecordDraftStore(
@@ -189,20 +202,14 @@ const LifeEdit = () => {
     navigate(-1);
   };
 
-  const handleSave = () => {
-    if (
-      !isSubmittable ||
-      !lifeId ||
-      isPatchingLifeRecord ||
-      isReferenceDataFetching
-    ) {
-      return;
-    }
+  const saveLifeRecord = (tagNames: string[]) => {
+    if (!lifeId || isPatchingLifeRecord) return;
 
     const patchRequestBody = createLifeRecordPatchPayload({
       formState,
       foodIdByValue,
       medicineIdByValue,
+      tagNames,
     });
 
     if (!patchRequestBody) {
@@ -226,6 +233,50 @@ const LifeEdit = () => {
         },
       },
     );
+  };
+
+  const handleSave = () => {
+    if (
+      !isSubmittable ||
+      !lifeId ||
+      isPatchingLifeRecord ||
+      isExtractingTags ||
+      isReferenceDataFetching ||
+      !lifeRecord
+    ) {
+      return;
+    }
+
+    const trimmedMemo = formState.memo.trim();
+    const tagUpdateAction = getLifeRecordTagUpdateAction({
+      currentMemo: trimmedMemo,
+      originalMemo: lifeRecord.memo,
+    });
+
+    if (tagUpdateAction === 'keep') {
+      saveLifeRecord(lifeRecord.tagNames);
+      return;
+    }
+
+    if (tagUpdateAction === 'clear') {
+      saveLifeRecord([]);
+      return;
+    }
+
+    openTagSettings({
+      existingTags: lifeRecord.tagNames,
+      memo: trimmedMemo,
+    });
+  };
+
+  const handleTagModalCancel = () => {
+    closeTagSettings();
+    saveLifeRecord(lifeRecord?.tagNames ?? []);
+  };
+
+  const handleTagModalConfirm = () => {
+    closeTagSettings();
+    saveLifeRecord(selectedTags);
   };
 
   const handleDetailRecordLinkClick = () => {
@@ -309,9 +360,12 @@ const LifeEdit = () => {
         <CancelSaveButtons
           onCancel={handleCancel}
           onSave={handleSave}
-          cancelDisabled={isPatchingLifeRecord}
+          cancelDisabled={isPatchingLifeRecord || isExtractingTags}
           saveDisabled={
-            !isSubmittable || isPatchingLifeRecord || isReferenceDataFetching
+            !isSubmittable ||
+            isPatchingLifeRecord ||
+            isExtractingTags ||
+            isReferenceDataFetching
           }
         />
       }
@@ -330,6 +384,17 @@ const LifeEdit = () => {
         </p>
       )}
 
+      <TagSettingModal
+        isOpen={isTagModalOpen}
+        memo={formState.memo}
+        recommendedTags={recommendedTags}
+        selectedTags={selectedTags}
+        onToggleTag={handleTagToggle}
+        onAddTag={handleTagAdd}
+        onCancel={handleTagModalCancel}
+        onConfirm={handleTagModalConfirm}
+      />
+
       <ConfirmModal
         isOpen={isDeleteModalOpen}
         title="기록을 삭제할까요?"
@@ -339,6 +404,10 @@ const LifeEdit = () => {
         onCancel={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
       />
+
+      {isExtractingTags && (
+        <LoadingSpinner hasBackdrop message="AI가 태그를 찾고 있어요" />
+      )}
     </RecordPageLayout>
   );
 };

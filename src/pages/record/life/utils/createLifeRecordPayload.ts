@@ -30,6 +30,13 @@ interface CreateLifeRecordPayloadParamTypes {
   tagNames?: string[];
 }
 
+interface CreateLifeRecordPatchPayloadParamTypes extends Omit<
+  CreateLifeRecordPayloadParamTypes,
+  'isSensitiveInfoConsented' | 'recordDate' | 'tagNames'
+> {
+  tagNames: string[];
+}
+
 type CompleteLifeDetailRecordTypes = LifeDetailRecordFormStateTypes & {
   caffeine: NonNullable<LifeDetailRecordFormStateTypes['caffeine']>;
   exercise: NonNullable<LifeDetailRecordFormStateTypes['exercise']>;
@@ -147,10 +154,8 @@ export const createLifeRecordPatchPayload = ({
   formState,
   foodIdByValue,
   medicineIdByValue,
-}: Omit<
-  CreateLifeRecordPayloadParamTypes,
-  'isSensitiveInfoConsented' | 'recordDate' | 'tagNames'
->): PatchLifeRecordRequestTypes | null => {
+  tagNames,
+}: CreateLifeRecordPatchPayloadParamTypes): PatchLifeRecordRequestTypes | null => {
   const {
     detailRecord,
     foods,
@@ -211,6 +216,7 @@ export const createLifeRecordPatchPayload = ({
     water: WATER_CODE_BY_VALUE[hydration],
     mealRegular: MEAL_REGULAR_CODE_BY_VALUE[mealRegularity],
     memo: memo.trim(),
+    tagNames,
     foodIds,
     ...detailPayload,
   };
