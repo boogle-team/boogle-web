@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 
 import { FOOD_OPTIONS } from '../constants/lifeRecordConstants';
 import { useFoods } from '../hooks/useFoods';
-import { FOOD_VALUE_BY_ID } from '../types/lifeRecordApiTypes';
 import type { FoodTypes } from '../types/lifeRecordTypes';
+import { getFoodValue } from '../utils/lifeRecordItemMapper';
 import FoodChip from './FoodChip';
 import LifeSectionTitle from './LifeSectionTitle';
 
@@ -23,7 +23,7 @@ const FoodField = ({ value, onToggle }: FoodFieldPropTypes) => {
 
     const serverOptions = foodsData?.items
       ? foodsData.items
-          .map(({ id }) => FOOD_VALUE_BY_ID[id])
+          .map(getFoodValue)
           .filter((food): food is FoodTypes => Boolean(food))
           .map((food) => optionByValue.get(food))
           .filter((foodOption): foodOption is (typeof FOOD_OPTIONS)[number] =>

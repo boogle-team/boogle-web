@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
@@ -15,11 +15,17 @@ import {
   MAX_TAG_COUNT,
 } from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
+import { useFoods } from './hooks/useFoods';
+import { useMedicines } from './hooks/useMedicines';
 import { usePostExtractLifeRecordTags } from './hooks/usePostExtractLifeRecordTags';
 import { usePostLifeRecord } from './hooks/usePostLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
 import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
+import {
+  getFoodIdByValue,
+  getMedicineIdByValue,
+} from './utils/lifeRecordItemMapper';
 
 const Life = () => {
   const navigate = useNavigate();
@@ -47,15 +53,34 @@ const Life = () => {
     usePostExtractLifeRecordTags();
   const { mutate: postLifeRecord, isPending: isPostingLifeRecord } =
     usePostLifeRecord();
+  const { data: foodsData, isFetching: isFoodsFetching } = useFoods();
+  const { data: medicinesData, isFetching: isMedicinesFetching } =
+    useMedicines();
+  const isReferenceDataFetching = isFoodsFetching || isMedicinesFetching;
+  const foodIdByValue = useMemo(
+    () => getFoodIdByValue(foodsData?.items ?? []),
+    [foodsData?.items],
+  );
+  const medicineIdByValue = useMemo(
+    () => getMedicineIdByValue(medicinesData?.items ?? []),
+    [medicinesData?.items],
+  );
 
   const saveLifeRecord = (tagNames: string[] = []) => {
     const payload = createLifeRecordPayload({
       formState,
+      foodIdByValue,
+      medicineIdByValue,
       recordDate,
       tagNames,
     });
 
-    if (!payload) return;
+    if (!payload) {
+      setErrorMessage(
+        '선택 항목 정보를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.',
+      );
+      return;
+    }
 
     setErrorMessage('');
 
@@ -71,7 +96,14 @@ const Life = () => {
   };
 
   const handleSubmit = () => {
-    if (!isSubmittable || isPostingLifeRecord || isExtractingTags) return;
+    if (
+      !isSubmittable ||
+      isPostingLifeRecord ||
+      isExtractingTags ||
+      isReferenceDataFetching
+    ) {
+      return;
+    }
 
     const trimmedMemo = formState.memo.trim();
 
@@ -151,7 +183,12 @@ const Life = () => {
         <Button
           text="완료"
           onClick={handleSubmit}
-          disabled={!isSubmittable || isPostingLifeRecord || isExtractingTags}
+          disabled={
+            !isSubmittable ||
+            isPostingLifeRecord ||
+            isExtractingTags ||
+            isReferenceDataFetching
+          }
         />
       }
     >

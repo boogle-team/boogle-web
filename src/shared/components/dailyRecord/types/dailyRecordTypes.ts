@@ -12,8 +12,13 @@ type LiteralUnionTypes<T extends string> = T | (string & {});
 
 export type StoolSimpleCodeTypes = LiteralUnionTypes<'H' | 'M' | 'T'>;
 export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'N' | 'H'>;
+export type BoogleDetailSeverityCodeTypes = LiteralUnionTypes<'N' | 'M' | 'L'>;
+export type BoogleAmountCodeTypes = LiteralUnionTypes<'S' | 'N' | 'M'>;
+export type StoolColorCodeTypes = LiteralUnionTypes<
+  'B' | 'D' | 'N' | 'R' | 'G'
+>;
 export type LifeConditionCodeTypes = LiteralUnionTypes<
-  'B' | 'N' | 'L' | 'H' | 'R' | 'O'
+  'B' | 'N' | 'L' | 'H' | 'R' | 'O' | 'G' | 'I' | 'M' | 'T' | 'E'
 >;
 
 export interface RecordTagTypes {
@@ -37,12 +42,12 @@ export interface BoogleRecordTypes {
   bowelFeeling: BowelFeelingCodeTypes;
   // 복통 강도 0~4. 배변하지 않은 기록은 null.
   stomach: number | null;
-  distension?: string;
-  remainingFeeling?: string;
-  urgency?: string;
-  takenTime?: number;
-  amount?: string;
-  color?: string;
+  distension?: BoogleDetailSeverityCodeTypes | null;
+  remainingFeeling?: BoogleDetailSeverityCodeTypes | null;
+  urgency?: BoogleDetailSeverityCodeTypes | null;
+  takenTime?: number | null;
+  amount?: BoogleAmountCodeTypes | null;
+  color?: StoolColorCodeTypes | null;
   memo?: string | null;
   autoTags?: string[];
   tags?: RecordTagTypes[];
@@ -87,6 +92,12 @@ export interface BoogleRecordSummaryTypes {
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
   stomach: number | null;
+  distension?: BoogleDetailSeverityCodeTypes | null;
+  remainingFeeling?: BoogleDetailSeverityCodeTypes | null;
+  urgency?: BoogleDetailSeverityCodeTypes | null;
+  takenTime?: number | null;
+  amount?: BoogleAmountCodeTypes | null;
+  color?: StoolColorCodeTypes | null;
 }
 
 export interface LifeRecordSummaryTypes {
