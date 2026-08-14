@@ -8,7 +8,7 @@ export const getMonthlyReportQueryKey = (monthStartDate: string) =>
   [...MONTHLY_REPORT_QUERY_KEY, monthStartDate] as const;
 
 const useMonthlyReportQuery = (monthStartDate: string) => {
-  const { data, isError, isLoading, refetch } = useQuery({
+  const { data, isError, isFetching, isLoading, refetch } = useQuery({
     queryKey: getMonthlyReportQueryKey(monthStartDate),
     queryFn: () =>
       getMonthlyReport({
@@ -21,6 +21,7 @@ const useMonthlyReportQuery = (monthStartDate: string) => {
   return {
     monthlyReport: data?.data ?? null,
     isError,
+    isFetching,
     isLoading,
     refetch,
   };
