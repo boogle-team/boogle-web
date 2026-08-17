@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { formatRecordDate } from '@/pages/record/main/utils/formatRecordDate';
@@ -10,16 +10,18 @@ import LoadingSpinner from '@/shared/components/LoadingSpinner';
 
 import LifeRecordFields from './components/LifeRecordFields';
 import TagSettingModal from './components/TagSettingModal';
-import {
-  isValidTagLength,
-  MAX_TAG_COUNT,
-} from './constants/lifeRecordConstants';
 import { useLifeRecordForm } from './hooks/useLifeRecordForm';
-import { usePostExtractLifeRecordTags } from './hooks/usePostExtractLifeRecordTags';
+import { useLifeRecordTagSettings } from './hooks/useLifeRecordTagSettings';
+import { useFoods } from './hooks/useFoods';
+import { useMedicines } from './hooks/useMedicines';
 import { usePostLifeRecord } from './hooks/usePostLifeRecord';
 import { useLifeRecordDraftStore } from './stores/lifeRecordDraftStore';
 import { createLifeRecordPayload } from './utils/createLifeRecordPayload';
 import { getLifeRecordErrorMessage } from './utils/lifeRecordErrorMessage';
+import {
+  getFoodIdByValue,
+  getMedicineIdByValue,
+} from './utils/lifeRecordItemMapper';
 
 const Life = () => {
   const navigate = useNavigate();
@@ -36,33 +38,57 @@ const Life = () => {
     startLifeRecord({ draftKey: `new-${recordDate}` });
   }, [startLifeRecord, recordDate]);
 
-  const [isTagModalOpen, setIsTagModalOpen] = useState(false);
-  const [recommendedTags, setRecommendedTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const form = useLifeRecordForm();
   const { formState, isSubmittable } = form;
-  const { mutate: extractLifeRecordTags, isPending: isExtractingTags } =
-    usePostExtractLifeRecordTags();
+  const {
+    closeTagSettings,
+    handleTagAdd,
+    handleTagToggle,
+    isExtractingTags,
+    isTagModalOpen,
+    openTagSettings,
+    recommendedTags,
+    selectedTags,
+  } = useLifeRecordTagSettings();
   const { mutate: postLifeRecord, isPending: isPostingLifeRecord } =
     usePostLifeRecord();
+  const { data: foodsData, isFetching: isFoodsFetching } = useFoods();
+  const { data: medicinesData, isFetching: isMedicinesFetching } =
+    useMedicines();
+  const isReferenceDataFetching = isFoodsFetching || isMedicinesFetching;
+  const foodIdByValue = useMemo(
+    () => getFoodIdByValue(foodsData?.items ?? []),
+    [foodsData?.items],
+  );
+  const medicineIdByValue = useMemo(
+    () => getMedicineIdByValue(medicinesData?.items ?? []),
+    [medicinesData?.items],
+  );
 
   const saveLifeRecord = (tagNames: string[] = []) => {
     const payload = createLifeRecordPayload({
       formState,
+      foodIdByValue,
+      medicineIdByValue,
       recordDate,
       tagNames,
     });
 
-    if (!payload) return;
+    if (!payload) {
+      setErrorMessage(
+        '선택 항목 정보를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.',
+      );
+      return;
+    }
 
     setErrorMessage('');
 
     postLifeRecord(payload, {
       onSuccess: () => {
         resetLifeRecord();
-        navigate('/');
+        navigate('/home', { replace: true });
       },
       onError: (error) => {
         setErrorMessage(getLifeRecordErrorMessage(error));
@@ -71,69 +97,32 @@ const Life = () => {
   };
 
   const handleSubmit = () => {
-    if (!isSubmittable || isPostingLifeRecord || isExtractingTags) return;
+    if (
+      !isSubmittable ||
+      isPostingLifeRecord ||
+      isExtractingTags ||
+      isReferenceDataFetching
+    ) {
+      return;
+    }
 
     const trimmedMemo = formState.memo.trim();
 
     if (trimmedMemo) {
-      extractLifeRecordTags(
-        { text: trimmedMemo },
-        {
-          onSuccess: ({ tagNames }) => {
-            setRecommendedTags(tagNames);
-            setSelectedTags(tagNames.slice(0, MAX_TAG_COUNT));
-            setIsTagModalOpen(true);
-          },
-          onError: () => {
-            setRecommendedTags([]);
-            setSelectedTags([]);
-            setIsTagModalOpen(true);
-          },
-        },
-      );
+      openTagSettings({ memo: trimmedMemo });
       return;
     }
 
-    setRecommendedTags([]);
-    setSelectedTags([]);
     saveLifeRecord();
   };
 
-  const handleTagToggle = (tag: string) => {
-    setSelectedTags((previousTags) => {
-      if (previousTags.includes(tag)) {
-        return previousTags.filter((selectedTag) => selectedTag !== tag);
-      }
-
-      if (previousTags.length >= MAX_TAG_COUNT) return previousTags;
-
-      return [...previousTags, tag];
-    });
-  };
-
-  const handleTagAdd = (tag: string) => {
-    const trimmedTag = tag.trim();
-    if (!isValidTagLength(trimmedTag)) return;
-
-    setSelectedTags((previousTags) => {
-      if (
-        previousTags.includes(trimmedTag) ||
-        previousTags.length >= MAX_TAG_COUNT
-      ) {
-        return previousTags;
-      }
-
-      return [...previousTags, trimmedTag];
-    });
-  };
-
   const handleTagModalCancel = () => {
-    setIsTagModalOpen(false);
+    closeTagSettings();
     saveLifeRecord();
   };
 
   const handleTagModalConfirm = () => {
-    setIsTagModalOpen(false);
+    closeTagSettings();
     saveLifeRecord(selectedTags);
   };
 
@@ -151,7 +140,12 @@ const Life = () => {
         <Button
           text="완료"
           onClick={handleSubmit}
-          disabled={!isSubmittable || isPostingLifeRecord || isExtractingTags}
+          disabled={
+            !isSubmittable ||
+            isPostingLifeRecord ||
+            isExtractingTags ||
+            isReferenceDataFetching
+          }
         />
       }
     >

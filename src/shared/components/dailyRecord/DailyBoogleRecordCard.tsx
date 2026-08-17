@@ -13,6 +13,7 @@ interface DailyBoogleRecordCardPropTypes {
   view: BoogleRecordViewTypes;
   // 캘린더는 기록이 있으면 헤더 아이콘을 숨기고 행별 연필로만 수정한다.
   shouldShowActionWhenRecorded?: boolean;
+  shouldShowDetail?: boolean;
   onCreateClick: () => void;
   onEditClick?: (recordId: number) => void;
 }
@@ -30,6 +31,7 @@ const EMPTY_MESSAGE_MAP: Record<
 const DailyBoogleRecordCard = ({
   view,
   shouldShowActionWhenRecorded = true,
+  shouldShowDetail = false,
   onCreateClick,
   onEditClick,
 }: DailyBoogleRecordCardPropTypes) => {
@@ -65,6 +67,7 @@ const DailyBoogleRecordCard = ({
               key={record.id}
               record={record}
               isLastItem={index === view.records.length - 1}
+              shouldShowDetail={shouldShowDetail}
               onEditClick={onEditClick}
             />
           ))}

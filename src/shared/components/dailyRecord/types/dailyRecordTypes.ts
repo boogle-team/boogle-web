@@ -10,11 +10,15 @@ export type LifeRecordStatusTypes =
 
 type LiteralUnionTypes<T extends string> = T | (string & {});
 
-export type StoolSimpleCodeTypes = LiteralUnionTypes<'M' | 'T'>;
-export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'H'>;
-export type StomachCodeTypes = LiteralUnionTypes<'N'>;
+export type StoolSimpleCodeTypes = LiteralUnionTypes<'H' | 'M' | 'T'>;
+export type BowelFeelingCodeTypes = LiteralUnionTypes<'C' | 'N' | 'H'>;
+export type BoogleDetailSeverityCodeTypes = LiteralUnionTypes<'N' | 'M' | 'L'>;
+export type BoogleAmountCodeTypes = LiteralUnionTypes<'S' | 'N' | 'M'>;
+export type StoolColorCodeTypes = LiteralUnionTypes<
+  'B' | 'D' | 'N' | 'R' | 'G'
+>;
 export type LifeConditionCodeTypes = LiteralUnionTypes<
-  'B' | 'N' | 'L' | 'H' | 'R' | 'O'
+  'B' | 'N' | 'L' | 'H' | 'R' | 'O' | 'G' | 'I' | 'M' | 'T' | 'E'
 >;
 
 export interface RecordTagTypes {
@@ -29,18 +33,21 @@ export interface FoodTypes {
 
 export interface BoogleRecordTypes {
   id: number;
+  // regDate는 KST 자정으로 저장되므로 날짜 용도로만 쓴다. 시각은 bowelMovementAt.
   regDate: string;
+  bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
-  stomach: StomachCodeTypes;
-  distension?: string;
-  remainingFeeling?: string;
-  urgency?: string;
-  takenTime?: number;
-  amount?: string;
-  color?: string;
+  // 복통 강도 0~4. 배변하지 않은 기록은 null.
+  stomach: number | null;
+  distension?: BoogleDetailSeverityCodeTypes | null;
+  remainingFeeling?: BoogleDetailSeverityCodeTypes | null;
+  urgency?: BoogleDetailSeverityCodeTypes | null;
+  takenTime?: number | null;
+  amount?: BoogleAmountCodeTypes | null;
+  color?: StoolColorCodeTypes | null;
   memo?: string | null;
   autoTags?: string[];
   tags?: RecordTagTypes[];
@@ -79,11 +86,18 @@ export type DailyRecordResponseTypes = ApiResponseTypes<DailyRecordTypes>;
 export interface BoogleRecordSummaryTypes {
   id: number;
   regDate: string;
+  bowelMovementAt: string | null;
   hasBowel: boolean;
   stoolBristol: number;
   stoolSimple: StoolSimpleCodeTypes;
   bowelFeeling: BowelFeelingCodeTypes;
-  stomach: StomachCodeTypes;
+  stomach: number | null;
+  distension?: BoogleDetailSeverityCodeTypes | null;
+  remainingFeeling?: BoogleDetailSeverityCodeTypes | null;
+  urgency?: BoogleDetailSeverityCodeTypes | null;
+  takenTime?: number | null;
+  amount?: BoogleAmountCodeTypes | null;
+  color?: StoolColorCodeTypes | null;
 }
 
 export interface LifeRecordSummaryTypes {

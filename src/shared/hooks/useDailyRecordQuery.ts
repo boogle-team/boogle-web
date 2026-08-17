@@ -4,9 +4,12 @@ import { isFutureDate } from '@/shared/components/dailyRecord';
 
 export const DAILY_RECORD_QUERY_KEY = ['dailyRecord'] as const;
 
+export const getDailyRecordQueryKey = (date: string) =>
+  [...DAILY_RECORD_QUERY_KEY, date] as const;
+
 const useDailyRecordQuery = (date: string) =>
   useQuery({
-    queryKey: [...DAILY_RECORD_QUERY_KEY, date],
+    queryKey: getDailyRecordQueryKey(date),
     queryFn: () => getDailyRecord(date),
     enabled: Boolean(date) && !isFutureDate(date),
   });

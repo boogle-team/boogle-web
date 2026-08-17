@@ -1,11 +1,14 @@
 import {
+  getBoogleAmountLabel,
   getBowelFeelingLabel,
+  getBoogleSeverityDetailLabel,
+  getBoogleTakenTimeLabel,
   getStomachLabel,
+  getStoolColorLabel,
   getStoolSimpleLabel,
 } from './constants/dailyRecordLabels';
 import BoogleRecordChip from './BoogleRecordChip';
 import type { BoogleRecordSummaryTypes } from './types/dailyRecordTypes';
-import { formatRecordTime } from './utils/dailyRecordUtils';
 
 import RecordEdit from '@/shared/assets/icons/recordEdit.svg?react';
 import BoogleRecordTimeLineFlower from '@/shared/assets/illustrations/dailyRecord/boogleRecordTimeLineFlower.svg?react';
@@ -13,17 +16,42 @@ import BoogleRecordTimeLineFlower from '@/shared/assets/illustrations/dailyRecor
 interface BoogleRecordItemPropTypes {
   record: BoogleRecordSummaryTypes;
   isLastItem: boolean;
+  shouldShowDetail?: boolean;
   onEditClick?: (recordId: number) => void;
 }
 
 const BoogleRecordItem = ({
   record,
   isLastItem,
+  shouldShowDetail = false,
   onEditClick,
 }: BoogleRecordItemPropTypes) => {
-  const { id, regDate, stoolBristol, stoolSimple, bowelFeeling, stomach } =
-    record;
-  const recordTime = formatRecordTime(regDate);
+  const {
+    id,
+    bowelMovementAt,
+    stoolBristol,
+    stoolSimple,
+    bowelFeeling,
+    stomach,
+    distension,
+    remainingFeeling,
+    urgency,
+    takenTime,
+    amount,
+    color,
+  } = record;
+  const recordTime = bowelMovementAt ?? '--:--';
+  const stomachLabel = getStomachLabel(stomach);
+  const detailLabels = shouldShowDetail
+    ? [
+        getBoogleSeverityDetailLabel('복부팽만', distension),
+        getBoogleSeverityDetailLabel('잔변감', remainingFeeling),
+        getBoogleSeverityDetailLabel('배변 긴급도', urgency),
+        getBoogleTakenTimeLabel(takenTime),
+        getBoogleAmountLabel(amount),
+        getStoolColorLabel(color),
+      ].filter((label): label is string => Boolean(label))
+    : [];
 
   const handleRecordEditClick = () => {
     onEditClick?.(id);
@@ -62,7 +90,10 @@ const BoogleRecordItem = ({
             text={`${getStoolSimpleLabel(stoolSimple)} (${stoolBristol}형)`}
           />
           <BoogleRecordChip text={getBowelFeelingLabel(bowelFeeling)} />
-          <BoogleRecordChip text={getStomachLabel(stomach)} />
+          {stomachLabel ? <BoogleRecordChip text={stomachLabel} /> : null}
+          {detailLabels.map((detailLabel) => (
+            <BoogleRecordChip key={detailLabel} text={detailLabel} />
+          ))}
         </div>
       </div>
     </li>

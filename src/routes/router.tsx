@@ -17,6 +17,7 @@ import SensitiveConsent from '@/pages/settings/SensitiveConsent';
 import Terms from '@/pages/settings/Terms';
 import DeleteAccount from '@/pages/settings/DeleteAccount';
 import ProfileSettingsProvider from '@/pages/settings/contexts/ProfileSettingsProvider';
+import GuideRouteErrorBoundary from '@/pages/guide/components/GuideRouteErrorBoundary';
 import RootBackgroundSync from '@/routes/RootBackgroundSync';
 import {
   loadAppEntryRoute,
@@ -100,6 +101,7 @@ export const Router = createBrowserRouter([
               },
               {
                 path: 'guide',
+                errorElement: <GuideRouteErrorBoundary />,
                 lazy: async () => {
                   const { default: Guide } =
                     await import('@/pages/guide/Guide');

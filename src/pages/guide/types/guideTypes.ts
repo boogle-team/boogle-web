@@ -1,10 +1,15 @@
-import type { GuideFeedbackStatusTypes } from './guideApiTypes';
+import type { GuideFeedbackStatusTypes } from '@/pages/guide/types/guideApiTypes';
 
-export type GuideCategoryTypes = '내 기록 기반' | '장 건강 정보' | '주의 신호';
+export type GuideDetailCategoryTypes = 'info' | 'personal' | 'warning';
+export type GuideMetricColorTypes = 'danger' | 'warning';
 
 export interface GuideMetricTypes {
-  colorClassName?: string;
+  color: GuideMetricColorTypes;
+  comparison: string;
+  id: string;
   label: string;
+  threshold: number;
+  unit: string;
   value: number;
 }
 
@@ -22,38 +27,42 @@ export interface GuideWarningSignTypes {
 
 export interface GuideActionTypes {
   description?: string;
-  source?: string;
   title: string;
 }
 
 export interface GuideInfoSectionTypes {
   description: string;
   title: string;
-  visualType?: 'bristolScale';
 }
 
-export interface GuideDetailTypes {
-  actionDescription?: string;
-  actionSource?: string;
-  actionTitle?: string;
-  actions?: GuideActionTypes[];
-  category: GuideCategoryTypes;
+interface GuideDetailCommonTypes {
+  actions: GuideActionTypes[];
   description: string;
-  feedbackStatus?: GuideFeedbackStatusTypes;
-  guideContentId?: number;
-  id: string;
-  infoNotice?: string;
-  infoSections?: GuideInfoSectionTypes[];
-  metrics?: GuideMetricTypes[];
-  notice?: string;
-  noticeHighlight?: string;
+  guideId: number;
   relatedGuides: GuideRelatedTypes[];
   source: string;
-  sourceDescription?: string;
-  sourceUrl: string;
-  summaryDescription: string;
-  summaryTitle: string;
   title: string;
-  type: 'info' | 'personal' | 'warning';
-  warningSigns?: GuideWarningSignTypes[];
+  type: GuideDetailCategoryTypes;
 }
+
+export interface GuideInfoDetailTypes extends GuideDetailCommonTypes {
+  infoSections: GuideInfoSectionTypes[];
+  type: 'info';
+}
+
+export interface GuidePersonalDetailTypes extends GuideDetailCommonTypes {
+  feedbackStatus: GuideFeedbackStatusTypes;
+  infoSections: GuideInfoSectionTypes[];
+  metrics: GuideMetricTypes[];
+  notice?: string;
+  type: 'personal';
+}
+
+export interface GuideWarningDetailTypes extends GuideDetailCommonTypes {
+  notice: string;
+  type: 'warning';
+  warningSigns: GuideWarningSignTypes[];
+}
+
+export type GuideDetailTypes =
+  GuideInfoDetailTypes | GuidePersonalDetailTypes | GuideWarningDetailTypes;

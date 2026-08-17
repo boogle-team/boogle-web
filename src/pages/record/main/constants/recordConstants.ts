@@ -31,16 +31,6 @@ export const FEELING_OPTIONS: FeelingOptionTypes[] = [
   { value: 'difficult', label: '힘들었음' },
 ];
 
-export const PAIN_LEVEL_MAX = 4;
-
-export const PAIN_LEVEL_LABELS = [
-  '없음',
-  '약간 있어요',
-  '꽤 있어요',
-  '많이 있어요',
-  '매우 심해요',
-];
-
 export const LIFE_RECORD_MODAL = {
   title: '오늘의 생활 기록도 할까요?',
   description:

@@ -873,6 +873,7 @@ error response body:
       {
         "id": 100,
         "regDate": "2026-06-17T08:30:00",
+        "bowelMovementAt": "08:30",
         "hasBowel": true,
         "stoolBristol": 4,
         "stoolSimple": "M",
@@ -919,7 +920,7 @@ error response body:
 - 기록이 없는 날짜도 404가 아니라 200에 빈 값(`boogleRecords: []`, `lifeRecord: null`)으로 응답한다 (실제 호출로 확인)
 - 코드값 라벨 매핑은 `src/shared/components/dailyRecord/constants/dailyRecordLabels.ts` 참고
 - 미래 날짜는 프론트에서 호출하지 않는다 (화면이 클라이언트에서 future 상태로 그려짐)
-- 부글 기록의 distension / remainingFeeling / urgency / takenTime / amount / color / memo / autoTags / tags는 응답에는 있으나 캘린더 요약 카드에서는 사용하지 않음 (상세 화면 대비)
+- 부글 기록의 distension / remainingFeeling / urgency / takenTime / amount / color는 캘린더 기록 카드의 상세 칩에 사용함. memo / autoTags / tags는 태그 영역과 상세 화면 용도로 유지함.
 
 ## 가이드
 
@@ -1090,7 +1091,7 @@ error response body:
 - `POST /api/v1/records`, `PATCH /api/v1/records/{id}` 요청의 `regDate`는 기록 대상 날짜인 `YYYY-MM-DD` 형식이다.
 - `GET /api/v1/records/{id}` 응답의 `regDate`는 `YYYY-MM-DD` 형식이다.
 - `GET /api/v1/calendar/daily?date={YYYY-MM-DD}` 응답 안의 부글 기록 `regDate`는 `YYYY-MM-DDTHH:mm:ss` 형식이다. 프론트에서는 기록 초안에 저장하기 전에 `YYYY-MM-DD`로 정규화한다.
-- 배변 시각 `bowelMovementAt`은 타임존 없는 `HH:mm` 형식이며 서버가 KST 시각으로 해석한다.
+- 배변 시각 `bowelMovementAt`은 값이 있으면 타임존 없는 `HH:mm` 형식이며 서버가 KST 시각으로 해석한다. 값이 없으면 `null`이다.
 - `PATCH /api/v1/records/{id}`에서 필드를 생략하면 기존 값을 유지하고, nullable 필드에 `null`을 보내면 기존 값을 삭제한다.
 - 배변 없음으로 수정할 때는 `hasBowel: false`와 함께 모든 배변 상세 필드를 `null`로 전송한다.
 

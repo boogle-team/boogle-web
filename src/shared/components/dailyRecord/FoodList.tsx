@@ -13,7 +13,7 @@ const FoodList = ({ foods }: FoodListPropTypes) => {
       <h3 className="caption-bold text-gray-7">오늘 먹은 것</h3>
       <ul className="flex flex-wrap gap-x-3">
         {foods.map(({ id, name }) => (
-          <FoodItem key={id} name={name} />
+          <FoodItem key={id} id={id} name={name} />
         ))}
       </ul>
     </section>

@@ -21,13 +21,6 @@ export const isFutureDate = (dateKey: string) => dateKey > getTodayDateKey();
 
 export const isTodayDate = (dateKey: string) => dateKey === getTodayDateKey();
 
-export const formatRecordTime = (dateTime: string) =>
-  new Intl.DateTimeFormat('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  }).format(new Date(dateTime));
-
 const toBoogleRecordSummaries = (
   boogleRecords: BoogleRecordTypes[],
 ): BoogleRecordSummaryTypes[] =>
@@ -35,20 +28,51 @@ const toBoogleRecordSummaries = (
     ({
       id,
       regDate,
+      bowelMovementAt,
       hasBowel,
       stoolBristol,
       stoolSimple,
       bowelFeeling,
       stomach,
+      distension,
+      remainingFeeling,
+      urgency,
+      takenTime,
+      amount,
+      color,
     }) => ({
       id,
       regDate,
+      bowelMovementAt,
       hasBowel,
       stoolBristol,
       stoolSimple,
       bowelFeeling,
       stomach,
+      distension,
+      remainingFeeling,
+      urgency,
+      takenTime,
+      amount,
+      color,
     }),
+  );
+
+// 시간 이른 대로 정렬
+const sortBoogleRecordsByTime = (boogleRecords: BoogleRecordTypes[]) =>
+  [...boogleRecords].sort(
+    (
+      { bowelMovementAt: firstBowelMovementAt },
+      { bowelMovementAt: secondBowelMovementAt },
+    ) => {
+      if (firstBowelMovementAt === null) {
+        return secondBowelMovementAt === null ? 0 : 1;
+      }
+
+      if (secondBowelMovementAt === null) return -1;
+
+      return firstBowelMovementAt.localeCompare(secondBowelMovementAt);
+    },
   );
 
 const toLifeRecordSummary = (
@@ -107,7 +131,7 @@ export const getBoogleRecordView = ({
   if (isFutureDate(selectedDate)) return { status: 'future' };
 
   const bowelRecords = toBoogleRecordSummaries(
-    records.filter(({ hasBowel }) => hasBowel),
+    sortBoogleRecordsByTime(records.filter(({ hasBowel }) => hasBowel)),
   );
 
   if (bowelRecords.length > 0) {

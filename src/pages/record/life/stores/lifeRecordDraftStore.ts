@@ -20,8 +20,10 @@ interface StartLifeRecordParamTypes {
 
 interface LifeRecordDraftStoreTypes {
   draftKey: string | null;
+  hydratedDraftKey: string | null;
   formState: LifeRecordFormStateTypes;
   startLifeRecord: (param: StartLifeRecordParamTypes) => void;
+  hydrateLifeRecord: (param: Required<StartLifeRecordParamTypes>) => void;
   updateLifeRecord: (partialState: Partial<LifeRecordFormStateTypes>) => void;
   resetLifeRecord: () => void;
 }
@@ -33,13 +35,28 @@ interface LifeRecordDraftStoreTypes {
 export const useLifeRecordDraftStore = create<LifeRecordDraftStoreTypes>(
   (set, get) => ({
     draftKey: null,
+    hydratedDraftKey: null,
     formState: INITIAL_LIFE_RECORD_STATE,
 
     // 같은 키면 아무것도 하지 않는다. 세부 기록에서 돌아왔을 때 입력값이 날아가지 않도록.
     startLifeRecord: ({ draftKey, formState }) => {
       if (get().draftKey === draftKey) return;
 
-      set({ draftKey, formState: formState ?? INITIAL_LIFE_RECORD_STATE });
+      set({
+        draftKey,
+        hydratedDraftKey: formState ? draftKey : null,
+        formState: formState ?? INITIAL_LIFE_RECORD_STATE,
+      });
+    },
+
+    hydrateLifeRecord: ({ draftKey, formState }) => {
+      const state = get();
+
+      if (state.draftKey !== draftKey || state.hydratedDraftKey === draftKey) {
+        return;
+      }
+
+      set({ formState, hydratedDraftKey: draftKey });
     },
 
     updateLifeRecord: (partialState) => {
@@ -47,7 +64,11 @@ export const useLifeRecordDraftStore = create<LifeRecordDraftStoreTypes>(
     },
 
     resetLifeRecord: () => {
-      set({ draftKey: null, formState: INITIAL_LIFE_RECORD_STATE });
+      set({
+        draftKey: null,
+        hydratedDraftKey: null,
+        formState: INITIAL_LIFE_RECORD_STATE,
+      });
     },
   }),
 );
