@@ -32,7 +32,6 @@ const Main = () => {
   const {
     data: dailyRecord,
     isPending: isDailyRecordPending,
-    isFetching: isDailyRecordFetching,
     isError: isDailyRecordError,
     fetchStatus: dailyRecordFetchStatus,
     refetch: refetchDailyRecord,
@@ -62,8 +61,7 @@ const Main = () => {
   } = useRecordForm();
 
   const isDailyRecordChecking =
-    (isDailyRecordPending && dailyRecordFetchStatus !== 'idle') ||
-    isDailyRecordFetching;
+    isDailyRecordPending && dailyRecordFetchStatus !== 'idle';
   const hasExistingBoogleRecord = Boolean(dailyRecord?.boogleRecords.length);
   const hasBowelStatusConflict =
     hasExistingBoogleRecord && formState.bowelStatus === 'no';

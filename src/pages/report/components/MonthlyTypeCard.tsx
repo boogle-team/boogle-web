@@ -55,7 +55,7 @@ const MONTHLY_TYPE_ICON_MAP: Record<
 };
 
 const MonthlyTypeIcon = ({ symbol }: MonthlyTypeIconPropTypes) => {
-  const TypeIcon = MONTHLY_TYPE_ICON_MAP[symbol];
+  const TypeIcon = MONTHLY_TYPE_ICON_MAP[symbol] ?? MonthlyPendingTypeIcon;
 
   return <TypeIcon aria-hidden="true" className="h-10 w-10 shrink-0" />;
 };

@@ -67,14 +67,12 @@ const Report = () => {
   const {
     weeklyReport,
     isError: isWeeklyReportError,
-    isFetching: isWeeklyReportFetching,
     isLoading: isWeeklyReportLoading,
     refetch: refetchWeeklyReport,
   } = useWeeklyReportQuery(isWeeklyReport ? reportStartDate : '');
   const {
     monthlyReport,
     isError: isMonthlyReportError,
-    isFetching: isMonthlyReportFetching,
     isLoading: isMonthlyReportLoading,
     refetch: refetchMonthlyReport,
   } = useMonthlyReportQuery(isWeeklyReport ? '' : reportStartDate);
@@ -87,9 +85,9 @@ const Report = () => {
   const monthlyReportViewData = monthlyReport
     ? mapMonthlyReportViewData(monthlyReport)
     : null;
-  const isSelectedReportFetching = isWeeklyReport
-    ? isWeeklyReportFetching
-    : isMonthlyReportFetching;
+  const isSelectedReportLoading = isWeeklyReport
+    ? isWeeklyReportLoading
+    : isMonthlyReportLoading;
   const loadingMessage = isPdfDownloading
     ? '월간 리포트 PDF를 저장하는 중입니다.'
     : isWeeklyReport
@@ -239,7 +237,7 @@ const Report = () => {
 
         {isWeeklyReport ? renderWeeklyReport() : renderMonthlyReport()}
       </div>
-      {(isSelectedReportFetching || isPdfDownloading) && (
+      {(isSelectedReportLoading || isPdfDownloading) && (
         <LoadingSpinner hasBackdrop message={loadingMessage} />
       )}
     </section>
