@@ -31,7 +31,6 @@ const Main = () => {
   const recordDate = useRecordDraftDate();
   const {
     data: dailyRecord,
-    isPending: isDailyRecordPending,
     isError: isDailyRecordError,
     fetchStatus: dailyRecordFetchStatus,
     refetch: refetchDailyRecord,
@@ -60,12 +59,16 @@ const Main = () => {
     handlePainLevelChange,
   } = useRecordForm();
 
-  const isDailyRecordChecking =
-    isDailyRecordPending && dailyRecordFetchStatus !== 'idle';
+  // 캐시에 남은 예전 응답으로 판단하지 않도록 재조회 중에는 항상 확인 중으로 본다.
+  // (생활 기록을 먼저 저장한 날의 부글 기록에서 특히 중요하다.)
+  const isDailyRecordChecking = dailyRecordFetchStatus !== 'idle';
   const hasExistingBoogleRecord = Boolean(dailyRecord?.boogleRecords.length);
   const hasBowelStatusConflict =
     hasExistingBoogleRecord && formState.bowelStatus === 'no';
-  const hasLifeRecord = Boolean(dailyRecord?.lifeRecord);
+  // 조회로 확인한 결과 생활 기록이 없을 때만 유도한다. 확인하지 못했으면 유도하지 않는다.
+  const shouldSuggestLifeRecord = Boolean(
+    dailyRecord && !dailyRecord.lifeRecord,
+  );
   const isSubmitBlocked =
     !isSubmittable ||
     isCreatingRecord ||
@@ -97,7 +100,7 @@ const Main = () => {
         onSuccess: () => {
           resetDraft();
 
-          if (!hasLifeRecord) {
+          if (shouldSuggestLifeRecord) {
             setIsLifeRecordModalOpen(true);
             return;
           }
