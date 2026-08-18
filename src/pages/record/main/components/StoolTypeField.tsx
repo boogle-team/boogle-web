@@ -1,8 +1,6 @@
-import { useRef, useState } from 'react';
-
 import TooltipPopover from '@/shared/components/TooltipPopover';
-import useOutsideClick from '@/shared/hooks/useOutsideClick';
 import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
+import { useRecordTooltip } from '@/pages/record/shared/hooks/useRecordTooltip';
 import StoolType1Icon from '@/shared/assets/illustrations/record/stoolType/stoolType1.svg?react';
 import StoolType2Icon from '@/shared/assets/illustrations/record/stoolType/stoolType2.svg?react';
 import StoolType3Icon from '@/shared/assets/illustrations/record/stoolType/stoolType3.svg?react';
@@ -69,23 +67,27 @@ const StoolTypeButton = ({
 };
 
 const StoolTypeField = ({ value, onChange }: StoolTypeFieldPropTypes) => {
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useOutsideClick(sectionRef, () => setIsInfoOpen(false));
+  const {
+    isTooltipOpen,
+    handleInfoClick,
+    sectionRef,
+    infoButtonRef,
+    tooltipArrowStyle,
+  } = useRecordTooltip();
 
   return (
     <section ref={sectionRef} className="relative flex flex-col gap-3">
       <RecordSectionTitle
         title="변 상태"
         isInfoVisible
-        onInfoClick={() => setIsInfoOpen((prev) => !prev)}
+        onInfoClick={handleInfoClick}
+        infoButtonRef={infoButtonRef}
       />
 
-      {isInfoOpen && (
+      {isTooltipOpen && (
         <TooltipPopover
           className="caption absolute left-0 top-9 z-10 w-[calc(100%-4.5rem)]"
-          arrowClassName="left-18"
+          arrowStyle={tooltipArrowStyle}
         >
           <p className="label-semi mb-1">Bristol Stool Scale이란?</p>
           <p className="mb-2 text-orange-1">

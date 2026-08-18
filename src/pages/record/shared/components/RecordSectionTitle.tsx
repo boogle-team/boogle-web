@@ -21,7 +21,7 @@ const RecordSectionTitle = ({
 }: RecordSectionTitlePropTypes) => {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <BulletPointIcon className="h-4 w-4" aria-hidden="true" />
         <h2 className="body-m tracking-[-0.02rem] text-gray-8">{title}</h2>
 
