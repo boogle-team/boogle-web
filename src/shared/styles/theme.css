@@ -220,6 +220,22 @@
   animation: complete-content-fade-up 500ms ease-out both;
 }
 
+@keyframes boogle-waiting-character-breathe {
+  0%,
+  100% {
+    transform: scale(0.98);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@utility animate-boogle-waiting-character {
+  transform-origin: center 75%;
+  animation: boogle-waiting-character-breathe 2000ms ease-in-out infinite;
+}
+
 /* 가로 스크롤은 유지하면서 스크롤바만 감춘다. */
 @utility scrollbar-hide {
   scrollbar-width: none; /* Firefox */
