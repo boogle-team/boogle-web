@@ -13,7 +13,9 @@ import type {
   RecordTimeValueTypes,
   StoolTypeId,
 } from '@/pages/record/main/types/recordTypes';
+import { getNearestPastHourTime } from '@/pages/record/main/utils/getNearestPastHourTime';
 import {
+  createInitialMainRecordState,
   INITIAL_DETAIL_RECORD_STATE,
   INITIAL_MAIN_RECORD_STATE,
   RECORD_DATE_FORMAT,
@@ -64,7 +66,7 @@ const isStoolTypeId = (value: number | null): value is StoolTypeId =>
 const mapBowelMovementTime = (
   bowelMovementAt: string | null,
 ): RecordTimeValueTypes => {
-  if (!bowelMovementAt) return INITIAL_MAIN_RECORD_STATE.time;
+  if (!bowelMovementAt) return getNearestPastHourTime();
 
   const [hourText, minuteText] = bowelMovementAt.split(':');
   const hour24 = Number(hourText);
@@ -78,7 +80,7 @@ const mapBowelMovementTime = (
     minute < 0 ||
     minute > 59
   ) {
-    return INITIAL_MAIN_RECORD_STATE.time;
+    return getNearestPastHourTime();
   }
 
   return {
@@ -102,7 +104,7 @@ export const mapBoogleRecordResponseToDraft = (
     return {
       recordDate: dayjs(record.regDate).format(RECORD_DATE_FORMAT),
       main: {
-        ...INITIAL_MAIN_RECORD_STATE,
+        ...createInitialMainRecordState(),
         bowelStatus: 'no',
       },
       detail: INITIAL_DETAIL_RECORD_STATE,

@@ -11,6 +11,7 @@ import type {
   RecordTimeValueTypes,
   StoolTypeId,
 } from '../types/recordTypes';
+import { getNearestPastHourTime } from '../utils/getNearestPastHourTime';
 
 export const useRecordForm = () => {
   const formState = useRecordDraftStore((state) => state.main);
@@ -23,7 +24,7 @@ export const useRecordForm = () => {
     if (bowelStatus === 'no') {
       updateMain({
         bowelStatus,
-        time: INITIAL_MAIN_RECORD_STATE.time,
+        time: getNearestPastHourTime(),
         stoolType: INITIAL_MAIN_RECORD_STATE.stoolType,
         feeling: INITIAL_MAIN_RECORD_STATE.feeling,
         painLevel: INITIAL_MAIN_RECORD_STATE.painLevel,

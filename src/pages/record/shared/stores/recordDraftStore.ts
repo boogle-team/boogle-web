@@ -6,16 +6,22 @@ import type {
   RecordFormStateTypes,
   RecordTimeValueTypes,
 } from '@/pages/record/main/types/recordTypes';
+import { getNearestPastHourTime } from '@/pages/record/main/utils/getNearestPastHourTime';
 
 export const RECORD_DATE_FORMAT = 'YYYY-MM-DD';
 
-export const INITIAL_MAIN_RECORD_STATE: RecordFormStateTypes = {
+export const INITIAL_MAIN_RECORD_STATE = {
   bowelStatus: 'yes',
-  time: { hour: 8, minute: 0, meridiem: 'PM' },
   stoolType: null,
   feeling: 'comfortable',
   painLevel: 0,
-};
+} satisfies Omit<RecordFormStateTypes, 'time'>;
+
+// 시간 기본값은 열 때마다 달라지므로 상수가 아니라 함수로 만든다.
+export const createInitialMainRecordState = (): RecordFormStateTypes => ({
+  ...INITIAL_MAIN_RECORD_STATE,
+  time: getNearestPastHourTime(),
+});
 
 export const INITIAL_DETAIL_RECORD_STATE: DetailRecordFormStateTypes = {
   bloating: 'none',
@@ -50,7 +56,7 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
   (set, get) => ({
     draftKey: null,
     recordDate: dayjs().format(RECORD_DATE_FORMAT),
-    main: INITIAL_MAIN_RECORD_STATE,
+    main: createInitialMainRecordState(),
     detail: INITIAL_DETAIL_RECORD_STATE,
 
     // 같은 키면 아무것도 하지 않는다. 세부 기록에서 돌아왔을 때 입력값이 날아가지 않도록.
@@ -60,7 +66,7 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
       set({
         draftKey,
         recordDate,
-        main: main ?? INITIAL_MAIN_RECORD_STATE,
+        main: main ?? createInitialMainRecordState(),
         detail: detail ?? INITIAL_DETAIL_RECORD_STATE,
       });
     },
@@ -85,7 +91,7 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
       set({
         draftKey: null,
         recordDate: dayjs().format(RECORD_DATE_FORMAT),
-        main: INITIAL_MAIN_RECORD_STATE,
+        main: createInitialMainRecordState(),
         detail: INITIAL_DETAIL_RECORD_STATE,
       });
     },
