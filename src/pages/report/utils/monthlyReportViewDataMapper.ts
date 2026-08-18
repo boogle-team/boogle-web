@@ -61,15 +61,10 @@ export const mapMonthlyReportViewData = (
     conditionProgress: mapStoolDistribution(report.stoolDistribution),
     monthlyType: report.userType
       ? {
-          description:
-            report.userType.code === 'N'
-              ? `이번 달 기록이 ${report.recordStats.recordedDays}일뿐이라 아직 유형을 정확히 알기\n어려워요 (${report.recordStats.requiredDays}일 이상 필요)`
-              : report.userType.description,
+          description: report.userType.description,
+          name: report.userType.name,
           symbol: report.userType.code,
-          title:
-            report.userType.code === 'N'
-              ? '유형 진단 중'
-              : report.userType.name,
+          title: report.userType.title,
         }
       : null,
     patterns: report.patternCards.map(({ description, ruleCode, title }) => ({
