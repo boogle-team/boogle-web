@@ -32,7 +32,9 @@ const GuideActionSection = ({
   }
 
   return (
-    <section className="mt-8 border-t border-beige-7 pt-7">
+    <section
+      className={`mt-8 pt-7 ${isInfoGuide ? '' : 'border-t border-beige-7'}`}
+    >
       {actions.length > 0 && (
         <>
           {!isInfoGuide && (

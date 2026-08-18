@@ -5,7 +5,7 @@ interface GuideDescriptionTextPropTypes {
 const DESCRIPTION_HIGHLIGHTS = [
   '본인만의 평소 리듬',
   '본인에게 맞는 리듬',
-  '3~4형이 이상적인 형태예요.',
+  '3~4형',
 ] as const;
 
 const GuideDescriptionText = ({ text }: GuideDescriptionTextPropTypes) => {

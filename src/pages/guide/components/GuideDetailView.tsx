@@ -29,6 +29,7 @@ const GuideDetailView = ({
   onFeedbackClick,
 }: GuideDetailViewPropTypes) => {
   const isInfoGuide = guideDetail.type === 'info';
+  const isBristolGuide = guideDetail.guideId === 2;
   const isPersonalGuide = guideDetail.type === 'personal';
   const isWarningGuide = guideDetail.type === 'warning';
   const infoSections = isWarningGuide ? [] : guideDetail.infoSections;
@@ -79,7 +80,10 @@ const GuideDetailView = ({
                   : undefined
               }
             >
-              <GuideInfoSectionCard infoSections={infoSections} />
+              <GuideInfoSectionCard
+                infoSections={infoSections}
+                isBristolGuide={isBristolGuide}
+              />
             </div>
           )}
         </section>
