@@ -4,7 +4,7 @@ interface GuideSourceTextPropTypes {
 }
 
 const GuideSourceText = ({
-  className = 'caption mt-6 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7',
+  className = 'caption mt-8 whitespace-pre-line text-center tracking-[-0.015rem] text-gray-7',
   source,
 }: GuideSourceTextPropTypes) => {
   if (!source) {

@@ -36,7 +36,7 @@ const GuideDetailView = ({
   const hasInfoSections = infoSections.length > 0;
 
   return (
-    <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pb-10 text-gray-10">
+    <section className="mx-auto min-h-screen max-w-[430px] bg-beige-5 px-layout pb-12 text-gray-10">
       <div className="-mx-layout">
         <TopNavigation
           title="가이드 상세"
@@ -49,12 +49,12 @@ const GuideDetailView = ({
       <div className="pt-6">
         <GuideCategoryBadge guideType={guideDetail.type} />
 
-        <h2 className="display mt-5 tracking-[-0.06875rem] text-gray-10">
+        <h2 className="display mt-4 tracking-[-0.06875rem] text-gray-10">
           {guideDetail.title}
         </h2>
         <GuideDescriptionText text={guideDetail.description} />
 
-        <section className="mt-9">
+        <section className="mt-8">
           {!isInfoGuide && (
             <h3 className="label-semi mb-2 text-gray-8">
               {isWarningGuide ? '증상별 확인' : '이 패턴이 나온 이유'}

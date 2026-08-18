@@ -8,7 +8,7 @@ interface GuideCategoryBadgePropTypes {
 const CATEGORY_BADGE_BY_TYPE = {
   info: {
     label: '장 건강 정보',
-    style: 'gap-2 rounded-xl bg-orange-6 px-3 py-1 text-beige-1',
+    style: 'gap-2 rounded-full bg-orange-6 px-3 py-1 text-beige-1',
   },
   personal: {
     label: '내 기록 연결',

@@ -32,9 +32,7 @@ const GuideActionSection = ({
   }
 
   return (
-    <section
-      className={`mt-8 pt-7 ${isInfoGuide ? '' : 'border-t border-beige-7'}`}
-    >
+    <section className={`mt-8 ${isInfoGuide ? '' : 'border-t border-beige-7'}`}>
       {actions.length > 0 && (
         <>
           {!isInfoGuide && (
@@ -86,12 +84,12 @@ const GuideActionCard = ({
     <article
       className={
         isNotice
-          ? 'rounded-lg border border-orange-2 bg-orange-1 px-4 py-3'
-          : 'rounded-lg bg-beige-1 p-4 shadow-sm'
+          ? 'rounded-xl border border-orange-4 bg-orange-1 p-4 shadow-sm'
+          : 'rounded-xl bg-beige-1 p-4 shadow-sm'
       }
     >
       <h4
-        className={`${isNotice ? 'label-semi items-start text-orange-6' : 'body-m-bold items-start text-gray-10'} flex gap-3`}
+        className={`${isNotice ? 'label-semi items-start text-orange-6' : 'body-m-bold items-start text-gray-10'} flex gap-1 `}
       >
         {isNotice ? (
           <InfoNoticeIcon
