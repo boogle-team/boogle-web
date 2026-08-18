@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
 
-import { useScrollToTop } from '../hooks/useScrollToTop';
-
 interface RecordPageLayoutPropTypes {
   title: string;
   subTitle?: string;
@@ -30,8 +28,6 @@ const RecordPageLayout = ({
   onDeleteButtonClick,
 }: RecordPageLayoutPropTypes) => {
   const navigate = useNavigate();
-
-  useScrollToTop();
 
   const handleBackButtonClick = () => {
     if (onBackButtonClick) {
