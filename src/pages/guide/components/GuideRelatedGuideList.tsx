@@ -18,7 +18,7 @@ const GuideRelatedGuideList = ({
   }
 
   return (
-    <section className="mt-8">
+    <section className="mt-8 border-t border-beige-7 pt-7">
       <h3 className="body-m-bold text-gray-8">함께 보면 좋은 가이드</h3>
       <div className="mt-3 flex flex-col gap-2">
         {relatedGuides.map((relatedGuide) => (

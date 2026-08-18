@@ -90,6 +90,7 @@ const GuideDetailView = ({
           isFeedbackAllowed={isPersonalGuide}
           isFeedbackPending={isFeedbackPending}
           isFeedbackToastVisible={feedbackToastVariant === 'success'}
+          isInfoGuide={isInfoGuide}
           onFeedbackClick={onFeedbackClick}
         />
 
