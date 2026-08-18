@@ -44,8 +44,12 @@ registerRoute(
   }),
 );
 
-// 사용자가 업데이트를 수락하기 전까지 새 서비스 워커를 대기 상태로 둔다.
-// 즉시 skipWaiting을 호출하면 기록 입력 중에 화면이 갱신될 수 있다.
+// 발표 전에는 최신 버전 노출을 우선하여 설치된 서비스 워커를 즉시 활성화한다.
+self.addEventListener('install', (event) => {
+  event.waitUntil(self.skipWaiting());
+});
+
+// 발표 이후 prompt 방식으로 복귀할 때 사용할 메시지 처리도 유지한다.
 self.addEventListener('message', (event) => {
   if (event.data?.type === SKIP_WAITING_MESSAGE_TYPE) {
     void self.skipWaiting();
