@@ -60,7 +60,7 @@ export default defineConfig({
     tailwindcss(),
 
     VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'serviceWorker.ts',

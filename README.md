@@ -3,7 +3,9 @@
   
 - [📌 프로젝트 소개](#-프로젝트-소개)
 - [👥 팀원](#-팀원)
+- [💁 역할분담](#-역할분담)
 - [🛠 기술 스택](#-기술-스택)
+- [👷‍♀️ 시스템 아키텍처](#system-architecture)
 - [📁 폴더 구조](#-폴더-구조)
 - [🖥 화면 목록 및 플로우](#-화면-목록-및-플로우)
 - [🌿 Git 컨벤션](#-git-컨벤션)
@@ -71,6 +73,17 @@
 </table>
 
 
+<br/>
+
+## 💁 역할분담
+
+| 팀원     | 초기 세팅                                                                   | UI 구현          | 기능 구현                |
+| ------ | ----------------------------------------------------------------------- | -------------- | -------------------- |
+| **리치/김시연** | CI/CD 및 Vercel 배포 환경 구축<br>Tailwind CSS Reset · Global Style · Theme 설정 | 로그인 · 온보딩<br>홈 | 로그인 · 온보딩<br>홈<br>설정 |
+| **곤/유민형** | 프로젝트 폴더 구조 설계<br>절대 경로 설정<br>PWA 환경 설정                                  | 알림<br>설정       | 알림<br>부글 기록<br>리포트   |
+| **지오/김지오** | ESLint · Prettier 설정<br>Router 초기 설정                                    | 리포트<br>가이드     | 생활 기록                |
+| **호수/이수호** | TanStack Query 초기 설정<br>Axios Instance 설정                               | 캘린더<br>기록      | 캘린더<br>가이드           |
+
 
 <br/>
 
@@ -85,6 +98,14 @@
 | **패키지 매니저** | ![pnpm](https://img.shields.io/badge/pnpm-10.33.2-F69220?style=flat-square&logo=pnpm&logoColor=white) |
 | **배포** | ![Vercel](https://img.shields.io/badge/Vercel-Deploy-000000?style=flat-square&logo=vercel&logoColor=white) |
 
+
+
+<br/>
+
+<a id="system-architecture"></a>
+## 👷‍♀️ 시스템 아키텍처
+
+<img width="1920" height="1080" alt="시스템아키텍처" src="https://github.com/user-attachments/assets/778526bf-0e53-44e8-a479-c6fb6ff74532" />
 
 
 <br/>
