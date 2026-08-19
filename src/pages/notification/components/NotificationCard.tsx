@@ -2,7 +2,7 @@ import ChartIcon from '@/shared/assets/icons/notificationPageIcons/chartIcon.svg
 import ClockIcon from '@/shared/assets/icons/notificationPageIcons/clockIcon.svg?react';
 import FlameIcon from '@/shared/assets/icons/notificationPageIcons/flameIcon.svg?react';
 import RoundedChartIcon from '@/shared/assets/icons/notificationPageIcons/roundedChartIcon.svg?react';
-import WarningNoticeIcon from '@/shared/assets/icons/notificationPageIcons/warningNotice.svg?react';
+import WarningBadgeIcon from '@/shared/assets/icons/warningBadgeIcon.svg?react';
 
 import { getNotificationTimestamp } from '@/pages/notification/utils/notificationDate';
 
@@ -15,7 +15,7 @@ import type {
 import type { ComponentType, SVGProps } from 'react';
 
 const NOTIFICATION_ICON_MAP = {
-  warning: WarningNoticeIcon,
+  warning: WarningBadgeIcon,
   record: ClockIcon,
   weeklyReport: ChartIcon,
   monthlyReport: RoundedChartIcon,

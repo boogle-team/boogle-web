@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import RootBackgroundContext from '@/shared/contexts/rootBackgroundContext';
 import useRootBackgroundColor from '@/shared/hooks/useRootBackgroundColor';
+import useRouteScrollReset from '@/shared/hooks/useRouteScrollReset';
 
 const ROOT_BACKGROUND_COLORS = {
   ORANGE_6: 'var(--color-orange-6)',
@@ -79,6 +80,8 @@ const RootBackgroundSync = () => {
     RootBackgroundOverrideTypes[]
   >([]);
   const overrideIdRef = useRef(0);
+
+  useRouteScrollReset();
 
   const registerRootBackgroundOverride = useCallback(
     (backgroundColor: string) => {

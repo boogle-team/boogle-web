@@ -1,4 +1,5 @@
 import TopNavigation from '@/shared/components/topNavigation/TopNavigation';
+import LoadingSpinner from '@/shared/components/LoadingSpinner';
 import InsufficientReportBody from './components/InsufficientReportBody';
 import MonthlyReportBody from './components/MonthlyReportBody';
 import ReportModeTabs from './components/ReportModeTabs';
@@ -84,6 +85,14 @@ const Report = () => {
   const monthlyReportViewData = monthlyReport
     ? mapMonthlyReportViewData(monthlyReport)
     : null;
+  const isSelectedReportLoading = isWeeklyReport
+    ? isWeeklyReportLoading
+    : isMonthlyReportLoading;
+  const loadingMessage = isPdfDownloading
+    ? '월간 리포트 PDF를 저장하는 중입니다.'
+    : isWeeklyReport
+      ? '주간 리포트를 불러오는 중입니다.'
+      : '월간 리포트를 불러오는 중입니다.';
 
   const handleModeClick = (mode: ReportModeTypes) => {
     changeReportMode(mode);
@@ -111,7 +120,7 @@ const Report = () => {
 
   const renderWeeklyReport = () => {
     if (isWeeklyReportLoading) {
-      return <ReportStatusBody message="주간 리포트를 불러오는 중이에요." />;
+      return null;
     }
 
     if (isWeeklyReportError) {
@@ -154,7 +163,7 @@ const Report = () => {
 
   const renderMonthlyReport = () => {
     if (isMonthlyReportLoading) {
-      return <ReportStatusBody message="월간 리포트를 불러오는 중이에요." />;
+      return null;
     }
 
     if (isMonthlyReportError) {
@@ -228,6 +237,9 @@ const Report = () => {
 
         {isWeeklyReport ? renderWeeklyReport() : renderMonthlyReport()}
       </div>
+      {(isSelectedReportLoading || isPdfDownloading) && (
+        <LoadingSpinner hasBackdrop message={loadingMessage} />
+      )}
     </section>
   );
 };

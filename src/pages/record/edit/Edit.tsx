@@ -69,6 +69,9 @@ const Edit = () => {
   } = useUpdateBoogleRecordMutation();
 
   const recordDate = useRecordDraftStore((state) => state.recordDate);
+  const isTimeUnrecorded = useRecordDraftStore(
+    (state) => state.isTimeUnrecorded,
+  );
   const detailFormState = useRecordDraftStore((state) => state.detail);
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
@@ -98,6 +101,9 @@ const Edit = () => {
     Boolean(boogleRecord) &&
     ((isDailyRecordPending && dailyRecordFetchStatus !== 'idle') ||
       isDailyRecordFetching);
+  // 네트워크가 끊기면 조회가 paused로 멈춰 에러도 아니고 끝나지도 않는다.
+  // 버튼만 비활성으로 남는 상태를 막기 위해 따로 안내한다.
+  const isDailyRecordPaused = dailyRecordFetchStatus === 'paused';
   const hasOtherBowelRecord = Boolean(
     dailyRecord?.boogleRecords.some(
       ({ id, hasBowel }) => id !== recordId && hasBowel,
@@ -142,6 +148,7 @@ const Edit = () => {
     try {
       request = mapBoogleRecordPatchRequest({
         recordDate,
+        isTimeUnrecorded,
         main: formState,
         detail: detailFormState,
       });
@@ -271,6 +278,14 @@ const Edit = () => {
       onDeleteButtonClick={handleDeleteButtonClick}
       footer={
         <div className="flex flex-col gap-2">
+          {isDailyRecordPaused && (
+            <p
+              role="alert"
+              className="caption text-center text-semantic-danger"
+            >
+              네트워크 연결을 확인해 주세요. 연결되면 자동으로 다시 확인해요.
+            </p>
+          )}
           {isDailyRecordError && (
             <div className="flex flex-col items-center gap-2">
               <p

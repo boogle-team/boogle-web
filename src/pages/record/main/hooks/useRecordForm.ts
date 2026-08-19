@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
 
-import {
-  INITIAL_MAIN_RECORD_STATE,
-  useRecordDraftStore,
-} from '@/pages/record/shared/stores/recordDraftStore';
+import { useRecordDraftStore } from '@/pages/record/shared/stores/recordDraftStore';
 
 import type {
   BowelStatusTypes,
@@ -17,20 +14,10 @@ export const useRecordForm = () => {
   const updateMain = useRecordDraftStore((state) => state.updateMain);
   const updateMainTime = useRecordDraftStore((state) => state.updateMainTime);
 
+  // '없음'이면 하위 항목이 화면에서 사라지지만 값은 그대로 둔다.
+  // 요청 매퍼가 hasBowel이 false일 때 배변 상세를 읽지 않으므로 payload에 섞이지 않고,
+  // 실수로 토글했다가 되돌렸을 때 기존 기록의 시각·형태·느낌이 살아남는다.
   const handleBowelStatusChange = (bowelStatus: BowelStatusTypes) => {
-    // '없음'이면 하위 항목이 화면에서 사라지므로 값도 함께 되돌린다.
-    // 그대로 두면 화면에 보이지 않는 값이 제출 payload에 섞여 들어간다.
-    if (bowelStatus === 'no') {
-      updateMain({
-        bowelStatus,
-        time: INITIAL_MAIN_RECORD_STATE.time,
-        stoolType: INITIAL_MAIN_RECORD_STATE.stoolType,
-        feeling: INITIAL_MAIN_RECORD_STATE.feeling,
-        painLevel: INITIAL_MAIN_RECORD_STATE.painLevel,
-      });
-      return;
-    }
-
     updateMain({ bowelStatus });
   };
 

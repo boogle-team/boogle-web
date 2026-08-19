@@ -16,7 +16,7 @@ const HomeMessageBanner = ({ content }: HomeMessageBannerPropTypes) => {
       <div className="flex min-h-[5.75rem] w-full items-center">
         <BoogleWaitingCharacter
           aria-hidden="true"
-          className="h-[5.75rem] w-[6rem] shrink-0 max-[23.4375rem]:h-auto max-[23.4375rem]:w-[5.25rem]"
+          className="animate-boogle-waiting-character h-[5.75rem] w-[6rem] shrink-0 motion-reduce:animate-none max-[23.4375rem]:h-auto max-[23.4375rem]:w-[5.25rem]"
         />
 
         <div className="relative -ml-3 flex min-h-[5.75rem] min-w-0 flex-1 items-center">

@@ -23,7 +23,7 @@ const GuideDetailSummaryCard = ({
   metrics,
   notice,
 }: GuideDetailSummaryCardPropTypes) => (
-  <article className="rounded-xl bg-beige-1 px-5 py-5 shadow-sm">
+  <article className="rounded-xl bg-beige-1 px-4 py-4 shadow-sm">
     <h4 className="body-m-bold tracking-[-0.02rem] text-gray-10">
       최근 7일 데이터
     </h4>

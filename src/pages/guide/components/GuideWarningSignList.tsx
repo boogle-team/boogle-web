@@ -15,7 +15,7 @@ const GuideWarningSignList = ({
           {title}
         </h4>
         <p className="label mt-1 text-gray-7">{description}</p>
-        <p className="label mt-3 flex items-center gap-2 text-semantic-danger">
+        <p className="label-semi mt-3 flex items-center gap-2 text-semantic-danger">
           <WarningNoticeIcon
             aria-hidden="true"
             className="h-3.5 w-3.5 shrink-0"

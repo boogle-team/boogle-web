@@ -24,10 +24,15 @@ const MonthlyTypeCardItem = ({ monthlyType }: MonthlyTypeCardItemPropTypes) => (
     <div className="mt-3 grid grid-cols-[2.75rem_1fr] items-start gap-4">
       <MonthlyTypeIcon symbol={monthlyType.symbol} />
       <div className="min-w-0">
-        <h3 className="header">{monthlyType.title}</h3>
-        <p className="caption mt-1 max-w-[16.5625rem] whitespace-pre-line break-keep text-orange-1">
-          {monthlyType.description}
+        <h3 className="header">{monthlyType.name}</h3>
+        <p className="caption mt-1 max-w-[16.5625rem] whitespace-pre-line break-keep">
+          {monthlyType.title}
         </p>
+        {monthlyType.description && (
+          <p className="caption mt-1 max-w-[16.5625rem] whitespace-pre-line break-keep text-orange-1">
+            {monthlyType.description}
+          </p>
+        )}
       </div>
     </div>
   </section>
@@ -37,53 +42,22 @@ interface MonthlyTypeIconPropTypes {
   symbol: MonthlyTypeTypes['symbol'];
 }
 
+const MONTHLY_TYPE_ICON_MAP: Record<
+  MonthlyTypeTypes['symbol'],
+  typeof MonthlyRegularTypeIcon
+> = {
+  C: MonthlyConstipationTypeIcon,
+  I: MonthlyIrregularTypeIcon,
+  L: MonthlyLifestyleTypeIcon,
+  N: MonthlyPendingTypeIcon,
+  R: MonthlyRegularTypeIcon,
+  W: MonthlyLooseStoolTypeIcon,
+};
+
 const MonthlyTypeIcon = ({ symbol }: MonthlyTypeIconPropTypes) => {
-  const iconClassName = 'h-10 w-10 shrink-0';
+  const TypeIcon = MONTHLY_TYPE_ICON_MAP[symbol] ?? MonthlyPendingTypeIcon;
 
-  if (symbol === 'R') {
-    return (
-      <MonthlyRegularTypeIcon aria-hidden="true" className={iconClassName} />
-    );
-  }
-
-  if (symbol === 'C') {
-    return (
-      <MonthlyConstipationTypeIcon
-        aria-hidden="true"
-        className={iconClassName}
-      />
-    );
-  }
-
-  if (symbol === 'N') {
-    return (
-      <MonthlyPendingTypeIcon aria-hidden="true" className={iconClassName} />
-    );
-  }
-
-  if (symbol === 'L') {
-    return (
-      <MonthlyLooseStoolTypeIcon aria-hidden="true" className={iconClassName} />
-    );
-  }
-
-  if (symbol === 'I') {
-    return (
-      <MonthlyLifestyleTypeIcon aria-hidden="true" className={iconClassName} />
-    );
-  }
-
-  if (symbol === 'U') {
-    return (
-      <MonthlyIrregularTypeIcon aria-hidden="true" className={iconClassName} />
-    );
-  }
-
-  return (
-    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-1 text-orange-6">
-      <span className="text-[1.75rem] font-bold leading-none">{symbol}</span>
-    </div>
-  );
+  return <TypeIcon aria-hidden="true" className="h-10 w-10 shrink-0" />;
 };
 
 export default MonthlyTypeCard;

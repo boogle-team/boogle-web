@@ -8,7 +8,7 @@ export const getWeeklyReportQueryKey = (weekStartDate: string) =>
   [...WEEKLY_REPORT_QUERY_KEY, weekStartDate] as const;
 
 const useWeeklyReportQuery = (weekStartDate: string) => {
-  const { data, isError, isLoading, refetch } = useQuery({
+  const { data, isError, isFetching, isLoading, refetch } = useQuery({
     queryKey: getWeeklyReportQueryKey(weekStartDate),
     queryFn: () =>
       getWeeklyReport({
@@ -21,6 +21,7 @@ const useWeeklyReportQuery = (weekStartDate: string) => {
   return {
     weeklyReport: data?.data ?? null,
     isError,
+    isFetching,
     isLoading,
     refetch,
   };

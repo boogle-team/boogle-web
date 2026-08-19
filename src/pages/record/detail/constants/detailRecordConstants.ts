@@ -106,6 +106,11 @@ export const STOOL_COLOR_OPTIONS: StoolColorOptionTypes[] = [
 
 export const ABNORMAL_STOOL_COLORS: StoolColorTypes[] = ['black', 'red'];
 
+export const ABNORMAL_COLOR_NOTICE = {
+  title: '주의가 필요한 색상이에요',
+  description: '해당 색상이 지속되면 전문가 상담을 권장해요',
+} as const;
+
 export const ABNORMAL_COLOR_MODAL = {
   title: '주의가 필요한 기록이에요',
   confirmText: '확인했어요',

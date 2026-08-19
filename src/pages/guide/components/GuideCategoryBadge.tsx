@@ -8,15 +8,16 @@ interface GuideCategoryBadgePropTypes {
 const CATEGORY_BADGE_BY_TYPE = {
   info: {
     label: '장 건강 정보',
-    style: 'bg-orange-6 text-beige-1',
+    style: 'gap-2 rounded-full bg-orange-6 px-3 py-1 text-beige-1',
   },
   personal: {
     label: '내 기록 연결',
-    style: 'border border-orange-6 bg-orange-1 text-orange-6',
+    style:
+      'gap-1 rounded-full border border-orange-6 bg-orange-1 px-2 py-1 text-orange-6',
   },
   warning: {
     label: '주의 신호',
-    style: 'bg-semantic-danger text-beige-1',
+    style: 'gap-1 rounded-full bg-semantic-danger px-2 py-1 text-beige-1',
   },
 } as const;
 
@@ -25,7 +26,7 @@ const GuideCategoryBadge = ({ guideType }: GuideCategoryBadgePropTypes) => {
 
   return (
     <span
-      className={`label-semi inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 ${style}`}
+      className={`caption-bold inline-flex min-h-6 items-center justify-center ${style}`}
     >
       {guideType === 'personal' && (
         <PersonalCategoryIcon aria-hidden="true" className="h-4 w-4 shrink-0" />

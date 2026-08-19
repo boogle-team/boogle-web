@@ -75,6 +75,7 @@ export default defineConfig({
         theme_color: '#FF8253',
         background_color: '#FF8253',
         display: 'standalone',
+        orientation: 'portrait-primary',
         start_url: '/',
         scope: '/',
         icons: [

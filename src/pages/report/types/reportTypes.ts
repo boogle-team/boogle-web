@@ -68,8 +68,9 @@ export interface WeeklyTrendTypes {
 }
 
 export interface MonthlyTypeTypes {
-  description: string;
-  symbol: 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
+  description: string | null;
+  name: string;
+  symbol: import('./reportApiTypes').MonthlyUserTypeCodeTypes;
   title: string;
 }
 

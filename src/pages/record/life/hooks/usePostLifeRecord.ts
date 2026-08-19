@@ -12,8 +12,11 @@ export const usePostLifeRecord = () => {
 
   return useMutation({
     mutationFn: postLifeRecord,
-    onSuccess: async (lifeRecord) => {
-      const recordDate = lifeRecord.regDate.match(/^\d{4}-\d{2}-\d{2}/)?.[0];
+    onSuccess: async (lifeRecord, requestBody) => {
+      // 응답 regDate 형식이 흔들려도 캐시가 남지 않도록 요청에 쓴 날짜를 우선한다.
+      const recordDate =
+        requestBody.regDate ||
+        lifeRecord.regDate.match(/^\d{4}-\d{2}-\d{2}/)?.[0];
 
       if (recordDate) {
         queryClient.removeQueries({

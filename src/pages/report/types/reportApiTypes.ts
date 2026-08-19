@@ -33,7 +33,7 @@ export type TimeSlotTypes =
 export type PatternLevelTypes = 'DANGER' | 'GOOD' | 'INFO' | 'OK' | 'WARN';
 export type GuideCategoryTypes = 'H' | 'P' | 'W';
 export type GuideFeedbackStatusTypes = 'A' | 'G' | 'N' | null;
-export type MonthlyUserTypeCodeTypes = 'C' | 'I' | 'L' | 'N' | 'R' | 'U';
+export type MonthlyUserTypeCodeTypes = 'C' | 'I' | 'L' | 'N' | 'R' | 'W';
 
 export interface ReportPeriodResponseTypes {
   endDate: string;
@@ -174,10 +174,10 @@ export interface MonthlyLifeFactorStatsResponseTypes {
 }
 
 export interface MonthlyUserTypeResponseTypes {
-  characterImageUrl?: string | null;
   code: MonthlyUserTypeCodeTypes;
-  description: string;
+  description: string | null;
   name: string;
+  title: string;
 }
 
 export interface ReportPdfInfoResponseTypes {
