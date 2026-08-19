@@ -120,7 +120,7 @@ const TimeWheelColumn = <T,>({
               className={`transition-[transform,opacity] duration-200 ${
                 isSelected
                   ? 'body-lg tracking-[-0.0225rem] text-gray-10'
-                  : 'body-m text-gray-5'
+                  : 'body-m text-gray-6'
               }`}
             >
               {formatItem ? formatItem(item) : String(item)}

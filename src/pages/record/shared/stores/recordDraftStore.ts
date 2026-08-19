@@ -6,16 +6,22 @@ import type {
   RecordFormStateTypes,
   RecordTimeValueTypes,
 } from '@/pages/record/main/types/recordTypes';
+import { getNearestPastHourTime } from '@/pages/record/main/utils/getNearestPastHourTime';
 
 export const RECORD_DATE_FORMAT = 'YYYY-MM-DD';
 
-export const INITIAL_MAIN_RECORD_STATE: RecordFormStateTypes = {
+export const INITIAL_MAIN_RECORD_STATE = {
   bowelStatus: 'yes',
-  time: { hour: 8, minute: 0, meridiem: 'PM' },
   stoolType: null,
   feeling: 'comfortable',
   painLevel: 0,
-};
+} satisfies Omit<RecordFormStateTypes, 'time'>;
+
+// 시간 기본값은 열 때마다 달라지므로 상수가 아니라 함수로 만든다.
+export const createInitialMainRecordState = (): RecordFormStateTypes => ({
+  ...INITIAL_MAIN_RECORD_STATE,
+  time: getNearestPastHourTime(),
+});
 
 export const INITIAL_DETAIL_RECORD_STATE: DetailRecordFormStateTypes = {
   bloating: 'none',
@@ -30,6 +36,7 @@ interface StartDraftParamTypes {
   /** 같은 초안인지 판별하는 키. 새 기록은 날짜별, 수정은 기록별로 다르게 준다. */
   draftKey: string;
   recordDate: string;
+  isTimeUnrecorded?: boolean;
   main?: RecordFormStateTypes;
   detail?: DetailRecordFormStateTypes;
 }
@@ -37,6 +44,11 @@ interface StartDraftParamTypes {
 interface RecordDraftStoreTypes {
   draftKey: string | null;
   recordDate: string;
+  /**
+   * 기존 기록에 배변 시각이 없어서 화면 기본값을 대신 보여주는 중인지.
+   * 사용자가 시간 휠을 건드리면 해제되고, 그 전까지는 저장 payload에서 시각을 제외한다.
+   */
+  isTimeUnrecorded: boolean;
   main: RecordFormStateTypes;
   detail: DetailRecordFormStateTypes;
   startDraft: (param: StartDraftParamTypes) => void;
@@ -50,17 +62,19 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
   (set, get) => ({
     draftKey: null,
     recordDate: dayjs().format(RECORD_DATE_FORMAT),
-    main: INITIAL_MAIN_RECORD_STATE,
+    isTimeUnrecorded: false,
+    main: createInitialMainRecordState(),
     detail: INITIAL_DETAIL_RECORD_STATE,
 
     // 같은 키면 아무것도 하지 않는다. 세부 기록에서 돌아왔을 때 입력값이 날아가지 않도록.
-    startDraft: ({ draftKey, recordDate, main, detail }) => {
+    startDraft: ({ draftKey, recordDate, isTimeUnrecorded, main, detail }) => {
       if (get().draftKey === draftKey) return;
 
       set({
         draftKey,
         recordDate,
-        main: main ?? INITIAL_MAIN_RECORD_STATE,
+        isTimeUnrecorded: isTimeUnrecorded ?? false,
+        main: main ?? createInitialMainRecordState(),
         detail: detail ?? INITIAL_DETAIL_RECORD_STATE,
       });
     },
@@ -71,8 +85,10 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
 
     // time은 중첩 객체라 updateMain으로 넘기면 통째로 교체된다.
     // 시/분/오전오후가 각각 따로 들어와도 서로 덮어쓰지 않도록 최신 state 기준으로 병합한다.
+    // 사용자가 직접 고른 시각이므로 미기록 표시를 해제해 저장 payload에 포함시킨다.
     updateMainTime: (partialTime) => {
       set((state) => ({
+        isTimeUnrecorded: false,
         main: { ...state.main, time: { ...state.main.time, ...partialTime } },
       }));
     },
@@ -85,7 +101,8 @@ export const useRecordDraftStore = create<RecordDraftStoreTypes>(
       set({
         draftKey: null,
         recordDate: dayjs().format(RECORD_DATE_FORMAT),
-        main: INITIAL_MAIN_RECORD_STATE,
+        isTimeUnrecorded: false,
+        main: createInitialMainRecordState(),
         detail: INITIAL_DETAIL_RECORD_STATE,
       });
     },

@@ -69,6 +69,9 @@ const Edit = () => {
   } = useUpdateBoogleRecordMutation();
 
   const recordDate = useRecordDraftStore((state) => state.recordDate);
+  const isTimeUnrecorded = useRecordDraftStore(
+    (state) => state.isTimeUnrecorded,
+  );
   const detailFormState = useRecordDraftStore((state) => state.detail);
   const startDraft = useRecordDraftStore((state) => state.startDraft);
   const resetDraft = useRecordDraftStore((state) => state.resetDraft);
@@ -145,6 +148,7 @@ const Edit = () => {
     try {
       request = mapBoogleRecordPatchRequest({
         recordDate,
+        isTimeUnrecorded,
         main: formState,
         detail: detailFormState,
       });

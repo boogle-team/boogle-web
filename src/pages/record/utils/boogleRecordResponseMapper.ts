@@ -13,7 +13,9 @@ import type {
   RecordTimeValueTypes,
   StoolTypeId,
 } from '@/pages/record/main/types/recordTypes';
+import { getNearestPastHourTime } from '@/pages/record/main/utils/getNearestPastHourTime';
 import {
+  createInitialMainRecordState,
   INITIAL_DETAIL_RECORD_STATE,
   INITIAL_MAIN_RECORD_STATE,
   RECORD_DATE_FORMAT,
@@ -54,6 +56,11 @@ const STOOL_COLOR: Record<StoolColorCodeTypes, StoolColorTypes> = {
 
 interface BoogleRecordDraftTypes {
   recordDate: string;
+  /**
+   * 서버에 저장된 배변 시각이 없거나 형식이 깨진 경우.
+   * 화면에는 기본값을 보여주되, 사용자가 직접 고르기 전까지는 저장 payload에서 제외한다.
+   */
+  isTimeUnrecorded: boolean;
   main: RecordFormStateTypes;
   detail: DetailRecordFormStateTypes;
 }
@@ -61,10 +68,11 @@ interface BoogleRecordDraftTypes {
 const isStoolTypeId = (value: number | null): value is StoolTypeId =>
   value !== null && Number.isInteger(value) && value >= 1 && value <= 7;
 
-const mapBowelMovementTime = (
+/** 서버 시각을 폼 값으로 바꾼다. 값이 없거나 형식이 깨졌으면 null을 돌려준다. */
+const parseBowelMovementTime = (
   bowelMovementAt: string | null,
-): RecordTimeValueTypes => {
-  if (!bowelMovementAt) return INITIAL_MAIN_RECORD_STATE.time;
+): RecordTimeValueTypes | null => {
+  if (!bowelMovementAt) return null;
 
   const [hourText, minuteText] = bowelMovementAt.split(':');
   const hour24 = Number(hourText);
@@ -78,7 +86,7 @@ const mapBowelMovementTime = (
     minute < 0 ||
     minute > 59
   ) {
-    return INITIAL_MAIN_RECORD_STATE.time;
+    return null;
   }
 
   return {
@@ -101,19 +109,23 @@ export const mapBoogleRecordResponseToDraft = (
   if (!record.hasBowel) {
     return {
       recordDate: dayjs(record.regDate).format(RECORD_DATE_FORMAT),
+      isTimeUnrecorded: true,
       main: {
-        ...INITIAL_MAIN_RECORD_STATE,
+        ...createInitialMainRecordState(),
         bowelStatus: 'no',
       },
       detail: INITIAL_DETAIL_RECORD_STATE,
     };
   }
 
+  const recordedTime = parseBowelMovementTime(record.bowelMovementAt);
+
   return {
     recordDate: dayjs(record.regDate).format(RECORD_DATE_FORMAT),
+    isTimeUnrecorded: recordedTime === null,
     main: {
       bowelStatus: 'yes',
-      time: mapBowelMovementTime(record.bowelMovementAt),
+      time: recordedTime ?? getNearestPastHourTime(),
       stoolType: isStoolTypeId(record.stoolBristol)
         ? record.stoolBristol
         : null,
