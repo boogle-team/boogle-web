@@ -1,5 +1,5 @@
 import RecordSectionTitle from '@/pages/record/shared/components/RecordSectionTitle';
-import WarningNoticeIcon from '@/shared/assets/icons/notificationPageIcons/warningNotice.svg?react';
+import WarningBadgeIcon from '@/shared/assets/icons/warningBadgeIcon.svg?react';
 
 import {
   ABNORMAL_COLOR_NOTICE,
@@ -58,7 +58,7 @@ const StoolColorField = ({ value, onChange }: StoolColorFieldPropTypes) => {
 
         {isAbnormalColorSelected && (
           <div className="flex items-start gap-4 rounded-xl border border-orange-3 bg-orange-1 p-4 shadow-sm">
-            <WarningNoticeIcon
+            <WarningBadgeIcon
               className="h-10 w-10 shrink-0"
               aria-hidden="true"
             />
