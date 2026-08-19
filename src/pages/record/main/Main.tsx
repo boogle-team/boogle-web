@@ -31,7 +31,6 @@ const Main = () => {
   const recordDate = useRecordDraftDate();
   const {
     data: dailyRecord,
-    isPending: isDailyRecordPending,
     isError: isDailyRecordError,
     fetchStatus: dailyRecordFetchStatus,
     refetch: refetchDailyRecord,
@@ -60,12 +59,19 @@ const Main = () => {
     handlePainLevelChange,
   } = useRecordForm();
 
-  const isDailyRecordChecking =
-    isDailyRecordPending && dailyRecordFetchStatus !== 'idle';
+  // 캐시에 남은 예전 응답으로 판단하지 않도록 재조회 중에는 항상 확인 중으로 본다.
+  // (생활 기록을 먼저 저장한 날의 부글 기록에서 특히 중요하다.)
+  const isDailyRecordChecking = dailyRecordFetchStatus !== 'idle';
+  // 네트워크가 끊기면 조회가 paused로 멈춰 에러도 아니고 끝나지도 않는다.
+  // 버튼만 비활성으로 남는 상태를 막기 위해 따로 안내한다.
+  const isDailyRecordPaused = dailyRecordFetchStatus === 'paused';
   const hasExistingBoogleRecord = Boolean(dailyRecord?.boogleRecords.length);
   const hasBowelStatusConflict =
     hasExistingBoogleRecord && formState.bowelStatus === 'no';
-  const hasLifeRecord = Boolean(dailyRecord?.lifeRecord);
+  // 조회로 확인한 결과 생활 기록이 없을 때만 유도한다. 확인하지 못했으면 유도하지 않는다.
+  const shouldSuggestLifeRecord = Boolean(
+    dailyRecord && !dailyRecord.lifeRecord,
+  );
   const isSubmitBlocked =
     !isSubmittable ||
     isCreatingRecord ||
@@ -97,7 +103,7 @@ const Main = () => {
         onSuccess: () => {
           resetDraft();
 
-          if (!hasLifeRecord) {
+          if (shouldSuggestLifeRecord) {
             setIsLifeRecordModalOpen(true);
             return;
           }
@@ -140,6 +146,14 @@ const Main = () => {
       onBackButtonClick={handleBackButtonClick}
       footer={
         <div className="flex flex-col gap-2">
+          {isDailyRecordPaused && (
+            <p
+              role="alert"
+              className="caption text-center text-semantic-danger"
+            >
+              네트워크 연결을 확인해 주세요. 연결되면 자동으로 다시 확인해요.
+            </p>
+          )}
           {isDailyRecordError && (
             <div className="flex flex-col items-center gap-2">
               <p
