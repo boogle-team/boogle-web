@@ -56,6 +56,15 @@ interface MapBoogleRecordRequestParamTypes {
   detail: DetailRecordFormStateTypes;
 }
 
+interface MapBoogleRecordPatchRequestParamTypes extends MapBoogleRecordRequestParamTypes {
+  /**
+   * 기존 기록에 배변 시각이 없어서 화면 기본값만 보여주는 중인지.
+   * true면 bowelMovementAt을 아예 보내지 않아 서버의 기존 값(없음)을 그대로 둔다.
+   * 화면에 뜬 기본값이 사용자도 모르게 저장되는 것을 막기 위함이다.
+   */
+  isTimeUnrecorded: boolean;
+}
+
 const get24Hour = ({ hour, meridiem }: RecordTimeValueTypes) => {
   if (meridiem === 'AM') return hour === 12 ? 0 : hour;
   return hour === 12 ? 12 : hour + 12;
@@ -124,7 +133,8 @@ export const mapBoogleRecordPatchRequest = ({
   recordDate,
   main,
   detail,
-}: MapBoogleRecordRequestParamTypes): PatchBoogleRecordRequestTypes => {
+  isTimeUnrecorded,
+}: MapBoogleRecordPatchRequestParamTypes): PatchBoogleRecordRequestTypes => {
   const hasBowel = main.bowelStatus === 'yes';
 
   if (!hasBowel) {
@@ -144,9 +154,12 @@ export const mapBoogleRecordPatchRequest = ({
     };
   }
 
+  const { bowelMovementAt, ...bowelFields } = mapBowelFields(main, detail);
+
   return {
     regDate: recordDate,
     hasBowel: true,
-    ...mapBowelFields(main, detail),
+    ...bowelFields,
+    ...(!isTimeUnrecorded && { bowelMovementAt }),
   };
 };
